@@ -9,5 +9,6 @@ setup(
     author='AWS SDK Common Runtime Team',
     url='https://github.com/awslabs/aws-iot-device-sdk-python-v2',
     packages = ['awsiot'],
-    install_requires = ['aws_crt.mqtt']
+    install_requires=['aws_crt.mqtt'],
+    python_requires='>=3',
 )
