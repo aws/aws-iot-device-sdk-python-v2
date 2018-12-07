@@ -13,60 +13,47 @@
 
 # This file is generated
 
-# TODO:
-# - handle required fields from model differently?
-# - better type-checking of callback signatures (or even better remove callbacks from API)
-# - comments
-# - unsubscribe
-# - python2/3 compatibility https://docs.python.org/3/howto/pyporting.html
-
 import aws_crt.mqtt
+import awsiot
 import concurrent.futures
 import datetime
-import json
 import typing
-import uuid
 
-class IotShadowClient(object):
-    def __init__(self, mqtt_connection):
-        # type: (aws_crt.mqtt.Connection) -> None
-        self.mqtt_connection = mqtt_connection # type: aws_crt.mqtt.Connection
+class IotShadowClient(awsiot.MqttServiceClient):
 
     def delete_shadow(self, input):
         # type: (DeleteShadowRequest) -> concurrent.futures.Future
         request_topic = '$aws/things/{0.thing_name}/shadow/delete'.format(input)
+        request_payload = None
         subscriptions = [
-            _RpcSubscriptionInfo(
+            awsiot._FifoRpcSubscription(
                 topic='$aws/things/{0.thing_name}/shadow/delete/accepted'.format(input),
-                payload_class=DeleteShadowResponse,
-                is_error=False,
+                class_from_payload_fn=DeleteShadowResponse.from_payload,
             ),
-            _RpcSubscriptionInfo(
+            awsiot._FifoRpcSubscription(
                 topic='$aws/things/{0.thing_name}/shadow/delete/rejected'.format(input),
-                payload_class=ErrorResponse,
-                is_error=True,
+                class_from_payload_fn=ErrorResponse.from_payload,
             ),
         ]
 
-        return self._rpc_operation(request_topic, input, subscriptions)
+        return self._fifo_rpc_operation(request_topic, request_payload, subscriptions)
 
     def get_shadow(self, input):
         # type: (GetShadowRequest) -> concurrent.futures.Future
         request_topic = '$aws/things/{0.thing_name}/shadow/get'.format(input)
+        request_payload = None
         subscriptions = [
-            _RpcSubscriptionInfo(
+            awsiot._FifoRpcSubscription(
                 topic='$aws/things/{0.thing_name}/shadow/get/accepted'.format(input),
-                payload_class=GetShadowResponse,
-                is_error=False,
+                class_from_payload_fn=GetShadowResponse.from_payload,
             ),
-            _RpcSubscriptionInfo(
+            awsiot._FifoRpcSubscription(
                 topic='$aws/things/{0.thing_name}/shadow/get/rejected'.format(input),
-                payload_class=ErrorResponse,
-                is_error=True,
+                class_from_payload_fn=ErrorResponse.from_payload,
             ),
         ]
 
-        return self._rpc_operation(request_topic, input, subscriptions)
+        return self._fifo_rpc_operation(request_topic, request_payload, subscriptions)
 
     def subscribe_to_shadow_deltas(self, input, handler):
         # type: (SubscribeToShadowDeltasRequest, ShadowDeltaEventsHandler) -> concurrent.futures.Future
@@ -75,7 +62,7 @@ class IotShadowClient(object):
             raise ValueError("handler.on_delta is required")
 
         subscriptions = [
-            _SubscriptionInfo(
+            awsiot._SubscriptionInfo(
                 topic='$aws/things/{0.thing_name}/shadow/update/delta'.format(input),
                 callback=handler.on_delta,
                 payload_class=ShadowDeltaEvent,
@@ -91,7 +78,7 @@ class IotShadowClient(object):
             raise ValueError("handler.on_updated is required")
 
         subscriptions = [
-            _SubscriptionInfo(
+            awsiot._SubscriptionInfo(
                 topic='$aws/things/{0.thing_name}/shadow/update/documents'.format(input),
                 callback=handler.on_updated,
                 payload_class=ShadowUpdateEvent,
@@ -103,130 +90,21 @@ class IotShadowClient(object):
     def update_shadow(self, input):
         # type: (UpdateShadowRequest) -> concurrent.futures.Future
         request_topic = '$aws/things/{0.thing_name}/shadow/update'.format(input)
+        request_payload = input.to_payload()
         subscriptions = [
-            _RpcSubscriptionInfo(
+            awsiot._NonceRpcSubscription(
                 topic='$aws/things/{0.thing_name}/shadow/update/accepted'.format(input),
-                payload_class=UpdateShadowResponse,
-                is_error=False,
+                class_from_payload_fn=UpdateShadowResponse.from_payload,
+                payload_nonce_field='clientToken',
             ),
-            _RpcSubscriptionInfo(
+            awsiot._NonceRpcSubscription(
                 topic='$aws/things/{0.thing_name}/shadow/update/rejected'.format(input),
-                payload_class=ErrorResponse,
-                is_error=True,
+                class_from_payload_fn=ErrorResponse.from_payload,
+                payload_nonce_field='clientToken',
             ),
         ]
 
-        return self._rpc_operation(request_topic, input, subscriptions)
-
-    def _rpc_operation(self, pub_topic, input, subscriptions):
-        # type: (str, typing.Any, typing.List[_RpcSubscriptionInfo]) -> concurrent.futures.Future
-        """
-        Performs a 'Remote Procedure Call' style operation for an MQTT service.
-
-        Parameters:
-        pub_topic - Topic for request message.
-        input - Input object for request message.
-        subscriptions - List of _RpcSubscriptionInfos, one for each possible response.
-
-        Returns a Future that will contain the outcome of the operation.
-        A response from a non-error topic becomes a valid result in the Future.
-        A response from an error topic becomes an Exception in the Future.
-        Any other exception that occurs as part of the RPC becomes an exception in the Future.
-        """
-        if not input.client_token:
-            input.client_token = str(uuid.uuid4())
-        input_payload = input.to_payload()
-        input_json_payload = json.dumps(input_payload)
-
-        future = concurrent.futures.Future() # type: concurrent.futures.Future
-
-        suback_counter = ['suback'] * len(subscriptions)
-
-        # callback counts subacks, when last one is received the request is published.
-        def on_suback(packet_id):
-            try:
-                # count supacks by popping an entry out of this list
-                if suback_counter:
-                    suback_counter.pop()
-                    if not suback_counter:
-                        # all subscriptions succeeded, publish request
-                        self.mqtt_connection.publish(pub_topic, input_json_payload, 1, False, None)
-            except Exception as e:
-                future.set_exception(e)
-
-        for sub in subscriptions:
-            # callback transforms payload into appropriate class and delivers it to the future
-            def on_response(topic, json_payload):
-                try:
-                    payload = json.loads(json_payload)
-                    result = sub.payload_class.from_payload(payload)
-                    if sub.is_error:
-                        future.set_exception(result)
-                    else:
-                        future.set_result(result)
-                except Exception as e:
-                    future.set_exception(e)
-
-            self.mqtt_connection.subscribe(sub.topic, 1, on_response, on_suback)
-
-        return future
-
-    def _subscribe_operation(self, subscriptions):
-        # type: (typing.List[_SubscriptionInfo]) -> concurrent.futures.Future
-        """
-        Performs a 'Subscribe' style operation for an MQTT service.
-
-        Parameters:
-        subscriptions - List of _SubscriptionInfos, one for each possible response.
-
-        Returns a Future that will contain None when all subscriptions have been acknowledged by the server.
-        """
-
-        future = concurrent.futures.Future() # type: concurrent.futures.Future
-
-        # callback informs Future when all subacks received
-        suback_counter = ['suback'] * len(subscriptions)
-        def on_suback(packet_id):
-            # count supacks by popping an entry out of this list
-            if suback_counter:
-                suback_counter.pop()
-                if not suback_counter:
-                    # all subscriptions succeeded
-                    future.set_result(None)
-
-        for sub in subscriptions:
-            def callback_wrapper(topic, json_payload):
-                try:
-                    payload = json.loads(json_payload)
-                    event = sub.payload_class.from_payload(payload)
-                    sub.callback(event)
-                except:
-                    # can't deliver payload, invoke callback with None
-                    sub.callback(None)
-
-            self.mqtt_connection.subscribe(sub.topic, 1, callback_wrapper, on_suback)
-
-        return future
-
-T = typing.TypeVar('T')
-
-class _RpcSubscriptionInfo(object):
-    # type: typing.Generic[T]
-
-    def __init__(self, topic, payload_class, is_error):
-        # type: (str, typing.Type[T], bool) -> None
-        self.topic = topic # type: str
-        self.payload_class = payload_class # type: typing.Type[T]
-        self.is_error = is_error # type: bool
-
-class _SubscriptionInfo(object):
-    # type: typing.Generic[T]
-
-    def __init__(self, topic, callback, payload_class):
-        # type: (str, typing.Callable[[T], None], typing.Type[T]) -> None
-        self.topic = topic # type: str
-        self.callback = callback # type: typing.Callable[[T], None]
-        self.payload_class = payload_class # typing.Type[T]
+        return self._nonce_rpc_operation(request_topic, request_payload, input.client_token, subscriptions)
 
 class DeleteShadowRequest(object):
     def __init__(self, thing_name=None):
