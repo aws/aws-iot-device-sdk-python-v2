@@ -23,40 +23,48 @@ class IotShadowClient(awsiot.MqttServiceClient):
 
     def delete_shadow(self, input):
         # type: (DeleteShadowRequest) -> concurrent.futures.Future
+        if not input.thing_name:
+            raise ValueError("input.thing_name is required")
+
         request_topic = '$aws/things/{0.thing_name}/shadow/delete'.format(input)
         request_payload = None
-        subscriptions = [
+        response_subscriptions = [
             awsiot._FifoRpcSubscription(
                 topic='$aws/things/{0.thing_name}/shadow/delete/accepted'.format(input),
-                class_from_payload_fn=DeleteShadowResponse.from_payload,
+                response_payload_to_class_fn=DeleteShadowResponse.from_payload,
             ),
             awsiot._FifoRpcSubscription(
                 topic='$aws/things/{0.thing_name}/shadow/delete/rejected'.format(input),
-                class_from_payload_fn=ErrorResponse.from_payload,
+                response_payload_to_class_fn=ErrorResponse.from_payload,
             ),
         ]
 
-        return self._fifo_rpc_operation(request_topic, request_payload, subscriptions)
+        return self._fifo_rpc_operation(request_topic, request_payload, response_subscriptions)
 
     def get_shadow(self, input):
         # type: (GetShadowRequest) -> concurrent.futures.Future
+        if not input.thing_name:
+            raise ValueError("input.thing_name is required")
+
         request_topic = '$aws/things/{0.thing_name}/shadow/get'.format(input)
         request_payload = None
-        subscriptions = [
+        response_subscriptions = [
             awsiot._FifoRpcSubscription(
                 topic='$aws/things/{0.thing_name}/shadow/get/accepted'.format(input),
-                class_from_payload_fn=GetShadowResponse.from_payload,
+                response_payload_to_class_fn=GetShadowResponse.from_payload,
             ),
             awsiot._FifoRpcSubscription(
                 topic='$aws/things/{0.thing_name}/shadow/get/rejected'.format(input),
-                class_from_payload_fn=ErrorResponse.from_payload,
+                response_payload_to_class_fn=ErrorResponse.from_payload,
             ),
         ]
 
-        return self._fifo_rpc_operation(request_topic, request_payload, subscriptions)
+        return self._fifo_rpc_operation(request_topic, request_payload, response_subscriptions)
 
     def subscribe_to_shadow_deltas(self, input, handler):
         # type: (SubscribeToShadowDeltasRequest, ShadowDeltaEventsHandler) -> concurrent.futures.Future
+        if not input.thing_name:
+            raise ValueError("input.thing_name is required")
 
         if not handler.on_delta:
             raise ValueError("handler.on_delta is required")
@@ -73,6 +81,8 @@ class IotShadowClient(awsiot.MqttServiceClient):
 
     def subscribe_to_shadow_updates(self, input, handler):
         # type: (SubscribeToShadowUpdatesRequest, ShadowUpdateEventsHandler) -> concurrent.futures.Future
+        if not input.thing_name:
+            raise ValueError("input.thing_name is required")
 
         if not handler.on_updated:
             raise ValueError("handler.on_updated is required")
@@ -89,22 +99,27 @@ class IotShadowClient(awsiot.MqttServiceClient):
 
     def update_shadow(self, input):
         # type: (UpdateShadowRequest) -> concurrent.futures.Future
+        if not input.thing_name:
+            raise ValueError("input.thing_name is required")
+
         request_topic = '$aws/things/{0.thing_name}/shadow/update'.format(input)
         request_payload = input.to_payload()
-        subscriptions = [
+        request_payload_nonce_field = 'clientToken'
+
+        response_subscriptions = [
             awsiot._NonceRpcSubscription(
                 topic='$aws/things/{0.thing_name}/shadow/update/accepted'.format(input),
-                class_from_payload_fn=UpdateShadowResponse.from_payload,
-                payload_nonce_field='clientToken',
+                response_payload_to_class_fn=UpdateShadowResponse.from_payload,
+                response_payload_nonce_field='clientToken',
             ),
             awsiot._NonceRpcSubscription(
                 topic='$aws/things/{0.thing_name}/shadow/update/rejected'.format(input),
-                class_from_payload_fn=ErrorResponse.from_payload,
-                payload_nonce_field='clientToken',
+                response_payload_to_class_fn=ErrorResponse.from_payload,
+                response_payload_nonce_field='clientToken',
             ),
         ]
 
-        return self._nonce_rpc_operation(request_topic, request_payload, input.client_token, subscriptions)
+        return self._nonce_rpc_operation(request_topic, request_payload, request_payload_nonce_field, response_subscriptions)
 
 class DeleteShadowRequest(object):
     def __init__(self, thing_name=None):

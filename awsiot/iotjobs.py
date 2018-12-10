@@ -23,25 +23,34 @@ class IotJobsClient(awsiot.MqttServiceClient):
 
     def describe_job_execution(self, input):
         # type: (DescribeJobExecutionRequest) -> concurrent.futures.Future
+        if not input.job_id:
+            raise ValueError("input.job_id is required")
+        if not input.thing_name:
+            raise ValueError("input.thing_name is required")
+
         request_topic = '$aws/things/{0.thing_name}/jobs/{0.job_id}/get'.format(input)
         request_payload = input.to_payload()
-        subscriptions = [
+        request_payload_nonce_field = 'clientToken'
+
+        response_subscriptions = [
             awsiot._NonceRpcSubscription(
                 topic='$aws/things/{0.thing_name}/jobs/{0.job_id}/get/accepted'.format(input),
-                class_from_payload_fn=DescribeJobExecutionResponse.from_payload,
-                payload_nonce_field='clientToken',
+                response_payload_to_class_fn=DescribeJobExecutionResponse.from_payload,
+                response_payload_nonce_field='clientToken',
             ),
             awsiot._NonceRpcSubscription(
                 topic='$aws/things/{0.thing_name}/jobs/{0.job_id}/get/rejected'.format(input),
-                class_from_payload_fn=RejectedError.from_payload,
-                payload_nonce_field='clientToken',
+                response_payload_to_class_fn=RejectedError.from_payload,
+                response_payload_nonce_field='clientToken',
             ),
         ]
 
-        return self._nonce_rpc_operation(request_topic, request_payload, input.client_token, subscriptions)
+        return self._nonce_rpc_operation(request_topic, request_payload, request_payload_nonce_field, response_subscriptions)
 
     def get_job_executions_changed(self, input, handler):
         # type: (GetJobExecutionsChangedRequest, JobExecutionsChangedEventsHandler) -> concurrent.futures.Future
+        if not input.thing_name:
+            raise ValueError("input.thing_name is required")
 
         if not handler.on_job_executions_changed:
             raise ValueError("handler.on_job_executions_changed is required")
@@ -58,6 +67,8 @@ class IotJobsClient(awsiot.MqttServiceClient):
 
     def get_next_job_execution_changed(self, input, handler):
         # type: (GetNextJobExecutionChangedRequest, NextJobExecutionChangedEventsHandler) -> concurrent.futures.Future
+        if not input.thing_name:
+            raise ValueError("input.thing_name is required")
 
         if not handler.on_next_job_execution_changed:
             raise ValueError("handler.on_next_job_execution_changed is required")
@@ -74,60 +85,77 @@ class IotJobsClient(awsiot.MqttServiceClient):
 
     def get_pending_job_executions(self, input):
         # type: (GetPendingJobExecutionsRequest) -> concurrent.futures.Future
+        if not input.thing_name:
+            raise ValueError("input.thing_name is required")
+
         request_topic = '$aws/things/{0.thing_name}/jobs/get'.format(input)
         request_payload = input.to_payload()
-        subscriptions = [
+        request_payload_nonce_field = 'clientToken'
+
+        response_subscriptions = [
             awsiot._NonceRpcSubscription(
                 topic='$aws/things/{0.thing_name}/jobs/get/accepted'.format(input),
-                class_from_payload_fn=GetPendingJobExecutionsResponse.from_payload,
-                payload_nonce_field='clientToken',
+                response_payload_to_class_fn=GetPendingJobExecutionsResponse.from_payload,
+                response_payload_nonce_field='clientToken',
             ),
             awsiot._NonceRpcSubscription(
                 topic='$aws/things/{0.thing_name}/jobs/get/rejected'.format(input),
-                class_from_payload_fn=RejectedError.from_payload,
-                payload_nonce_field='clientToken',
+                response_payload_to_class_fn=RejectedError.from_payload,
+                response_payload_nonce_field='clientToken',
             ),
         ]
 
-        return self._nonce_rpc_operation(request_topic, request_payload, input.client_token, subscriptions)
+        return self._nonce_rpc_operation(request_topic, request_payload, request_payload_nonce_field, response_subscriptions)
 
     def start_next_pending_job_execution(self, input):
         # type: (StartNextPendingJobExecutionRequest) -> concurrent.futures.Future
+        if not input.thing_name:
+            raise ValueError("input.thing_name is required")
+
         request_topic = '$aws/things/{0.thing_name}/jobs/start-next'.format(input)
         request_payload = input.to_payload()
-        subscriptions = [
+        request_payload_nonce_field = 'clientToken'
+
+        response_subscriptions = [
             awsiot._NonceRpcSubscription(
                 topic='$aws/things/{0.thing_name}/jobs/start-next/accepted'.format(input),
-                class_from_payload_fn=StartDescribeJobExecutionResponse.from_payload,
-                payload_nonce_field='clientToken',
+                response_payload_to_class_fn=StartDescribeJobExecutionResponse.from_payload,
+                response_payload_nonce_field='clientToken',
             ),
             awsiot._NonceRpcSubscription(
                 topic='$aws/things/{0.thing_name}/jobs/start-next/rejected'.format(input),
-                class_from_payload_fn=RejectedError.from_payload,
-                payload_nonce_field='clientToken',
+                response_payload_to_class_fn=RejectedError.from_payload,
+                response_payload_nonce_field='clientToken',
             ),
         ]
 
-        return self._nonce_rpc_operation(request_topic, request_payload, input.client_token, subscriptions)
+        return self._nonce_rpc_operation(request_topic, request_payload, request_payload_nonce_field, response_subscriptions)
 
     def update_job_execution(self, input):
         # type: (UpdateJobExecutionRequest) -> concurrent.futures.Future
+        if not input.thing_name:
+            raise ValueError("input.thing_name is required")
+        if not input.job_id:
+            raise ValueError("input.job_id is required")
+
         request_topic = '$aws/things/{0.thing_name}/jobs/{0.job_id}/update'.format(input)
         request_payload = input.to_payload()
-        subscriptions = [
+        request_payload_nonce_field = 'clientToken'
+
+        response_subscriptions = [
             awsiot._NonceRpcSubscription(
                 topic='$aws/things/{0.thing_name}/jobs/{0.job_id}/update/accepted'.format(input),
-                class_from_payload_fn=UpdateJobExecutionResponse.from_payload,
-                payload_nonce_field='clientToken',
+                response_payload_to_class_fn=UpdateJobExecutionResponse.from_payload,
+                response_payload_nonce_field='clientToken',
             ),
             awsiot._NonceRpcSubscription(
                 topic='$aws/things/{0.thing_name}/jobs/{0.job_id}/update/rejected'.format(input),
-                class_from_payload_fn=RejectedError.from_payload,
-                payload_nonce_field='clientToken',
+                response_payload_to_class_fn=RejectedError.from_payload,
+                response_payload_nonce_field='clientToken',
             ),
         ]
 
-        return self._nonce_rpc_operation(request_topic, request_payload, input.client_token, subscriptions)
+        return self._nonce_rpc_operation(request_topic, request_payload, request_payload_nonce_field, response_subscriptions)
 
 class DescribeJobExecutionRequest(object):
     def __init__(self, client_token=None, execution_number=None, include_job_document=None, job_id=None, thing_name=None):

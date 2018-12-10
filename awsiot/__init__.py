@@ -40,17 +40,19 @@ class MqttServiceClient(object):
     def mqtt_connection(self):
         return self._mqtt_connection
 
-    def _nonce_rpc_operation(self, request_topic, request_payload, nonce_value, subscriptions):
-        # type: (str, PayloadObj, Optional[str], List[_NonceRpcSubscription]) -> Future
+    def _nonce_rpc_operation(self, request_topic, request_payload, request_payload_nonce_field, subscriptions):
+        # type: (str, PayloadObj, str, List[_NonceRpcSubscription]) -> Future
         """
         Performs a "Remote Procedure Call" style operation for an MQTT service,
         where a "nonce" token is used to correlate requests with responses.
 
         Parameters:
         request_topic - Topic for request message.
-        request_payload - Input object to be sent as json string in request message.
-        nonce_value - Unique token string used to correlate the response with this particular request.
-                      If none is provided, a uniqe value will be generated for this operation.
+        request_payload - Input object to be sent as JSON in the request message.
+        request_payload_nonce_field - Name of field in the request payload which contains the "nonce",
+                a unique string that will be copied to the response,
+                allowing the response to be correlated with this particular request.
+                If the field's value is empty, a uniqe value will be generated for this operation.
         subscriptions - List of _NonceRpcSubscriptions, one for each possible response.
 
         Returns a Future that will contain the outcome of the operation.
@@ -60,8 +62,12 @@ class MqttServiceClient(object):
         """
 
         future = Future() # type: Future
+
+        # generate a unique nonce, if none was contained in the payload
+        nonce_value = request_payload.get(request_payload_nonce_field)
         if not nonce_value:
             nonce_value = str(uuid4())
+            request_payload[request_payload_nonce_field] = nonce_value
 
         operation = _NonceRpcOperation(future, request_topic, json.dumps(request_payload), nonce_value, subscriptions)
 
@@ -81,7 +87,7 @@ class MqttServiceClient(object):
                 topic_entry = self._nonce_rpc_topics.get(sub.topic)
                 if not topic_entry:
                     topics_to_subscribe_to.append(sub.topic)
-                    topic_entry = _NonceRpcTopicEntry(sub.payload_nonce_field)
+                    topic_entry = _NonceRpcTopicEntry(sub.response_payload_nonce_field)
                     self._nonce_rpc_topics[sub.topic] = topic_entry
 
                 topic_entry.outstanding_operations[operation.nonce_value] = operation
@@ -129,7 +135,7 @@ class MqttServiceClient(object):
 
             # lock released
             if subscription and operation:
-                result = subscription.class_from_payload_fn(payload_obj)
+                result = subscription.response_payload_to_class_fn(payload_obj)
                 if isinstance(result, Exception):
                     operation.future.set_exception(result)
                 else:
@@ -231,7 +237,7 @@ class MqttServiceClient(object):
                 payload_obj = {}
 
             if subscription and operation:
-                result = subscription.class_from_payload_fn(payload_obj)
+                result = subscription.response_payload_to_class_fn(payload_obj)
                 if isinstance(result, Exception):
                     operation.future.set_exception(result)
                 else:
@@ -286,15 +292,15 @@ class MqttServiceClient(object):
 T = TypeVar('T')
 
 PayloadObj = Dict[str, Any]
-ClassFromPayloadFn = Callable[[PayloadObj], T]
+PayloadToClassFn = Callable[[PayloadObj], T]
 
 class _NonceRpcSubscription(object):
     # type: Generic[T]
-    def __init__(self, topic, class_from_payload_fn, payload_nonce_field):
-        # type: (str, ClassFromPayloadFn, str) -> None
+    def __init__(self, topic, response_payload_to_class_fn, response_payload_nonce_field):
+        # type: (str, PayloadToClassFn, str) -> None
         self.topic = topic # type: str
-        self.class_from_payload_fn = class_from_payload_fn # type: ClassFromPayloadFn
-        self.payload_nonce_field = payload_nonce_field # type: str
+        self.response_payload_to_class_fn = response_payload_to_class_fn # type: PayloadToClassFn
+        self.response_payload_nonce_field = response_payload_nonce_field # type: str
 
 class _NonceRpcOperation(object):
     def __init__(self, future, request_topic, request_payload, nonce_value, subscriptions):
@@ -307,10 +313,10 @@ class _NonceRpcOperation(object):
 
 class _FifoRpcSubscription(object):
     # type: Generic[T]
-    def __init__(self, topic, class_from_payload_fn):
-        # type: (str, ClassFromPayloadFn) -> None
+    def __init__(self, topic, response_payload_to_class_fn):
+        # type: (str, PayloadToClassFn) -> None
         self.topic = topic # type: str
-        self.class_from_payload_fn = class_from_payload_fn # type: ClassFromPayloadFn
+        self.response_payload_to_class_fn = response_payload_to_class_fn # type: PayloadToClassFn
 
 class _FifoRpcOperation(object):
     def __init__(self, future, request_topic, request_payload, subscriptions):
