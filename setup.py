@@ -13,7 +13,7 @@
 # express or implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(
     name='awsiot',
@@ -21,7 +21,11 @@ setup(
     description='AWS IoT SDK based on the AWS Common Runtime',
     author='AWS SDK Common Runtime Team',
     url='https://github.com/awslabs/aws-iot-device-sdk-python-v2',
-    packages = ['awsiot'],
-    install_requires=['aws_crt.mqtt'],
+    packages = find_packages(),
+    install_requires=[
+        'aws_crt',
+        'futures; python_version == "2.7"',
+        'typing; python_version == "2.7"',
+    ],
     python_requires='>=2.7',
 )
