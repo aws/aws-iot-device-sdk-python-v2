@@ -19,7 +19,26 @@ from awsiot import iotshadow
 import sys
 import threading
 
-parser = argparse.ArgumentParser(description="Device Shadow sample keeps a value in sync across client and server")
+# - Overview -
+# This sample uses the AWS IoT Device Shadow Service to keep a property in
+# sync between device and server. Imagine a light whose color may be changed
+# through an app, or set by a local user.
+#
+# - Instructions -
+# Once connected, type a value in the terminal and press Enter to update
+# the property's "reported" value. The sample also responds when the "desired"
+# value changes on the server. To observe this, edit the Shadow document in
+# the AWS Console and set a new "desired" value.
+#
+# - Detail -
+# On startup, the sample requests the shadow document to learn the property's
+# initial state. The sample also subscribes to "delta" events from the server,
+# which are sent when a property's "desired" value differs from its "reported"
+# value. When the sample learns of a new desired value, that value is changed
+# on the device and an update is sent to the server with the new "reported"
+# value.
+
+parser = argparse.ArgumentParser(description="Device Shadow sample keeps a property in sync across client and server")
 parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpoint, not including a port. " +
                                                       "Ex: \"w6zbse3vjd5b4p-ats.iot.us-west-2.amazonaws.com\"")
 parser.add_argument('--cert', required=True, help="File path to your client certificate, in PEM format")
@@ -28,24 +47,19 @@ parser.add_argument('--root-ca', help="File path to root certificate authority, 
                                       "Necessary if MQTT server uses a certificate that's not already in " +
                                       "your trust store")
 parser.add_argument('--thing-name', required=True, help="The name assigned to your IoT Thing")
-parser.add_argument('--shadow-field', default="color", help="Name of field in shadow to keep in sync")
-args = parser.parse_args()
+parser.add_argument('--shadow-property', default="color", help="Name of property in shadow to keep in sync")
 
-port = 443 if io.is_alpn_available() else 8883
+# Using globals to simplify sample code
 is_connected = False
-shadow_field = args.shadow_field
-SHADOW_VALUE_DEFAULT = "off"
+mqtt_connection = None
+shadow_client = None
+thing_name = None
+shadow_property = None
 
 # Acquire shadow_value_lock before touching shadow_value, which may be changed from any thread
-shadow_value_lock = threading.Lock()
 shadow_value = None
-
-# Spin up resources
-event_loop_group = io.EventLoopGroup(1)
-client_bootstrap = io.ClientBootstrap(event_loop_group)
-mqtt_client = mqtt.Client(client_bootstrap)
-mqtt_connection = mqtt.Connection(mqtt_client, 'samples_client_id')
-shadow_client = iotshadow.IotShadowClient(mqtt_connection)
+shadow_value_lock = threading.Lock()
+SHADOW_VALUE_DEFAULT = "off"
 
 # Function for gracefully quitting this sample
 def exit(msg):
@@ -82,20 +96,20 @@ def on_get_shadow_completed(future):
 
         if shadow.state:
             if shadow.state.delta:
-                value = shadow.state.delta.get(shadow_field)
+                value = shadow.state.delta.get(shadow_property)
                 if value:
                     print("  Shadow contains delta value '{}'.".format(value))
                     change_shadow_value(value)
                     return
 
             if shadow.state.reported:
-                value = shadow.state.reported.get(shadow_field)
+                value = shadow.state.reported.get(shadow_property)
                 if value:
                     print("  Shadow contains reported value '{}'.".format(value))
-                    set_local_value_due_to_initial_query(shadow.state.reported[shadow_field])
+                    set_local_value_due_to_initial_query(shadow.state.reported[shadow_property])
                     return
 
-        print("  Shadow document lacks '{}' field. Setting defaults...".format(shadow_field))
+        print("  Shadow document lacks '{}' property. Setting defaults...".format(shadow_property))
         change_shadow_value(SHADOW_VALUE_DEFAULT)
         return
 
@@ -117,17 +131,17 @@ def on_delta_received(delta):
     # type: (iotshadow.ShadowDeltaEvent) -> None
     try:
         print("Received shadow delta.")
-        if shadow_field in delta.state:
-            value = delta.state[shadow_field]
+        if shadow_property in delta.state:
+            value = delta.state[shadow_property]
             if value is None:
-                print("  Delta reports that '{}' was deleted. Resetting defaults...".format(shadow_field))
+                print("  Delta reports that '{}' was deleted. Resetting defaults...".format(shadow_property))
                 change_shadow_value(SHADOW_VALUE_DEFAULT)
                 return
             else:
                 print("  Delta reports that desired value is '{}'. Changing local value...".format(value))
                 change_shadow_value(value)
         else:
-            print("  Delta did not report a change in '{}'".format(shadow_field))
+            print("  Delta did not report a change in '{}'".format(shadow_property))
 
     except Exception as e:
         exit("Error processing shadow delta: {}".format(repr(e)))
@@ -135,7 +149,7 @@ def on_delta_received(delta):
 def on_shadow_update_completed(future):
     try:
         response = future.result() # awsiot.iotshadow.UpdateShadowResponse
-        print("Finished updating reported shadow value to '{}'.".format(response.state.reported[shadow_field]))
+        print("Finished updating reported shadow value to '{}'.".format(response.state.reported[shadow_property]))
         print("Enter desired value: ") # remind user they can input new values
     except Exception as e:
         exit("Failed to subscribe to shadow deltas: {}".format(repr(e)))
@@ -160,10 +174,10 @@ def change_shadow_value(value):
     print("Updating reported shadow value to '{}'...".format(value))
     try:
         request = iotshadow.UpdateShadowRequest(
-            thing_name=args.thing_name,
+            thing_name=thing_name,
             state=iotshadow.ShadowState(
-                reported={ shadow_field: value },
-                desired={ shadow_field: value },
+                reported={ shadow_property: value },
+                desired={ shadow_property: value },
             )
         )
         future = shadow_client.update_shadow(request)
@@ -171,43 +185,61 @@ def change_shadow_value(value):
     except Exception as e:
         exit("Error issuing shadow update: {}".format(repr(e)))
 
-# Begin async connect
-print("Connecting to {} on port {}...".format(args.endpoint, port))
-mqtt_connection.connect(
-        host_name = args.endpoint,
-        port = port,
-        ca_path = args.root_ca,
-        key_path = args.key,
-        certificate_path = args.cert,
-        on_connect=on_connected,
-        on_disconnect=on_disconnected,
-        use_websocket=False,
-        alpn=None,
-        clean_session=True,
-        keep_alive=6000)
+if __name__ == '__main__':
+    global thing_name
+    global shadow_property
+    global mqtt_connection
+    global shadow_client
 
-# Begin async query of the shadow's current state.
-get_request = iotshadow.GetShadowRequest(thing_name=args.thing_name)
-print("Getting current shadow state...")
-get_future = shadow_client.get_shadow(get_request)
-get_future.add_done_callback(on_get_shadow_completed)
+    # Process input args
+    args = parser.parse_args()
+    thing_name = args.thing_name
+    shadow_property = args.shadow_property
 
-# Subscribe to be notified when "shadow delta" changes.
-# A delta event is sent when the server's "desired" value differs from the "reported" value.
-print("Subscribing to shadow delta events...")
-delta_request = iotshadow.SubscribeToShadowDeltasRequest(args.thing_name)
-delta_handler = iotshadow.ShadowDeltaEventsHandler()
-delta_handler.on_delta = on_delta_received
-delta_subscribed_future = shadow_client.subscribe_to_shadow_deltas(delta_request, delta_handler)
-delta_subscribed_future.add_done_callback(on_delta_subscribe_completed)
+    # Spin up resources
+    event_loop_group = io.EventLoopGroup(1)
+    client_bootstrap = io.ClientBootstrap(event_loop_group)
+    mqtt_client = mqtt.Client(client_bootstrap)
+    mqtt_connection = mqtt.Connection(mqtt_client, 'samples_client_id')
+    shadow_client = iotshadow.IotShadowClient(mqtt_connection)
 
-# The main thread simply reads user input.
-# All callbacks occur on a thread.
-while True:
-    try:
-        new_value = raw_input() # python 2 only
-    except NameError:
-        new_value = input() # python 3 only
+    # Begin async connect
+    port = 443 if io.is_alpn_available() else 8883
+    print("Connecting to {} on port {}...".format(args.endpoint, port))
+    mqtt_connection.connect(
+            host_name = args.endpoint,
+            port = port,
+            ca_path = args.root_ca,
+            key_path = args.key,
+            certificate_path = args.cert,
+            on_connect=on_connected,
+            on_disconnect=on_disconnected,
+            use_websocket=False,
+            alpn=None,
+            clean_session=True,
+            keep_alive=6000)
 
-    change_shadow_value(new_value)
+    # Begin async query of the shadow's current state.
+    get_request = iotshadow.GetShadowRequest(thing_name=args.thing_name)
+    print("Getting current shadow state...")
+    get_future = shadow_client.get_shadow(get_request)
+    get_future.add_done_callback(on_get_shadow_completed)
 
+    # Subscribe to be notified when "shadow delta" changes.
+    # A delta event is sent when the server's "desired" value differs from the "reported" value.
+    print("Subscribing to shadow delta events...")
+    delta_request = iotshadow.SubscribeToShadowDeltasRequest(args.thing_name)
+    delta_handler = iotshadow.ShadowDeltaEventsHandler()
+    delta_handler.on_delta = on_delta_received
+    delta_subscribed_future = shadow_client.subscribe_to_shadow_deltas(delta_request, delta_handler)
+    delta_subscribed_future.add_done_callback(on_delta_subscribe_completed)
+
+    # The main thread simply reads user input.
+    # All callbacks occur on a thread.
+    while True:
+        try:
+            new_value = raw_input() # python 2 only
+        except NameError:
+            new_value = input() # python 3 only
+
+        change_shadow_value(new_value)
