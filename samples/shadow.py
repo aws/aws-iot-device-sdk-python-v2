@@ -51,10 +51,12 @@ parser.add_argument('--shadow-property', default="color", help="Name of property
 
 # Using globals to simplify sample code
 is_connected = False
+is_sample_done = threading.Event()
+
 mqtt_connection = None
 shadow_client = None
-thing_name = None
-shadow_property = None
+thing_name = ""
+shadow_property = ""
 
 # Acquire shadow_value_lock before touching shadow_value, which may be changed from any thread
 shadow_value = None
@@ -63,12 +65,14 @@ SHADOW_VALUE_DEFAULT = "off"
 
 # Function for gracefully quitting this sample
 def exit(msg):
-    print("Exiting:", msg)
+    print("Exiting Sample:", msg)
+
     if is_connected:
         print("Disconnecting...")
         mqtt_connection.disconnect()
     else:
-        sys.exit()
+        # Signal that sample is finished
+        is_sample_done.set()
 
 def on_connected(return_code, session_present):
     if return_code != 0:
@@ -80,7 +84,11 @@ def on_connected(return_code, session_present):
 
 def on_disconnected(return_code):
     print("Disconnected with code: {}".format(return_code))
-    sys.exit()
+
+    # Signal that sample is finished
+    is_sample_done.set()
+
+    return False # whether to attempt reconnecting
 
 def on_get_shadow_completed(future):
     try:
@@ -131,7 +139,7 @@ def on_delta_received(delta):
     # type: (iotshadow.ShadowDeltaEvent) -> None
     try:
         print("Received shadow delta.")
-        if shadow_property in delta.state:
+        if delta.state and (shadow_property in delta.state):
             value = delta.state[shadow_property]
             if value is None:
                 print("  Delta reports that '{}' was deleted. Resetting defaults...".format(shadow_property))
@@ -185,12 +193,28 @@ def change_shadow_value(value):
     except Exception as e:
         exit("Error issuing shadow update: {}".format(repr(e)))
 
-if __name__ == '__main__':
-    global thing_name
-    global shadow_property
-    global mqtt_connection
-    global shadow_client
+def user_input_thread_fn():
+    while True:
+        try:
+            # Read user input
+            try:
+                new_value = raw_input() # python 2 only
+            except NameError:
+                new_value = input() # python 3 only
 
+            # If user wants to quit sample, then quit.
+            # Otherwise change the shadow value.
+            if new_value in ['exit', 'quit']:
+                exit("User has quit")
+                break
+            else:
+                change_shadow_value(new_value)
+
+        except Exception as e:
+            exit("Exception on input thread: {}".format(repr(e)))
+            break
+
+if __name__ == '__main__':
     # Process input args
     args = parser.parse_args()
     thing_name = args.thing_name
@@ -234,12 +258,11 @@ if __name__ == '__main__':
     delta_subscribed_future = shadow_client.subscribe_to_shadow_deltas(delta_request, delta_handler)
     delta_subscribed_future.add_done_callback(on_delta_subscribe_completed)
 
-    # The main thread simply reads user input.
-    # All callbacks occur on a thread.
-    while True:
-        try:
-            new_value = raw_input() # python 2 only
-        except NameError:
-            new_value = input() # python 3 only
+    # Launch thread to handle user input.
+    # A "daemon" thread won't prevent the program from shutting down.
+    user_input_thread = threading.Thread(target=user_input_thread_fn, name='user_input_thread')
+    user_input_thread.daemon = True
+    user_input_thread.start()
 
-        change_shadow_value(new_value)
+    # Wait for the sample to finish (user types 'quit', or an error occurs)
+    is_sample_done.wait()
