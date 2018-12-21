@@ -18,21 +18,22 @@ from aws_crt import io, mqtt
 import threading
 import time
 
-# This sample uses the Message Broken for AWS IoT to send and receive messages
+# This sample uses the Message Broker for AWS IoT to send and receive messages
 # through an MQTT connection. On startup, the device connects to the server,
 # subscribes to a topic, and begins publishing messages to that topic.
-# The device should receive those same messages back from the message broken,
+# The device should receive those same messages back from the message broker,
 # since it is subscribed to that same topic.
 
 parser = argparse.ArgumentParser(description="Send and receive messages through and MQTT connection.")
 parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpoint, not including a port. " +
-                                                      "Ex: \"w6zbse3vjd5b4p-ats.iot.us-west-2.amazonaws.com\"")
+                                                      "Ex: \"abcd123456wxyz-ats.iot.us-east-1.amazonaws.com\"")
 parser.add_argument('--cert', required=True, help="File path to your client certificate, in PEM format.")
 parser.add_argument('--key', required=True, help="File path to your private key, in PEM format.")
 parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. " +
                                       "Necessary if MQTT server uses a certificate that's not already in " +
                                       "your trust store.")
-parser.add_argument('--topic', default="sample/test", help="Topic to subscribe to, and publish messages to.")
+parser.add_argument('--client-id', default='samples-client-id', help="Client ID for MQTT connection.")
+parser.add_argument('--topic', default="samples/test", help="Topic to subscribe to, and publish messages to.")
 parser.add_argument('--message', default="Hello World!", help="Message to publish. " +
                                                               "Specify empty string to publish nothing.")
 parser.add_argument('--count', default=10, type=int, help="Number of messages to publish/receive before exiting. " +
@@ -102,10 +103,13 @@ if __name__ == '__main__':
 
     # Create connection
     port = 443 if io.is_alpn_available() else 8883
-    print("Connecting to {} on port {}...".format(args.endpoint, port))
+
+    print("Connecting to {} on port {} with client ID '{}'...".format(
+        args.endpoint, port, args.client_id))
+
     mqtt_connection = mqtt.Connection(
         client=mqtt_client,
-        client_id='samples_client_id')
+        client_id=args.client_id)
     mqtt_connection.connect(
         host_name = args.endpoint,
         port = port,
@@ -152,6 +156,9 @@ if __name__ == '__main__':
 
     # Wait for all messages to be received.
     # This waits forever if count was set to 0.
+    if args.count != 0 and not received_all_event.is_set():
+        print("Waiting for all messages to be received...")
+
     received_all_event.wait()
     print("{} message(s) received.".format(received_count))
 

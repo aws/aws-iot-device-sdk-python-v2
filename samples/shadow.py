@@ -47,6 +47,7 @@ parser.add_argument('--key', required=True, help="File path to your private key 
 parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. " +
                                       "Necessary if MQTT server uses a certificate that's not already in " +
                                       "your trust store")
+parser.add_argument('--client-id', default='samples-client-id', help="Client ID for MQTT connection.")
 parser.add_argument('--thing-name', required=True, help="The name assigned to your IoT Thing")
 parser.add_argument('--shadow-property', default="color", help="Name of property in shadow to keep in sync")
 
@@ -244,7 +245,7 @@ if __name__ == '__main__':
     print("Connecting to {} on port {}...".format(args.endpoint, port))
     mqtt_connection = mqtt.Connection(
             client=mqtt_client,
-            client_id='samples_client_id')
+            client_id=args.client_id)
     mqtt_connection.connect(
             host_name = args.endpoint,
             port = port,
