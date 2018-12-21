@@ -22,7 +22,7 @@ is provided by code that been generated from a model of the service.
 
 ## Build from source
 ```
-git clone https://github.com/awslabs/aws-crt-python.git
+git clone https://github.com/awslabs/aws-crt-python.git --recursive
 git clone https://github.com/awslabs/aws-iot-device-sdk-python-v2.git
 pip install ./aws-crt-python
 pip install ./aws-iot-device-sdk-python-v2
@@ -47,7 +47,7 @@ python pubsub.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <fil
 
 Your Thing's
 [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
-must provide priveleges for this sample to connect, subscribe, publish,
+must provide privileges for this sample to connect, subscribe, publish,
 and receive. The Policy document should look something like this:
 
 <pre>
@@ -113,8 +113,8 @@ python shadow.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <fil
 
 Your Thing's
 [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
-must provide priveleges for this sample to connect, publish, and subscribe.
-The Policy document should look something like this:
+must provide privileges for this sample to connect, subscribe, publish,
+and receive. The Policy document should look something like this:
 
 <pre>
 {
