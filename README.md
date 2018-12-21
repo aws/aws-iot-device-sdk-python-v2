@@ -24,7 +24,8 @@ is provided by code that been generated from a model of the service.
 ```
 git clone https://github.com/awslabs/aws-crt-python.git
 git clone https://github.com/awslabs/aws-iot-device-sdk-python-v2.git
-pip install --no-index --find-links=aws-crt-python --find-links=aws-iot-device-sdk-python-v2 awsiot
+pip install ./aws-crt-python
+pip install ./aws-iot-device-sdk-python-v2
 ```
 
 # Samples
