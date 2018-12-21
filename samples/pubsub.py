@@ -99,20 +99,22 @@ if __name__ == '__main__':
     tls_context = io.ClientTlsContext(tls_options)
 
     mqtt_client = mqtt.Client(client_bootstrap, tls_context)
-    mqtt_connection = mqtt.Connection(mqtt_client, 'samples_client_id')
 
-    # Connect
+    # Create connection
     port = 443 if io.is_alpn_available() else 8883
     print("Connecting to {} on port {}...".format(args.endpoint, port))
+    mqtt_connection = mqtt.Connection(
+        client=mqtt_client,
+        client_id='samples_client_id')
     mqtt_connection.connect(
-            host_name = args.endpoint,
-            port = port,
-            on_connect=on_connected,
-            on_disconnect=on_disconnected,
-            use_websocket=False,
-            alpn=None,
-            clean_session=True,
-            keep_alive=6000)
+        host_name = args.endpoint,
+        port = port,
+        on_connect=on_connected,
+        on_disconnect=on_disconnected,
+        use_websocket=False,
+        alpn=None,
+        clean_session=True,
+        keep_alive=6000)
 
     connected_event.wait()
     connected_code = connected_results['return_code']
