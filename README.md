@@ -2,6 +2,13 @@
 
 Next generation AWS IoT Client SDK for Python.
 
+This project is in **DEVELOPER PREVIEW** while we gather feedback on
+interfaces and use cases. Please file issues and feature requests.
+Expect breaking API changes as we incorporate feedback.
+Until this project is promoted to General Availability, we advise you use the
+[previous SDK](https://github.com/aws/aws-iot-device-sdk-python)
+for a stable development environment.
+
 This SDK is built on the AWS Common Runtime, a collection of libraries
 ([1](https://github.com/awslabs/aws-c-common),
 [2](https://github.com/awslabs/aws-c-io),
