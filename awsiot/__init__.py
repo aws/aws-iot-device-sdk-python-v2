@@ -54,7 +54,11 @@ class MqttServiceClient(object):
             def on_puback(packet_id):
                 future.set_result(None)
 
-            payload_str = json.dumps(payload) if payload else ""
+            if payload is None:
+                payload_str = ""
+            else:
+                payload_str = json.dumps(payload)
+
             self.mqtt_connection.publish(
                 topic=topic,
                 payload=payload_str,

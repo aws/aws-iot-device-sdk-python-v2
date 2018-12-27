@@ -17,7 +17,6 @@ import argparse
 from aws_crt import io, mqtt
 from awsiot import iotshadow
 from concurrent import futures
-import sys
 import threading
 
 # - Overview -
