@@ -204,7 +204,7 @@ def job_thread_fn(job_id, job_document):
         request = iotjobs.UpdateJobExecutionRequest(
             thing_name=args.thing_name,
             job_id=job_id,
-            status='SUCCEEDED')
+            status=iotjobs.JobStatus.SUCCEEDED)
         publish_future = jobs_client.publish_update(request)
         publish_future.add_done_callback(on_publish_update)
 

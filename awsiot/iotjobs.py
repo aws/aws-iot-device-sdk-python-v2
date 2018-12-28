@@ -592,6 +592,16 @@ class JobExecutionsChangedJobs(object):
             new.job_execution_state = [JobExecutionSummary.from_payload(i) for i in val]
         return new
 
+class JobStatus:
+    CANCELED = 'CANCELED'
+    FAILED = 'FAILED'
+    QUEUED = 'QUEUED'
+    IN_PROGRESS = 'IN_PROGRESS'
+    SUCCEEDED = 'SUCCEEDED'
+    TIMED_OUT = 'TIMED_OUT'
+    REJECTED = 'REJECTED'
+    REMOVED = 'REMOVED'
+
 class NextJobExecutionChangedEvent(object):
     def __init__(self, execution=None, timestamp=None):
         # type: (typing.Optional[JobExecutionData], typing.Optional[datetime.datetime]) -> None
@@ -644,6 +654,17 @@ class RejectedError(object):
         if val:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
+
+class RejectedErrorCode:
+    INTERNAL_ERROR = 'InternalError'
+    INVALID_JSON = 'InvalidJson'
+    INVALID_REQUEST = 'InvalidRequest'
+    INVALID_STATE_TRANSITION = 'InvalidStateTransition'
+    RESOURCE_NOT_FOUND = 'ResourceNotFound'
+    VERSION_MISMATCH = 'VersionMismatch'
+    INVALID_TOPIC = 'InvalidTopic'
+    REQUEST_THROTTLED = 'RequestThrottled'
+    TERMINAL_STATE_REACHED = 'TerminalStateReached'
 
 class StartNextJobExecutionResponse(object):
     def __init__(self, client_token=None, execution=None, timestamp=None):
