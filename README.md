@@ -38,7 +38,9 @@ pip install ./aws-iot-device-sdk-python-v2
 # Samples
 
 ## pubsub
-This sample uses the Message Broker for AWS IoT to send and receive messages
+This sample uses the
+[Message Broker](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html)
+for AWS IoT to send and receive messages
 through an MQTT connection. On startup, the device connects to the server,
 subscribes to a topic, and begins publishing messages to that topic.
 The device should receive those same messages back from the message broker,
@@ -55,8 +57,9 @@ python pubsub.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <fil
 Your Thing's
 [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
 must provide privileges for this sample to connect, subscribe, publish,
-and receive. The Policy document should look something like this:
-
+and receive.
+<details>
+<summary>(see sample policy)</summary>
 <pre>
 {
   "Version": "2012-10-17",
@@ -92,10 +95,13 @@ and receive. The Policy document should look something like this:
   ]
 }
 </pre>
+</details>
 
 ## shadow
 
-This sample uses the AWS IoT Device Shadow Service to keep a property in
+This sample uses the AWS IoT
+[Device Shadow](https://docs.aws.amazon.com/iot/latest/developerguide/iot-device-shadows.html)
+Service to keep a property in
 sync between device and server. Imagine a light whose color may be changed
 through an app, or set by a local user.
 
@@ -121,8 +127,10 @@ python shadow.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <fil
 Your Thing's
 [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
 must provide privileges for this sample to connect, subscribe, publish,
-and receive. The Policy document should look something like this:
+and receive.
 
+<details>
+<summary>(see sample policy)</summary>
 <pre>
 {
   "Version": "2012-10-17",
@@ -171,6 +179,93 @@ and receive. The Policy document should look something like this:
   ]
 }
 </pre>
+</details>
+
+## jobs
+
+This sample uses the AWS IoT
+[Jobs](https://docs.aws.amazon.com/iot/latest/developerguide/iot-jobs.html)
+Service to receive and execute operations
+on the device. Imagine periodic software updates that must be sent to and
+executed on devices in the wild.
+
+This sample requires you to create jobs for your device to execute. See
+[instructions here](https://docs.aws.amazon.com/iot/latest/developerguide/create-manage-jobs.html).
+
+On startup, the sample tries to start the next pending job execution.
+If such a job exists, the sample emulates "doing work" by spawning a thread
+that sleeps for several seconds before marking the job as SUCCEEDED. When no
+pending job executions exist, the sample sits in an idle state.
+
+The sample also subscribes to receive "Next Job Execution Changed" events.
+If the sample is idle, this event wakes it to start the job. If the sample is
+already working on a job, it remembers to try for another when it's done.
+This event is sent by the service when the current job completes, so the
+sample will be continually prompted to try another job until none remain.
+
+Source: `samples/jobs.py`
+
+Run the sample like this:
+```
+python jobs.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
+```
+
+Your Thing's
+[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
+must provide privileges for this sample to connect, subscribe, publish,
+and receive.
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Publish"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/start-next",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/*/update"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Receive"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/notify-next",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/start-next/accepted",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/start-next/rejected",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/*/update/accepted",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/*/update/rejected"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Subscribe"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/notify-next",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/start-next/accepted",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/start-next/rejected",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/*/update/accepted",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/*/update/rejected"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "iot:Connect",
+      "Resource": "arn:aws:iot:<b>region</b>:<b>account</b>:client/samples-client-id"
+    }
+  ]
+}
+</pre>
+</details>
+
 # License
 
 This library is licensed under the Apache 2.0 License.

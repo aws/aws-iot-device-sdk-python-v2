@@ -262,14 +262,14 @@ class IotJobsClient(awsiot.MqttServiceClient):
             payload_to_class_fn=NextJobExecutionChangedEvent.from_payload)
 
     def subscribe_to_start_next_pending_accepted(self, request, on_accepted):
-        # type: (StartNextPendingJobExecutionSubscriptionRequest, typing.Callable[[StartDescribeJobExecutionResponse], None]) -> concurrent.futures.Future
+        # type: (StartNextPendingJobExecutionSubscriptionRequest, typing.Callable[[StartNextJobExecutionResponse], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution
 
         Parameters:
         request - `StartNextPendingJobExecutionSubscriptionRequest` instance.
         on_accepted - Callback to invoke each time the on_accepted event is received.
-                The callback should take 1 argument of type `StartDescribeJobExecutionResponse`.
+                The callback should take 1 argument of type `StartNextJobExecutionResponse`.
                 The callback is not expected to return anything.
 
         Returns a concurrent.futures.Future, whose result will be None if the
@@ -285,7 +285,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
         return self._subscribe_operation(
             topic='$aws/things/{0.thing_name}/jobs/start-next/accepted'.format(request),
             callback=on_accepted,
-            payload_to_class_fn=StartDescribeJobExecutionResponse.from_payload)
+            payload_to_class_fn=StartNextJobExecutionResponse.from_payload)
 
     def subscribe_to_start_next_pending_rejected(self, request, on_rejected):
         # type: (StartNextPendingJobExecutionSubscriptionRequest, typing.Callable[[RejectedError], None]) -> concurrent.futures.Future
@@ -645,7 +645,7 @@ class RejectedError(object):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-class StartDescribeJobExecutionResponse(object):
+class StartNextJobExecutionResponse(object):
     def __init__(self, client_token=None, execution=None, timestamp=None):
         # type: (typing.Optional[str], typing.Optional[JobExecutionData], typing.Optional[datetime.datetime]) -> None
         self.client_token = client_token # type: typing.Optional[str]
@@ -654,7 +654,7 @@ class StartDescribeJobExecutionResponse(object):
 
     @classmethod
     def from_payload(cls, payload):
-        # type: (typing.Dict[str, typing.Any]) -> StartDescribeJobExecutionResponse
+        # type: (typing.Dict[str, typing.Any]) -> StartNextJobExecutionResponse
         new = cls()
         val = payload.get('clientToken')
         if val:
