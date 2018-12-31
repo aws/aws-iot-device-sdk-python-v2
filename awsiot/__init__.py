@@ -118,3 +118,21 @@ class MqttServiceClient(object):
             future.set_exception(e)
 
         return future
+
+class ModeledClass(object):
+    """
+    Base for input/output classes generated from an AWS service model.
+    """
+
+    __slots__ = ()
+
+    def __repr__(self):
+        properties = []
+        for slot in self.__slots__:
+            value = getattr(self, slot, None)
+            properties.append("{}={}".format(slot, repr(value)))
+
+        return '{}.{}({})'.format(
+            self.__class__.__module__,
+            self.__class__.__name__,
+            ', '.join(properties))
