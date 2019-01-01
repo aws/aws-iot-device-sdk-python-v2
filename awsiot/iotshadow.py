@@ -286,12 +286,16 @@ class IotShadowClient(awsiot.MqttServiceClient):
             callback=on_rejected,
             payload_to_class_fn=ErrorResponse.from_payload)
 
-class DeleteShadowRequest(object):
+class DeleteShadowRequest(awsiot.ModeledClass):
+    __slots__ = ['thing_name']
+
     def __init__(self, thing_name=None):
         # type: (typing.Optional[str]) -> None
         self.thing_name = thing_name # type: typing.Optional[str]
 
-class DeleteShadowResponse(object):
+class DeleteShadowResponse(awsiot.ModeledClass):
+    __slots__ = ['timestamp', 'version']
+
     def __init__(self, timestamp=None, version=None):
         # type: (typing.Optional[datetime.datetime], typing.Optional[int]) -> None
         self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
@@ -302,19 +306,23 @@ class DeleteShadowResponse(object):
         # type: (typing.Dict[str, typing.Any]) -> DeleteShadowResponse
         new = cls()
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         val = payload.get('version')
-        if val:
+        if val is not None:
             new.version = val
         return new
 
-class DeleteShadowSubscriptionRequest(object):
+class DeleteShadowSubscriptionRequest(awsiot.ModeledClass):
+    __slots__ = ['thing_name']
+
     def __init__(self, thing_name=None):
         # type: (typing.Optional[str]) -> None
         self.thing_name = thing_name # type: typing.Optional[str]
 
-class ErrorResponse(object):
+class ErrorResponse(awsiot.ModeledClass):
+    __slots__ = ['client_token', 'code', 'message', 'timestamp']
+
     def __init__(self, client_token=None, code=None, message=None, timestamp=None):
         # type: (typing.Optional[str], typing.Optional[int], typing.Optional[str], typing.Optional[datetime.datetime]) -> None
         self.client_token = client_token # type: typing.Optional[str]
@@ -327,25 +335,29 @@ class ErrorResponse(object):
         # type: (typing.Dict[str, typing.Any]) -> ErrorResponse
         new = cls()
         val = payload.get('clientToken')
-        if val:
+        if val is not None:
             new.client_token = val
         val = payload.get('code')
-        if val:
+        if val is not None:
             new.code = val
         val = payload.get('message')
-        if val:
+        if val is not None:
             new.message = val
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-class GetShadowRequest(object):
+class GetShadowRequest(awsiot.ModeledClass):
+    __slots__ = ['thing_name']
+
     def __init__(self, thing_name=None):
         # type: (typing.Optional[str]) -> None
         self.thing_name = thing_name # type: typing.Optional[str]
 
-class GetShadowResponse(object):
+class GetShadowResponse(awsiot.ModeledClass):
+    __slots__ = ['metadata', 'state', 'timestamp', 'version']
+
     def __init__(self, metadata=None, state=None, timestamp=None, version=None):
         # type: (typing.Optional[ShadowMetadata], typing.Optional[ShadowStateWithDelta], typing.Optional[datetime.datetime], typing.Optional[int]) -> None
         self.metadata = metadata # type: typing.Optional[ShadowMetadata]
@@ -358,25 +370,29 @@ class GetShadowResponse(object):
         # type: (typing.Dict[str, typing.Any]) -> GetShadowResponse
         new = cls()
         val = payload.get('metadata')
-        if val:
+        if val is not None:
             new.metadata = ShadowMetadata.from_payload(val)
         val = payload.get('state')
-        if val:
+        if val is not None:
             new.state = ShadowStateWithDelta.from_payload(val)
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         val = payload.get('version')
-        if val:
+        if val is not None:
             new.version = val
         return new
 
-class GetShadowSubscriptionRequest(object):
+class GetShadowSubscriptionRequest(awsiot.ModeledClass):
+    __slots__ = ['thing_name']
+
     def __init__(self, thing_name=None):
         # type: (typing.Optional[str]) -> None
         self.thing_name = thing_name # type: typing.Optional[str]
 
-class ShadowDeltaEvent(object):
+class ShadowDeltaEvent(awsiot.ModeledClass):
+    __slots__ = ['metadata', 'state', 'timestamp', 'version']
+
     def __init__(self, metadata=None, state=None, timestamp=None, version=None):
         # type: (typing.Optional[typing.Dict[str, typing.Any]], typing.Optional[typing.Dict[str, typing.Any]], typing.Optional[datetime.datetime], typing.Optional[int]) -> None
         self.metadata = metadata # type: typing.Optional[typing.Dict[str, typing.Any]]
@@ -389,25 +405,29 @@ class ShadowDeltaEvent(object):
         # type: (typing.Dict[str, typing.Any]) -> ShadowDeltaEvent
         new = cls()
         val = payload.get('metadata')
-        if val:
+        if val is not None:
             new.metadata = val
         val = payload.get('state')
-        if val:
+        if val is not None:
             new.state = val
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         val = payload.get('version')
-        if val:
+        if val is not None:
             new.version = val
         return new
 
-class ShadowDeltaEventsSubscriptionRequest(object):
+class ShadowDeltaEventsSubscriptionRequest(awsiot.ModeledClass):
+    __slots__ = ['thing_name']
+
     def __init__(self, thing_name=None):
         # type: (typing.Optional[str]) -> None
         self.thing_name = thing_name # type: typing.Optional[str]
 
-class ShadowMetadata(object):
+class ShadowMetadata(awsiot.ModeledClass):
+    __slots__ = ['desired', 'reported']
+
     def __init__(self, desired=None, reported=None):
         # type: (typing.Optional[typing.Dict[str, typing.Any]], typing.Optional[typing.Dict[str, typing.Any]]) -> None
         self.desired = desired # type: typing.Optional[typing.Dict[str, typing.Any]]
@@ -418,14 +438,16 @@ class ShadowMetadata(object):
         # type: (typing.Dict[str, typing.Any]) -> ShadowMetadata
         new = cls()
         val = payload.get('desired')
-        if val:
+        if val is not None:
             new.desired = val
         val = payload.get('reported')
-        if val:
+        if val is not None:
             new.reported = val
         return new
 
-class ShadowState(object):
+class ShadowState(awsiot.ModeledClass):
+    __slots__ = ['desired', 'reported']
+
     def __init__(self, desired=None, reported=None):
         # type: (typing.Optional[typing.Dict[str, typing.Any]], typing.Optional[typing.Dict[str, typing.Any]]) -> None
         self.desired = desired # type: typing.Optional[typing.Dict[str, typing.Any]]
@@ -436,23 +458,25 @@ class ShadowState(object):
         # type: (typing.Dict[str, typing.Any]) -> ShadowState
         new = cls()
         val = payload.get('desired')
-        if val:
+        if val is not None:
             new.desired = val
         val = payload.get('reported')
-        if val:
+        if val is not None:
             new.reported = val
         return new
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-        if self.desired:
+        if self.desired is not None:
             payload['desired'] = self.desired
-        if self.reported:
+        if self.reported is not None:
             payload['reported'] = self.reported
         return payload
 
-class ShadowStateWithDelta(object):
+class ShadowStateWithDelta(awsiot.ModeledClass):
+    __slots__ = ['delta', 'desired', 'reported']
+
     def __init__(self, delta=None, desired=None, reported=None):
         # type: (typing.Optional[typing.Dict[str, typing.Any]], typing.Optional[typing.Dict[str, typing.Any]], typing.Optional[typing.Dict[str, typing.Any]]) -> None
         self.delta = delta # type: typing.Optional[typing.Dict[str, typing.Any]]
@@ -464,17 +488,19 @@ class ShadowStateWithDelta(object):
         # type: (typing.Dict[str, typing.Any]) -> ShadowStateWithDelta
         new = cls()
         val = payload.get('delta')
-        if val:
+        if val is not None:
             new.delta = val
         val = payload.get('desired')
-        if val:
+        if val is not None:
             new.desired = val
         val = payload.get('reported')
-        if val:
+        if val is not None:
             new.reported = val
         return new
 
-class ShadowUpdateEvent(object):
+class ShadowUpdateEvent(awsiot.ModeledClass):
+    __slots__ = ['current', 'previous', 'timestamp']
+
     def __init__(self, current=None, previous=None, timestamp=None):
         # type: (typing.Optional[ShadowUpdateSnapshot], typing.Optional[ShadowUpdateSnapshot], typing.Optional[datetime.datetime]) -> None
         self.current = current # type: typing.Optional[ShadowUpdateSnapshot]
@@ -486,22 +512,26 @@ class ShadowUpdateEvent(object):
         # type: (typing.Dict[str, typing.Any]) -> ShadowUpdateEvent
         new = cls()
         val = payload.get('current')
-        if val:
+        if val is not None:
             new.current = ShadowUpdateSnapshot.from_payload(val)
         val = payload.get('previous')
-        if val:
+        if val is not None:
             new.previous = ShadowUpdateSnapshot.from_payload(val)
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-class ShadowUpdateEventsSubscriptionRequest(object):
+class ShadowUpdateEventsSubscriptionRequest(awsiot.ModeledClass):
+    __slots__ = ['thing_name']
+
     def __init__(self, thing_name=None):
         # type: (typing.Optional[str]) -> None
         self.thing_name = thing_name # type: typing.Optional[str]
 
-class ShadowUpdateSnapshot(object):
+class ShadowUpdateSnapshot(awsiot.ModeledClass):
+    __slots__ = ['metadata', 'state', 'version']
+
     def __init__(self, metadata=None, state=None, version=None):
         # type: (typing.Optional[ShadowMetadata], typing.Optional[ShadowState], typing.Optional[int]) -> None
         self.metadata = metadata # type: typing.Optional[ShadowMetadata]
@@ -513,17 +543,19 @@ class ShadowUpdateSnapshot(object):
         # type: (typing.Dict[str, typing.Any]) -> ShadowUpdateSnapshot
         new = cls()
         val = payload.get('metadata')
-        if val:
+        if val is not None:
             new.metadata = ShadowMetadata.from_payload(val)
         val = payload.get('state')
-        if val:
+        if val is not None:
             new.state = ShadowState.from_payload(val)
         val = payload.get('version')
-        if val:
+        if val is not None:
             new.version = val
         return new
 
-class UpdateShadowRequest(object):
+class UpdateShadowRequest(awsiot.ModeledClass):
+    __slots__ = ['client_token', 'state', 'thing_name', 'version']
+
     def __init__(self, client_token=None, state=None, thing_name=None, version=None):
         # type: (typing.Optional[str], typing.Optional[ShadowState], typing.Optional[str], typing.Optional[int]) -> None
         self.client_token = client_token # type: typing.Optional[str]
@@ -534,15 +566,17 @@ class UpdateShadowRequest(object):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-        if self.client_token:
+        if self.client_token is not None:
             payload['clientToken'] = self.client_token
-        if self.state:
+        if self.state is not None:
             payload['state'] = self.state.to_payload()
-        if self.version:
+        if self.version is not None:
             payload['version'] = self.version
         return payload
 
-class UpdateShadowResponse(object):
+class UpdateShadowResponse(awsiot.ModeledClass):
+    __slots__ = ['client_token', 'metadata', 'state', 'timestamp', 'version']
+
     def __init__(self, client_token=None, metadata=None, state=None, timestamp=None, version=None):
         # type: (typing.Optional[str], typing.Optional[ShadowMetadata], typing.Optional[ShadowState], typing.Optional[datetime.datetime], typing.Optional[int]) -> None
         self.client_token = client_token # type: typing.Optional[str]
@@ -556,23 +590,25 @@ class UpdateShadowResponse(object):
         # type: (typing.Dict[str, typing.Any]) -> UpdateShadowResponse
         new = cls()
         val = payload.get('clientToken')
-        if val:
+        if val is not None:
             new.client_token = val
         val = payload.get('metadata')
-        if val:
+        if val is not None:
             new.metadata = ShadowMetadata.from_payload(val)
         val = payload.get('state')
-        if val:
+        if val is not None:
             new.state = ShadowState.from_payload(val)
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         val = payload.get('version')
-        if val:
+        if val is not None:
             new.version = val
         return new
 
-class UpdateShadowSubscriptionRequest(object):
+class UpdateShadowSubscriptionRequest(awsiot.ModeledClass):
+    __slots__ = ['thing_name']
+
     def __init__(self, thing_name=None):
         # type: (typing.Optional[str]) -> None
         self.thing_name = thing_name # type: typing.Optional[str]

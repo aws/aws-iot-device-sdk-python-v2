@@ -369,7 +369,9 @@ class IotJobsClient(awsiot.MqttServiceClient):
             callback=on_rejected,
             payload_to_class_fn=RejectedError.from_payload)
 
-class DescribeJobExecutionRequest(object):
+class DescribeJobExecutionRequest(awsiot.ModeledClass):
+    __slots__ = ['client_token', 'execution_number', 'include_job_document', 'job_id', 'thing_name']
+
     def __init__(self, client_token=None, execution_number=None, include_job_document=None, job_id=None, thing_name=None):
         # type: (typing.Optional[str], typing.Optional[int], typing.Optional[bool], typing.Optional[str], typing.Optional[str]) -> None
         self.client_token = client_token # type: typing.Optional[str]
@@ -381,15 +383,17 @@ class DescribeJobExecutionRequest(object):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-        if self.client_token:
+        if self.client_token is not None:
             payload['clientToken'] = self.client_token
-        if self.execution_number:
+        if self.execution_number is not None:
             payload['executionNumber'] = self.execution_number
-        if self.include_job_document:
+        if self.include_job_document is not None:
             payload['includeJobDocument'] = self.include_job_document
         return payload
 
-class DescribeJobExecutionResponse(object):
+class DescribeJobExecutionResponse(awsiot.ModeledClass):
+    __slots__ = ['client_token', 'execution', 'timestamp']
+
     def __init__(self, client_token=None, execution=None, timestamp=None):
         # type: (typing.Optional[str], typing.Optional[JobExecutionData], typing.Optional[datetime.datetime]) -> None
         self.client_token = client_token # type: typing.Optional[str]
@@ -401,23 +405,27 @@ class DescribeJobExecutionResponse(object):
         # type: (typing.Dict[str, typing.Any]) -> DescribeJobExecutionResponse
         new = cls()
         val = payload.get('clientToken')
-        if val:
+        if val is not None:
             new.client_token = val
         val = payload.get('execution')
-        if val:
+        if val is not None:
             new.execution = JobExecutionData.from_payload(val)
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-class DescribeJobExecutionSubscriptionRequest(object):
+class DescribeJobExecutionSubscriptionRequest(awsiot.ModeledClass):
+    __slots__ = ['job_id', 'thing_name']
+
     def __init__(self, job_id=None, thing_name=None):
         # type: (typing.Optional[str], typing.Optional[str]) -> None
         self.job_id = job_id # type: typing.Optional[str]
         self.thing_name = thing_name # type: typing.Optional[str]
 
-class GetPendingJobExecutionsRequest(object):
+class GetPendingJobExecutionsRequest(awsiot.ModeledClass):
+    __slots__ = ['client_token', 'thing_name']
+
     def __init__(self, client_token=None, thing_name=None):
         # type: (typing.Optional[str], typing.Optional[str]) -> None
         self.client_token = client_token # type: typing.Optional[str]
@@ -426,11 +434,13 @@ class GetPendingJobExecutionsRequest(object):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-        if self.client_token:
+        if self.client_token is not None:
             payload['clientToken'] = self.client_token
         return payload
 
-class GetPendingJobExecutionsResponse(object):
+class GetPendingJobExecutionsResponse(awsiot.ModeledClass):
+    __slots__ = ['client_token', 'in_progress_jobs', 'queued_jobs', 'timestamp']
+
     def __init__(self, client_token=None, in_progress_jobs=None, queued_jobs=None, timestamp=None):
         # type: (typing.Optional[str], typing.Optional[typing.List[JobExecutionSummary]], typing.Optional[typing.List[JobExecutionSummary]], typing.Optional[datetime.datetime]) -> None
         self.client_token = client_token # type: typing.Optional[str]
@@ -443,34 +453,39 @@ class GetPendingJobExecutionsResponse(object):
         # type: (typing.Dict[str, typing.Any]) -> GetPendingJobExecutionsResponse
         new = cls()
         val = payload.get('clientToken')
-        if val:
+        if val is not None:
             new.client_token = val
         val = payload.get('inProgressJobs')
-        if val:
+        if val is not None:
             new.in_progress_jobs = [JobExecutionSummary.from_payload(i) for i in val]
         val = payload.get('queuedJobs')
-        if val:
+        if val is not None:
             new.queued_jobs = [JobExecutionSummary.from_payload(i) for i in val]
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-class GetPendingJobExecutionsSubscriptionRequest(object):
+class GetPendingJobExecutionsSubscriptionRequest(awsiot.ModeledClass):
+    __slots__ = ['thing_name']
+
     def __init__(self, thing_name=None):
         # type: (typing.Optional[str]) -> None
         self.thing_name = thing_name # type: typing.Optional[str]
 
-class JobExecutionData(object):
-    def __init__(self, execution_number=None, job_document=None, job_id=None, last_updated_at=None, queued_at=None, started_at=None, status=None, thing_name=None, version_number=None):
-        # type: (typing.Optional[int], typing.Optional[str], typing.Optional[str], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[str], typing.Optional[str], typing.Optional[int]) -> None
+class JobExecutionData(awsiot.ModeledClass):
+    __slots__ = ['execution_number', 'job_document', 'job_id', 'last_updated_at', 'queued_at', 'started_at', 'status', 'status_details', 'thing_name', 'version_number']
+
+    def __init__(self, execution_number=None, job_document=None, job_id=None, last_updated_at=None, queued_at=None, started_at=None, status=None, status_details=None, thing_name=None, version_number=None):
+        # type: (typing.Optional[int], typing.Optional[typing.Dict[str, typing.Any]], typing.Optional[str], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[str], typing.Optional[int]) -> None
         self.execution_number = execution_number # type: typing.Optional[int]
-        self.job_document = job_document # type: typing.Optional[str]
+        self.job_document = job_document # type: typing.Optional[typing.Dict[str, typing.Any]]
         self.job_id = job_id # type: typing.Optional[str]
         self.last_updated_at = last_updated_at # type: typing.Optional[datetime.datetime]
         self.queued_at = queued_at # type: typing.Optional[datetime.datetime]
         self.started_at = started_at # type: typing.Optional[datetime.datetime]
         self.status = status # type: typing.Optional[str]
+        self.status_details = status_details # type: typing.Optional[typing.Dict[str, str]]
         self.thing_name = thing_name # type: typing.Optional[str]
         self.version_number = version_number # type: typing.Optional[int]
 
@@ -479,35 +494,40 @@ class JobExecutionData(object):
         # type: (typing.Dict[str, typing.Any]) -> JobExecutionData
         new = cls()
         val = payload.get('executionNumber')
-        if val:
+        if val is not None:
             new.execution_number = val
         val = payload.get('jobDocument')
-        if val:
+        if val is not None:
             new.job_document = val
         val = payload.get('jobId')
-        if val:
+        if val is not None:
             new.job_id = val
         val = payload.get('lastUpdatedAt')
-        if val:
+        if val is not None:
             new.last_updated_at = datetime.datetime.fromtimestamp(val)
         val = payload.get('queuedAt')
-        if val:
+        if val is not None:
             new.queued_at = datetime.datetime.fromtimestamp(val)
         val = payload.get('startedAt')
-        if val:
+        if val is not None:
             new.started_at = datetime.datetime.fromtimestamp(val)
         val = payload.get('status')
-        if val:
+        if val is not None:
             new.status = val
+        val = payload.get('statusDetails')
+        if val is not None:
+            new.status_details = val
         val = payload.get('thingName')
-        if val:
+        if val is not None:
             new.thing_name = val
         val = payload.get('versionNumber')
-        if val:
+        if val is not None:
             new.version_number = val
         return new
 
-class JobExecutionState(object):
+class JobExecutionState(awsiot.ModeledClass):
+    __slots__ = ['status', 'status_details', 'version_number']
+
     def __init__(self, status=None, status_details=None, version_number=None):
         # type: (typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[int]) -> None
         self.status = status # type: typing.Optional[str]
@@ -519,46 +539,58 @@ class JobExecutionState(object):
         # type: (typing.Dict[str, typing.Any]) -> JobExecutionState
         new = cls()
         val = payload.get('status')
-        if val:
+        if val is not None:
             new.status = val
         val = payload.get('statusDetails')
-        if val:
+        if val is not None:
             new.status_details = val
         val = payload.get('versionNumber')
-        if val:
+        if val is not None:
             new.version_number = val
         return new
 
-class JobExecutionSummary(object):
-    def __init__(self, execution_number=None, last_updated_at=None, queued_at=None, started_at=None):
-        # type: (typing.Optional[int], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime]) -> None
+class JobExecutionSummary(awsiot.ModeledClass):
+    __slots__ = ['execution_number', 'job_id', 'last_updated_at', 'queued_at', 'started_at', 'version_number']
+
+    def __init__(self, execution_number=None, job_id=None, last_updated_at=None, queued_at=None, started_at=None, version_number=None):
+        # type: (typing.Optional[int], typing.Optional[str], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[int]) -> None
         self.execution_number = execution_number # type: typing.Optional[int]
+        self.job_id = job_id # type: typing.Optional[str]
         self.last_updated_at = last_updated_at # type: typing.Optional[datetime.datetime]
         self.queued_at = queued_at # type: typing.Optional[datetime.datetime]
         self.started_at = started_at # type: typing.Optional[datetime.datetime]
+        self.version_number = version_number # type: typing.Optional[int]
 
     @classmethod
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> JobExecutionSummary
         new = cls()
         val = payload.get('executionNumber')
-        if val:
+        if val is not None:
             new.execution_number = val
+        val = payload.get('jobId')
+        if val is not None:
+            new.job_id = val
         val = payload.get('lastUpdatedAt')
-        if val:
+        if val is not None:
             new.last_updated_at = datetime.datetime.fromtimestamp(val)
         val = payload.get('queuedAt')
-        if val:
+        if val is not None:
             new.queued_at = datetime.datetime.fromtimestamp(val)
         val = payload.get('startedAt')
-        if val:
+        if val is not None:
             new.started_at = datetime.datetime.fromtimestamp(val)
+        val = payload.get('versionNumber')
+        if val is not None:
+            new.version_number = val
         return new
 
-class JobExecutionsChangedEvent(object):
+class JobExecutionsChangedEvent(awsiot.ModeledClass):
+    __slots__ = ['jobs', 'timestamp']
+
     def __init__(self, jobs=None, timestamp=None):
-        # type: (typing.Optional[JobExecutionsChangedJobs], typing.Optional[datetime.datetime]) -> None
-        self.jobs = jobs # type: typing.Optional[JobExecutionsChangedJobs]
+        # type: (typing.Optional[typing.Dict[str, typing.List[JobExecutionSummary]]], typing.Optional[datetime.datetime]) -> None
+        self.jobs = jobs # type: typing.Optional[typing.Dict[str, typing.List[JobExecutionSummary]]]
         self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
 
     @classmethod
@@ -566,31 +598,19 @@ class JobExecutionsChangedEvent(object):
         # type: (typing.Dict[str, typing.Any]) -> JobExecutionsChangedEvent
         new = cls()
         val = payload.get('jobs')
-        if val:
-            new.jobs = JobExecutionsChangedJobs.from_payload(val)
+        if val is not None:
+            new.jobs = {k: [JobExecutionSummary.from_payload(i) for i in v] for k,v in val.items()}
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-class JobExecutionsChangedEventsSubscriptionRequest(object):
+class JobExecutionsChangedEventsSubscriptionRequest(awsiot.ModeledClass):
+    __slots__ = ['thing_name']
+
     def __init__(self, thing_name=None):
         # type: (typing.Optional[str]) -> None
         self.thing_name = thing_name # type: typing.Optional[str]
-
-class JobExecutionsChangedJobs(object):
-    def __init__(self, job_execution_state=None):
-        # type: (typing.Optional[typing.List[JobExecutionSummary]]) -> None
-        self.job_execution_state = job_execution_state # type: typing.Optional[typing.List[JobExecutionSummary]]
-
-    @classmethod
-    def from_payload(cls, payload):
-        # type: (typing.Dict[str, typing.Any]) -> JobExecutionsChangedJobs
-        new = cls()
-        val = payload.get('JobExecutionState')
-        if val:
-            new.job_execution_state = [JobExecutionSummary.from_payload(i) for i in val]
-        return new
 
 class JobStatus:
     CANCELED = 'CANCELED'
@@ -602,7 +622,9 @@ class JobStatus:
     REJECTED = 'REJECTED'
     REMOVED = 'REMOVED'
 
-class NextJobExecutionChangedEvent(object):
+class NextJobExecutionChangedEvent(awsiot.ModeledClass):
+    __slots__ = ['execution', 'timestamp']
+
     def __init__(self, execution=None, timestamp=None):
         # type: (typing.Optional[JobExecutionData], typing.Optional[datetime.datetime]) -> None
         self.execution = execution # type: typing.Optional[JobExecutionData]
@@ -613,19 +635,23 @@ class NextJobExecutionChangedEvent(object):
         # type: (typing.Dict[str, typing.Any]) -> NextJobExecutionChangedEvent
         new = cls()
         val = payload.get('execution')
-        if val:
+        if val is not None:
             new.execution = JobExecutionData.from_payload(val)
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-class NextJobExecutionChangedEventsSubscriptionRequest(object):
+class NextJobExecutionChangedEventsSubscriptionRequest(awsiot.ModeledClass):
+    __slots__ = ['thing_name']
+
     def __init__(self, thing_name=None):
         # type: (typing.Optional[str]) -> None
         self.thing_name = thing_name # type: typing.Optional[str]
 
-class RejectedError(object):
+class RejectedError(awsiot.ModeledClass):
+    __slots__ = ['client_token', 'code', 'execution_state', 'message', 'timestamp']
+
     def __init__(self, client_token=None, code=None, execution_state=None, message=None, timestamp=None):
         # type: (typing.Optional[str], typing.Optional[str], typing.Optional[JobExecutionState], typing.Optional[str], typing.Optional[datetime.datetime]) -> None
         self.client_token = client_token # type: typing.Optional[str]
@@ -639,19 +665,19 @@ class RejectedError(object):
         # type: (typing.Dict[str, typing.Any]) -> RejectedError
         new = cls()
         val = payload.get('clientToken')
-        if val:
+        if val is not None:
             new.client_token = val
         val = payload.get('code')
-        if val:
+        if val is not None:
             new.code = val
         val = payload.get('executionState')
-        if val:
+        if val is not None:
             new.execution_state = JobExecutionState.from_payload(val)
         val = payload.get('message')
-        if val:
+        if val is not None:
             new.message = val
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
@@ -666,7 +692,9 @@ class RejectedErrorCode:
     REQUEST_THROTTLED = 'RequestThrottled'
     TERMINAL_STATE_REACHED = 'TerminalStateReached'
 
-class StartNextJobExecutionResponse(object):
+class StartNextJobExecutionResponse(awsiot.ModeledClass):
+    __slots__ = ['client_token', 'execution', 'timestamp']
+
     def __init__(self, client_token=None, execution=None, timestamp=None):
         # type: (typing.Optional[str], typing.Optional[JobExecutionData], typing.Optional[datetime.datetime]) -> None
         self.client_token = client_token # type: typing.Optional[str]
@@ -678,17 +706,19 @@ class StartNextJobExecutionResponse(object):
         # type: (typing.Dict[str, typing.Any]) -> StartNextJobExecutionResponse
         new = cls()
         val = payload.get('clientToken')
-        if val:
+        if val is not None:
             new.client_token = val
         val = payload.get('execution')
-        if val:
+        if val is not None:
             new.execution = JobExecutionData.from_payload(val)
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-class StartNextPendingJobExecutionRequest(object):
+class StartNextPendingJobExecutionRequest(awsiot.ModeledClass):
+    __slots__ = ['client_token', 'status_details', 'step_timeout_in_minutes', 'thing_name']
+
     def __init__(self, client_token=None, status_details=None, step_timeout_in_minutes=None, thing_name=None):
         # type: (typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[int], typing.Optional[str]) -> None
         self.client_token = client_token # type: typing.Optional[str]
@@ -699,20 +729,24 @@ class StartNextPendingJobExecutionRequest(object):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-        if self.client_token:
+        if self.client_token is not None:
             payload['clientToken'] = self.client_token
-        if self.status_details:
+        if self.status_details is not None:
             payload['statusDetails'] = self.status_details
-        if self.step_timeout_in_minutes:
+        if self.step_timeout_in_minutes is not None:
             payload['stepTimeoutInMinutes'] = self.step_timeout_in_minutes
         return payload
 
-class StartNextPendingJobExecutionSubscriptionRequest(object):
+class StartNextPendingJobExecutionSubscriptionRequest(awsiot.ModeledClass):
+    __slots__ = ['thing_name']
+
     def __init__(self, thing_name=None):
         # type: (typing.Optional[str]) -> None
         self.thing_name = thing_name # type: typing.Optional[str]
 
-class UpdateJobExecutionRequest(object):
+class UpdateJobExecutionRequest(awsiot.ModeledClass):
+    __slots__ = ['client_token', 'execution_number', 'expected_version', 'include_job_document', 'include_job_execution_state', 'job_id', 'status', 'status_details', 'thing_name']
+
     def __init__(self, client_token=None, execution_number=None, expected_version=None, include_job_document=None, include_job_execution_state=None, job_id=None, status=None, status_details=None, thing_name=None):
         # type: (typing.Optional[str], typing.Optional[int], typing.Optional[int], typing.Optional[bool], typing.Optional[bool], typing.Optional[str], typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[str]) -> None
         self.client_token = client_token # type: typing.Optional[str]
@@ -728,28 +762,30 @@ class UpdateJobExecutionRequest(object):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-        if self.client_token:
+        if self.client_token is not None:
             payload['clientToken'] = self.client_token
-        if self.execution_number:
+        if self.execution_number is not None:
             payload['executionNumber'] = self.execution_number
-        if self.expected_version:
+        if self.expected_version is not None:
             payload['expectedVersion'] = self.expected_version
-        if self.include_job_document:
+        if self.include_job_document is not None:
             payload['includeJobDocument'] = self.include_job_document
-        if self.include_job_execution_state:
+        if self.include_job_execution_state is not None:
             payload['includeJobExecutionState'] = self.include_job_execution_state
-        if self.status:
+        if self.status is not None:
             payload['status'] = self.status
-        if self.status_details:
+        if self.status_details is not None:
             payload['statusDetails'] = self.status_details
         return payload
 
-class UpdateJobExecutionResponse(object):
+class UpdateJobExecutionResponse(awsiot.ModeledClass):
+    __slots__ = ['client_token', 'execution_state', 'job_document', 'timestamp']
+
     def __init__(self, client_token=None, execution_state=None, job_document=None, timestamp=None):
-        # type: (typing.Optional[str], typing.Optional[JobExecutionState], typing.Optional[str], typing.Optional[datetime.datetime]) -> None
+        # type: (typing.Optional[str], typing.Optional[JobExecutionState], typing.Optional[typing.Dict[str, typing.Any]], typing.Optional[datetime.datetime]) -> None
         self.client_token = client_token # type: typing.Optional[str]
         self.execution_state = execution_state # type: typing.Optional[JobExecutionState]
-        self.job_document = job_document # type: typing.Optional[str]
+        self.job_document = job_document # type: typing.Optional[typing.Dict[str, typing.Any]]
         self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
 
     @classmethod
@@ -757,20 +793,22 @@ class UpdateJobExecutionResponse(object):
         # type: (typing.Dict[str, typing.Any]) -> UpdateJobExecutionResponse
         new = cls()
         val = payload.get('clientToken')
-        if val:
+        if val is not None:
             new.client_token = val
         val = payload.get('executionState')
-        if val:
+        if val is not None:
             new.execution_state = JobExecutionState.from_payload(val)
         val = payload.get('jobDocument')
-        if val:
+        if val is not None:
             new.job_document = val
         val = payload.get('timestamp')
-        if val:
+        if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-class UpdateJobExecutionSubscriptionRequest(object):
+class UpdateJobExecutionSubscriptionRequest(awsiot.ModeledClass):
+    __slots__ = ['job_id', 'thing_name']
+
     def __init__(self, job_id=None, thing_name=None):
         # type: (typing.Optional[str], typing.Optional[str]) -> None
         self.job_id = job_id # type: typing.Optional[str]
