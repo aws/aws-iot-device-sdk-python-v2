@@ -21,7 +21,7 @@ import typing
 
 class IotShadowClient(awsiot.MqttServiceClient):
 
-    def publish_delete(self, request):
+    def publish_delete_shadow(self, request):
         # type: (DeleteShadowRequest) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic
@@ -40,7 +40,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             topic='$aws/things/{0.thing_name}/shadow/delete'.format(request),
             payload=None)
 
-    def publish_get(self, request):
+    def publish_get_shadow(self, request):
         # type: (GetShadowRequest) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic
@@ -59,7 +59,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             topic='$aws/things/{0.thing_name}/shadow/get'.format(request),
             payload=None)
 
-    def publish_update(self, request):
+    def publish_update_shadow(self, request):
         # type: (UpdateShadowRequest) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic
@@ -78,7 +78,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             topic='$aws/things/{0.thing_name}/shadow/update'.format(request),
             payload=request.to_payload())
 
-    def subscribe_to_delete_accepted(self, request, on_accepted):
+    def subscribe_to_delete_shadow_accepted(self, request, on_accepted):
         # type: (DeleteShadowSubscriptionRequest, typing.Callable[[DeleteShadowResponse], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-accepted-pub-sub-topic
@@ -104,7 +104,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             callback=on_accepted,
             payload_to_class_fn=DeleteShadowResponse.from_payload)
 
-    def subscribe_to_delete_rejected(self, request, on_rejected):
+    def subscribe_to_delete_shadow_rejected(self, request, on_rejected):
         # type: (DeleteShadowSubscriptionRequest, typing.Callable[[ErrorResponse], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-rejected-pub-sub-topic
@@ -130,33 +130,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             callback=on_rejected,
             payload_to_class_fn=ErrorResponse.from_payload)
 
-    def subscribe_to_delta_events(self, request, on_delta):
-        # type: (ShadowDeltaEventsSubscriptionRequest, typing.Callable[[ShadowDeltaEvent], None]) -> concurrent.futures.Future
-        """
-        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic
-
-        Parameters:
-        request - `ShadowDeltaEventsSubscriptionRequest` instance.
-        on_delta - Callback to invoke each time the on_delta event is received.
-                The callback should take 1 argument of type `ShadowDeltaEvent`.
-                The callback is not expected to return anything.
-
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
-        """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
-
-        if not on_delta:
-            raise ValueError("on_delta is required")
-
-        return self._subscribe_operation(
-            topic='$aws/things/{0.thing_name}/shadow/update/delta'.format(request),
-            callback=on_delta,
-            payload_to_class_fn=ShadowDeltaEvent.from_payload)
-
-    def subscribe_to_get_accepted(self, request, on_accepted):
+    def subscribe_to_get_shadow_accepted(self, request, on_accepted):
         # type: (GetShadowSubscriptionRequest, typing.Callable[[GetShadowResponse], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-accepted-pub-sub-topic
@@ -182,7 +156,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             callback=on_accepted,
             payload_to_class_fn=GetShadowResponse.from_payload)
 
-    def subscribe_to_get_rejected(self, request, on_rejected):
+    def subscribe_to_get_shadow_rejected(self, request, on_rejected):
         # type: (GetShadowSubscriptionRequest, typing.Callable[[ErrorResponse], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-rejected-pub-sub-topic
@@ -208,7 +182,59 @@ class IotShadowClient(awsiot.MqttServiceClient):
             callback=on_rejected,
             payload_to_class_fn=ErrorResponse.from_payload)
 
-    def subscribe_to_update_accepted(self, request, on_accepted):
+    def subscribe_to_shadow_delta_updated_events(self, request, on_event):
+        # type: (ShadowDeltaUpdatedSubscriptionRequest, typing.Callable[[ShadowDeltaUpdatedEvent], None]) -> concurrent.futures.Future
+        """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic
+
+        Parameters:
+        request - `ShadowDeltaUpdatedSubscriptionRequest` instance.
+        on_event - Callback to invoke each time the on_event event is received.
+                The callback should take 1 argument of type `ShadowDeltaUpdatedEvent`.
+                The callback is not expected to return anything.
+
+        Returns a concurrent.futures.Future, whose result will be None if the
+        subscription is successful. The Future's result will be an exception
+        if the subscription is unsuccessful.
+        """
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
+
+        if not on_event:
+            raise ValueError("on_event is required")
+
+        return self._subscribe_operation(
+            topic='$aws/things/{0.thing_name}/shadow/update/delta'.format(request),
+            callback=on_event,
+            payload_to_class_fn=ShadowDeltaUpdatedEvent.from_payload)
+
+    def subscribe_to_shadow_updated_events(self, request, on_event):
+        # type: (ShadowUpdatedSubscriptionRequest, typing.Callable[[ShadowUpdatedEvent], None]) -> concurrent.futures.Future
+        """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic
+
+        Parameters:
+        request - `ShadowUpdatedSubscriptionRequest` instance.
+        on_event - Callback to invoke each time the on_event event is received.
+                The callback should take 1 argument of type `ShadowUpdatedEvent`.
+                The callback is not expected to return anything.
+
+        Returns a concurrent.futures.Future, whose result will be None if the
+        subscription is successful. The Future's result will be an exception
+        if the subscription is unsuccessful.
+        """
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
+
+        if not on_event:
+            raise ValueError("on_event is required")
+
+        return self._subscribe_operation(
+            topic='$aws/things/{0.thing_name}/shadow/update/documents'.format(request),
+            callback=on_event,
+            payload_to_class_fn=ShadowUpdatedEvent.from_payload)
+
+    def subscribe_to_update_shadow_accepted(self, request, on_accepted):
         # type: (UpdateShadowSubscriptionRequest, typing.Callable[[UpdateShadowResponse], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-accepted-pub-sub-topic
@@ -234,33 +260,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             callback=on_accepted,
             payload_to_class_fn=UpdateShadowResponse.from_payload)
 
-    def subscribe_to_update_events(self, request, on_updated):
-        # type: (ShadowUpdateEventsSubscriptionRequest, typing.Callable[[ShadowUpdateEvent], None]) -> concurrent.futures.Future
-        """
-        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic
-
-        Parameters:
-        request - `ShadowUpdateEventsSubscriptionRequest` instance.
-        on_updated - Callback to invoke each time the on_updated event is received.
-                The callback should take 1 argument of type `ShadowUpdateEvent`.
-                The callback is not expected to return anything.
-
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
-        """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
-
-        if not on_updated:
-            raise ValueError("on_updated is required")
-
-        return self._subscribe_operation(
-            topic='$aws/things/{0.thing_name}/shadow/update/documents'.format(request),
-            callback=on_updated,
-            payload_to_class_fn=ShadowUpdateEvent.from_payload)
-
-    def subscribe_to_update_rejected(self, request, on_rejected):
+    def subscribe_to_update_shadow_rejected(self, request, on_rejected):
         # type: (UpdateShadowSubscriptionRequest, typing.Callable[[ErrorResponse], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-rejected-pub-sub-topic
@@ -390,7 +390,7 @@ class GetShadowSubscriptionRequest(awsiot.ModeledClass):
         # type: (typing.Optional[str]) -> None
         self.thing_name = thing_name # type: typing.Optional[str]
 
-class ShadowDeltaEvent(awsiot.ModeledClass):
+class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
     __slots__ = ['metadata', 'state', 'timestamp', 'version']
 
     def __init__(self, metadata=None, state=None, timestamp=None, version=None):
@@ -402,7 +402,7 @@ class ShadowDeltaEvent(awsiot.ModeledClass):
 
     @classmethod
     def from_payload(cls, payload):
-        # type: (typing.Dict[str, typing.Any]) -> ShadowDeltaEvent
+        # type: (typing.Dict[str, typing.Any]) -> ShadowDeltaUpdatedEvent
         new = cls()
         val = payload.get('metadata')
         if val is not None:
@@ -418,7 +418,7 @@ class ShadowDeltaEvent(awsiot.ModeledClass):
             new.version = val
         return new
 
-class ShadowDeltaEventsSubscriptionRequest(awsiot.ModeledClass):
+class ShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
     __slots__ = ['thing_name']
 
     def __init__(self, thing_name=None):
@@ -498,38 +498,31 @@ class ShadowStateWithDelta(awsiot.ModeledClass):
             new.reported = val
         return new
 
-class ShadowUpdateEvent(awsiot.ModeledClass):
+class ShadowUpdatedEvent(awsiot.ModeledClass):
     __slots__ = ['current', 'previous', 'timestamp']
 
     def __init__(self, current=None, previous=None, timestamp=None):
-        # type: (typing.Optional[ShadowUpdateSnapshot], typing.Optional[ShadowUpdateSnapshot], typing.Optional[datetime.datetime]) -> None
-        self.current = current # type: typing.Optional[ShadowUpdateSnapshot]
-        self.previous = previous # type: typing.Optional[ShadowUpdateSnapshot]
+        # type: (typing.Optional[ShadowUpdatedSnapshot], typing.Optional[ShadowUpdatedSnapshot], typing.Optional[datetime.datetime]) -> None
+        self.current = current # type: typing.Optional[ShadowUpdatedSnapshot]
+        self.previous = previous # type: typing.Optional[ShadowUpdatedSnapshot]
         self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
 
     @classmethod
     def from_payload(cls, payload):
-        # type: (typing.Dict[str, typing.Any]) -> ShadowUpdateEvent
+        # type: (typing.Dict[str, typing.Any]) -> ShadowUpdatedEvent
         new = cls()
         val = payload.get('current')
         if val is not None:
-            new.current = ShadowUpdateSnapshot.from_payload(val)
+            new.current = ShadowUpdatedSnapshot.from_payload(val)
         val = payload.get('previous')
         if val is not None:
-            new.previous = ShadowUpdateSnapshot.from_payload(val)
+            new.previous = ShadowUpdatedSnapshot.from_payload(val)
         val = payload.get('timestamp')
         if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-class ShadowUpdateEventsSubscriptionRequest(awsiot.ModeledClass):
-    __slots__ = ['thing_name']
-
-    def __init__(self, thing_name=None):
-        # type: (typing.Optional[str]) -> None
-        self.thing_name = thing_name # type: typing.Optional[str]
-
-class ShadowUpdateSnapshot(awsiot.ModeledClass):
+class ShadowUpdatedSnapshot(awsiot.ModeledClass):
     __slots__ = ['metadata', 'state', 'version']
 
     def __init__(self, metadata=None, state=None, version=None):
@@ -540,7 +533,7 @@ class ShadowUpdateSnapshot(awsiot.ModeledClass):
 
     @classmethod
     def from_payload(cls, payload):
-        # type: (typing.Dict[str, typing.Any]) -> ShadowUpdateSnapshot
+        # type: (typing.Dict[str, typing.Any]) -> ShadowUpdatedSnapshot
         new = cls()
         val = payload.get('metadata')
         if val is not None:
@@ -552,6 +545,13 @@ class ShadowUpdateSnapshot(awsiot.ModeledClass):
         if val is not None:
             new.version = val
         return new
+
+class ShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
+    __slots__ = ['thing_name']
+
+    def __init__(self, thing_name=None):
+        # type: (typing.Optional[str]) -> None
+        self.thing_name = thing_name # type: typing.Optional[str]
 
 class UpdateShadowRequest(awsiot.ModeledClass):
     __slots__ = ['client_token', 'state', 'thing_name', 'version']

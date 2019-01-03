@@ -21,7 +21,7 @@ import typing
 
 class IotJobsClient(awsiot.MqttServiceClient):
 
-    def publish_describe(self, request):
+    def publish_describe_job_execution(self, request):
         # type: (DescribeJobExecutionRequest) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution
@@ -42,7 +42,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             topic='$aws/things/{0.thing_name}/jobs/{0.job_id}/get'.format(request),
             payload=request.to_payload())
 
-    def publish_get_pending(self, request):
+    def publish_get_pending_job_executions(self, request):
         # type: (GetPendingJobExecutionsRequest) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions
@@ -61,7 +61,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             topic='$aws/things/{0.thing_name}/jobs/get'.format(request),
             payload=request.to_payload())
 
-    def publish_start_next_pending(self, request):
+    def publish_start_next_pending_job_execution(self, request):
         # type: (StartNextPendingJobExecutionRequest) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution
@@ -80,7 +80,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             topic='$aws/things/{0.thing_name}/jobs/start-next'.format(request),
             payload=request.to_payload())
 
-    def publish_update(self, request):
+    def publish_update_job_execution(self, request):
         # type: (UpdateJobExecutionRequest) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution
@@ -101,7 +101,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             topic='$aws/things/{0.thing_name}/jobs/{0.job_id}/update'.format(request),
             payload=request.to_payload())
 
-    def subscribe_to_describe_accepted(self, request, on_accepted):
+    def subscribe_to_describe_job_execution_accepted(self, request, on_accepted):
         # type: (DescribeJobExecutionSubscriptionRequest, typing.Callable[[DescribeJobExecutionResponse], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution
@@ -129,7 +129,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             callback=on_accepted,
             payload_to_class_fn=DescribeJobExecutionResponse.from_payload)
 
-    def subscribe_to_describe_rejected(self, request, on_rejected):
+    def subscribe_to_describe_job_execution_rejected(self, request, on_rejected):
         # type: (DescribeJobExecutionSubscriptionRequest, typing.Callable[[RejectedError], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution
@@ -157,33 +157,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             callback=on_rejected,
             payload_to_class_fn=RejectedError.from_payload)
 
-    def subscribe_to_executions_changed_events(self, request, on_job_executions_changed):
-        # type: (JobExecutionsChangedEventsSubscriptionRequest, typing.Callable[[JobExecutionsChangedEvent], None]) -> concurrent.futures.Future
-        """
-        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-jobexecutionschanged
-
-        Parameters:
-        request - `JobExecutionsChangedEventsSubscriptionRequest` instance.
-        on_job_executions_changed - Callback to invoke each time the on_job_executions_changed event is received.
-                The callback should take 1 argument of type `JobExecutionsChangedEvent`.
-                The callback is not expected to return anything.
-
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
-        """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
-
-        if not on_job_executions_changed:
-            raise ValueError("on_job_executions_changed is required")
-
-        return self._subscribe_operation(
-            topic='$aws/things/{0.thing_name}/jobs/notify'.format(request),
-            callback=on_job_executions_changed,
-            payload_to_class_fn=JobExecutionsChangedEvent.from_payload)
-
-    def subscribe_to_get_pending_accepted(self, request, on_accepted):
+    def subscribe_to_get_pending_job_executions_accepted(self, request, on_accepted):
         # type: (GetPendingJobExecutionsSubscriptionRequest, typing.Callable[[GetPendingJobExecutionsResponse], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions
@@ -209,7 +183,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             callback=on_accepted,
             payload_to_class_fn=GetPendingJobExecutionsResponse.from_payload)
 
-    def subscribe_to_get_pending_rejected(self, request, on_rejected):
+    def subscribe_to_get_pending_job_executions_rejected(self, request, on_rejected):
         # type: (GetPendingJobExecutionsSubscriptionRequest, typing.Callable[[RejectedError], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions
@@ -235,14 +209,40 @@ class IotJobsClient(awsiot.MqttServiceClient):
             callback=on_rejected,
             payload_to_class_fn=RejectedError.from_payload)
 
-    def subscribe_to_next_changed_events(self, request, on_next_job_execution_changed):
-        # type: (NextJobExecutionChangedEventsSubscriptionRequest, typing.Callable[[NextJobExecutionChangedEvent], None]) -> concurrent.futures.Future
+    def subscribe_to_job_executions_changed_events(self, request, on_event):
+        # type: (JobExecutionsChangedSubscriptionRequest, typing.Callable[[JobExecutionsChangedEvent], None]) -> concurrent.futures.Future
+        """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-jobexecutionschanged
+
+        Parameters:
+        request - `JobExecutionsChangedSubscriptionRequest` instance.
+        on_event - Callback to invoke each time the on_event event is received.
+                The callback should take 1 argument of type `JobExecutionsChangedEvent`.
+                The callback is not expected to return anything.
+
+        Returns a concurrent.futures.Future, whose result will be None if the
+        subscription is successful. The Future's result will be an exception
+        if the subscription is unsuccessful.
+        """
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
+
+        if not on_event:
+            raise ValueError("on_event is required")
+
+        return self._subscribe_operation(
+            topic='$aws/things/{0.thing_name}/jobs/notify'.format(request),
+            callback=on_event,
+            payload_to_class_fn=JobExecutionsChangedEvent.from_payload)
+
+    def subscribe_to_next_job_execution_changed_events(self, request, on_event):
+        # type: (NextJobExecutionChangedSubscriptionRequest, typing.Callable[[NextJobExecutionChangedEvent], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-nextjobexecutionchanged
 
         Parameters:
-        request - `NextJobExecutionChangedEventsSubscriptionRequest` instance.
-        on_next_job_execution_changed - Callback to invoke each time the on_next_job_execution_changed event is received.
+        request - `NextJobExecutionChangedSubscriptionRequest` instance.
+        on_event - Callback to invoke each time the on_event event is received.
                 The callback should take 1 argument of type `NextJobExecutionChangedEvent`.
                 The callback is not expected to return anything.
 
@@ -253,15 +253,15 @@ class IotJobsClient(awsiot.MqttServiceClient):
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
 
-        if not on_next_job_execution_changed:
-            raise ValueError("on_next_job_execution_changed is required")
+        if not on_event:
+            raise ValueError("on_event is required")
 
         return self._subscribe_operation(
             topic='$aws/things/{0.thing_name}/jobs/notify-next'.format(request),
-            callback=on_next_job_execution_changed,
+            callback=on_event,
             payload_to_class_fn=NextJobExecutionChangedEvent.from_payload)
 
-    def subscribe_to_start_next_pending_accepted(self, request, on_accepted):
+    def subscribe_to_start_next_pending_job_execution_accepted(self, request, on_accepted):
         # type: (StartNextPendingJobExecutionSubscriptionRequest, typing.Callable[[StartNextJobExecutionResponse], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution
@@ -287,7 +287,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             callback=on_accepted,
             payload_to_class_fn=StartNextJobExecutionResponse.from_payload)
 
-    def subscribe_to_start_next_pending_rejected(self, request, on_rejected):
+    def subscribe_to_start_next_pending_job_execution_rejected(self, request, on_rejected):
         # type: (StartNextPendingJobExecutionSubscriptionRequest, typing.Callable[[RejectedError], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution
@@ -313,7 +313,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             callback=on_rejected,
             payload_to_class_fn=RejectedError.from_payload)
 
-    def subscribe_to_update_accepted(self, request, on_accepted):
+    def subscribe_to_update_job_execution_accepted(self, request, on_accepted):
         # type: (UpdateJobExecutionSubscriptionRequest, typing.Callable[[UpdateJobExecutionResponse], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution
@@ -341,7 +341,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             callback=on_accepted,
             payload_to_class_fn=UpdateJobExecutionResponse.from_payload)
 
-    def subscribe_to_update_rejected(self, request, on_rejected):
+    def subscribe_to_update_job_execution_rejected(self, request, on_rejected):
         # type: (UpdateJobExecutionSubscriptionRequest, typing.Callable[[RejectedError], None]) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution
@@ -605,7 +605,7 @@ class JobExecutionsChangedEvent(awsiot.ModeledClass):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-class JobExecutionsChangedEventsSubscriptionRequest(awsiot.ModeledClass):
+class JobExecutionsChangedSubscriptionRequest(awsiot.ModeledClass):
     __slots__ = ['thing_name']
 
     def __init__(self, thing_name=None):
@@ -642,7 +642,7 @@ class NextJobExecutionChangedEvent(awsiot.ModeledClass):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-class NextJobExecutionChangedEventsSubscriptionRequest(awsiot.ModeledClass):
+class NextJobExecutionChangedSubscriptionRequest(awsiot.ModeledClass):
     __slots__ = ['thing_name']
 
     def __init__(self, thing_name=None):

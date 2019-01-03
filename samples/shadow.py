@@ -93,7 +93,7 @@ def on_disconnected(return_code):
         # Attempt to reconnect
         return True
 
-def on_get_accepted(response):
+def on_get_shadow_accepted(response):
     # type: (iotshadow.GetShadowResponse) -> None
     try:
         print("Finished getting initial shadow state.")
@@ -125,7 +125,7 @@ def on_get_accepted(response):
     except Exception as e:
         exit("Error getting shadow: {}".format(repr(e)))
 
-def on_get_rejected(error):
+def on_get_shadow_rejected(error):
     # type: (iotshadow.ErrorResponse) -> None
     if error.code == 404:
         print("Thing has no shadow document. Creating with defaults...")
@@ -134,8 +134,8 @@ def on_get_rejected(error):
         exit("Get request was rejected. code:{} message:'{}'".format(
             error.code, error.message))
 
-def on_delta_event(delta):
-    # type: (iotshadow.ShadowDeltaEvent) -> None
+def on_shadow_delta_updated(delta):
+    # type: (iotshadow.ShadowDeltaUpdatedEvent) -> None
     try:
         print("Received shadow delta event.")
         if delta.state and (shadow_property in delta.state):
@@ -153,7 +153,7 @@ def on_delta_event(delta):
     except Exception as e:
         exit("Error processing shadow delta: {}".format(repr(e)))
 
-def on_publish_update(future):
+def on_publish_update_shadow(future):
     #type: (futures.Future) -> None
     try:
         future.result()
@@ -161,12 +161,12 @@ def on_publish_update(future):
     except Exception as e:
         exit("Failed to publish update request: {}".format(repr(e)))
 
-def on_update_accepted(response):
+def on_update_shadow_accepted(response):
     # type: (iotshadow.UpdateShadowResponse) -> None
     print("Finished updating reported shadow value to '{}'.".format(response.state.reported[shadow_property]))
     print("Enter desired value: ") # remind user they can input new values
 
-def on_update_rejected(error):
+def on_update_shadow_rejected(error):
     # type: (iotshadow.ErrorResponse) -> None
     exit("Update request was rejected. code:{} message:'{}'".format(
         error.code, error.message))
@@ -197,8 +197,8 @@ def change_shadow_value(value):
                 desired={ shadow_property: value },
             )
         )
-        future = shadow_client.publish_update(request)
-        future.add_done_callback(on_publish_update)
+        future = shadow_client.publish_update_shadow(request)
+        future.add_done_callback(on_publish_update_shadow)
     except Exception as e:
         exit("Error issuing shadow update: {}".format(repr(e)))
 
@@ -269,34 +269,34 @@ if __name__ == '__main__':
         # Note that is **is** important to wait for "accepted/rejected" subscriptions
         # to succeed before publishing the corresponding "request".
         print("Subscribing to Delta events...")
-        delta_subscribed_future = shadow_client.subscribe_to_delta_events(
-            request=iotshadow.ShadowDeltaEventsSubscriptionRequest(args.thing_name),
-            on_delta=on_delta_event)
+        delta_subscribed_future = shadow_client.subscribe_to_shadow_delta_updated_events(
+            request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(args.thing_name),
+            on_event=on_shadow_delta_updated)
 
         # Wait for subscription to succeed
         delta_subscribed_future.result()
 
         print("Subscribing to Update responses...")
-        update_accepted_subscribed_future = shadow_client.subscribe_to_update_accepted(
+        update_accepted_subscribed_future = shadow_client.subscribe_to_update_shadow_accepted(
             request=iotshadow.UpdateShadowSubscriptionRequest(args.thing_name),
-            on_accepted=on_update_accepted)
+            on_accepted=on_update_shadow_accepted)
 
-        update_rejected_subscribed_future = shadow_client.subscribe_to_update_rejected(
+        update_rejected_subscribed_future = shadow_client.subscribe_to_update_shadow_rejected(
             request=iotshadow.UpdateShadowSubscriptionRequest(args.thing_name),
-            on_rejected=on_update_rejected)
+            on_rejected=on_update_shadow_rejected)
 
         # Wait for subscriptions to succeed
         update_accepted_subscribed_future.result()
         update_rejected_subscribed_future.result()
 
         print("Subscribing to Get responses...")
-        get_accepted_subscribed_future = shadow_client.subscribe_to_get_accepted(
+        get_accepted_subscribed_future = shadow_client.subscribe_to_get_shadow_accepted(
             request=iotshadow.GetShadowSubscriptionRequest(args.thing_name),
-            on_accepted=on_get_accepted)
+            on_accepted=on_get_shadow_accepted)
 
-        get_rejected_subscribed_future = shadow_client.subscribe_to_get_rejected(
+        get_rejected_subscribed_future = shadow_client.subscribe_to_get_shadow_rejected(
             request=iotshadow.GetShadowSubscriptionRequest(args.thing_name),
-            on_rejected=on_get_rejected)
+            on_rejected=on_get_shadow_rejected)
 
         # Wait for subscriptions to succeed
         get_accepted_subscribed_future.result()
@@ -307,7 +307,7 @@ if __name__ == '__main__':
         # Issue request for shadow's current state.
         # The response will be received by the on_get_accepted() callback
         print("Requesting current shadow state...")
-        publish_get_future = shadow_client.publish_get(
+        publish_get_future = shadow_client.publish_get_shadow(
             request=iotshadow.GetShadowRequest(args.thing_name))
 
         # Ensure that publish succeeds

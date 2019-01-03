@@ -102,8 +102,8 @@ def try_start_next_job():
 
     print("Publishing request to start next job...")
     request = iotjobs.StartNextPendingJobExecutionRequest(thing_name=args.thing_name)
-    publish_future = jobs_client.publish_start_next_pending(request)
-    publish_future.add_done_callback(on_publish_start_next_pending)
+    publish_future = jobs_client.publish_start_next_pending_job_execution(request)
+    publish_future.add_done_callback(on_publish_start_next_pending_job_execution)
 
 def done_working_on_job():
     with locked_data.lock:
@@ -159,7 +159,7 @@ def on_next_job_execution_changed(event):
     except Exception as e:
         exit(e)
 
-def on_publish_start_next_pending(future):
+def on_publish_start_next_pending_job_execution(future):
     # type: (futures.Future) -> None
     try:
         future.result() # raises exception if publish failed
@@ -205,13 +205,13 @@ def job_thread_fn(job_id, job_document):
             thing_name=args.thing_name,
             job_id=job_id,
             status=iotjobs.JobStatus.SUCCEEDED)
-        publish_future = jobs_client.publish_update(request)
-        publish_future.add_done_callback(on_publish_update)
+        publish_future = jobs_client.publish_update_job_execution(request)
+        publish_future.add_done_callback(on_publish_update_job_execution)
 
     except Exception as e:
         exit(e)
 
-def on_publish_update(future):
+def on_publish_update_job_execution(future):
     # type: (futures.Future) -> None
     try:
         future.result() # raises exception if publish failed
@@ -278,12 +278,12 @@ if __name__ == '__main__':
         # Note that is **is** important to wait for "accepted/rejected" subscriptions
         # to succeed before publishing the corresponding "request".
         print("Subscribing to Next Changed events...")
-        changed_subscription_request = iotjobs.NextJobExecutionChangedEventsSubscriptionRequest(
+        changed_subscription_request = iotjobs.NextJobExecutionChangedSubscriptionRequest(
             thing_name=args.thing_name)
 
-        subscribed_future = jobs_client.subscribe_to_next_changed_events(
+        subscribed_future = jobs_client.subscribe_to_next_job_execution_changed_events(
             request=changed_subscription_request,
-            on_next_job_execution_changed=on_next_job_execution_changed)
+            on_event=on_next_job_execution_changed)
 
         # Wait for subscription to succeed
         subscribed_future.result()
@@ -291,11 +291,11 @@ if __name__ == '__main__':
         print("Subscribing to Start responses...")
         start_subscription_request = iotjobs.StartNextPendingJobExecutionSubscriptionRequest(
             thing_name=args.thing_name)
-        subscribed_accepted_future = jobs_client.subscribe_to_start_next_pending_accepted(
+        subscribed_accepted_future = jobs_client.subscribe_to_start_next_pending_job_execution_accepted(
             request=start_subscription_request,
             on_accepted=on_start_next_pending_job_execution_accepted)
 
-        subscribed_rejected_future = jobs_client.subscribe_to_start_next_pending_rejected(
+        subscribed_rejected_future = jobs_client.subscribe_to_start_next_pending_job_execution_rejected(
             request=start_subscription_request,
             on_rejected=on_start_next_pending_job_execution_rejected)
 
@@ -310,11 +310,11 @@ if __name__ == '__main__':
                 thing_name=args.thing_name,
                 job_id='+')
 
-        subscribed_accepted_future = jobs_client.subscribe_to_update_accepted(
+        subscribed_accepted_future = jobs_client.subscribe_to_update_job_execution_accepted(
             request=update_subscription_request,
             on_accepted=on_update_job_execution_accepted)
 
-        subscribed_rejected_future = jobs_client.subscribe_to_update_rejected(
+        subscribed_rejected_future = jobs_client.subscribe_to_update_job_execution_rejected(
             request=update_subscription_request,
             on_rejected=on_update_job_execution_rejected)
 
