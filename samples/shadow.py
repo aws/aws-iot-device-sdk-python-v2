@@ -269,38 +269,38 @@ if __name__ == '__main__':
         # Note that is **is** important to wait for "accepted/rejected" subscriptions
         # to succeed before publishing the corresponding "request".
         print("Subscribing to Delta events...")
-        delta_subscription = shadow_client.subscribe_to_shadow_delta_updated_events(
+        delta_subscribed_future, _ = shadow_client.subscribe_to_shadow_delta_updated_events(
             request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(args.thing_name),
             on_event=on_shadow_delta_updated)
 
         # Wait for subscription to succeed
-        delta_subscription.future_suback.result()
+        delta_subscribed_future.result()
 
         print("Subscribing to Update responses...")
-        accepted_subscription = shadow_client.subscribe_to_update_shadow_accepted(
+        update_accepted_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_accepted(
             request=iotshadow.UpdateShadowSubscriptionRequest(args.thing_name),
             on_accepted=on_update_shadow_accepted)
 
-        rejected_subscription = shadow_client.subscribe_to_update_shadow_rejected(
+        update_rejected_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_rejected(
             request=iotshadow.UpdateShadowSubscriptionRequest(args.thing_name),
             on_rejected=on_update_shadow_rejected)
 
         # Wait for subscriptions to succeed
-        accepted_subscription.future_suback.result()
-        rejected_subscription.future_suback.result()
+        update_accepted_subscribed_future.result()
+        update_rejected_subscribed_future.result()
 
         print("Subscribing to Get responses...")
-        accepted_subscription = shadow_client.subscribe_to_get_shadow_accepted(
+        get_accepted_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_accepted(
             request=iotshadow.GetShadowSubscriptionRequest(args.thing_name),
             on_accepted=on_get_shadow_accepted)
 
-        rejected_subscription = shadow_client.subscribe_to_get_shadow_rejected(
+        get_rejected_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_rejected(
             request=iotshadow.GetShadowSubscriptionRequest(args.thing_name),
             on_rejected=on_get_shadow_rejected)
 
         # Wait for subscriptions to succeed
-        accepted_subscription.future_suback.result()
-        rejected_subscription.future_suback.result()
+        get_accepted_subscribed_future.result()
+        get_rejected_subscribed_future.result()
 
         # The rest of the sample runs asyncronously.
 

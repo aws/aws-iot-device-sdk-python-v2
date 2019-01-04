@@ -281,27 +281,27 @@ if __name__ == '__main__':
         changed_subscription_request = iotjobs.NextJobExecutionChangedSubscriptionRequest(
             thing_name=args.thing_name)
 
-        subscription = jobs_client.subscribe_to_next_job_execution_changed_events(
+        subscribed_future, _ = jobs_client.subscribe_to_next_job_execution_changed_events(
             request=changed_subscription_request,
             on_event=on_next_job_execution_changed)
 
         # Wait for subscription to succeed
-        subscription.future_suback.result()
+        subscribed_future.result()
 
         print("Subscribing to Start responses...")
         start_subscription_request = iotjobs.StartNextPendingJobExecutionSubscriptionRequest(
             thing_name=args.thing_name)
-        accepted_subscription = jobs_client.subscribe_to_start_next_pending_job_execution_accepted(
+        subscribed_accepted_future, _ = jobs_client.subscribe_to_start_next_pending_job_execution_accepted(
             request=start_subscription_request,
             on_accepted=on_start_next_pending_job_execution_accepted)
 
-        rejected_subscription = jobs_client.subscribe_to_start_next_pending_job_execution_rejected(
+        subscribed_rejected_future, _ = jobs_client.subscribe_to_start_next_pending_job_execution_rejected(
             request=start_subscription_request,
             on_rejected=on_start_next_pending_job_execution_rejected)
 
         # Wait for subscriptions to succeed
-        accepted_subscription.future_suback.result()
-        rejected_subscription.future_suback.result()
+        subscribed_accepted_future.result()
+        subscribed_rejected_future.result()
 
         print("Subscribing to Update responses...")
         # Note that we subscribe to "+", the MQTT wildcard, to receive
@@ -310,17 +310,17 @@ if __name__ == '__main__':
                 thing_name=args.thing_name,
                 job_id='+')
 
-        accepted_subscription = jobs_client.subscribe_to_update_job_execution_accepted(
+        subscribed_accepted_future, _ = jobs_client.subscribe_to_update_job_execution_accepted(
             request=update_subscription_request,
             on_accepted=on_update_job_execution_accepted)
 
-        rejected_subscription = jobs_client.subscribe_to_update_job_execution_rejected(
+        subscribed_rejected_future, _ = jobs_client.subscribe_to_update_job_execution_rejected(
             request=update_subscription_request,
             on_rejected=on_update_job_execution_rejected)
 
         # Wait for subscriptions to succeed
-        accepted_subscription.future_suback.result()
-        rejected_subscription.future_suback.result()
+        subscribed_accepted_future.result()
+        subscribed_rejected_future.result()
 
         # Make initial attempt to start next job. The service should reply with
         # an "accepted" response, even if no jobs are pending. The response
