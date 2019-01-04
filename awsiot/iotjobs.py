@@ -102,7 +102,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             payload=request.to_payload())
 
     def subscribe_to_describe_job_execution_accepted(self, request, on_accepted):
-        # type: (DescribeJobExecutionSubscriptionRequest, typing.Callable[[DescribeJobExecutionResponse], None]) -> concurrent.futures.Future
+        # type: (DescribeJobExecutionSubscriptionRequest, typing.Callable[[DescribeJobExecutionResponse], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution
 
@@ -112,9 +112,12 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `DescribeJobExecutionResponse`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -130,7 +133,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             payload_to_class_fn=DescribeJobExecutionResponse.from_payload)
 
     def subscribe_to_describe_job_execution_rejected(self, request, on_rejected):
-        # type: (DescribeJobExecutionSubscriptionRequest, typing.Callable[[RejectedError], None]) -> concurrent.futures.Future
+        # type: (DescribeJobExecutionSubscriptionRequest, typing.Callable[[RejectedError], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution
 
@@ -140,9 +143,12 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `RejectedError`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -158,7 +164,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             payload_to_class_fn=RejectedError.from_payload)
 
     def subscribe_to_get_pending_job_executions_accepted(self, request, on_accepted):
-        # type: (GetPendingJobExecutionsSubscriptionRequest, typing.Callable[[GetPendingJobExecutionsResponse], None]) -> concurrent.futures.Future
+        # type: (GetPendingJobExecutionsSubscriptionRequest, typing.Callable[[GetPendingJobExecutionsResponse], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions
 
@@ -168,9 +174,12 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `GetPendingJobExecutionsResponse`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -184,7 +193,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             payload_to_class_fn=GetPendingJobExecutionsResponse.from_payload)
 
     def subscribe_to_get_pending_job_executions_rejected(self, request, on_rejected):
-        # type: (GetPendingJobExecutionsSubscriptionRequest, typing.Callable[[RejectedError], None]) -> concurrent.futures.Future
+        # type: (GetPendingJobExecutionsSubscriptionRequest, typing.Callable[[RejectedError], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions
 
@@ -194,9 +203,12 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `RejectedError`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -210,7 +222,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             payload_to_class_fn=RejectedError.from_payload)
 
     def subscribe_to_job_executions_changed_events(self, request, on_event):
-        # type: (JobExecutionsChangedSubscriptionRequest, typing.Callable[[JobExecutionsChangedEvent], None]) -> concurrent.futures.Future
+        # type: (JobExecutionsChangedSubscriptionRequest, typing.Callable[[JobExecutionsChangedEvent], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-jobexecutionschanged
 
@@ -220,9 +232,12 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `JobExecutionsChangedEvent`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -236,7 +251,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             payload_to_class_fn=JobExecutionsChangedEvent.from_payload)
 
     def subscribe_to_next_job_execution_changed_events(self, request, on_event):
-        # type: (NextJobExecutionChangedSubscriptionRequest, typing.Callable[[NextJobExecutionChangedEvent], None]) -> concurrent.futures.Future
+        # type: (NextJobExecutionChangedSubscriptionRequest, typing.Callable[[NextJobExecutionChangedEvent], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-nextjobexecutionchanged
 
@@ -246,9 +261,12 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `NextJobExecutionChangedEvent`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -262,7 +280,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             payload_to_class_fn=NextJobExecutionChangedEvent.from_payload)
 
     def subscribe_to_start_next_pending_job_execution_accepted(self, request, on_accepted):
-        # type: (StartNextPendingJobExecutionSubscriptionRequest, typing.Callable[[StartNextJobExecutionResponse], None]) -> concurrent.futures.Future
+        # type: (StartNextPendingJobExecutionSubscriptionRequest, typing.Callable[[StartNextJobExecutionResponse], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution
 
@@ -272,9 +290,12 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `StartNextJobExecutionResponse`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -288,7 +309,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             payload_to_class_fn=StartNextJobExecutionResponse.from_payload)
 
     def subscribe_to_start_next_pending_job_execution_rejected(self, request, on_rejected):
-        # type: (StartNextPendingJobExecutionSubscriptionRequest, typing.Callable[[RejectedError], None]) -> concurrent.futures.Future
+        # type: (StartNextPendingJobExecutionSubscriptionRequest, typing.Callable[[RejectedError], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution
 
@@ -298,9 +319,12 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `RejectedError`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -314,7 +338,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             payload_to_class_fn=RejectedError.from_payload)
 
     def subscribe_to_update_job_execution_accepted(self, request, on_accepted):
-        # type: (UpdateJobExecutionSubscriptionRequest, typing.Callable[[UpdateJobExecutionResponse], None]) -> concurrent.futures.Future
+        # type: (UpdateJobExecutionSubscriptionRequest, typing.Callable[[UpdateJobExecutionResponse], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution
 
@@ -324,9 +348,12 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `UpdateJobExecutionResponse`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -342,7 +369,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             payload_to_class_fn=UpdateJobExecutionResponse.from_payload)
 
     def subscribe_to_update_job_execution_rejected(self, request, on_rejected):
-        # type: (UpdateJobExecutionSubscriptionRequest, typing.Callable[[RejectedError], None]) -> concurrent.futures.Future
+        # type: (UpdateJobExecutionSubscriptionRequest, typing.Callable[[RejectedError], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution
 
@@ -352,9 +379,12 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `RejectedError`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")

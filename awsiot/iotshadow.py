@@ -79,7 +79,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload=request.to_payload())
 
     def subscribe_to_delete_shadow_accepted(self, request, on_accepted):
-        # type: (DeleteShadowSubscriptionRequest, typing.Callable[[DeleteShadowResponse], None]) -> concurrent.futures.Future
+        # type: (DeleteShadowSubscriptionRequest, typing.Callable[[DeleteShadowResponse], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-accepted-pub-sub-topic
 
@@ -89,9 +89,12 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `DeleteShadowResponse`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -105,7 +108,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=DeleteShadowResponse.from_payload)
 
     def subscribe_to_delete_shadow_rejected(self, request, on_rejected):
-        # type: (DeleteShadowSubscriptionRequest, typing.Callable[[ErrorResponse], None]) -> concurrent.futures.Future
+        # type: (DeleteShadowSubscriptionRequest, typing.Callable[[ErrorResponse], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-rejected-pub-sub-topic
 
@@ -115,9 +118,12 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `ErrorResponse`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -131,7 +137,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ErrorResponse.from_payload)
 
     def subscribe_to_get_shadow_accepted(self, request, on_accepted):
-        # type: (GetShadowSubscriptionRequest, typing.Callable[[GetShadowResponse], None]) -> concurrent.futures.Future
+        # type: (GetShadowSubscriptionRequest, typing.Callable[[GetShadowResponse], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-accepted-pub-sub-topic
 
@@ -141,9 +147,12 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `GetShadowResponse`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -157,7 +166,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=GetShadowResponse.from_payload)
 
     def subscribe_to_get_shadow_rejected(self, request, on_rejected):
-        # type: (GetShadowSubscriptionRequest, typing.Callable[[ErrorResponse], None]) -> concurrent.futures.Future
+        # type: (GetShadowSubscriptionRequest, typing.Callable[[ErrorResponse], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-rejected-pub-sub-topic
 
@@ -167,9 +176,12 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `ErrorResponse`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -183,7 +195,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ErrorResponse.from_payload)
 
     def subscribe_to_shadow_delta_updated_events(self, request, on_event):
-        # type: (ShadowDeltaUpdatedSubscriptionRequest, typing.Callable[[ShadowDeltaUpdatedEvent], None]) -> concurrent.futures.Future
+        # type: (ShadowDeltaUpdatedSubscriptionRequest, typing.Callable[[ShadowDeltaUpdatedEvent], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic
 
@@ -193,9 +205,12 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `ShadowDeltaUpdatedEvent`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -209,7 +224,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ShadowDeltaUpdatedEvent.from_payload)
 
     def subscribe_to_shadow_updated_events(self, request, on_event):
-        # type: (ShadowUpdatedSubscriptionRequest, typing.Callable[[ShadowUpdatedEvent], None]) -> concurrent.futures.Future
+        # type: (ShadowUpdatedSubscriptionRequest, typing.Callable[[ShadowUpdatedEvent], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic
 
@@ -219,9 +234,12 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `ShadowUpdatedEvent`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -235,7 +253,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ShadowUpdatedEvent.from_payload)
 
     def subscribe_to_update_shadow_accepted(self, request, on_accepted):
-        # type: (UpdateShadowSubscriptionRequest, typing.Callable[[UpdateShadowResponse], None]) -> concurrent.futures.Future
+        # type: (UpdateShadowSubscriptionRequest, typing.Callable[[UpdateShadowResponse], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-accepted-pub-sub-topic
 
@@ -245,9 +263,12 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `UpdateShadowResponse`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -261,7 +282,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=UpdateShadowResponse.from_payload)
 
     def subscribe_to_update_shadow_rejected(self, request, on_rejected):
-        # type: (UpdateShadowSubscriptionRequest, typing.Callable[[ErrorResponse], None]) -> concurrent.futures.Future
+        # type: (UpdateShadowSubscriptionRequest, typing.Callable[[ErrorResponse], None]) -> awsiot.Subscription
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-rejected-pub-sub-topic
 
@@ -271,9 +292,12 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback should take 1 argument of type `ErrorResponse`.
                 The callback is not expected to return anything.
 
-        Returns a concurrent.futures.Future, whose result will be None if the
-        subscription is successful. The Future's result will be an exception
-        if the subscription is unsuccessful.
+        Returns a `awsiot.Subscription` object immediately.
+        To stop receiving messages, pass this object to `unsubscribe()`.
+        The `concurrent.futures.Future` within this object will contain a
+        `None` value when the server acknowledges the subscription,
+        or an exception if the subscription fails.
+        Note that messages may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
