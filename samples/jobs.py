@@ -281,7 +281,7 @@ if __name__ == '__main__':
         changed_subscription_request = iotjobs.NextJobExecutionChangedSubscriptionRequest(
             thing_name=args.thing_name)
 
-        subscribed_future = jobs_client.subscribe_to_next_job_execution_changed_events(
+        subscribed_future, _ = jobs_client.subscribe_to_next_job_execution_changed_events(
             request=changed_subscription_request,
             on_event=on_next_job_execution_changed)
 
@@ -291,11 +291,11 @@ if __name__ == '__main__':
         print("Subscribing to Start responses...")
         start_subscription_request = iotjobs.StartNextPendingJobExecutionSubscriptionRequest(
             thing_name=args.thing_name)
-        subscribed_accepted_future = jobs_client.subscribe_to_start_next_pending_job_execution_accepted(
+        subscribed_accepted_future, _ = jobs_client.subscribe_to_start_next_pending_job_execution_accepted(
             request=start_subscription_request,
             on_accepted=on_start_next_pending_job_execution_accepted)
 
-        subscribed_rejected_future = jobs_client.subscribe_to_start_next_pending_job_execution_rejected(
+        subscribed_rejected_future, _ = jobs_client.subscribe_to_start_next_pending_job_execution_rejected(
             request=start_subscription_request,
             on_rejected=on_start_next_pending_job_execution_rejected)
 
@@ -310,11 +310,11 @@ if __name__ == '__main__':
                 thing_name=args.thing_name,
                 job_id='+')
 
-        subscribed_accepted_future = jobs_client.subscribe_to_update_job_execution_accepted(
+        subscribed_accepted_future, _ = jobs_client.subscribe_to_update_job_execution_accepted(
             request=update_subscription_request,
             on_accepted=on_update_job_execution_accepted)
 
-        subscribed_rejected_future = jobs_client.subscribe_to_update_job_execution_rejected(
+        subscribed_rejected_future, _ = jobs_client.subscribe_to_update_job_execution_rejected(
             request=update_subscription_request,
             on_rejected=on_update_job_execution_rejected)
 

@@ -19,7 +19,7 @@ __all__ = [
 from aws_crt import mqtt
 from concurrent.futures import Future
 import json
-from typing import Any, Callable, Dict, Optional, TypeVar
+from typing import Any, Callable, Dict, Optional, Tuple, TypeVar
 
 T = TypeVar('T')
 
@@ -39,6 +39,26 @@ class MqttServiceClient(object):
     def mqtt_connection(self):
         return self._mqtt_connection
 
+    def unsubscribe(self, topic):
+        # type: (str) -> Future
+        """
+        Tell the MQTT server to stop sending messages to this topic.
+
+        Returns a `Future` whose result will be `None` when the server
+        has acknowledged the unsubscribe.
+        """
+        future = Future() # type: Future
+        try:
+            def on_unsuback(packet_id):
+                future.set_result(None)
+
+            self.mqtt_connection.unsubscribe(topic, on_unsuback)
+
+        except Exception as e:
+            future.set_exception(e)
+
+        return future
+
     def _publish_operation(self, topic, payload):
         # type(str, Optional[PayloadObj]) -> Future
         """
@@ -48,6 +68,10 @@ class MqttServiceClient(object):
         topic - The topic to publish this message to.
         payload - (Optional) If set, the message will be a string of JSON, built from this object.
                 If unset, an empty message is sent.
+
+        Returns a `Future` which will contain a result of `None` when the
+        server has acknowledged the message, or an exception if the
+        publish fails.
         """
         future = Future() # type: Future
         try:
@@ -71,7 +95,7 @@ class MqttServiceClient(object):
         return future
 
     def _subscribe_operation(self, topic, callback, payload_to_class_fn):
-        # type: (str, Callable[[T], None], PayloadToClassFn) -> Future
+        # type: (str, Callable[[T], None], PayloadToClassFn) -> Tuple[Future, str]
         """
         Performs a 'Subscribe' style operation for an MQTT service.
         Messages received from this topic are processed as JSON,
@@ -89,9 +113,11 @@ class MqttServiceClient(object):
                 `callback`. The dict comes from parsing the received
                 message as JSON.
 
-        Returns a Future whose result will be None when the subscription
-        is accepted by the server. If the subscription cannot be established,
-        the Future's result will be an exception.
+        Returns two values. The first is a `Future` which will contain a result
+        of `None` when the server has acknowledged the subscription, or an
+        exception if the subscription fails. The second value is a topic which
+        may be passed to `unsubscribe()` to stop receiving messages.
+        Note that messages may arrive before the subscription is acknowledged.
         """
 
         future = Future() # type: Future
@@ -117,7 +143,7 @@ class MqttServiceClient(object):
         except Exception as e:
             future.set_exception(e)
 
-        return future
+        return future, topic
 
 class ModeledClass(object):
     """

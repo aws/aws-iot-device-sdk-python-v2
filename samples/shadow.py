@@ -269,7 +269,7 @@ if __name__ == '__main__':
         # Note that is **is** important to wait for "accepted/rejected" subscriptions
         # to succeed before publishing the corresponding "request".
         print("Subscribing to Delta events...")
-        delta_subscribed_future = shadow_client.subscribe_to_shadow_delta_updated_events(
+        delta_subscribed_future, _ = shadow_client.subscribe_to_shadow_delta_updated_events(
             request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(args.thing_name),
             on_event=on_shadow_delta_updated)
 
@@ -277,11 +277,11 @@ if __name__ == '__main__':
         delta_subscribed_future.result()
 
         print("Subscribing to Update responses...")
-        update_accepted_subscribed_future = shadow_client.subscribe_to_update_shadow_accepted(
+        update_accepted_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_accepted(
             request=iotshadow.UpdateShadowSubscriptionRequest(args.thing_name),
             on_accepted=on_update_shadow_accepted)
 
-        update_rejected_subscribed_future = shadow_client.subscribe_to_update_shadow_rejected(
+        update_rejected_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_rejected(
             request=iotshadow.UpdateShadowSubscriptionRequest(args.thing_name),
             on_rejected=on_update_shadow_rejected)
 
@@ -290,11 +290,11 @@ if __name__ == '__main__':
         update_rejected_subscribed_future.result()
 
         print("Subscribing to Get responses...")
-        get_accepted_subscribed_future = shadow_client.subscribe_to_get_shadow_accepted(
+        get_accepted_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_accepted(
             request=iotshadow.GetShadowSubscriptionRequest(args.thing_name),
             on_accepted=on_get_shadow_accepted)
 
-        get_rejected_subscribed_future = shadow_client.subscribe_to_get_shadow_rejected(
+        get_rejected_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_rejected(
             request=iotshadow.GetShadowSubscriptionRequest(args.thing_name),
             on_rejected=on_get_shadow_rejected)
 
