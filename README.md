@@ -29,7 +29,7 @@ is provided by code that been generated from a model of the service.
 
 ## Build from source
 ```
-git clone https://github.com/awslabs/aws-crt-python.git --recursive
+git clone --branch v0.1.0 https://github.com/awslabs/aws-crt-python.git --recursive
 git clone https://github.com/awslabs/aws-iot-device-sdk-python-v2.git
 pip install ./aws-crt-python
 pip install ./aws-iot-device-sdk-python-v2
