@@ -41,45 +41,16 @@ parser.add_argument('--count', default=10, type=int, help="Number of messages to
 # Using globals to simplify sample code
 args = parser.parse_args()
 
-connected_results = {}
-connected_event = threading.Event()
-
-disconnect_called = False
-disconnected_results = {}
-disconnected_event = threading.Event()
-
-subscribed_event = threading.Event()
-
 received_count = 0
 received_all_event = threading.Event()
 
-# Callback when connection is established.
-# This may be an initial connection, or a reconnect
-# after an accidentally losing the connection.
-def on_connected(return_code, session_present):
-    if not connected_results:
-        connected_results['return_code'] = return_code
-        connected_results['session_present'] = session_present
-        connected_event.set()
-    else:
-        print("Connection re-established!")
+# Callback when connection is accidentally lost.
+def on_connection_interrupted(error_code):
+    print("Connection interrupted. error_code:{}".format(error_code))
 
-# Callback when connection is lost.
-# This may be due to a purposeful disconnect() call,
-# or it may be an accidental loss of the connection.
-# Return True to attempt reconnecting.
-def on_disconnected(return_code):
-    if disconnect_called:
-        disconnected_results['return_code'] = return_code
-        disconnected_event.set()
-        return False
-    else:
-        print("Connection lost. Attempting to reconnect...")
-        return True
-
-# Callback when async subscribe operation completes
-def on_subscribed(packet_id, topic, qos):
-    subscribed_event.set()
+# Callback when an interrupted connection is re-established.
+def on_connection_resumed(error_code, session_present):
+    print("Connection resumed. error_code:{} session_present:{}".format(error_code, session_present))
 
 # Callback when the subscribed topic receives a message
 def on_message_received(topic, message):
@@ -109,29 +80,29 @@ if __name__ == '__main__':
 
     mqtt_connection = mqtt.Connection(
         client=mqtt_client,
-        client_id=args.client_id)
-    mqtt_connection.connect(
+        on_connection_interrupted=on_connection_interrupted,
+        on_connection_resumed=on_connection_resumed)
+
+    connect_future = mqtt_connection.connect(
+        client_id=args.client_id,
         host_name = args.endpoint,
         port = port,
-        on_connect=on_connected,
-        on_disconnect=on_disconnected,
         use_websocket=False,
-        alpn=None,
         clean_session=True,
         keep_alive=6000)
 
-    connected_event.wait()
-    connected_code = connected_results['return_code']
-    if connected_code != 0:
-        raise RuntimeError("Connection failed with return code: {}".format(connected_code))
-    print('Connected!')
+    # Future.result() waits until a result is available
+    connect_future.result()
+    print("Connected!")
 
     # Subscribe
     print("Subscribing to topic '{}'...".format(args.topic))
-    mqtt_connection.subscribe(topic=args.topic, qos=1,
-        suback_callback=on_subscribed, callback=on_message_received)
+    subscribe_future, packet_id = mqtt_connection.subscribe(
+        topic=args.topic,
+        qos=mqtt.QoS.AT_LEAST_ONCE,
+        callback=on_message_received)
 
-    subscribed_event.wait()
+    subscribe_future.result()
     print("Subscribed!")
 
     # Publish message to server desired number of times.
@@ -150,7 +121,7 @@ if __name__ == '__main__':
             mqtt_connection.publish(
                 topic=args.topic,
                 payload=message,
-                qos=1)
+                qos=mqtt.QoS.AT_LEAST_ONCE)
             time.sleep(1)
             publish_count += 1
 
@@ -164,10 +135,6 @@ if __name__ == '__main__':
 
     # Disconnect
     print("Disconnecting...")
-    disconnect_called = True
-    mqtt_connection.disconnect()
-    disconnected_event.wait()
-    disconnected_code = disconnected_results['return_code']
-    if disconnected_code != 0:
-        raise RuntimeError("Disconnected with return code: {}".format(disconnected_code))
+    disconnect_future = mqtt_connection.disconnect()
+    disconnect_future.result()
     print("Disconnected!")

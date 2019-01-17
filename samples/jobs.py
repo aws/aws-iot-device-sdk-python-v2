@@ -16,7 +16,7 @@ from __future__ import print_function
 import argparse
 from aws_crt import io, mqtt
 from awsiot import iotjobs
-from concurrent import futures
+from concurrent.futures import Future
 import sys
 import threading
 import time
@@ -56,7 +56,6 @@ parser.add_argument('--thing-name', required=True, help="The name assigned to yo
 parser.add_argument('--job-time', default=5, type=float, help="Emulate working on job by sleeping this many seconds.")
 
 # Using globals to simplify sample code
-connected_future = futures.Future()
 is_sample_done = threading.Event()
 
 mqtt_connection = None
@@ -84,7 +83,8 @@ def exit(msg_or_exception):
         if not locked_data.disconnect_called:
             print("Disconnecting...")
             locked_data.disconnect_called = True
-            mqtt_connection.disconnect()
+            future = mqtt_connection.disconnect()
+            future.add_done_callback(on_disconnected)
 
 def try_start_next_job():
     print("Trying to start the next job...")
@@ -113,26 +113,12 @@ def done_working_on_job():
     if try_again:
         try_start_next_job()
 
-def on_connected(return_code, session_present):
-    # type: (int, bool) -> None
-    print("Connect completed with code: {}".format(return_code))
-    if return_code == 0:
-        connected_future.set_result(None)
-    else:
-        connected_future.set_exception(RuntimeError("Connection failed with code: {}".format(return_code)))
+def on_disconnected(disconnect_future):
+    # type: (Future) -> None
+    print("Disconnected.")
 
-def on_disconnected(return_code):
-    # type: (int) -> bool
-    print("Disconnected with code: {}".format(return_code))
-    with locked_data.lock:
-        if locked_data.disconnect_called:
-            # Signal that sample is finished
-            is_sample_done.set()
-            # Don't attempt to reconnect
-            return False
-        else:
-            # Attempt to reconnect
-            return True
+    # Signal that sample is finished
+    is_sample_done.set()
 
 def on_next_job_execution_changed(event):
     # type: (iotjobs.NextJobExecutionChangedEvent) -> None
@@ -160,7 +146,7 @@ def on_next_job_execution_changed(event):
         exit(e)
 
 def on_publish_start_next_pending_job_execution(future):
-    # type: (futures.Future) -> None
+    # type: (Future) -> None
     try:
         future.result() # raises exception if publish failed
 
@@ -212,7 +198,7 @@ def job_thread_fn(job_id, job_document):
         exit(e)
 
 def on_publish_update_job_execution(future):
-    # type: (futures.Future) -> None
+    # type: (Future) -> None
     try:
         future.result() # raises exception if publish failed
         print("Published request to update job.")
@@ -252,15 +238,12 @@ if __name__ == '__main__':
     port = 443 if io.is_alpn_available() else 8883
     print("Connecting to {} on port {}...".format(args.endpoint, port))
     mqtt_connection = mqtt.Connection(
-            client=mqtt_client,
-            client_id=args.client_id)
-    mqtt_connection.connect(
+            client=mqtt_client)
+    connected_future = mqtt_connection.connect(
+            client_id=args.client_id,
             host_name = args.endpoint,
             port = port,
-            on_connect=on_connected,
-            on_disconnect=on_disconnected,
             use_websocket=False,
-            alpn=None,
             clean_session=True,
             keep_alive=6000)
 
@@ -272,6 +255,7 @@ if __name__ == '__main__':
     # But this sample waits here so it's obvious when a connection
     # fails or succeeds.
     connected_future.result()
+    print("Connected!")
 
     try:
         # Subscribe to necessary topics.

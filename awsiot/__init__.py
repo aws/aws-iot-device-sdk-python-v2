@@ -49,10 +49,14 @@ class MqttServiceClient(object):
         """
         future = Future() # type: Future
         try:
-            def on_unsuback(packet_id):
-                future.set_result(None)
+            def on_unsuback(unsuback_future):
+                if unsuback_future.exception():
+                    future.set_exception(unsuback_future.exception())
+                else:
+                    future.set_result(None)
 
-            self.mqtt_connection.unsubscribe(topic, on_unsuback)
+            unsub_future = self.mqtt_connection.unsubscribe(topic)
+            unsub_future.add_done_callback(on_unsuback)
 
         except Exception as e:
             future.set_exception(e)
@@ -75,19 +79,23 @@ class MqttServiceClient(object):
         """
         future = Future() # type: Future
         try:
-            def on_puback(packet_id):
-                future.set_result(None)
+            def on_puback(puback_future):
+                if puback_future.exception():
+                    future.set_exception(puback_future.exception())
+                else:
+                    future.set_result(None)
 
             if payload is None:
                 payload_str = ""
             else:
                 payload_str = json.dumps(payload)
 
-            self.mqtt_connection.publish(
+            pub_future, _ = self.mqtt_connection.publish(
                 topic=topic,
                 payload=payload_str,
-                qos=mqtt.QoS.AtLeastOnce,
-                puback_callback=on_puback)
+                qos=mqtt.QoS.AT_LEAST_ONCE,
+            )
+            pub_future.add_done_callback(on_puback)
 
         except Exception as e:
             future.set_exception(e)
@@ -122,8 +130,11 @@ class MqttServiceClient(object):
 
         future = Future() # type: Future
         try:
-            def on_suback(packet_id, topic, qos):
-                future.set_result(None)
+            def on_suback(suback_future):
+                if suback_future.exception():
+                    future.set_exception(suback_future.exception())
+                else:
+                    future.set_result(None)
 
             def callback_wrapper(topic, payload_str):
                 try:
@@ -134,11 +145,12 @@ class MqttServiceClient(object):
                     event = None
                 callback(event)
 
-            self.mqtt_connection.subscribe(
+            sub_future, _ = self.mqtt_connection.subscribe(
                 topic=topic,
-                qos=mqtt.QoS.AtLeastOnce,
+                qos=mqtt.QoS.AT_LEAST_ONCE,
                 callback=callback_wrapper,
-                suback_callback=on_suback)
+            )
+            sub_future.add_done_callback(on_suback)
 
         except Exception as e:
             future.set_exception(e)

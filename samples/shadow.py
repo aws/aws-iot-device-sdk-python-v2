@@ -16,8 +16,10 @@ from __future__ import print_function
 import argparse
 from aws_crt import io, mqtt
 from awsiot import iotshadow
-from concurrent import futures
+from concurrent.futures import Future
+import sys
 import threading
+import traceback
 
 # - Overview -
 # This sample uses the AWS IoT Device Shadow Service to keep a property in
@@ -51,8 +53,6 @@ parser.add_argument('--thing-name', required=True, help="The name assigned to yo
 parser.add_argument('--shadow-property', default="color", help="Name of property in shadow to keep in sync")
 
 # Using globals to simplify sample code
-connected_future = futures.Future()
-disconnect_called = False
 is_sample_done = threading.Event()
 
 mqtt_connection = None
@@ -60,46 +60,46 @@ shadow_client = None
 thing_name = ""
 shadow_property = ""
 
-# Acquire shadow_value_lock before touching shadow_value, which may be changed from any thread
-shadow_value = None
-shadow_value_lock = threading.Lock()
 SHADOW_VALUE_DEFAULT = "off"
 
+class LockedData(object):
+    def __init__(self):
+        self.lock = threading.Lock()
+        self.shadow_value = None
+        self.disconnect_called = False
+
+locked_data = LockedData()
+
 # Function for gracefully quitting this sample
-def exit(msg):
-    print("Exiting Sample:", msg)
-    print("Disconnecting...")
-    global disconnect_called
-    disconnect_called = True
-    mqtt_connection.disconnect()
-
-def on_connected(return_code, session_present):
-    # type: (int, bool) -> None
-    print("Connect completed with code: {}".format(return_code))
-    if return_code == 0:
-        connected_future.set_result(None)
+def exit(msg_or_exception):
+    if isinstance(msg_or_exception, Exception):
+        print("Exiting sample due to exception.")
+        traceback.print_exception(msg_or_exception.__class__, msg_or_exception, sys.exc_info()[2])
     else:
-        connected_future.set_exception(RuntimeError("Connection failed with code: {}".format(return_code)))
+        print("Exiting sample:", msg_or_exception)
 
-def on_disconnected(return_code):
-    # type: (int) -> bool
-    print("Disconnected with code: {}".format(return_code))
-    if disconnect_called:
-        # Signal that sample is finished
-        is_sample_done.set()
-        # Don't attempt to reconnect
-        return False
-    else:
-        # Attempt to reconnect
-        return True
+    with locked_data.lock:
+        if not locked_data.disconnect_called:
+            print("Disconnecting...")
+            locked_data.disconnect_called = True
+            future = mqtt_connection.disconnect()
+            future.add_done_callback(on_disconnected)
+
+def on_disconnected(disconnect_future):
+    # type: (Future) -> None
+    print("Disconnected.")
+
+    # Signal that sample is finished
+    is_sample_done.set()
+
 
 def on_get_shadow_accepted(response):
     # type: (iotshadow.GetShadowResponse) -> None
     try:
         print("Finished getting initial shadow state.")
 
-        with shadow_value_lock:
-            if shadow_value is not None:
+        with locked_data.lock:
+            if locked_data.shadow_value is not None:
                 print("  Ignoring initial query because a delta event has already been received.")
                 return
 
@@ -123,7 +123,7 @@ def on_get_shadow_accepted(response):
         return
 
     except Exception as e:
-        exit("Error getting shadow: {}".format(repr(e)))
+        exit(e)
 
 def on_get_shadow_rejected(error):
     # type: (iotshadow.ErrorResponse) -> None
@@ -151,20 +151,24 @@ def on_shadow_delta_updated(delta):
             print("  Delta did not report a change in '{}'".format(shadow_property))
 
     except Exception as e:
-        exit("Error processing shadow delta: {}".format(repr(e)))
+        exit(e)
 
 def on_publish_update_shadow(future):
-    #type: (futures.Future) -> None
+    #type: (Future) -> None
     try:
         future.result()
         print("Update request published.")
     except Exception as e:
-        exit("Failed to publish update request: {}".format(repr(e)))
+        print("Failed to publish update request.")
+        exit(e)
 
 def on_update_shadow_accepted(response):
     # type: (iotshadow.UpdateShadowResponse) -> None
-    print("Finished updating reported shadow value to '{}'.".format(response.state.reported[shadow_property]))
-    print("Enter desired value: ") # remind user they can input new values
+    try:
+        print("Finished updating reported shadow value to '{}'.".format(response.state.reported[shadow_property])) # type: ignore
+        print("Enter desired value: ") # remind user they can input new values
+    except:
+        exit("Updated shadow is missing the target property.")
 
 def on_update_shadow_rejected(error):
     # type: (iotshadow.ErrorResponse) -> None
@@ -172,35 +176,30 @@ def on_update_shadow_rejected(error):
         error.code, error.message))
 
 def set_local_value_due_to_initial_query(reported_value):
-    with shadow_value_lock:
-        global shadow_value
-        shadow_value = reported_value
+    with locked_data.lock:
+        locked_data.shadow_value = reported_value
     print("Enter desired value: ") # remind user they can input new values
 
 def change_shadow_value(value):
-    global shadow_value
-    with shadow_value_lock:
-        if shadow_value == value:
+    with locked_data.lock:
+        if locked_data.shadow_value == value:
             print("Local value is already '{}'.".format(value))
             print("Enter desired value: ") # remind user they can input new values
             return
 
         print("Changed local shadow value to '{}'.".format(value))
-        shadow_value = value
+        locked_data.shadow_value = value
 
     print("Updating reported shadow value to '{}'...".format(value))
-    try:
-        request = iotshadow.UpdateShadowRequest(
-            thing_name=thing_name,
-            state=iotshadow.ShadowState(
-                reported={ shadow_property: value },
-                desired={ shadow_property: value },
-            )
+    request = iotshadow.UpdateShadowRequest(
+        thing_name=thing_name,
+        state=iotshadow.ShadowState(
+            reported={ shadow_property: value },
+            desired={ shadow_property: value },
         )
-        future = shadow_client.publish_update_shadow(request)
-        future.add_done_callback(on_publish_update_shadow)
-    except Exception as e:
-        exit("Error issuing shadow update: {}".format(repr(e)))
+    )
+    future = shadow_client.publish_update_shadow(request)
+    future.add_done_callback(on_publish_update_shadow)
 
 def user_input_thread_fn():
     while True:
@@ -220,7 +219,8 @@ def user_input_thread_fn():
                 change_shadow_value(new_value)
 
         except Exception as e:
-            exit("Exception on input thread: {}".format(repr(e)))
+            print("Exception on input thread.")
+            exit(e)
             break
 
 if __name__ == '__main__':
@@ -243,15 +243,12 @@ if __name__ == '__main__':
     port = 443 if io.is_alpn_available() else 8883
     print("Connecting to {} on port {}...".format(args.endpoint, port))
     mqtt_connection = mqtt.Connection(
-            client=mqtt_client,
-            client_id=args.client_id)
-    mqtt_connection.connect(
+            client=mqtt_client)
+    connected_future = mqtt_connection.connect(
+            client_id=args.client_id,
             host_name = args.endpoint,
             port = port,
-            on_connect=on_connected,
-            on_disconnect=on_disconnected,
             use_websocket=False,
-            alpn=None,
             clean_session=True,
             keep_alive=6000)
 
@@ -263,6 +260,7 @@ if __name__ == '__main__':
     # But this sample waits here so it's obvious when a connection
     # fails or succeeds.
     connected_future.result()
+    print("Connected!")
 
     try:
         # Subscribe to necessary topics.
@@ -321,7 +319,7 @@ if __name__ == '__main__':
         user_input_thread.start()
 
     except Exception as e:
-        exit(repr(e))
+        exit(e)
 
     # Wait for the sample to finish (user types 'quit', or an error occurs)
     is_sample_done.wait()
