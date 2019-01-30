@@ -21,13 +21,14 @@ import typing
 
 class IotShadowClient(awsiot.MqttServiceClient):
 
-    def publish_delete_shadow(self, request):
-        # type: (DeleteShadowRequest) -> concurrent.futures.Future
+    def publish_delete_shadow(self, request, qos):
+        # type: (DeleteShadowRequest, int) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic
 
         Parameters:
         request - `DeleteShadowRequest` instance.
+        qos     - The Quality of Service guarantee of this message
 
         Returns a concurrent.futures.Future, whose result will be None if the
         request is successfully published. The Future's result will be an
@@ -38,15 +39,17 @@ class IotShadowClient(awsiot.MqttServiceClient):
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/shadow/delete'.format(request),
+            qos=qos,
             payload=None)
 
-    def publish_get_shadow(self, request):
-        # type: (GetShadowRequest) -> concurrent.futures.Future
+    def publish_get_shadow(self, request, qos):
+        # type: (GetShadowRequest, int) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic
 
         Parameters:
         request - `GetShadowRequest` instance.
+        qos     - The Quality of Service guarantee of this message
 
         Returns a concurrent.futures.Future, whose result will be None if the
         request is successfully published. The Future's result will be an
@@ -57,15 +60,17 @@ class IotShadowClient(awsiot.MqttServiceClient):
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/shadow/get'.format(request),
+            qos=qos,
             payload=None)
 
-    def publish_update_shadow(self, request):
-        # type: (UpdateShadowRequest) -> concurrent.futures.Future
+    def publish_update_shadow(self, request, qos):
+        # type: (UpdateShadowRequest, int) -> concurrent.futures.Future
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic
 
         Parameters:
         request - `UpdateShadowRequest` instance.
+        qos     - The Quality of Service guarantee of this message
 
         Returns a concurrent.futures.Future, whose result will be None if the
         request is successfully published. The Future's result will be an
@@ -76,16 +81,18 @@ class IotShadowClient(awsiot.MqttServiceClient):
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/shadow/update'.format(request),
+            qos=qos,
             payload=request.to_payload())
 
-    def subscribe_to_delete_shadow_accepted(self, request, on_accepted):
-        # type: (DeleteShadowSubscriptionRequest, typing.Callable[[DeleteShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
+    def subscribe_to_delete_shadow_accepted(self, request, qos, callback):
+        # type: (DeleteShadowSubscriptionRequest, int, typing.Callable[[DeleteShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-accepted-pub-sub-topic
 
         Parameters:
         request - `DeleteShadowSubscriptionRequest` instance.
-        on_accepted - Callback to invoke each time the on_accepted event is received.
+        qos     - The Quality of Service guarantee of this message
+        callback - Callback to invoke each time the event is received.
                 The callback should take 1 argument of type `DeleteShadowResponse`.
                 The callback is not expected to return anything.
 
@@ -99,22 +106,24 @@ class IotShadowClient(awsiot.MqttServiceClient):
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
 
-        if not on_accepted:
-            raise ValueError("on_accepted is required")
+        if not callable(callback):
+            raise ValueError("callback is required")
 
         return self._subscribe_operation(
             topic='$aws/things/{0.thing_name}/shadow/delete/accepted'.format(request),
-            callback=on_accepted,
+            qos=qos,
+            callback=callback,
             payload_to_class_fn=DeleteShadowResponse.from_payload)
 
-    def subscribe_to_delete_shadow_rejected(self, request, on_rejected):
-        # type: (DeleteShadowSubscriptionRequest, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
+    def subscribe_to_delete_shadow_rejected(self, request, qos, callback):
+        # type: (DeleteShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-rejected-pub-sub-topic
 
         Parameters:
         request - `DeleteShadowSubscriptionRequest` instance.
-        on_rejected - Callback to invoke each time the on_rejected event is received.
+        qos     - The Quality of Service guarantee of this message
+        callback - Callback to invoke each time the event is received.
                 The callback should take 1 argument of type `ErrorResponse`.
                 The callback is not expected to return anything.
 
@@ -128,22 +137,24 @@ class IotShadowClient(awsiot.MqttServiceClient):
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
 
-        if not on_rejected:
-            raise ValueError("on_rejected is required")
+        if not callable(callback):
+            raise ValueError("callback is required")
 
         return self._subscribe_operation(
             topic='$aws/things/{0.thing_name}/shadow/delete/rejected'.format(request),
-            callback=on_rejected,
+            qos=qos,
+            callback=callback,
             payload_to_class_fn=ErrorResponse.from_payload)
 
-    def subscribe_to_get_shadow_accepted(self, request, on_accepted):
-        # type: (GetShadowSubscriptionRequest, typing.Callable[[GetShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
+    def subscribe_to_get_shadow_accepted(self, request, qos, callback):
+        # type: (GetShadowSubscriptionRequest, int, typing.Callable[[GetShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-accepted-pub-sub-topic
 
         Parameters:
         request - `GetShadowSubscriptionRequest` instance.
-        on_accepted - Callback to invoke each time the on_accepted event is received.
+        qos     - The Quality of Service guarantee of this message
+        callback - Callback to invoke each time the event is received.
                 The callback should take 1 argument of type `GetShadowResponse`.
                 The callback is not expected to return anything.
 
@@ -157,22 +168,24 @@ class IotShadowClient(awsiot.MqttServiceClient):
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
 
-        if not on_accepted:
-            raise ValueError("on_accepted is required")
+        if not callable(callback):
+            raise ValueError("callback is required")
 
         return self._subscribe_operation(
             topic='$aws/things/{0.thing_name}/shadow/get/accepted'.format(request),
-            callback=on_accepted,
+            qos=qos,
+            callback=callback,
             payload_to_class_fn=GetShadowResponse.from_payload)
 
-    def subscribe_to_get_shadow_rejected(self, request, on_rejected):
-        # type: (GetShadowSubscriptionRequest, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
+    def subscribe_to_get_shadow_rejected(self, request, qos, callback):
+        # type: (GetShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-rejected-pub-sub-topic
 
         Parameters:
         request - `GetShadowSubscriptionRequest` instance.
-        on_rejected - Callback to invoke each time the on_rejected event is received.
+        qos     - The Quality of Service guarantee of this message
+        callback - Callback to invoke each time the event is received.
                 The callback should take 1 argument of type `ErrorResponse`.
                 The callback is not expected to return anything.
 
@@ -186,22 +199,24 @@ class IotShadowClient(awsiot.MqttServiceClient):
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
 
-        if not on_rejected:
-            raise ValueError("on_rejected is required")
+        if not callable(callback):
+            raise ValueError("callback is required")
 
         return self._subscribe_operation(
             topic='$aws/things/{0.thing_name}/shadow/get/rejected'.format(request),
-            callback=on_rejected,
+            qos=qos,
+            callback=callback,
             payload_to_class_fn=ErrorResponse.from_payload)
 
-    def subscribe_to_shadow_delta_updated_events(self, request, on_event):
-        # type: (ShadowDeltaUpdatedSubscriptionRequest, typing.Callable[[ShadowDeltaUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
+    def subscribe_to_shadow_delta_updated_events(self, request, qos, callback):
+        # type: (ShadowDeltaUpdatedSubscriptionRequest, int, typing.Callable[[ShadowDeltaUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic
 
         Parameters:
         request - `ShadowDeltaUpdatedSubscriptionRequest` instance.
-        on_event - Callback to invoke each time the on_event event is received.
+        qos     - The Quality of Service guarantee of this message
+        callback - Callback to invoke each time the event is received.
                 The callback should take 1 argument of type `ShadowDeltaUpdatedEvent`.
                 The callback is not expected to return anything.
 
@@ -215,22 +230,24 @@ class IotShadowClient(awsiot.MqttServiceClient):
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
 
-        if not on_event:
-            raise ValueError("on_event is required")
+        if not callable(callback):
+            raise ValueError("callback is required")
 
         return self._subscribe_operation(
             topic='$aws/things/{0.thing_name}/shadow/update/delta'.format(request),
-            callback=on_event,
+            qos=qos,
+            callback=callback,
             payload_to_class_fn=ShadowDeltaUpdatedEvent.from_payload)
 
-    def subscribe_to_shadow_updated_events(self, request, on_event):
-        # type: (ShadowUpdatedSubscriptionRequest, typing.Callable[[ShadowUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
+    def subscribe_to_shadow_updated_events(self, request, qos, callback):
+        # type: (ShadowUpdatedSubscriptionRequest, int, typing.Callable[[ShadowUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic
 
         Parameters:
         request - `ShadowUpdatedSubscriptionRequest` instance.
-        on_event - Callback to invoke each time the on_event event is received.
+        qos     - The Quality of Service guarantee of this message
+        callback - Callback to invoke each time the event is received.
                 The callback should take 1 argument of type `ShadowUpdatedEvent`.
                 The callback is not expected to return anything.
 
@@ -244,22 +261,24 @@ class IotShadowClient(awsiot.MqttServiceClient):
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
 
-        if not on_event:
-            raise ValueError("on_event is required")
+        if not callable(callback):
+            raise ValueError("callback is required")
 
         return self._subscribe_operation(
             topic='$aws/things/{0.thing_name}/shadow/update/documents'.format(request),
-            callback=on_event,
+            qos=qos,
+            callback=callback,
             payload_to_class_fn=ShadowUpdatedEvent.from_payload)
 
-    def subscribe_to_update_shadow_accepted(self, request, on_accepted):
-        # type: (UpdateShadowSubscriptionRequest, typing.Callable[[UpdateShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
+    def subscribe_to_update_shadow_accepted(self, request, qos, callback):
+        # type: (UpdateShadowSubscriptionRequest, int, typing.Callable[[UpdateShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-accepted-pub-sub-topic
 
         Parameters:
         request - `UpdateShadowSubscriptionRequest` instance.
-        on_accepted - Callback to invoke each time the on_accepted event is received.
+        qos     - The Quality of Service guarantee of this message
+        callback - Callback to invoke each time the event is received.
                 The callback should take 1 argument of type `UpdateShadowResponse`.
                 The callback is not expected to return anything.
 
@@ -273,22 +292,24 @@ class IotShadowClient(awsiot.MqttServiceClient):
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
 
-        if not on_accepted:
-            raise ValueError("on_accepted is required")
+        if not callable(callback):
+            raise ValueError("callback is required")
 
         return self._subscribe_operation(
             topic='$aws/things/{0.thing_name}/shadow/update/accepted'.format(request),
-            callback=on_accepted,
+            qos=qos,
+            callback=callback,
             payload_to_class_fn=UpdateShadowResponse.from_payload)
 
-    def subscribe_to_update_shadow_rejected(self, request, on_rejected):
-        # type: (UpdateShadowSubscriptionRequest, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
+    def subscribe_to_update_shadow_rejected(self, request, qos, callback):
+        # type: (UpdateShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-rejected-pub-sub-topic
 
         Parameters:
         request - `UpdateShadowSubscriptionRequest` instance.
-        on_rejected - Callback to invoke each time the on_rejected event is received.
+        qos     - The Quality of Service guarantee of this message
+        callback - Callback to invoke each time the event is received.
                 The callback should take 1 argument of type `ErrorResponse`.
                 The callback is not expected to return anything.
 
@@ -302,12 +323,13 @@ class IotShadowClient(awsiot.MqttServiceClient):
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
 
-        if not on_rejected:
-            raise ValueError("on_rejected is required")
+        if not callable(callback):
+            raise ValueError("callback is required")
 
         return self._subscribe_operation(
             topic='$aws/things/{0.thing_name}/shadow/update/rejected'.format(request),
-            callback=on_rejected,
+            qos=qos,
+            callback=callback,
             payload_to_class_fn=ErrorResponse.from_payload)
 
 class DeleteShadowRequest(awsiot.ModeledClass):

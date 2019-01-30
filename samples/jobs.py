@@ -102,7 +102,7 @@ def try_start_next_job():
 
     print("Publishing request to start next job...")
     request = iotjobs.StartNextPendingJobExecutionRequest(thing_name=args.thing_name)
-    publish_future = jobs_client.publish_start_next_pending_job_execution(request)
+    publish_future = jobs_client.publish_start_next_pending_job_execution(request, mqtt.QoS.AT_LEAST_ONCE)
     publish_future.add_done_callback(on_publish_start_next_pending_job_execution)
 
 def done_working_on_job():
@@ -267,7 +267,8 @@ if __name__ == '__main__':
 
         subscribed_future, _ = jobs_client.subscribe_to_next_job_execution_changed_events(
             request=changed_subscription_request,
-            on_event=on_next_job_execution_changed)
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_next_job_execution_changed)
 
         # Wait for subscription to succeed
         subscribed_future.result()
@@ -277,11 +278,13 @@ if __name__ == '__main__':
             thing_name=args.thing_name)
         subscribed_accepted_future, _ = jobs_client.subscribe_to_start_next_pending_job_execution_accepted(
             request=start_subscription_request,
-            on_accepted=on_start_next_pending_job_execution_accepted)
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_start_next_pending_job_execution_accepted)
 
         subscribed_rejected_future, _ = jobs_client.subscribe_to_start_next_pending_job_execution_rejected(
             request=start_subscription_request,
-            on_rejected=on_start_next_pending_job_execution_rejected)
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_start_next_pending_job_execution_rejected)
 
         # Wait for subscriptions to succeed
         subscribed_accepted_future.result()
@@ -296,11 +299,13 @@ if __name__ == '__main__':
 
         subscribed_accepted_future, _ = jobs_client.subscribe_to_update_job_execution_accepted(
             request=update_subscription_request,
-            on_accepted=on_update_job_execution_accepted)
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_update_job_execution_accepted)
 
         subscribed_rejected_future, _ = jobs_client.subscribe_to_update_job_execution_rejected(
             request=update_subscription_request,
-            on_rejected=on_update_job_execution_rejected)
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_update_job_execution_rejected)
 
         # Wait for subscriptions to succeed
         subscribed_accepted_future.result()

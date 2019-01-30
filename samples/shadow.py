@@ -198,7 +198,7 @@ def change_shadow_value(value):
             desired={ shadow_property: value },
         )
     )
-    future = shadow_client.publish_update_shadow(request)
+    future = shadow_client.publish_update_shadow(request, mqtt.QoS.AT_LEAST_ONCE)
     future.add_done_callback(on_publish_update_shadow)
 
 def user_input_thread_fn():
@@ -269,7 +269,8 @@ if __name__ == '__main__':
         print("Subscribing to Delta events...")
         delta_subscribed_future, _ = shadow_client.subscribe_to_shadow_delta_updated_events(
             request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(args.thing_name),
-            on_event=on_shadow_delta_updated)
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_shadow_delta_updated)
 
         # Wait for subscription to succeed
         delta_subscribed_future.result()
@@ -277,11 +278,13 @@ if __name__ == '__main__':
         print("Subscribing to Update responses...")
         update_accepted_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_accepted(
             request=iotshadow.UpdateShadowSubscriptionRequest(args.thing_name),
-            on_accepted=on_update_shadow_accepted)
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_update_shadow_accepted)
 
         update_rejected_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_rejected(
             request=iotshadow.UpdateShadowSubscriptionRequest(args.thing_name),
-            on_rejected=on_update_shadow_rejected)
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_update_shadow_rejected)
 
         # Wait for subscriptions to succeed
         update_accepted_subscribed_future.result()
@@ -290,11 +293,13 @@ if __name__ == '__main__':
         print("Subscribing to Get responses...")
         get_accepted_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_accepted(
             request=iotshadow.GetShadowSubscriptionRequest(args.thing_name),
-            on_accepted=on_get_shadow_accepted)
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_get_shadow_accepted)
 
         get_rejected_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_rejected(
             request=iotshadow.GetShadowSubscriptionRequest(args.thing_name),
-            on_rejected=on_get_shadow_rejected)
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_get_shadow_rejected)
 
         # Wait for subscriptions to succeed
         get_accepted_subscribed_future.result()
@@ -306,7 +311,8 @@ if __name__ == '__main__':
         # The response will be received by the on_get_accepted() callback
         print("Requesting current shadow state...")
         publish_get_future = shadow_client.publish_get_shadow(
-            request=iotshadow.GetShadowRequest(args.thing_name))
+            request=iotshadow.GetShadowRequest(args.thing_name),
+            qos=mqtt.QoS.AT_LEAST_ONCE)
 
         # Ensure that publish succeeds
         publish_get_future.result()
