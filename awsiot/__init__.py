@@ -63,13 +63,14 @@ class MqttServiceClient(object):
 
         return future
 
-    def _publish_operation(self, topic, payload):
-        # type(str, Optional[PayloadObj]) -> Future
+    def _publish_operation(self, topic, qos, payload):
+        # type(str, int, Optional[PayloadObj]) -> Future
         """
         Performs a 'Publish' style operation for an MQTT service.
 
         Parameters:
         topic - The topic to publish this message to.
+        qos   - The Quality of Service guarantee of this message
         payload - (Optional) If set, the message will be a string of JSON, built from this object.
                 If unset, an empty message is sent.
 
@@ -93,7 +94,7 @@ class MqttServiceClient(object):
             pub_future, _ = self.mqtt_connection.publish(
                 topic=topic,
                 payload=payload_str,
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=qos,
             )
             pub_future.add_done_callback(on_puback)
 
@@ -102,8 +103,8 @@ class MqttServiceClient(object):
 
         return future
 
-    def _subscribe_operation(self, topic, callback, payload_to_class_fn):
-        # type: (str, Callable[[T], None], PayloadToClassFn) -> Tuple[Future, str]
+    def _subscribe_operation(self, topic, qos, callback, payload_to_class_fn):
+        # type: (str, int, Callable[[T], None], PayloadToClassFn) -> Tuple[Future, str]
         """
         Performs a 'Subscribe' style operation for an MQTT service.
         Messages received from this topic are processed as JSON,
@@ -112,6 +113,7 @@ class MqttServiceClient(object):
 
         Parameters:
         topic - The topic to subscribe to.
+        qos   - The Quality of Service guarantee of this message
         callback - The callback to invoke when a message is received.
                 The callback should take one argument of the type
                 returned by payload_to_class_fn. The callback
@@ -147,7 +149,7 @@ class MqttServiceClient(object):
 
             sub_future, _ = self.mqtt_connection.subscribe(
                 topic=topic,
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=qos,
                 callback=callback_wrapper,
             )
             sub_future.add_done_callback(on_suback)
