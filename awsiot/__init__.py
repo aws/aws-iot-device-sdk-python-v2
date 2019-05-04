@@ -14,9 +14,10 @@
 __all__ = [
     'iotjobs',
     'iotshadow',
+    'greengrass_discovery',
 ]
 
-from aws_crt import mqtt
+from awscrt import mqtt
 from concurrent.futures import Future
 import json
 from typing import Any, Callable, Dict, Optional, Tuple, TypeVar

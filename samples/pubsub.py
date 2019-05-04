@@ -14,7 +14,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 import argparse
-from aws_crt import io, mqtt
+from awscrt import io, mqtt
 import threading
 import time
 
