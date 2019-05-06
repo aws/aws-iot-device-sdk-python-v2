@@ -42,7 +42,6 @@ class DiscoveryClient(object):
     def discover(self, thing_name):
 
         ret_future = Future()
-        connection = None
         response_body = bytearray()
         request = None
 
@@ -50,8 +49,7 @@ class DiscoveryClient(object):
             response_body.extend(response_chunk)
 
         def on_request_complete(completion_future):
-            global connection
-            global request
+            nonlocal request  
             try:
                 response_code = request.response_code
                 if response_code == 200:
@@ -65,8 +63,7 @@ class DiscoveryClient(object):
                 ret_future.set_exception(e)
 
         def on_connection_completed(conn_future):
-            global connection
-            global request
+            nonlocal request
             try:
                 connection = conn_future.result()                
                 request = connection.make_request(
