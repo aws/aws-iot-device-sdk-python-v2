@@ -49,13 +49,16 @@ class DiscoveryClient(object):
             response_body.extend(response_chunk)
 
         def on_request_complete(completion_future):
-            nonlocal request  
+            global request  
             try:
                 response_code = request.response_code
+                # marking request as global prevents the GC from reclaiming it,
+                # so force it to do it here.
+                request = None
                 if response_code == 200:
                     payload_str = str(response_body, encoding='utf-8')
                     discover_res = DiscoverResponse.from_payload(json.loads(payload_str))
-                    ret_future.set_result(discover_res)
+                    ret_future.set_result(discover_res)                    
                 else:                    
                     ret_future.set_exception(DiscoveryException('Error during discover call: response code ={}'.format(response_code), response_code))
 
@@ -63,7 +66,7 @@ class DiscoveryClient(object):
                 ret_future.set_exception(e)
 
         def on_connection_completed(conn_future):
-            nonlocal request
+            global request
             try:
                 connection = conn_future.result()                
                 request = connection.make_request(
@@ -75,7 +78,10 @@ class DiscoveryClient(object):
 
                 request.response_completed.add_done_callback(on_request_complete)
 
-            except Exception as e:  
+            except Exception as e:
+                # marking request as global prevents the GC from reclaiming it,
+                # so force it to do it here.
+                request = None  
                 ret_future.set_exception(e)
 
         connect_future = HttpClientConnection.new_connection(self._bootstrap, self._gg_server_name, self.port, self._socket_options, None, self._tls_connection_options)

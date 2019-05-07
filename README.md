@@ -12,9 +12,16 @@ for a stable development environment.
 This SDK is built on the AWS Common Runtime, a collection of libraries
 ([1](https://github.com/awslabs/aws-c-common),
 [2](https://github.com/awslabs/aws-c-io),
-[3](https://github.com/awslabs/aws-c-mqtt), ...) written in C to be
+[3](https://github.com/awslabs/aws-c-mqtt),
+[4](https://github.com/awslabs/aws-c-http),
+[5](https://github.com/awslabs/aws-c-cal) ...) written in C to be
 cross-platform, high-performance, secure, and reliable. The libraries are bound
 to Python by the [awscrt](https://github.com/awslabs/aws-crt-python) package.
+
+The awscrt package can be installed via. pip 
+```
+pip install awscrt
+```
 
 Integration with AWS IoT Services such as
 [Device Shadow](https://docs.aws.amazon.com/iot/latest/developerguide/iot-device-shadows.html)
@@ -24,14 +31,14 @@ is provided by code that been generated from a model of the service.
 # Installation
 ## Minimum Requirements
 *   Python 3.5+ or Python 2.7+
-*   CMake 3.1+
-*   Clang 3.9+ or GCC 4.4+ or MSVC 2015+
+
+## Install from pypi
+```
+pip install awsiot
+```
 
 ## Build from source
 ```
-git clone --branch v0.2.0 https://github.com/awslabs/aws-crt-python.git --recursive
-git clone https://github.com/awslabs/aws-iot-device-sdk-python-v2.git
-pip install ./aws-crt-python
 pip install ./aws-iot-device-sdk-python-v2
 ```
 
@@ -265,6 +272,11 @@ and receive.
 }
 </pre>
 </details>
+
+## basic discovery
+
+This sample intended for use directly with the 
+[Getting Started with AWS IoT Greengrass](https://docs.aws.amazon.com/greengrass/latest/developerguide/gg-gs.html) guide.
 
 # License
 

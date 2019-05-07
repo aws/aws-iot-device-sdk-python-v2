@@ -21,23 +21,38 @@ from awscrt.io import Logger, LogLevel
 from awscrt.mqtt import Connection, Client, QoS
 from awsiot.greengrass_discovery import DiscoveryClient, DiscoverResponse
 
-AllowedActions = ['both', 'publish', 'subscribe']
+allowed_actions = ['both', 'publish', 'subscribe']
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-r', '--ca_file', action='store', required=True, dest='root_ca_path', help='Root CA file path')
-parser.add_argument('-c', '--cert', action='store', dest='certificate_path', help='Certificate file path')
-parser.add_argument('-k', '--key', action='store', dest='private_key_path', help='Private key file path')
-parser.add_argument('-n', '--thing_name', action='store', dest='thing_name', default='Bot', help='Targeted thing name')
+parser.add_argument('-c', '--cert', action='store', required=True, dest='certificate_path', help='Certificate file path')
+parser.add_argument('-k', '--key', action='store', required=True, dest='private_key_path', help='Private key file path')
+parser.add_argument('-n', '--thing_name', action='store', required=True, dest='thing_name', help='Targeted thing name')
 parser.add_argument('-t', '--topic', action='store', dest='topic', default='sdk/test/Python', help='Targeted topic')
 parser.add_argument('-m', '--mode', action='store', dest='mode', default='both',
-                    help='Operation modes: %s'%str(AllowedActions))
+                    help='Operation modes: %s'%str(allowed_actions))
 parser.add_argument('-M', '--message', action='store', dest='message', default='Hello World!',
 help='Message to publish')
 parser.add_argument('--region', action='store', dest='region', default='us-east-1')
-
+parser.add_argument('--max_pub_ops', action='store', dest='max_pub_ops', default=10)
+parser.add_argument('--print_discover_resp_only', action='store_true', dest='print_discover_resp_only', default=False)
+parser.add_argument('-v', '--verbose', action='store', dest='verbosity', default='NoLogs')
 
 args = parser.parse_args()
-logger = Logger(LogLevel.Error, 'stderr')
+
+logger = None
+if args.verbosity == 'Fatal':
+    logger = Logger(LogLevel.Fatal, 'stderr')
+elif args.verbosity == 'Error':
+    logger = Logger(LogLevel.Error, 'stderr')
+elif args.verbosity == 'Warn':
+    logger = Logger(LogLevel.Warn, 'stderr')
+elif args.verbosity == 'Info':
+    logger = Logger(LogLevel.Info, 'stderr')
+elif args.verbosity == 'Debug':
+    logger = Logger(LogLevel.Debug, 'stderr')
+elif args.verbosity == 'Trace':    
+    logger = Logger(LogLevel.Trace, 'stderr')
 
 event_loop_group = io.EventLoopGroup(1)
 client_bootstrap = io.ClientBootstrap(event_loop_group)
@@ -52,6 +67,10 @@ socket_options.connect_timeout_ms = 3000
 discovery_client = DiscoveryClient(client_bootstrap, socket_options, tls_context, args.region)
 resp_future = discovery_client.discover(args.thing_name)
 resp = resp_future.result()
+
+if args.print_discover_resp_only:
+    print(resp)
+    exit(0)
 
 gg_core_tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.certificate_path, args.private_key_path)
 gg_core_tls_options.override_default_trust_store(bytes(resp.gg_groups[0].certificate_authorities[0], encoding='utf-8'))
@@ -93,16 +112,16 @@ if args.mode == 'both' or args.mode == 'subscribe':
     subscribe_future = mqtt_connection.subscribe(args.topic, QoS.AT_MOST_ONCE, on_publish)
     subscribe_future[0].result()
 
-loopCount = 0
-while True:
+loop_count = 0
+while loop_count < args.max_pub_ops:
     if args.mode == 'both' or args.mode == 'publish':
         message = {}
         message['message'] = args.message
-        message['sequence'] = loopCount
+        message['sequence'] = loop_count
         messageJson = json.dumps(message)
         pub_future = mqtt_connection.publish(args.topic, messageJson, QoS.AT_MOST_ONCE)
         pub_future[0].result()
         print('Published topic {}: {}\n'.format(args.topic, messageJson))
        
-        loopCount += 1
+        loop_count += 1
     time.sleep(1)
