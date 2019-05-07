@@ -6,7 +6,10 @@ phases:
       - sudo add-apt-repository ppa:ubuntu-toolchain-r/test
       - sudo apt-get update -y
       - sudo apt-get install python3 python3-pip python python-pip -y
-      - pip3 install --upgrade setuptools  
+      - pip3 install --upgrade setuptools
+      - pip3 install --upgrade pip
+      - pip install --upgrade setuptools
+      - pip install --upgrade pip  
   pre_build:
     commands:
       - curl https://www.amazontrust.com/repository/AmazonRootCA1.pem --output /tmp/AmazonRootCA1.pem
