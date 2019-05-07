@@ -25,7 +25,7 @@ setup(
     install_requires=[
         'awscrt==0.2.14',
         'futures; python_version == "2.7"',
-        'typing; python_version == "2.7"',
+        'typing; python_version <= "3.4"',
     ],
     python_requires='>=2.7',
 )
