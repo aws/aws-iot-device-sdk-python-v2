@@ -18,12 +18,10 @@ phases:
       - ENDPOINT=$(aws secretsmanager get-secret-value --secret-id "unit-test/endpoint" --query "SecretString" | cut -f2 -d":" | sed -e 's/[\\\"\}]//g')    
   build:
     commands:
-      - echo Build started on `date`
-      - ls /tmp/
-      - cat /tmp/certificate.pem
-      - pip3 install ./ -vvv
+      - echo Build started on `date`     
+      - pip3 install ./
       - python3 samples/basic_discovery.py --region us-east-1 --cert /tmp/certificate.pem --key /tmp/privatekey.pem --ca_file /tmp/AmazonRootCA1.pem --thing_name aws-sdk-crt-unit-test --print_discover_resp_only -v Trace
-      - pip install ./ -vvv
+      - pip install ./
       - python samples/basic_discovery.py --region us-east-1 --cert /tmp/certificate.pem --key /tmp/privatekey.pem --ca_file /tmp/AmazonRootCA1.pem --thing_name aws-sdk-crt-unit-test --print_discover_resp_only -v Trace
   post_build:
     commands:
