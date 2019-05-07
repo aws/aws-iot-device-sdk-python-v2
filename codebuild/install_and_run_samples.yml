@@ -16,9 +16,9 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - pip3 install ./
+      - pip3 install ./ -vvv
       - python3 samples/basic_discovery.py --region us-east-1 --cert /tmp/certificate.pem --key /tmp/privatekey.pem --ca_file /tmp/AmazonRootCA1.pem --thing_name aws-sdk-crt-unit-test --print_discover_resp_only -v Trace
-      - pip install ./
+      - pip install ./ -vvv
       - python samples/basic_discovery.py --region us-east-1 --cert /tmp/certificate.pem --key /tmp/privatekey.pem --ca_file /tmp/AmazonRootCA1.pem --thing_name aws-sdk-crt-unit-test --print_discover_resp_only -v Trace
   post_build:
     commands:
