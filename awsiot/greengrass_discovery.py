@@ -40,7 +40,6 @@ class DiscoveryClient(object):
             self.port = 443
 
     def discover(self, thing_name):
-
         ret_future = Future()
         response_body = bytearray()
         request = None
@@ -56,7 +55,7 @@ class DiscoveryClient(object):
                 # so force it to do it here.
                 request = None
                 if response_code == 200:
-                    payload_str = str(response_body, encoding='utf-8')
+                    payload_str = response_body.decode('utf-8')
                     discover_res = DiscoverResponse.from_payload(json.loads(payload_str))
                     ret_future.set_result(discover_res)                    
                 else:                    
