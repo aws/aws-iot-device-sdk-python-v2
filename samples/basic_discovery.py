@@ -17,7 +17,7 @@ import uuid
 import json
 from concurrent.futures import Future
 from awscrt import io
-from awscrt.io import Logger, LogLevel
+from awscrt.io import LogLevel
 from awscrt.mqtt import Connection, Client, QoS
 from awsiot.greengrass_discovery import DiscoveryClient, DiscoverResponse
 
@@ -40,19 +40,18 @@ parser.add_argument('-v', '--verbose', action='store', dest='verbosity', default
 
 args = parser.parse_args()
 
-logger = None
 if args.verbosity == 'Fatal':
-    logger = Logger(LogLevel.Fatal, 'stderr')
+    io.init_logging(LogLevel.Fatal, 'stderr')
 elif args.verbosity == 'Error':
-    logger = Logger(LogLevel.Error, 'stderr')
+    io.init_logging(LogLevel.Error, 'stderr')
 elif args.verbosity == 'Warn':
-    logger = Logger(LogLevel.Warn, 'stderr')
+    io.init_logging(LogLevel.Warn, 'stderr')
 elif args.verbosity == 'Info':
-    logger = Logger(LogLevel.Info, 'stderr')
+    io.init_logging(LogLevel.Info, 'stderr')
 elif args.verbosity == 'Debug':
-    logger = Logger(LogLevel.Debug, 'stderr')
+    io.init_logging(LogLevel.Debug, 'stderr')
 elif args.verbosity == 'Trace':    
-    logger = Logger(LogLevel.Trace, 'stderr')
+    io.init_logging(LogLevel.Trace, 'stderr')
 
 event_loop_group = io.EventLoopGroup(1)
 client_bootstrap = io.ClientBootstrap(event_loop_group)
