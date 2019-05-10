@@ -13,7 +13,7 @@
 
 # This file is generated
 
-import aws_crt.mqtt
+import awscrt.mqtt
 import awsiot
 import concurrent.futures
 import datetime

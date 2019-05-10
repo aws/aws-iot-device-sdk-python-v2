@@ -14,7 +14,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 import argparse
-from aws_crt import io, mqtt
+from awscrt import io, mqtt
 from awsiot import iotshadow
 from concurrent.futures import Future
 import sys
@@ -233,9 +233,9 @@ if __name__ == '__main__':
     event_loop_group = io.EventLoopGroup(1)
     client_bootstrap = io.ClientBootstrap(event_loop_group)
 
-    tls_options = io.TlsContextOptions.create_client_with_mtls(args.cert, args.key)
+    tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.cert, args.key)
     if args.root_ca:
-        tls_options.override_default_trust_store(ca_path=None, ca_file=args.root_ca)
+        tls_options.override_default_trust_store_from_path(ca_path=None, ca_file=args.root_ca)
     tls_context = io.ClientTlsContext(tls_options)
 
     mqtt_client = mqtt.Client(client_bootstrap, tls_context)

@@ -14,7 +14,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 import argparse
-from aws_crt import io, mqtt
+from awscrt import io, mqtt
 from awsiot import iotjobs
 from concurrent.futures import Future
 import sys
@@ -191,7 +191,7 @@ def job_thread_fn(job_id, job_document):
             thing_name=args.thing_name,
             job_id=job_id,
             status=iotjobs.JobStatus.SUCCEEDED)
-        publish_future = jobs_client.publish_update_job_execution(request)
+        publish_future = jobs_client.publish_update_job_execution(request, mqtt.QoS.AT_LEAST_ONCE)
         publish_future.add_done_callback(on_publish_update_job_execution)
 
     except Exception as e:
@@ -228,9 +228,9 @@ if __name__ == '__main__':
     event_loop_group = io.EventLoopGroup(1)
     client_bootstrap = io.ClientBootstrap(event_loop_group)
 
-    tls_options = io.TlsContextOptions.create_client_with_mtls(args.cert, args.key)
+    tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.cert, args.key)
     if args.root_ca:
-        tls_options.override_default_trust_store(ca_path=None, ca_file=args.root_ca)
+        tls_options.override_default_trust_store_from_path(ca_path=None, ca_file=args.root_ca)
     tls_context = io.ClientTlsContext(tls_options)
 
     mqtt_client = mqtt.Client(client_bootstrap, tls_context)

@@ -17,15 +17,15 @@ from setuptools import setup, find_packages
 
 setup(
     name='awsiot',
-    version='2.0',
+    version='2.2',
     description='AWS IoT SDK based on the AWS Common Runtime',
     author='AWS SDK Common Runtime Team',
     url='https://github.com/awslabs/aws-iot-device-sdk-python-v2',
     packages = find_packages(),
     install_requires=[
-        'aws_crt',
+        'awscrt==0.2.16',
         'futures; python_version == "2.7"',
-        'typing; python_version == "2.7"',
+        'typing; python_version <= "3.4"',
     ],
     python_requires='>=2.7',
 )
