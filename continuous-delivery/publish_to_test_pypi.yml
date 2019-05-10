@@ -9,12 +9,11 @@ phases:
       - python3 -m pip install --user --upgrade twine setuptools wheel boto3 PyOpenSSL six
   pre_build:
     commands:
-      - export CC=gcc
+      - pypirc=$(aws secretsmanager get-secret-value --secret-id "alpha/aws-crt-python/.pypirc" --query "SecretString" | cut -f2 -d":" | cut -f2 -d\") && echo "$pypirc" > ~/.pypirc
   build:
     commands:
       - echo Build started on `date`
       - cd aws-iot-device-sdk-python-v2 
-      - python3 continuous-delivery/pull_pypirc.py alpha
       - python3 setup.py sdist bdist_wheel --universal
       - python3 -m twine upload -r testpypi dist/*
   post_build:
