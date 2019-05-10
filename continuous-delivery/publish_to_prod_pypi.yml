@@ -1,0 +1,23 @@
+version: 0.2
+# this image assumes Ubuntu 14.04 base image
+phases:
+  install:
+    commands:
+      - sudo apt-get update -y
+      - sudo apt-get install python3 python3-pip -y
+      - python3 -m pip install --user --upgrade pip
+      - python3 -m pip install --user --upgrade twine setuptools wheel boto3 PyOpenSSL six
+  pre_build:
+    commands:
+      - export CC=gcc
+  build:
+    commands:
+      - echo Build started on `date`
+      - cd aws-iot-device-sdk-python-v2 
+      - python3 continuous-delivery/pull_pypirc.py prod
+      - python3 setup.py sdist bdist_wheel --universal
+      - python3 -m twine upload -r pypi dist/*
+  post_build:
+    commands:
+      - echo Build completed on `date`
+
