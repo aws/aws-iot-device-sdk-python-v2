@@ -40,17 +40,17 @@ parser.add_argument('-v', '--verbose', action='store', dest='verbosity', default
 
 args = parser.parse_args()
 
-if args.verbosity == 'Fatal':
+if args.verbosity.lower() == 'fatal':
     io.init_logging(LogLevel.Fatal, 'stderr')
-elif args.verbosity == 'Error':
+elif args.verbosity.lower() == 'error':
     io.init_logging(LogLevel.Error, 'stderr')
-elif args.verbosity == 'Warn':
+elif args.verbosity.lower() == 'warn':
     io.init_logging(LogLevel.Warn, 'stderr')
-elif args.verbosity == 'Info':
+elif args.verbosity.lower() == 'info':
     io.init_logging(LogLevel.Info, 'stderr')
-elif args.verbosity == 'Debug':
+elif args.verbosity.lower() == 'debug':
     io.init_logging(LogLevel.Debug, 'stderr')
-elif args.verbosity == 'Trace':    
+elif args.verbosity.lower() == 'trace':    
     io.init_logging(LogLevel.Trace, 'stderr')
 
 event_loop_group = io.EventLoopGroup(1)
@@ -98,7 +98,7 @@ for conectivity_info in resp.gg_groups[0].cores[0].connectivity:
         print('connection failed with exception {}'.format(e))
         continue  
 
-if  connection_succeeded != True:
+if connection_succeeded != True:
     print('All connection attempts for core {} failed'.format(resp.gg_groups[0].cores[0].thing_arn))
     exit(-1)
 
