@@ -4,7 +4,7 @@ set -e
 git describe --abbrev=0
 #now get the tag
 CURRENT_TAG_VERSION=$(git describe --abbrev=0)
-if pip install -vvv awsiot==$CURRENT_TAG_VERSION; then
+if pip install -vvv awsiotsdk==$CURRENT_TAG_VERSION; then
     echo "$CURRENT_TAG_VERSION is already in pypi, cut a new tag if you want to upload another version."
     exit 1
 fi

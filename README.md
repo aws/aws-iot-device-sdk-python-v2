@@ -34,7 +34,7 @@ is provided by code that been generated from a model of the service.
 
 ## Install from pypi
 ```
-pip install awsiot
+pip install awsiotsdk
 ```
 
 ## Build from source
