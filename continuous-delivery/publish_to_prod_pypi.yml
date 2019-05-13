@@ -9,7 +9,7 @@ phases:
       - python3 -m pip install --user --upgrade twine setuptools wheel boto3 PyOpenSSL six
   pre_build:
     commands:
-      - pypirc=$(aws secretsmanager get-secret-value --secret-id "prod/aws-crt-python/.pypirc" --query "SecretString" | cut -f2 -d":" | cut -f2 -d\") && echo "$pypirc" > ~/.pypirc
+      - pypirc=$(aws secretsmanager get-secret-value --secret-id "prod/aws-crt-python/.pypirc" --query "SecretString" | cut -f2 -d\") && echo "$pypirc" > ~/.pypirc
   build:
     commands:
       - echo Build started on `date`
