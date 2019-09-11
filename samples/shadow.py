@@ -240,7 +240,7 @@ if __name__ == '__main__':
 
     mqtt_client = mqtt.Client(client_bootstrap, tls_context)
 
-    port = 443 if io.is_alpn_available() else 8883
+    port = 8883
     print("Connecting to {} on port {}...".format(args.endpoint, port))
     mqtt_connection = mqtt.Connection(
             client=mqtt_client)
