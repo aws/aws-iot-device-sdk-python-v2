@@ -18,7 +18,7 @@ phases:
     commands:
       - echo Build started on `date`
       - cd aws-iot-device-sdk-python-v2 
-      - CURRENT_TAG_VERSION=$(git describe --abbrev=0)
+      - CURRENT_TAG_VERSION=$(git describe --tags | cut -f2 -dv)
       # this is here because typing isn't in testpypi, so pull it from prod instead
       - python3 -m pip install typing
       - python3 -m pip install -i https://testpypi.python.org/simple --user awsiotsdk==$CURRENT_TAG_VERSION
