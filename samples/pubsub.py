@@ -45,12 +45,31 @@ received_count = 0
 received_all_event = threading.Event()
 
 # Callback when connection is accidentally lost.
-def on_connection_interrupted(error_code):
+def on_connection_interrupted(connection, error_code):
     print("Connection interrupted. error_code:{}".format(error_code))
 
 # Callback when an interrupted connection is re-established.
-def on_connection_resumed(error_code, session_present):
+def on_connection_resumed(connection, error_code, session_present):
     print("Connection resumed. error_code:{} session_present:{}".format(error_code, session_present))
+
+    if not session_present:
+        print("Server did not save state. Resubscribing to existing topics...")
+        resubscribe_future, _ = connection.resubscribe_existing_topics()
+
+        # Cannot synchronously wait for resubscribe result because we're on the connection's event-loop thread,
+        # evaluate result with a callback instead.
+        def on_resubscribed(resubscribe_future):
+            try:
+                resubscribe_results = resubscribe_future.result()
+                print("Resubscribe complete. results:{}".format(resubscribe_results))
+                for topic, qos in resubscribe_results['topics']:
+                    assert(qos)
+            except Exception as e:
+                print("Resubscribe failed. Exiting", e)
+                exit(-1)
+
+        resubscribe_future.add_done_callback(on_resubscribed)
+
 
 # Callback when the subscribed topic receives a message
 def on_message_received(topic, message):
@@ -67,7 +86,7 @@ if __name__ == '__main__':
 
     tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.cert, args.key)
     if args.root_ca:
-        tls_options.override_default_trust_store_from_path(ca_path=None, ca_file=args.root_ca)
+        tls_options.override_default_trust_store_from_path(ca_dirpath=None, ca_filepath=args.root_ca)
     tls_context = io.ClientTlsContext(tls_options)
 
     mqtt_client = mqtt.Client(client_bootstrap, tls_context)
@@ -89,7 +108,7 @@ if __name__ == '__main__':
         port = port,
         use_websocket=False,
         clean_session=True,
-        keep_alive=6000)
+        keep_alive=5) # DO NOT COMMIT THIS CHANGE
 
     # Future.result() waits until a result is available
     connect_future.result()
