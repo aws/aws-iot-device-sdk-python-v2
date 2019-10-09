@@ -50,7 +50,7 @@ elif args.verbosity.lower() == 'info':
     io.init_logging(LogLevel.Info, 'stderr')
 elif args.verbosity.lower() == 'debug':
     io.init_logging(LogLevel.Debug, 'stderr')
-elif args.verbosity.lower() == 'trace':    
+elif args.verbosity.lower() == 'trace':
     io.init_logging(LogLevel.Trace, 'stderr')
 
 event_loop_group = io.EventLoopGroup(1)
@@ -77,18 +77,18 @@ gg_core_tls_ctx = io.ClientTlsContext(gg_core_tls_options)
 mqtt_client = Client(client_bootstrap, gg_core_tls_ctx)
 
 
-def on_connection_interupted(error_code):
+def on_connection_interupted(connection, error_code):
     print('connection interupted with error {}'.format(error_code))
 
 
-def on_connection_resumed(error_code, session_present):
+def on_connection_resumed(connection, error_code, session_present):
     print('connection resumed with error {}, session present {}'.format(error_code, session_present))
 
 
 mqtt_connection = Connection(mqtt_client, on_connection_interrupted=on_connection_interupted, on_connection_resumed=on_connection_resumed)
 
 connection_succeeded = False
-for conectivity_info in resp.gg_groups[0].cores[0].connectivity:    
+for conectivity_info in resp.gg_groups[0].cores[0].connectivity:
     try:
         connect_future = mqtt_connection.connect(args.thing_name, resp.gg_groups[0].cores[0].connectivity[0].host_address, resp.gg_groups[0].cores[0].connectivity[0].port, clean_session=False)
         connect_future.result()
@@ -96,7 +96,7 @@ for conectivity_info in resp.gg_groups[0].cores[0].connectivity:
         break
     except Exception as e:
         print('connection failed with exception {}'.format(e))
-        continue  
+        continue
 
 if connection_succeeded != True:
     print('All connection attempts for core {} failed'.format(resp.gg_groups[0].cores[0].thing_arn))
@@ -121,6 +121,6 @@ while loop_count < args.max_pub_ops:
         pub_future = mqtt_connection.publish(args.topic, messageJson, QoS.AT_MOST_ONCE)
         pub_future[0].result()
         print('Published topic {}: {}\n'.format(args.topic, messageJson))
-       
+
         loop_count += 1
     time.sleep(1)

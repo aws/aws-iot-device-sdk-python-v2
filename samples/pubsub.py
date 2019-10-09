@@ -46,29 +46,29 @@ received_all_event = threading.Event()
 
 # Callback when connection is accidentally lost.
 def on_connection_interrupted(connection, error_code):
-    print("Connection interrupted. error_code:{}".format(error_code))
+    print("Connection interrupted. error_code: {}".format(error_code))
+
 
 # Callback when an interrupted connection is re-established.
 def on_connection_resumed(connection, error_code, session_present):
-    print("Connection resumed. error_code:{} session_present:{}".format(error_code, session_present))
+    print("Connection resumed. error_code: {} session_present: {}".format(error_code, session_present))
 
-    if not session_present:
-        print("Server did not save state. Resubscribing to existing topics...")
+    if not error_code and not session_present:
+        print("Session did not persist. Resubscribing to existing topics...")
         resubscribe_future, _ = connection.resubscribe_existing_topics()
 
         # Cannot synchronously wait for resubscribe result because we're on the connection's event-loop thread,
         # evaluate result with a callback instead.
-        def on_resubscribed(resubscribe_future):
-            try:
-                resubscribe_results = resubscribe_future.result()
-                print("Resubscribe complete. results:{}".format(resubscribe_results))
-                for topic, qos in resubscribe_results['topics']:
-                    assert(qos)
-            except Exception as e:
-                print("Resubscribe failed. Exiting", e)
-                exit(-1)
+        resubscribe_future.add_done_callback(on_resubscribe_complete)
 
-        resubscribe_future.add_done_callback(on_resubscribed)
+
+def on_resubscribe_complete(resubscribe_future):
+        resubscribe_results = resubscribe_future.result()
+        print("Resubscribe results: {}".format(resubscribe_results))
+
+        for topic, qos in resubscribe_results['topics']:
+            if qos is None:
+                exit("Server rejected resubscribe to topic: {}".format(topic))
 
 
 # Callback when the subscribed topic receives a message
@@ -121,7 +121,9 @@ if __name__ == '__main__':
         qos=mqtt.QoS.AT_LEAST_ONCE,
         callback=on_message_received)
 
-    subscribe_future.result()
+    subscribe_result = subscribe_future.result()
+    if subscribe_result['qos'] is None:
+        raise RuntimeError("Server rejected subscription")
     print("Subscribed!")
 
     # Publish message to server desired number of times.
