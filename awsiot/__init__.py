@@ -125,19 +125,20 @@ class MqttServiceClient(object):
                 message as JSON.
 
         Returns two values. The first is a `Future` which will contain a result
-        of `None` when the server has acknowledged the subscription, or an
-        exception if the subscription fails. The second value is a topic which
-        may be passed to `unsubscribe()` to stop receiving messages.
+        of `awscrt.mqtt.QoS` when the server has acknowledged the subscription,
+        or an exception if the subscription fails. The second value is a topic
+        which may be passed to `unsubscribe()` to stop receiving messages.
         Note that messages may arrive before the subscription is acknowledged.
         """
 
         future = Future() # type: Future
         try:
             def on_suback(suback_future):
-                if suback_future.exception():
-                    future.set_exception(suback_future.exception())
-                else:
-                    future.set_result(None)
+                try:
+                    suback_result = suback_future.result()
+                    future.set_result(suback_result['qos'])
+                except Exception as e:
+                    future.set_exception(e)
 
             def callback_wrapper(topic, payload_bytes):
                 try:

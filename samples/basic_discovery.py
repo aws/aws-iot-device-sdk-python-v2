@@ -121,8 +121,8 @@ if args.mode == 'both' or args.mode == 'subscribe':
         print('Publish received on topic {}'.format(topic))
         print(message)
 
-    subscribe_future = mqtt_connection.subscribe(args.topic, QoS.AT_MOST_ONCE, on_publish)
-    subscribe_future[0].result()
+    subscribe_future, _ = mqtt_connection.subscribe(args.topic, QoS.AT_MOST_ONCE, on_publish)
+    subscribe_result = subscribe_future.result()
 
 loop_count = 0
 while loop_count < args.max_pub_ops:

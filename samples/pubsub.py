@@ -108,7 +108,7 @@ if __name__ == '__main__':
         port = port,
         use_websocket=False,
         clean_session=True,
-        keep_alive=5) # DO NOT COMMIT THIS CHANGE
+        keep_alive=6000)
 
     # Future.result() waits until a result is available
     connect_future.result()
@@ -122,9 +122,7 @@ if __name__ == '__main__':
         callback=on_message_received)
 
     subscribe_result = subscribe_future.result()
-    if subscribe_result['qos'] is None:
-        raise RuntimeError("Server rejected subscription")
-    print("Subscribed!")
+    print("Subscribed with {}".format(str(subscribe_result['qos'])))
 
     # Publish message to server desired number of times.
     # This step is skipped if message is blank.
