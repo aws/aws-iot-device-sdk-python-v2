@@ -63,18 +63,14 @@ tls_context = io.ClientTlsContext(tls_options)
 socket_options = io.SocketOptions()
 socket_options.connect_timeout_ms = 3000
 
+print('Performing greengrass discovery...')
 discovery_client = DiscoveryClient(client_bootstrap, socket_options, tls_context, args.region)
 resp_future = discovery_client.discover(args.thing_name)
-resp = resp_future.result()
+discover_response = resp_future.result()
 
+print(discover_response)
 if args.print_discover_resp_only:
-    print(resp)
     exit(0)
-
-gg_core_tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.certificate_path, args.private_key_path)
-gg_core_tls_options.override_default_trust_store(bytes(resp.gg_groups[0].certificate_authorities[0], encoding='utf-8'))
-gg_core_tls_ctx = io.ClientTlsContext(gg_core_tls_options)
-mqtt_client = Client(client_bootstrap, gg_core_tls_ctx)
 
 
 def on_connection_interupted(connection, error_code):
@@ -85,27 +81,44 @@ def on_connection_resumed(connection, error_code, session_present):
     print('connection resumed with error {}, session present {}'.format(error_code, session_present))
 
 
-mqtt_connection = Connection(mqtt_client, on_connection_interrupted=on_connection_interupted, on_connection_resumed=on_connection_resumed)
+# Try endpoints until we find one that works
+def connect_to_greengrass():
+    for gg_group in discover_response.gg_groups:
 
-connection_succeeded = False
-for conectivity_info in resp.gg_groups[0].cores[0].connectivity:
-    try:
-        connect_future = mqtt_connection.connect(args.thing_name, resp.gg_groups[0].cores[0].connectivity[0].host_address, resp.gg_groups[0].cores[0].connectivity[0].port, clean_session=False)
-        connect_future.result()
-        connection_succeeded = True
-        break
-    except Exception as e:
-        print('connection failed with exception {}'.format(e))
-        continue
+        gg_core_tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.certificate_path, args.private_key_path)
+        gg_core_tls_options.override_default_trust_store(bytes(gg_group.certificate_authorities[0], encoding='utf-8'))
+        gg_core_tls_ctx = io.ClientTlsContext(gg_core_tls_options)
+        mqtt_client = Client(client_bootstrap, gg_core_tls_ctx)
 
-if connection_succeeded != True:
-    print('All connection attempts for core {} failed'.format(resp.gg_groups[0].cores[0].thing_arn))
-    exit(-1)
+        for gg_core in gg_group.cores:
+            for connectivity_info in gg_core.connectivity:
+                try:
+                    print('Trying core {} at host {} port {}'.format(gg_core.thing_arn, connectivity_info.host_address, connectivity_info.port))
+                    mqtt_connection = Connection(
+                        mqtt_client,
+                        on_connection_interrupted=on_connection_interupted,
+                        on_connection_resumed=on_connection_resumed)
+                    connect_future = mqtt_connection.connect(
+                        client_id=args.thing_name,
+                        host_name=connectivity_info.host_address,
+                        port=connectivity_info.port,
+                        clean_session=False)
+                    connect_future.result()
+                    print('Connected!')
+                    return mqtt_connection
+
+                except Exception as e:
+                    print('Connection failed with exception {}'.format(e))
+                    continue
+
+    exit('All connection attempts failed')
+
+mqtt_connection = connect_to_greengrass()
 
 if args.mode == 'both' or args.mode == 'subscribe':
 
     def on_publish(topic, message):
-        print('publish recieved on topic {}'.format(topic))
+        print('Publish received on topic {}'.format(topic))
         print(message)
 
     subscribe_future = mqtt_connection.subscribe(args.topic, QoS.AT_MOST_ONCE, on_publish)
