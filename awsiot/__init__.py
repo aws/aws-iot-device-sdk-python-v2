@@ -124,10 +124,10 @@ class MqttServiceClient(object):
                 `callback`. The dict comes from parsing the received
                 message as JSON.
 
-        Returns two values. The first is a `Future` which will contain a result
-        of `awscrt.mqtt.QoS` when the server has acknowledged the subscription,
-        or an exception if the subscription fails. The second value is a topic
-        which may be passed to `unsubscribe()` to stop receiving messages.
+        Returns two values. The first is a `Future` whose result will be the
+        `awscrt.mqtt.QoS` granted by the server, or an exception if the
+        subscription fails. The second value is a topic which may be passed to
+        `unsubscribe()` to stop receiving messages.
         Note that messages may arrive before the subscription is acknowledged.
         """
 
