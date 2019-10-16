@@ -23,7 +23,7 @@ setup(
     url='https://github.com/awslabs/aws-iot-device-sdk-python-v2',
     packages = ['awsiot'],
     install_requires=[
-        'awscrt==0.3.0',
+        'awscrt==0.3.1',
         'futures;python_version<"3.2"',
         'typing;python_version<"3.5"',
     ],
