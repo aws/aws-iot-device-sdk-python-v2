@@ -13,7 +13,7 @@
 # express or implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='awsiotsdk',
@@ -23,7 +23,7 @@ setup(
     url='https://github.com/awslabs/aws-iot-device-sdk-python-v2',
     packages = ['awsiot'],
     install_requires=[
-        'awscrt==0.3.1',
+        'awscrt==0.3.3',
         'futures;python_version<"3.2"',
         'typing;python_version<"3.5"',
     ],
