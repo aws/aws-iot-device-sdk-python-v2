@@ -81,8 +81,8 @@ def on_connection_resumed(connection, error_code, session_present):
     print('connection resumed with error {}, session present {}'.format(error_code, session_present))
 
 
-# Try endpoints until we find one that works
-def connect_to_greengrass():
+# Try IoT endpoints until we find one that works
+def try_iot_endpoints():
     for gg_group in discover_response.gg_groups:
 
         gg_core_tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.certificate_path, args.private_key_path)
@@ -113,7 +113,7 @@ def connect_to_greengrass():
 
     exit('All connection attempts failed')
 
-mqtt_connection = connect_to_greengrass()
+mqtt_connection = try_iot_endpoints()
 
 if args.mode == 'both' or args.mode == 'subscribe':
 
