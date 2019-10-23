@@ -13,19 +13,19 @@
 # express or implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='awsiotsdk',
-    version='0.2.9',
+    version='0.3.0',
     description='AWS IoT SDK based on the AWS Common Runtime',
     author='AWS SDK Common Runtime Team',
     url='https://github.com/awslabs/aws-iot-device-sdk-python-v2',
-    packages = find_packages(),
+    packages = ['awsiot'],
     install_requires=[
-        'awscrt==0.2.16',
-        'futures; python_version == "2.7"',
-        'typing; python_version <= "3.4"',
+        'awscrt==0.3.3',
+        'futures;python_version<"3.2"',
+        'typing;python_version<"3.5"',
     ],
     python_requires='>=2.7',
 )

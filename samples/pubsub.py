@@ -45,12 +45,31 @@ received_count = 0
 received_all_event = threading.Event()
 
 # Callback when connection is accidentally lost.
-def on_connection_interrupted(error_code):
-    print("Connection interrupted. error_code:{}".format(error_code))
+def on_connection_interrupted(connection, error_code):
+    print("Connection interrupted. error_code: {}".format(error_code))
+
 
 # Callback when an interrupted connection is re-established.
-def on_connection_resumed(error_code, session_present):
-    print("Connection resumed. error_code:{} session_present:{}".format(error_code, session_present))
+def on_connection_resumed(connection, error_code, session_present):
+    print("Connection resumed. error_code: {} session_present: {}".format(error_code, session_present))
+
+    if not error_code and not session_present:
+        print("Session did not persist. Resubscribing to existing topics...")
+        resubscribe_future, _ = connection.resubscribe_existing_topics()
+
+        # Cannot synchronously wait for resubscribe result because we're on the connection's event-loop thread,
+        # evaluate result with a callback instead.
+        resubscribe_future.add_done_callback(on_resubscribe_complete)
+
+
+def on_resubscribe_complete(resubscribe_future):
+        resubscribe_results = resubscribe_future.result()
+        print("Resubscribe results: {}".format(resubscribe_results))
+
+        for topic, qos in resubscribe_results['topics']:
+            if qos is None:
+                exit("Server rejected resubscribe to topic: {}".format(topic))
+
 
 # Callback when the subscribed topic receives a message
 def on_message_received(topic, message):
@@ -67,7 +86,7 @@ if __name__ == '__main__':
 
     tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.cert, args.key)
     if args.root_ca:
-        tls_options.override_default_trust_store_from_path(ca_path=None, ca_file=args.root_ca)
+        tls_options.override_default_trust_store_from_path(ca_dirpath=None, ca_filepath=args.root_ca)
     tls_context = io.ClientTlsContext(tls_options)
 
     mqtt_client = mqtt.Client(client_bootstrap, tls_context)
@@ -102,8 +121,8 @@ if __name__ == '__main__':
         qos=mqtt.QoS.AT_LEAST_ONCE,
         callback=on_message_received)
 
-    subscribe_future.result()
-    print("Subscribed!")
+    subscribe_result = subscribe_future.result()
+    print("Subscribed with {}".format(str(subscribe_result['qos'])))
 
     # Publish message to server desired number of times.
     # This step is skipped if message is blank.

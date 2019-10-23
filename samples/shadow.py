@@ -235,7 +235,7 @@ if __name__ == '__main__':
 
     tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.cert, args.key)
     if args.root_ca:
-        tls_options.override_default_trust_store_from_path(ca_path=None, ca_file=args.root_ca)
+        tls_options.override_default_trust_store_from_path(ca_dirpath=None, ca_filepath=args.root_ca)
     tls_context = io.ClientTlsContext(tls_options)
 
     mqtt_client = mqtt.Client(client_bootstrap, tls_context)
