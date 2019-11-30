@@ -8,10 +8,11 @@ This SDK is built on the AWS Common Runtime, a collection of libraries
 ([1](https://github.com/awslabs/aws-c-common),
 [2](https://github.com/awslabs/aws-c-io),
 [3](https://github.com/awslabs/aws-c-mqtt),
-[4](https://github.com/awslabs/aws-c-http),
-[5](https://github.com/awslabs/aws-c-cal),
-[6](https://github.com/awslabs/aws-c-auth),
-[7](https://github.com/awslabs/s2n) ...) written in C to be
+[4](https://github.com/awslabs/aws-c-compression),
+[5](https://github.com/awslabs/aws-c-http),
+[6](https://github.com/awslabs/aws-c-cal),
+[7](https://github.com/awslabs/aws-c-auth),
+[8](https://github.com/awslabs/s2n) ...) written in C to be
 cross-platform, high-performance, secure, and reliable. The libraries are bound
 to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([Github](https://github.com/awslabs/aws-crt-python)).
 

@@ -41,7 +41,7 @@ parser.add_argument('--count', default=10, type=int, help="Number of messages to
                                                           "Specify 0 to run forever.")
 parser.add_argument('--use-websocket', default=False, action='store_true',
     help="To use a websocket instead of raw mqtt. If you " +
-    "speicify this option you must specify a region for signing, you can also enable proxy mode.")
+    "specify this option you must specify a region for signing, you can also enable proxy mode.")
 parser.add_argument('--signing-region', default='us-east-1', help="If you specify --use-web-socket, this " +
     "is the region that will be used for computing the Sigv4 signature")
 parser.add_argument('--proxy-host', help="Hostname for proxy to connect to. Note: if you use this feature, " +
@@ -50,7 +50,6 @@ parser.add_argument('--proxy-port', type=int, default=8080, help="Port for proxy
 
 # Using globals to simplify sample code
 args = parser.parse_args()
-#io.init_logging(io.LogLevel.Debug, "stderr")
 
 received_count = 0
 received_all_event = threading.Event()

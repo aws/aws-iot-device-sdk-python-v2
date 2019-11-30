@@ -57,7 +57,7 @@ parser.add_argument('--thing-name', required=True, help="The name assigned to yo
 parser.add_argument('--job-time', default=5, type=float, help="Emulate working on job by sleeping this many seconds.")
 parser.add_argument('--use-websocket', default=False, action='store_true',
     help="To use a websocket instead of raw mqtt. If you " +
-    "speicify this option you must specify a region for signing, you can also enable proxy mode.")
+    "specify this option you must specify a region for signing, you can also enable proxy mode.")
 parser.add_argument('--signing-region', default='us-east-1', help="If you specify --use-web-socket, this " +
     "is the region that will be used for computing the Sigv4 signature")
 parser.add_argument('--proxy-host', help="Hostname for proxy to connect to. Note: if you use this feature, " +
