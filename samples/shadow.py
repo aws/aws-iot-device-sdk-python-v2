@@ -44,8 +44,8 @@ import traceback
 parser = argparse.ArgumentParser(description="Device Shadow sample keeps a property in sync across client and server")
 parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpoint, not including a port. " +
                                                       "Ex: \"w6zbse3vjd5b4p-ats.iot.us-west-2.amazonaws.com\"")
-parser.add_argument('--cert', required=True, help="File path to your client certificate, in PEM format")
-parser.add_argument('--key', required=True, help="File path to your private key file, in PEM format")
+parser.add_argument('--cert',  help="File path to your client certificate, in PEM format")
+parser.add_argument('--key', help="File path to your private key file, in PEM format")
 parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. " +
                                       "Necessary if MQTT server uses a certificate that's not already in " +
                                       "your trust store")

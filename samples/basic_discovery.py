@@ -25,18 +25,18 @@ from awsiot import mqtt_connection_builder
 allowed_actions = ['both', 'publish', 'subscribe']
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-r', '--ca_file', action='store', required=True, dest='root_ca_path', help='Root CA file path')
+parser.add_argument('-r', '--root-ca', action='store', dest='root_ca_path', help='Root CA file path')
 parser.add_argument('-c', '--cert', action='store', required=True, dest='certificate_path', help='Certificate file path')
 parser.add_argument('-k', '--key', action='store', required=True, dest='private_key_path', help='Private key file path')
-parser.add_argument('-n', '--thing_name', action='store', required=True, dest='thing_name', help='Targeted thing name')
+parser.add_argument('-n', '--thing-name', action='store', required=True, dest='thing_name', help='Targeted thing name')
 parser.add_argument('-t', '--topic', action='store', dest='topic', default='sdk/test/Python', help='Targeted topic')
 parser.add_argument('-m', '--mode', action='store', dest='mode', default='both',
                     help='Operation modes: %s'%str(allowed_actions))
 parser.add_argument('-M', '--message', action='store', dest='message', default='Hello World!',
 help='Message to publish')
 parser.add_argument('--region', action='store', dest='region', default='us-east-1')
-parser.add_argument('--max_pub_ops', action='store', dest='max_pub_ops', default=10)
-parser.add_argument('--print_discover_resp_only', action='store_true', dest='print_discover_resp_only', default=False)
+parser.add_argument('--max-pub-ops', action='store', dest='max_pub_ops', default=10)
+parser.add_argument('--print-discover-resp-only', action='store_true', dest='print_discover_resp_only', default=False)
 parser.add_argument('-v', '--verbose', action='store', dest='verbosity', default='NoLogs')
 
 args = parser.parse_args()
@@ -91,7 +91,7 @@ def try_iot_endpoints():
                 try:
                     print('Trying core {} at host {} port {}'.format(gg_core.thing_arn, connectivity_info.host_address, connectivity_info.port))
                     mqtt_connection = mqtt_connection_builder.mtls_from_path(endpoint=connectivity_info.host_address, port=connectivity_info.port,
-                        cert_filepath=args.cert, pri_key_filepath=args.key, client_bootstrap=client_bootstrap, 
+                        cert_filepath=args.certificate_path, pri_key_filepath=args.private_key_path, client_bootstrap=client_bootstrap, 
                         ca_bytes=bytes(gg_group.certificate_authorities[0], encoding='utf-8'), 
                         on_connection_interrupted=on_connection_interupted, on_connection_resumed=on_connection_resumed,
                         client_id=args.thing_name, clean_session=False, keep_alive_secs=6)

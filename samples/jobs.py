@@ -14,7 +14,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 import argparse
-from awscrt import io, mqtt
+from awscrt import auth, http, io, mqtt
 from awsiot import iotjobs
 from awsiot import mqtt_connection_builder
 from concurrent.futures import Future
@@ -47,8 +47,8 @@ import traceback
 parser = argparse.ArgumentParser(description="Jobs sample runs all pending job executions.")
 parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpoint, not including a port. " +
                                                       "Ex: \"w6zbse3vjd5b4p-ats.iot.us-west-2.amazonaws.com\"")
-parser.add_argument('--cert', required=True, help="File path to your client certificate, in PEM format")
-parser.add_argument('--key', required=True, help="File path to your private key file, in PEM format")
+parser.add_argument('--cert', help="File path to your client certificate, in PEM format")
+parser.add_argument('--key', help="File path to your private key file, in PEM format")
 parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. " +
                                       "Necessary if MQTT server uses a certificate that's not already in " +
                                       "your trust store")
@@ -238,7 +238,7 @@ if __name__ == '__main__':
     host_resolver = io.DefaultHostResolver(event_loop_group)
     client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
 
-        if args.use_websocket == True:
+    if args.use_websocket == True:
         proxy_options = None
         if (args.proxy_host):
             proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
@@ -246,13 +246,12 @@ if __name__ == '__main__':
         credentials_provider = auth.AwsCredentialsProvider.new_default_chain(client_bootstrap)
         mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(endpoint=args.endpoint,
             client_bootstrap=client_bootstrap, region=args.signing_region, credentials_provider=credentials_provider, websocket_proxy_options=proxy_options,
-            ca_filepath=args.root_ca, on_connection_interrupted=on_connection_interrupted, on_connection_resumed=on_connection_resumed,
-            client_id=args.client_id, clean_session=False, keep_alive_secs=6)
+            ca_filepath=args.root_ca, client_id=args.client_id, clean_session=False, keep_alive_secs=6)
 
     else:
         mqtt_connection = mqtt_connection_builder.mtls_from_path(endpoint=args.endpoint, cert_filepath=args.cert, pri_key_filepath=args.key,
-        client_bootstrap=client_bootstrap, ca_filepath=args.root_ca, on_connection_interrupted=on_connection_interrupted, on_connection_resumed=on_connection_resumed,
-            client_id=args.client_id, clean_session=False, keep_alive_secs=6)  
+        client_bootstrap=client_bootstrap, ca_filepath=args.root_ca, client_id=args.client_id, 
+        clean_session=False, keep_alive_secs=6)  
 
     print("Connecting to {} with client ID '{}'...".format(
         args.endpoint, args.client_id))

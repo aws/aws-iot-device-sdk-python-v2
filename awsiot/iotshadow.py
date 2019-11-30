@@ -414,7 +414,7 @@ class GetShadowResponse(awsiot.ModeledClass):
     @classmethod
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> GetShadowResponse
-        new = cls()
+        new = cls()  
         val = payload.get('metadata')
         if val is not None:
             new.metadata = ShadowMetadata.from_payload(val)

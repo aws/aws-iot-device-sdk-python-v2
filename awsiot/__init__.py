@@ -144,7 +144,7 @@ class MqttServiceClient(object):
 
             def callback_wrapper(topic, payload):
                 try:
-                    payload_obj = json.loads(payload_bytes.decode())
+                    payload_obj = json.loads(payload.decode())
                     event = payload_to_class_fn(payload_obj)
                 except:
                     # can't deliver payload, invoke callback with None
