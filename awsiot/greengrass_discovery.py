@@ -44,8 +44,8 @@ class DiscoveryClient(object):
             future=Future(),
             response_body=bytearray())
 
-        def on_incoming_body(http_stream, response_chunk):
-            discovery['response_body'].extend(response_chunk)
+        def on_incoming_body(http_stream, chunk):
+            discovery['response_body'].extend(chunk)
 
         def on_request_complete(completion_future):
             try:

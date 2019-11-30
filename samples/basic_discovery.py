@@ -20,6 +20,7 @@ from awscrt import io
 from awscrt.io import LogLevel
 from awscrt.mqtt import Connection, Client, QoS
 from awsiot.greengrass_discovery import DiscoveryClient, DiscoverResponse
+from awsiot import mqtt_connection_builder
 
 allowed_actions = ['both', 'publish', 'subscribe']
 
@@ -54,7 +55,8 @@ elif args.verbosity.lower() == 'trace':
     io.init_logging(LogLevel.Trace, 'stderr')
 
 event_loop_group = io.EventLoopGroup(1)
-client_bootstrap = io.ClientBootstrap(event_loop_group)
+host_resolver = io.DefaultHostResolver(event_loop_group)
+client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
 
 tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.certificate_path, args.private_key_path)
 tls_options.override_default_trust_store_from_path(None, args.root_ca_path)
@@ -84,25 +86,17 @@ def on_connection_resumed(connection, error_code, session_present):
 # Try IoT endpoints until we find one that works
 def try_iot_endpoints():
     for gg_group in discover_response.gg_groups:
-
-        gg_core_tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.certificate_path, args.private_key_path)
-        gg_core_tls_options.override_default_trust_store(bytes(gg_group.certificate_authorities[0], encoding='utf-8'))
-        gg_core_tls_ctx = io.ClientTlsContext(gg_core_tls_options)
-        mqtt_client = Client(client_bootstrap, gg_core_tls_ctx)
-
         for gg_core in gg_group.cores:
             for connectivity_info in gg_core.connectivity:
                 try:
                     print('Trying core {} at host {} port {}'.format(gg_core.thing_arn, connectivity_info.host_address, connectivity_info.port))
-                    mqtt_connection = Connection(
-                        mqtt_client,
-                        on_connection_interrupted=on_connection_interupted,
-                        on_connection_resumed=on_connection_resumed)
-                    connect_future = mqtt_connection.connect(
-                        client_id=args.thing_name,
-                        host_name=connectivity_info.host_address,
-                        port=connectivity_info.port,
-                        clean_session=False)
+                    mqtt_connection = mqtt_connection_builder.mtls_from_path(endpoint=connectivity_info.host_address, port=connectivity_info.port,
+                        cert_filepath=args.cert, pri_key_filepath=args.key, client_bootstrap=client_bootstrap, 
+                        ca_bytes=bytes(gg_group.certificate_authorities[0], encoding='utf-8'), 
+                        on_connection_interrupted=on_connection_interupted, on_connection_resumed=on_connection_resumed,
+                        client_id=args.thing_name, clean_session=False, keep_alive_secs=6)
+                    
+                    connect_future = mqtt_connection.connect()
                     connect_future.result()
                     print('Connected!')
                     return mqtt_connection
@@ -117,9 +111,9 @@ mqtt_connection = try_iot_endpoints()
 
 if args.mode == 'both' or args.mode == 'subscribe':
 
-    def on_publish(topic, message):
+    def on_publish(topic, payload):
         print('Publish received on topic {}'.format(topic))
-        print(message)
+        print(payload)
 
     subscribe_future, _ = mqtt_connection.subscribe(args.topic, QoS.AT_MOST_ONCE, on_publish)
     subscribe_result = subscribe_future.result()

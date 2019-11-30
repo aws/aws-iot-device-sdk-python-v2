@@ -15,9 +15,11 @@ __all__ = [
     'iotjobs',
     'iotshadow',
     'greengrass_discovery',
+    'mqtt_connection_builder',
 ]
 
 from awscrt import mqtt
+import awscrt.awsiot_mqtt_connection_builder as mqtt_connection_builder
 from concurrent.futures import Future
 import json
 from typing import Any, Callable, Dict, Optional, Tuple, TypeVar
@@ -140,7 +142,7 @@ class MqttServiceClient(object):
                 except Exception as e:
                     future.set_exception(e)
 
-            def callback_wrapper(topic, payload_bytes):
+            def callback_wrapper(topic, payload):
                 try:
                     payload_obj = json.loads(payload_bytes.decode())
                     event = payload_to_class_fn(payload_obj)

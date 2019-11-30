@@ -14,8 +14,9 @@
 from __future__ import absolute_import
 from __future__ import print_function
 import argparse
-from awscrt import io, mqtt
+from awscrt import auth, io, mqtt, http
 from awsiot import iotshadow
+from awsiot import mqtt_connection_builder
 from concurrent.futures import Future
 import sys
 import threading
@@ -51,6 +52,14 @@ parser.add_argument('--root-ca', help="File path to root certificate authority, 
 parser.add_argument('--client-id', default='samples-client-id', help="Client ID for MQTT connection.")
 parser.add_argument('--thing-name', required=True, help="The name assigned to your IoT Thing")
 parser.add_argument('--shadow-property', default="color", help="Name of property in shadow to keep in sync")
+parser.add_argument('--use-websocket', default=False, action='store_true',
+    help="To use a websocket instead of raw mqtt. If you " +
+    "speicify this option you must specify a region for signing, you can also enable proxy mode.")
+parser.add_argument('--signing-region', default='us-east-1', help="If you specify --use-web-socket, this " +
+    "is the region that will be used for computing the Sigv4 signature")
+parser.add_argument('--proxy-host', help="Hostname for proxy to connect to. Note: if you use this feature, " +
+    "you will likely need to set --root-ca to the ca for your proxy.")    
+parser.add_argument('--proxy-port', type=int, default=8080, help="Port for proxy to connect to.")
 
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
@@ -231,26 +240,27 @@ if __name__ == '__main__':
 
     # Spin up resources
     event_loop_group = io.EventLoopGroup(1)
-    client_bootstrap = io.ClientBootstrap(event_loop_group)
+    host_resolver = io.DefaultHostResolver(event_loop_group)
+    client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
 
-    tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.cert, args.key)
-    if args.root_ca:
-        tls_options.override_default_trust_store_from_path(ca_dirpath=None, ca_filepath=args.root_ca)
-    tls_context = io.ClientTlsContext(tls_options)
+    if args.use_websocket == True:
+        proxy_options = None
+        if (args.proxy_host):
+            proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
 
-    mqtt_client = mqtt.Client(client_bootstrap, tls_context)
+        credentials_provider = auth.AwsCredentialsProvider.new_default_chain(client_bootstrap)
+        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(endpoint=args.endpoint,
+            client_bootstrap=client_bootstrap, region=args.signing_region, credentials_provider=credentials_provider, websocket_proxy_options=proxy_options,
+            ca_filepath=args.root_ca, client_id=args.client_id, clean_session=False, keep_alive_secs=6)
 
-    port = 8883
-    print("Connecting to {} on port {}...".format(args.endpoint, port))
-    mqtt_connection = mqtt.Connection(
-            client=mqtt_client)
-    connected_future = mqtt_connection.connect(
-            client_id=args.client_id,
-            host_name = args.endpoint,
-            port = port,
-            use_websocket=False,
-            clean_session=True,
-            keep_alive=6000)
+    else:
+        mqtt_connection = mqtt_connection_builder.mtls_from_path(endpoint=args.endpoint, cert_filepath=args.cert, pri_key_filepath=args.key,
+        client_bootstrap=client_bootstrap, ca_filepath=args.root_ca, client_id=args.client_id, clean_session=False, keep_alive_secs=6)  
+
+    print("Connecting to {} with client ID '{}'...".format(
+        args.endpoint, args.client_id))
+
+    connected_future = mqtt_connection.connect()
 
     shadow_client = iotshadow.IotShadowClient(mqtt_connection)
 
