@@ -2,19 +2,17 @@
 
 Next generation AWS IoT Client SDK for Python.
 
-This project is in **DEVELOPER PREVIEW** while we gather feedback on
-interfaces and use cases. Please file issues and feature requests.
-Expect breaking API changes as we incorporate feedback.
-Until this project is promoted to General Availability, we advise you use the
-[previous SDK](https://github.com/aws/aws-iot-device-sdk-python)
-for a stable development environment.
+This project is in **GENERAL AVAILABILITY**. If you have any issues or feature requests, please file an issue or pull request.
 
 This SDK is built on the AWS Common Runtime, a collection of libraries
 ([1](https://github.com/awslabs/aws-c-common),
 [2](https://github.com/awslabs/aws-c-io),
 [3](https://github.com/awslabs/aws-c-mqtt),
-[4](https://github.com/awslabs/aws-c-http),
-[5](https://github.com/awslabs/aws-c-cal) ...) written in C to be
+[4](https://github.com/awslabs/aws-c-compression),
+[5](https://github.com/awslabs/aws-c-http),
+[6](https://github.com/awslabs/aws-c-cal),
+[7](https://github.com/awslabs/aws-c-auth),
+[8](https://github.com/awslabs/s2n) ...) written in C to be
 cross-platform, high-performance, secure, and reliable. The libraries are bound
 to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([Github](https://github.com/awslabs/aws-crt-python)).
 

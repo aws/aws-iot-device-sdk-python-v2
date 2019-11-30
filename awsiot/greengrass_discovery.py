@@ -11,7 +11,7 @@
 # express or implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
-from awscrt.http import HttpClientConnection, HttpRequest
+from awscrt.http import HttpClientConnection, HttpRequest, HttpHeaders
 from awscrt.io import ClientBootstrap, ClientTlsContext, is_alpn_available, SocketOptions, TlsConnectionOptions
 import awsiot
 from concurrent.futures import Future
@@ -44,8 +44,8 @@ class DiscoveryClient(object):
             future=Future(),
             response_body=bytearray())
 
-        def on_incoming_body(http_stream, response_chunk):
-            discovery['response_body'].extend(response_chunk)
+        def on_incoming_body(http_stream, chunk):
+            discovery['response_body'].extend(chunk)
 
         def on_request_complete(completion_future):
             try:
@@ -63,10 +63,12 @@ class DiscoveryClient(object):
         def on_connection_completed(conn_future):
             try:
                 connection = conn_future.result()
+                headers = HttpHeaders()
+                headers.add('host', self._gg_server_name)
                 request = HttpRequest(
                     method='GET',
                     path='/greengrass/discover/thing/{}'.format(thing_name),
-                    headers=[('host', self._gg_server_name)])
+                    headers=headers)
 
                 http_stream = connection.request(
                     request=request,
