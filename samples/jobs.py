@@ -61,7 +61,7 @@ parser.add_argument('--use-websocket', default=False, action='store_true',
 parser.add_argument('--signing-region', default='us-east-1', help="If you specify --use-web-socket, this " +
     "is the region that will be used for computing the Sigv4 signature")
 parser.add_argument('--proxy-host', help="Hostname for proxy to connect to. Note: if you use this feature, " +
-    "you will likely need to set --root-ca to the ca for your proxy.")    
+    "you will likely need to set --root-ca to the ca for your proxy.")
 parser.add_argument('--proxy-port', type=int, default=8080, help="Port for proxy to connect to.")
 
 # Using globals to simplify sample code
@@ -244,18 +244,31 @@ if __name__ == '__main__':
             proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
 
         credentials_provider = auth.AwsCredentialsProvider.new_default_chain(client_bootstrap)
-        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(endpoint=args.endpoint,
-            client_bootstrap=client_bootstrap, region=args.signing_region, credentials_provider=credentials_provider, websocket_proxy_options=proxy_options,
-            ca_filepath=args.root_ca, client_id=args.client_id, clean_session=False, keep_alive_secs=6)
+        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
+            endpoint=args.endpoint,
+            client_bootstrap=client_bootstrap,
+            region=args.signing_region,
+            credentials_provider=credentials_provider,
+            websocket_proxy_options=proxy_options,
+            ca_filepath=args.root_ca,
+            client_id=args.client_id,
+            clean_session=False,
+            keep_alive_secs=6)
 
     else:
-        mqtt_connection = mqtt_connection_builder.mtls_from_path(endpoint=args.endpoint, cert_filepath=args.cert, pri_key_filepath=args.key,
-        client_bootstrap=client_bootstrap, ca_filepath=args.root_ca, client_id=args.client_id, 
-        clean_session=False, keep_alive_secs=6)  
+        mqtt_connection = mqtt_connection_builder.mtls_from_path(
+            endpoint=args.endpoint,
+            cert_filepath=args.cert,
+            pri_key_filepath=args.key,
+            client_bootstrap=client_bootstrap,
+            ca_filepath=args.root_ca,
+            client_id=args.client_id,
+            clean_session=False,
+            keep_alive_secs=6)
 
     print("Connecting to {} with client ID '{}'...".format(
         args.endpoint, args.client_id))
-    
+
     connected_future = mqtt_connection.connect()
 
     jobs_client = iotjobs.IotJobsClient(mqtt_connection)
