@@ -16,6 +16,7 @@ from __future__ import print_function
 import argparse
 from awscrt import io, mqtt, auth, http
 from awsiot import mqtt_connection_builder
+import sys
 import threading
 import time
 
@@ -45,8 +46,8 @@ parser.add_argument('--use-websocket', default=False, action='store_true',
 parser.add_argument('--signing-region', default='us-east-1', help="If you specify --use-web-socket, this " +
     "is the region that will be used for computing the Sigv4 signature")
 parser.add_argument('--proxy-host', help="Hostname for proxy to connect to. Note: if you use this feature, " +
-    "you will likely need to set --root-ca to the ca for your proxy.")    
-parser.add_argument('--proxy-port', type=int, default=8080, help="Port for proxy to connect to.")                                                                
+    "you will likely need to set --root-ca to the ca for your proxy.")
+parser.add_argument('--proxy-port', type=int, default=8080, help="Port for proxy to connect to.")
 
 # Using globals to simplify sample code
 args = parser.parse_args()
@@ -55,15 +56,15 @@ received_count = 0
 received_all_event = threading.Event()
 
 # Callback when connection is accidentally lost.
-def on_connection_interrupted(connection, error):
-    print("Connection interrupted. error_code: {}".format(error))
+def on_connection_interrupted(connection, error, **kwargs):
+    print("Connection interrupted. error: {}".format(error))
 
 
 # Callback when an interrupted connection is re-established.
-def on_connection_resumed(connection, error, session_present):
-    print("Connection resumed. error_code: {} session_present: {}".format(error, session_present))
+def on_connection_resumed(connection, return_code, session_present, **kwargs):
+    print("Connection resumed. return_code: {} session_present: {}".format(return_code, session_present))
 
-    if not error and not session_present:
+    if return_code == mqtt.ConnectReturnCode.ACCEPTED and not session_present:
         print("Session did not persist. Resubscribing to existing topics...")
         resubscribe_future, _ = connection.resubscribe_existing_topics()
 
@@ -78,11 +79,11 @@ def on_resubscribe_complete(resubscribe_future):
 
         for topic, qos in resubscribe_results['topics']:
             if qos is None:
-                exit("Server rejected resubscribe to topic: {}".format(topic))
+                sys.exit("Server rejected resubscribe to topic: {}".format(topic))
 
 
 # Callback when the subscribed topic receives a message
-def on_message_received(topic, payload):
+def on_message_received(topic, payload, **kwargs):
     print("Received message from topic '{}': {}".format(topic, payload))
     global received_count
     received_count += 1
@@ -101,15 +102,31 @@ if __name__ == '__main__':
             proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
 
         credentials_provider = auth.AwsCredentialsProvider.new_default_chain(client_bootstrap)
-        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(endpoint=args.endpoint,
-            client_bootstrap=client_bootstrap, region=args.signing_region, credentials_provider=credentials_provider, websocket_proxy_options=proxy_options,
-            ca_filepath=args.root_ca, on_connection_interrupted=on_connection_interrupted, on_connection_resumed=on_connection_resumed,
-            client_id=args.client_id, clean_session=False, keep_alive_secs=6)
+        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
+            endpoint=args.endpoint,
+            client_bootstrap=client_bootstrap,
+            region=args.signing_region,
+            credentials_provider=credentials_provider,
+            websocket_proxy_options=proxy_options,
+            ca_filepath=args.root_ca,
+            on_connection_interrupted=on_connection_interrupted,
+            on_connection_resumed=on_connection_resumed,
+            client_id=args.client_id,
+            clean_session=False,
+            keep_alive_secs=6)
 
     else:
-        mqtt_connection = mqtt_connection_builder.mtls_from_path(endpoint=args.endpoint, cert_filepath=args.cert, pri_key_filepath=args.key,
-        client_bootstrap=client_bootstrap, ca_filepath=args.root_ca, on_connection_interrupted=on_connection_interrupted, on_connection_resumed=on_connection_resumed,
-            client_id=args.client_id, clean_session=False, keep_alive_secs=6)  
+        mqtt_connection = mqtt_connection_builder.mtls_from_path(
+            endpoint=args.endpoint,
+            cert_filepath=args.cert,
+            pri_key_filepath=args.key,
+            client_bootstrap=client_bootstrap,
+            ca_filepath=args.root_ca,
+            on_connection_interrupted=on_connection_interrupted,
+            on_connection_resumed=on_connection_resumed,
+            client_id=args.client_id,
+            clean_session=False,
+            keep_alive_secs=6)
 
     print("Connecting to {} with client ID '{}'...".format(
         args.endpoint, args.client_id))

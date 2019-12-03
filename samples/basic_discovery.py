@@ -75,12 +75,12 @@ if args.print_discover_resp_only:
     exit(0)
 
 
-def on_connection_interupted(connection, error_code):
-    print('connection interupted with error {}'.format(error_code))
+def on_connection_interupted(connection, error, **kwargs):
+    print('connection interrupted with error {}'.format(error))
 
 
-def on_connection_resumed(connection, error_code, session_present):
-    print('connection resumed with error {}, session present {}'.format(error_code, session_present))
+def on_connection_resumed(connection, return_code, session_present, **kwargs):
+    print('connection resumed with return code {}, session present {}'.format(return_code, session_present))
 
 
 # Try IoT endpoints until we find one that works
@@ -90,12 +90,19 @@ def try_iot_endpoints():
             for connectivity_info in gg_core.connectivity:
                 try:
                     print('Trying core {} at host {} port {}'.format(gg_core.thing_arn, connectivity_info.host_address, connectivity_info.port))
-                    mqtt_connection = mqtt_connection_builder.mtls_from_path(endpoint=connectivity_info.host_address, port=connectivity_info.port,
-                        cert_filepath=args.certificate_path, pri_key_filepath=args.private_key_path, client_bootstrap=client_bootstrap, 
-                        ca_bytes=bytes(gg_group.certificate_authorities[0], encoding='utf-8'), 
-                        on_connection_interrupted=on_connection_interupted, on_connection_resumed=on_connection_resumed,
-                        client_id=args.thing_name, clean_session=False, keep_alive_secs=6)
-                    
+                    mqtt_connection = mqtt_connection_builder.mtls_from_path(
+                        endpoint=connectivity_info.host_address,
+                        port=connectivity_info.port,
+                        cert_filepath=args.certificate_path,
+                        pri_key_filepath=args.private_key_path,
+                        client_bootstrap=client_bootstrap,
+                        ca_bytes=gg_group.certificate_authorities[0].encode('utf-8'),
+                        on_connection_interrupted=on_connection_interupted,
+                        on_connection_resumed=on_connection_resumed,
+                        client_id=args.thing_name,
+                        clean_session=False,
+                        keep_alive_secs=6)
+
                     connect_future = mqtt_connection.connect()
                     connect_future.result()
                     print('Connected!')
@@ -111,7 +118,7 @@ mqtt_connection = try_iot_endpoints()
 
 if args.mode == 'both' or args.mode == 'subscribe':
 
-    def on_publish(topic, payload):
+    def on_publish(topic, payload, **kwargs):
         print('Publish received on topic {}'.format(topic))
         print(payload)
 
@@ -125,8 +132,8 @@ while loop_count < args.max_pub_ops:
         message['message'] = args.message
         message['sequence'] = loop_count
         messageJson = json.dumps(message)
-        pub_future = mqtt_connection.publish(args.topic, messageJson, QoS.AT_MOST_ONCE)
-        pub_future[0].result()
+        pub_future, _ = mqtt_connection.publish(args.topic, messageJson, QoS.AT_MOST_ONCE)
+        pub_future.result()
         print('Published topic {}: {}\n'.format(args.topic, messageJson))
 
         loop_count += 1
