@@ -21,10 +21,10 @@ class DiscoveryClient(object):
     __slots__ = ['_bootstrap', '_tls_context', '_socket_options', '_region', '_tls_connection_options', '_gg_server_name', 'gg_url', 'port']
 
     def __init__(self, bootstrap, socket_options, tls_context, region):
-        assert bootstrap is not None and isinstance(bootstrap, ClientBootstrap)
-        assert socket_options is not None and isinstance(socket_options, SocketOptions)
-        assert tls_context is not None and isinstance(tls_context, ClientTlsContext)
-        assert region is not None and isinstance(region, str)
+        assert isinstance(bootstrap, ClientBootstrap)
+        assert isinstance(socket_options, SocketOptions)
+        assert isinstance(tls_context, ClientTlsContext)
+        assert isinstance(region, str)
 
         self._bootstrap = bootstrap
         self._socket_options = socket_options
@@ -44,7 +44,7 @@ class DiscoveryClient(object):
             future=Future(),
             response_body=bytearray())
 
-        def on_incoming_body(http_stream, chunk):
+        def on_incoming_body(http_stream, chunk, **kwargs):
             discovery['response_body'].extend(chunk)
 
         def on_request_complete(completion_future):
