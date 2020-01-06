@@ -33,26 +33,16 @@ parser.add_argument('-t', '--topic', action='store', dest='topic', default='sdk/
 parser.add_argument('-m', '--mode', action='store', dest='mode', default='both',
                     help='Operation modes: %s'%str(allowed_actions))
 parser.add_argument('-M', '--message', action='store', dest='message', default='Hello World!',
-help='Message to publish')
+                    help='Message to publish')
 parser.add_argument('--region', action='store', dest='region', default='us-east-1')
 parser.add_argument('--max-pub-ops', action='store', dest='max_pub_ops', default=10)
 parser.add_argument('--print-discover-resp-only', action='store_true', dest='print_discover_resp_only', default=False)
-parser.add_argument('-v', '--verbose', action='store', dest='verbosity', default='NoLogs')
+parser.add_argument('-v', '--verbosity', choices=[x.name for x in LogLevel], default=LogLevel.NoLogs.name,
+                    help='Logging level')
 
 args = parser.parse_args()
 
-if args.verbosity.lower() == 'fatal':
-    io.init_logging(LogLevel.Fatal, 'stderr')
-elif args.verbosity.lower() == 'error':
-    io.init_logging(LogLevel.Error, 'stderr')
-elif args.verbosity.lower() == 'warn':
-    io.init_logging(LogLevel.Warn, 'stderr')
-elif args.verbosity.lower() == 'info':
-    io.init_logging(LogLevel.Info, 'stderr')
-elif args.verbosity.lower() == 'debug':
-    io.init_logging(LogLevel.Debug, 'stderr')
-elif args.verbosity.lower() == 'trace':
-    io.init_logging(LogLevel.Trace, 'stderr')
+io.init_logging(getattr(LogLevel, args.verbosity), 'stderr')
 
 event_loop_group = io.EventLoopGroup(1)
 host_resolver = io.DefaultHostResolver(event_loop_group)

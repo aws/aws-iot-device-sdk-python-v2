@@ -60,6 +60,8 @@ parser.add_argument('--signing-region', default='us-east-1', help="If you specif
 parser.add_argument('--proxy-host', help="Hostname for proxy to connect to. Note: if you use this feature, " +
     "you will likely need to set --root-ca to the ca for your proxy.")
 parser.add_argument('--proxy-port', type=int, default=8080, help="Port for proxy to connect to.")
+parser.add_argument('--verbosity', choices=[x.name for x in io.LogLevel], default=io.LogLevel.NoLogs.name,
+    help='Logging level')
 
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
@@ -237,6 +239,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     thing_name = args.thing_name
     shadow_property = args.shadow_property
+    io.init_logging(getattr(io.LogLevel, args.verbosity), 'stderr')
 
     # Spin up resources
     event_loop_group = io.EventLoopGroup(1)
