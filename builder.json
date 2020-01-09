@@ -5,6 +5,22 @@
             "enabled": false,
             "_comment": "al2012 can't currently pull builder.py from github. SSL: CERTIFICATE_VERIFY_FAILED"
         },
+        "linux": {
+            "architectures": {
+                "x86": {
+                    "enabled": false,
+                    "_comment": "this 'x86' machine actually uses 64bit python, no point in running it"
+                }
+            }
+        },
+        "windows": {
+            "architectures": {
+                "x86": {
+                    "enabled": false,
+                    "_comment": "this 'x86' machine actually uses 64bit python, no point in running it"
+                }
+            }
+        },
         "manylinux": {
             "post_build_steps": [
                 ["echo", "------ Python 3.6 ------"],
