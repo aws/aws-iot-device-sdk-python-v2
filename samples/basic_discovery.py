@@ -59,7 +59,8 @@ host_resolver = io.DefaultHostResolver(event_loop_group)
 client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
 
 tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.certificate_path, args.private_key_path)
-tls_options.override_default_trust_store_from_path(None, args.root_ca_path)
+if args.root_ca_path:
+    tls_options.override_default_trust_store_from_path(None, args.root_ca_path)
 tls_context = io.ClientTlsContext(tls_options)
 
 socket_options = io.SocketOptions()
