@@ -80,12 +80,15 @@ def create_client_id():
 
 class SamplesTest(unittest.TestCase):
 
-    def _run(self, args):
+    def _run(self, args, stdout_checker):
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
-
-        # only print output if test failed
-        if process.returncode != 0:
+        stdout = stdout.decode()
+        try:
+            self.assertEqual(0, process.returncode)
+            stdout_checker(stdout)
+        except Exception as e:
+            # print output and rethrow exception
             print(subprocess.list2cmdline(args))
             print("--- stdout ---")
             for line in stdout.splitlines():
@@ -95,8 +98,7 @@ class SamplesTest(unittest.TestCase):
                 print(line)
             print("--- end ---")
 
-        self.assertEquals(0, process.returncode)
-        return stdout
+            raise e
 
     def test_pubsub(self):
         config = Config.get()
@@ -110,8 +112,11 @@ class SamplesTest(unittest.TestCase):
             "--count", "1",
             #"--verbosity", "Trace",
         ]
-        stdout = self._run(args)
-        self.assertTrue(stdout.endswith("Disconnected!\n"))
+
+        def stdout_checker(stdout):
+            self.assertTrue(stdout.endswith("\nDisconnected!\n"))
+
+        self._run(args, stdout_checker)
 
     def test_basic_discovery_response_only(self):
         config = Config.get()
@@ -125,5 +130,8 @@ class SamplesTest(unittest.TestCase):
             "--thing-name", "aws-sdk-crt-unit-test",
             "-v", "Trace",
         ]
-        stdout = self._run(args)
-        self.assertTrue("\nawsiot.greengrass_discovery.DiscoverResponse(" in stdout)
+
+        def stdout_checker(stdout):
+            self.assertTrue("\nawsiot.greengrass_discovery.DiscoverResponse(" in stdout)
+
+        self._run(args, stdout_checker)
