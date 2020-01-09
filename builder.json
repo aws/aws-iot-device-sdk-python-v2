@@ -1,5 +1,5 @@
 {
-    "name": "aws-crt-python",
+    "name": "aws-iot-device-sdk-python-v2",
     "hosts": {
         "al2012": {
             "enabled": false,
@@ -43,7 +43,7 @@
         "clang": { "enabled": false },
         "gcc": {
             "versions": {
-                "_comment": "gcc 4.8 still runs, that's what the linux wheels were made with",
+                "_comment": "run gcc 4.8 because that's what the linux wheels were made with",
                 "5": { "enabled": false },
                 "6": { "enabled": false },
                 "7": { "enabled": false },
@@ -52,7 +52,7 @@
         },
         "msvc": {
             "versions": {
-                "_comment": "msvc 2015 still runs, that's what the windows wheels were made with",
+                "_comment": "run msvc 2015 because that's what the windows wheels were made with",
                 "2017": { "enabled": false }
             }
 
