@@ -114,7 +114,8 @@ class SamplesTest(unittest.TestCase):
         ]
 
         def stdout_checker(stdout):
-            self.assertTrue(stdout.endswith("\nDisconnected!\n"))
+            # check for last line printed by sample
+            self.assertTrue("Disconnected!" in stdout)
 
         self._run(args, stdout_checker)
 
@@ -132,6 +133,7 @@ class SamplesTest(unittest.TestCase):
         ]
 
         def stdout_checker(stdout):
-            self.assertTrue("\nawsiot.greengrass_discovery.DiscoverResponse(" in stdout)
+            # check for last line printed by sample
+            self.assertTrue("awsiot.greengrass_discovery.DiscoverResponse(" in stdout)
 
         self._run(args, stdout_checker)

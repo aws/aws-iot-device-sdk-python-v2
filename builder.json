@@ -50,7 +50,7 @@
                 ["/opt/python/cp27-cp27mu/bin/python", "-m", "unittest", "discover", "--verbose"]
             ],
             "run_tests": false,
-            "_comment": ""
+            "_comment": "manylinux has all its own build steps, turn off 'tests' which is where normal build steps are declared. using data to program sucks"
         }
     },
     "targets": {
@@ -76,7 +76,6 @@
                 "_comment": "run msvc 2015 because that's what the windows wheels were made with",
                 "2017": { "enabled": false }
             }
-
         }
     },
     "upstream": [],
