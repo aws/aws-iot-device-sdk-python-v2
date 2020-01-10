@@ -110,7 +110,7 @@ class SamplesTest(unittest.TestCase):
             "--key", config.key_filepath,
             "--client-id", create_client_id(),
             "--count", "1",
-            #"--verbosity", "Trace",
+            "--verbosity", "Trace",
         ]
 
         def stdout_checker(stdout):
@@ -130,7 +130,7 @@ class SamplesTest(unittest.TestCase):
             "--cert", config.cert_filepath,
             "--key", config.key_filepath,
             "--thing-name", "aws-sdk-crt-unit-test",
-            "-v", "Trace",
+            "--verbosity", "Trace",
         ]
 
         def stdout_checker(stdout):
