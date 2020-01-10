@@ -1,0 +1,93 @@
+{
+    "name": "aws-iot-device-sdk-python-v2",
+    "hosts": {
+        "al2012": {
+            "enabled": false,
+            "_comment": "al2012 can't currently pull builder.py from github. SSL: CERTIFICATE_VERIFY_FAILED"
+        },
+        "linux": {
+            "architectures": {
+                "x86": {
+                    "enabled": false,
+                    "_comment": "this 'x86' machine actually uses 64bit python, no point in running it"
+                }
+            }
+        },
+        "windows": {
+            "architectures": {
+                "x86": {
+                    "enabled": false,
+                    "_comment": "this 'x86' machine actually uses 64bit python, no point in running it"
+                }
+            }
+        },
+        "manylinux": {
+            "post_build_steps": [
+                ["echo", "------ Python 3.6 ------"],
+                ["/opt/python/cp36-cp36m/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
+                ["/opt/python/cp36-cp36m/bin/python", "-m", "pip", "install", ".", "--verbose"],
+                ["/opt/python/cp36-cp36m/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
+                ["/opt/python/cp36-cp36m/bin/python", "-m", "unittest", "discover", "--verbose"],
+                ["echo", "------ Python 3.5 ------"],
+                ["/opt/python/cp35-cp35m/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
+                ["/opt/python/cp35-cp35m/bin/python", "-m", "pip", "install", ".", "--verbose"],
+                ["/opt/python/cp35-cp35m/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
+                ["/opt/python/cp35-cp35m/bin/python", "-m", "unittest", "discover", "--verbose"],
+                ["echo", "------ Python 3.4 ------"],
+                ["/opt/python/cp34-cp34m/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
+                ["/opt/python/cp34-cp34m/bin/python", "-m", "pip", "install", ".", "--verbose"],
+                ["/opt/python/cp34-cp34m/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
+                ["/opt/python/cp34-cp34m/bin/python", "-m", "unittest", "discover", "--verbose"],
+                ["echo", "------ Python 2.7 narrow-unicode ------"],
+                ["/opt/python/cp27-cp27m/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
+                ["/opt/python/cp27-cp27m/bin/python", "-m", "pip", "install", ".", "--verbose"],
+                ["/opt/python/cp27-cp27m/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
+                ["/opt/python/cp27-cp27m/bin/python", "-m", "unittest", "discover", "--verbose"],
+                ["echo", "------ Python 2.7 wide-unicode ------"],
+                ["/opt/python/cp27-cp27mu/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
+                ["/opt/python/cp27-cp27mu/bin/python", "-m", "pip", "install", ".", "--verbose"],
+                ["/opt/python/cp27-cp27mu/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
+                ["/opt/python/cp27-cp27mu/bin/python", "-m", "unittest", "discover", "--verbose"]
+            ],
+            "run_tests": false,
+            "_comment": "manylinux has all its own build steps, turn off 'tests' which is where normal build steps are declared. using data to program sucks"
+        }
+    },
+    "targets": {
+        "android": {
+            "enabled": false,
+            "_comment": "disabled until we have a reason to support python on android"
+        }
+    },
+    "compilers": {
+        "_comment": "don't need compiler variants because awsiot is pure python. It will use precompiled awscrt wheels pulled from pip.",
+        "clang": { "enabled": false },
+        "gcc": {
+            "versions": {
+                "_comment": "run gcc 4.8 because that's what the linux wheels were made with",
+                "5": { "enabled": false },
+                "6": { "enabled": false },
+                "7": { "enabled": false },
+                "8": { "enabled": false }
+            }
+        },
+        "msvc": {
+            "versions": {
+                "_comment": "run msvc 2015 because that's what the windows wheels were made with",
+                "2017": { "enabled": false }
+            }
+        }
+    },
+    "upstream": [],
+    "downstream": [],
+    "_comment": "doing everything in 'test' step so that manylinux can turn off tests and do its stuff in the 'post_build_step'. using data to program really sucks",
+    "build": [
+        ["{python}", "-c", "print('ignore this fake build step')"]
+    ],
+    "test": [
+        ["{python}", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
+        ["{python}", "-m", "pip", "install", ".", "--verbose"],
+        ["{python}", "-m", "pip", "install", "boto3", "autopep8"],
+        ["{python}", "-m", "unittest", "discover", "--verbose"]
+    ]
+}
