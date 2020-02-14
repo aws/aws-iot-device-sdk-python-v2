@@ -58,7 +58,7 @@ class MqttServiceClient(object):
                 else:
                     future.set_result(None)
 
-            unsub_future = self.mqtt_connection.unsubscribe(topic)
+            unsub_future, _ = self.mqtt_connection.unsubscribe(topic)
             unsub_future.add_done_callback(on_unsuback)
 
         except Exception as e:
