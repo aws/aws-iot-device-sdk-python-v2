@@ -15,6 +15,9 @@ A clear and concise description of what the bug is.
 
 **SDK version number**
 
+**Platform/OS/Device**
+What are you running the sdk on?
+
 **To Reproduce (observed behavior)**
 Steps to reproduce the behavior (please share code)
 
