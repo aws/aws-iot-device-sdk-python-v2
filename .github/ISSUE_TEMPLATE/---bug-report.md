@@ -22,8 +22,13 @@ Steps to reproduce the behavior (please share code)
 A clear and concise description of what you expected to happen.
 
 **Logs/output**
-If applicable, add logs or error output of your problem.
+If applicable, add logs or error output.
+
+*REMEMBER TO SANITIZE YOUR PERSONAL INFO*
+
+```
 awscrt.io.init_logging(awscrt.io.LogLevel.Warn, 'stderr')
+```
 
 **Additional context**
 Add any other context about the problem here.
