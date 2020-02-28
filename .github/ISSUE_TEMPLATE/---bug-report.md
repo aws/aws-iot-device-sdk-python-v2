@@ -21,8 +21,9 @@ Steps to reproduce the behavior (please share code)
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Logs/output**
+If applicable, add logs or error output of your problem.
+awscrt.io.init_logging(awscrt.io.LogLevel.Warn, 'stderr')
 
 **Additional context**
 Add any other context about the problem here.
