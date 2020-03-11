@@ -220,7 +220,7 @@ class IotIdentityClient(awsiot.MqttServiceClient):
             raise ValueError("callback is required")
 
         return self._subscribe_operation(
-            topic=' $aws/provisioning-templates/{0.template_name}/provision/json/accepted'.format(request),
+            topic='$aws/provisioning-templates/{0.template_name}/provision/json/accepted'.format(request),
             qos=qos,
             callback=callback,
             payload_to_class_fn=RegisterThingResponse.from_payload)

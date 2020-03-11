@@ -231,7 +231,7 @@ def waitForCreateCertificateFromCsrResponse():
 def waitForRegisterThingResponse():
     # Wait for the response.
     loopCount = 0
-    while loopCount < 10 and registerThingResponse is None:
+    while loopCount < 20 and registerThingResponse is None:
         if registerThingResponse is not None:
             break
         loopCount += 1
@@ -296,11 +296,7 @@ if __name__ == '__main__':
         # Note that is **is** important to wait for "accepted/rejected" subscriptions
         # to succeed before publishing the corresponding "request".
 
-
-        # Make initial attempt to start next job. The service should reply with
-        # an "accepted" response, even if no jobs are pending. The response
-        # will contain data about the next job, if there is one.
-
+        # Keys workflow if csr is not provided
         if args.csr is None:
             createkeysandcertificate_subscription_request = iotidentity.CreateKeysAndCertificateSubscriptionRequest()
 
@@ -400,7 +396,7 @@ if __name__ == '__main__':
         registerthing_publish_future.add_done_callback(on_publish_register_thing)
 
         waitForRegisterThingResponse()
-
+        exit("success")
 
     except Exception as e:
         exit(e)
