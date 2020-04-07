@@ -13,7 +13,6 @@
 
 # This file is generated
 
-import awscrt.mqtt
 import awsiot
 import concurrent.futures
 import datetime
@@ -803,10 +802,10 @@ class StartNextPendingJobExecutionSubscriptionRequest(awsiot.ModeledClass):
         self.thing_name = thing_name # type: typing.Optional[str]
 
 class UpdateJobExecutionRequest(awsiot.ModeledClass):
-    __slots__ = ['client_token', 'execution_number', 'expected_version', 'include_job_document', 'include_job_execution_state', 'job_id', 'status', 'status_details', 'thing_name']
+    __slots__ = ['client_token', 'execution_number', 'expected_version', 'include_job_document', 'include_job_execution_state', 'job_id', 'status', 'status_details', 'step_timeout_in_minutes', 'thing_name']
 
-    def __init__(self, client_token=None, execution_number=None, expected_version=None, include_job_document=None, include_job_execution_state=None, job_id=None, status=None, status_details=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[int], typing.Optional[int], typing.Optional[bool], typing.Optional[bool], typing.Optional[str], typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[str]) -> None
+    def __init__(self, client_token=None, execution_number=None, expected_version=None, include_job_document=None, include_job_execution_state=None, job_id=None, status=None, status_details=None, step_timeout_in_minutes=None, thing_name=None):
+        # type: (typing.Optional[str], typing.Optional[int], typing.Optional[int], typing.Optional[bool], typing.Optional[bool], typing.Optional[str], typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[int], typing.Optional[str]) -> None
         self.client_token = client_token # type: typing.Optional[str]
         self.execution_number = execution_number # type: typing.Optional[int]
         self.expected_version = expected_version # type: typing.Optional[int]
@@ -815,6 +814,7 @@ class UpdateJobExecutionRequest(awsiot.ModeledClass):
         self.job_id = job_id # type: typing.Optional[str]
         self.status = status # type: typing.Optional[str]
         self.status_details = status_details # type: typing.Optional[typing.Dict[str, str]]
+        self.step_timeout_in_minutes = step_timeout_in_minutes # type: typing.Optional[int]
         self.thing_name = thing_name # type: typing.Optional[str]
 
     def to_payload(self):
@@ -834,6 +834,8 @@ class UpdateJobExecutionRequest(awsiot.ModeledClass):
             payload['status'] = self.status
         if self.status_details is not None:
             payload['statusDetails'] = self.status_details
+        if self.step_timeout_in_minutes is not None:
+            payload['stepTimeoutInMinutes'] = self.step_timeout_in_minutes
         return payload
 
 class UpdateJobExecutionResponse(awsiot.ModeledClass):
