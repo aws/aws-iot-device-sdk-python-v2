@@ -35,6 +35,16 @@ pip install awsiotsdk
 pip install ./aws-iot-device-sdk-python-v2
 ```
 
+## Install for Raspberry Pi ([buster](https://www.raspberrypi.org/downloads/raspbian/))
+
+```
+sudo apt-get update
+sudo apt-get install cmake
+sudo apt-get install libssl-dev
+sudo pip install awscrt
+sudo pip install awsiotsdk
+```
+
 # Samples
 
 ## pubsub
