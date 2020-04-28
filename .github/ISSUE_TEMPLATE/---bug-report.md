@@ -9,7 +9,10 @@ assignees: ''
 
 Confirm by changing [ ] to [x] below to ensure that it's a bug:
 - [ ] I've searched for [previous similar issues](https://github.com/aws/aws-iot-device-sdk-python-v2/issues) and didn't find any solution
-  
+
+**Known Issue**
+- [ ] I'm using ATS data type endpoint: the endpoint should look like `<prefix>-ats.iot.<region>.amazonaws.com`
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
