@@ -3,14 +3,14 @@ name: "Close stale issues"
 # Controls when the action will run.
 on:
   schedule:
-    - cron: "/30 * * * *"
+    - cron: "/60 * * * *"
 
 jobs:
   cleanup:
     runs-on: ubuntu-latest
     name: Stale issue job
     steps:
-    - uses: aws-actions/stale-issue-cleanup@v2
+    - uses: aws-actions/stale-issue-cleanup@v3
       with:
         # Setting messages to an empty string will cause the automation to skip
         # that category
