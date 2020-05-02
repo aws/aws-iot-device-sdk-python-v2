@@ -277,9 +277,14 @@ publishes the request to corresponding topic and calls RegisterThing.
 
 Source: `samples/fleetprovisioning.py`
 
-Run the sample like this:
+Run the sample using createKeysAndCertificate:
 ```
 python fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name> --templateName <name> --templateParameters <parameters>
+```
+
+Run the sample using createCertificateFromCsr:
+```
+python fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name> --templateName <name> --templateParameters <parameters> --csr <csr file>
 ```
 
 Your Thing's
