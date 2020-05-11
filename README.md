@@ -35,6 +35,16 @@ pip install awsiotsdk
 pip install ./aws-iot-device-sdk-python-v2
 ```
 
+## Installation Issues
+
+`awsiotsdk` depends on [awscrt](https://github.com/awslabs/aws-crt-python), which makes use of C extensions. Precompiled wheels are downloaded when installing on major platforms (Mac, Windows, Linux, Raspbian (python3 only)). If wheels are unavailable for your platform (ex: Raspbian with python2.7), your machine must compile some C libraries. If you encounter issues, install the following and try again:
+
+```
+sudo apt-get update
+sudo apt-get install cmake
+sudo apt-get install libssl-dev
+```
+
 # Samples
 
 ## pubsub

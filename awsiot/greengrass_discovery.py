@@ -73,7 +73,8 @@ class DiscoveryClient(object):
                 http_stream = connection.request(
                     request=request,
                     on_body=on_incoming_body)
-
+               
+                http_stream.activate()
                 http_stream.completion_future.add_done_callback(on_request_complete)
 
             except Exception as e:

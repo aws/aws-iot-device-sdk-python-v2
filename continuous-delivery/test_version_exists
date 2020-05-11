@@ -13,7 +13,13 @@ if [ "$CURRENT_TAG" != "$CURRENT_TAG_VERSION" ]; then
     exit 1
 fi
 
-if pip install -vvv awsiotsdk==$CURRENT_TAG_VERSION; then
+SETUP_PY_VERSION=$(python3 setup.py --version)
+if [ "$CURRENT_TAG_VERSION" != "$SETUP_PY_VERSION" ]; then
+    echo "Current tag version does not match version in setup.py: $CURRENT_TAG_VERSION != $SETUP_PY_VERSION"
+    exit 1
+fi
+
+if python3 -m pip install --no-cache-dir -vvv awsiotsdk==$CURRENT_TAG_VERSION; then
     echo "$CURRENT_TAG_VERSION is already in pypi, cut a new tag if you want to upload another version."
     exit 1
 fi
