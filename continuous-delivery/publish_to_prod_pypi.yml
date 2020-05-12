@@ -10,10 +10,12 @@ phases:
   pre_build:
     commands:
       - pypirc=$(aws secretsmanager get-secret-value --secret-id "prod/aws-crt-python/.pypirc" --query "SecretString" | cut -f2 -d\") && echo "$pypirc" > ~/.pypirc
+      - export PKG_VERSION=$(git describe --tags | cut -f2 -dv)
   build:
     commands:
       - echo Build started on `date`
       - cd aws-iot-device-sdk-python-v2 
+      - sed --in-place -E "s/version='.+'/version='${PKG_VERSION}'/" setup.py
       - python3 setup.py sdist bdist_wheel --universal
       - python3 -m twine upload -r pypi dist/*
   post_build:
