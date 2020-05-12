@@ -17,7 +17,7 @@ from setuptools import setup
 
 setup(
     name='awsiotsdk',
-    version='1.0.7',
+    version='1.0.0-dev',
     description='AWS IoT SDK based on the AWS Common Runtime',
     author='AWS SDK Common Runtime Team',
     url='https://github.com/aws/aws-iot-device-sdk-python-v2',
