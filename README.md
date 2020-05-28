@@ -289,12 +289,12 @@ Source: `samples/fleetprovisioning.py`
 
 Run the sample using createKeysAndCertificate:
 ```
-python fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name> --templateName <name> --templateParameters <parameters>
+python fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters>
 ```
 
 Run the sample using createCertificateFromCsr:
 ```
-python fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name> --templateName <name> --templateParameters <parameters> --csr <csr file>
+python fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters> --csr <csr file>
 ```
 
 Your Thing's
