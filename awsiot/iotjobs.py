@@ -429,13 +429,14 @@ class IotJobsClient(awsiot.MqttServiceClient):
 class DescribeJobExecutionRequest(awsiot.ModeledClass):
     __slots__ = ['client_token', 'execution_number', 'include_job_document', 'job_id', 'thing_name']
 
-    def __init__(self, client_token=None, execution_number=None, include_job_document=None, job_id=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[int], typing.Optional[bool], typing.Optional[str], typing.Optional[str]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.execution_number = execution_number # type: typing.Optional[int]
-        self.include_job_document = include_job_document # type: typing.Optional[bool]
-        self.job_id = job_id # type: typing.Optional[str]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.client_token = kwargs.get('client_token')
+        self.execution_number = kwargs.get('execution_number')
+        self.include_job_document = kwargs.get('include_job_document')
+        self.job_id = kwargs.get('job_id')
+        self.thing_name = kwargs.get('thing_name')
+        for key, val in zip(['client_token', 'execution_number', 'include_job_document', 'job_id', 'thing_name'], args):
+            setattr(self, key, val)
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
@@ -451,11 +452,12 @@ class DescribeJobExecutionRequest(awsiot.ModeledClass):
 class DescribeJobExecutionResponse(awsiot.ModeledClass):
     __slots__ = ['client_token', 'execution', 'timestamp']
 
-    def __init__(self, client_token=None, execution=None, timestamp=None):
-        # type: (typing.Optional[str], typing.Optional[JobExecutionData], typing.Optional[datetime.datetime]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.execution = execution # type: typing.Optional[JobExecutionData]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        self.client_token = kwargs.get('client_token')
+        self.execution = kwargs.get('execution')
+        self.timestamp = kwargs.get('timestamp')
+        for key, val in zip(['client_token', 'execution', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -475,18 +477,20 @@ class DescribeJobExecutionResponse(awsiot.ModeledClass):
 class DescribeJobExecutionSubscriptionRequest(awsiot.ModeledClass):
     __slots__ = ['job_id', 'thing_name']
 
-    def __init__(self, job_id=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[str]) -> None
-        self.job_id = job_id # type: typing.Optional[str]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.job_id = kwargs.get('job_id')
+        self.thing_name = kwargs.get('thing_name')
+        for key, val in zip(['job_id', 'thing_name'], args):
+            setattr(self, key, val)
 
 class GetPendingJobExecutionsRequest(awsiot.ModeledClass):
     __slots__ = ['client_token', 'thing_name']
 
-    def __init__(self, client_token=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[str]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.client_token = kwargs.get('client_token')
+        self.thing_name = kwargs.get('thing_name')
+        for key, val in zip(['client_token', 'thing_name'], args):
+            setattr(self, key, val)
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
@@ -498,12 +502,13 @@ class GetPendingJobExecutionsRequest(awsiot.ModeledClass):
 class GetPendingJobExecutionsResponse(awsiot.ModeledClass):
     __slots__ = ['client_token', 'in_progress_jobs', 'queued_jobs', 'timestamp']
 
-    def __init__(self, client_token=None, in_progress_jobs=None, queued_jobs=None, timestamp=None):
-        # type: (typing.Optional[str], typing.Optional[typing.List[JobExecutionSummary]], typing.Optional[typing.List[JobExecutionSummary]], typing.Optional[datetime.datetime]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.in_progress_jobs = in_progress_jobs # type: typing.Optional[typing.List[JobExecutionSummary]]
-        self.queued_jobs = queued_jobs # type: typing.Optional[typing.List[JobExecutionSummary]]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        self.client_token = kwargs.get('client_token')
+        self.in_progress_jobs = kwargs.get('in_progress_jobs')
+        self.queued_jobs = kwargs.get('queued_jobs')
+        self.timestamp = kwargs.get('timestamp')
+        for key, val in zip(['client_token', 'in_progress_jobs', 'queued_jobs', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -526,25 +531,27 @@ class GetPendingJobExecutionsResponse(awsiot.ModeledClass):
 class GetPendingJobExecutionsSubscriptionRequest(awsiot.ModeledClass):
     __slots__ = ['thing_name']
 
-    def __init__(self, thing_name=None):
-        # type: (typing.Optional[str]) -> None
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.thing_name = kwargs.get('thing_name')
+        for key, val in zip(['thing_name'], args):
+            setattr(self, key, val)
 
 class JobExecutionData(awsiot.ModeledClass):
     __slots__ = ['execution_number', 'job_document', 'job_id', 'last_updated_at', 'queued_at', 'started_at', 'status', 'status_details', 'thing_name', 'version_number']
 
-    def __init__(self, execution_number=None, job_document=None, job_id=None, last_updated_at=None, queued_at=None, started_at=None, status=None, status_details=None, thing_name=None, version_number=None):
-        # type: (typing.Optional[int], typing.Optional[typing.Dict[str, typing.Any]], typing.Optional[str], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[str], typing.Optional[int]) -> None
-        self.execution_number = execution_number # type: typing.Optional[int]
-        self.job_document = job_document # type: typing.Optional[typing.Dict[str, typing.Any]]
-        self.job_id = job_id # type: typing.Optional[str]
-        self.last_updated_at = last_updated_at # type: typing.Optional[datetime.datetime]
-        self.queued_at = queued_at # type: typing.Optional[datetime.datetime]
-        self.started_at = started_at # type: typing.Optional[datetime.datetime]
-        self.status = status # type: typing.Optional[str]
-        self.status_details = status_details # type: typing.Optional[typing.Dict[str, str]]
-        self.thing_name = thing_name # type: typing.Optional[str]
-        self.version_number = version_number # type: typing.Optional[int]
+    def __init__(self, *args, **kwargs):
+        self.execution_number = kwargs.get('execution_number')
+        self.job_document = kwargs.get('job_document')
+        self.job_id = kwargs.get('job_id')
+        self.last_updated_at = kwargs.get('last_updated_at')
+        self.queued_at = kwargs.get('queued_at')
+        self.started_at = kwargs.get('started_at')
+        self.status = kwargs.get('status')
+        self.status_details = kwargs.get('status_details')
+        self.thing_name = kwargs.get('thing_name')
+        self.version_number = kwargs.get('version_number')
+        for key, val in zip(['execution_number', 'job_document', 'job_id', 'last_updated_at', 'queued_at', 'started_at', 'status', 'status_details', 'thing_name', 'version_number'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -585,11 +592,12 @@ class JobExecutionData(awsiot.ModeledClass):
 class JobExecutionState(awsiot.ModeledClass):
     __slots__ = ['status', 'status_details', 'version_number']
 
-    def __init__(self, status=None, status_details=None, version_number=None):
-        # type: (typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[int]) -> None
-        self.status = status # type: typing.Optional[str]
-        self.status_details = status_details # type: typing.Optional[typing.Dict[str, str]]
-        self.version_number = version_number # type: typing.Optional[int]
+    def __init__(self, *args, **kwargs):
+        self.status = kwargs.get('status')
+        self.status_details = kwargs.get('status_details')
+        self.version_number = kwargs.get('version_number')
+        for key, val in zip(['status', 'status_details', 'version_number'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -609,14 +617,15 @@ class JobExecutionState(awsiot.ModeledClass):
 class JobExecutionSummary(awsiot.ModeledClass):
     __slots__ = ['execution_number', 'job_id', 'last_updated_at', 'queued_at', 'started_at', 'version_number']
 
-    def __init__(self, execution_number=None, job_id=None, last_updated_at=None, queued_at=None, started_at=None, version_number=None):
-        # type: (typing.Optional[int], typing.Optional[str], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[int]) -> None
-        self.execution_number = execution_number # type: typing.Optional[int]
-        self.job_id = job_id # type: typing.Optional[str]
-        self.last_updated_at = last_updated_at # type: typing.Optional[datetime.datetime]
-        self.queued_at = queued_at # type: typing.Optional[datetime.datetime]
-        self.started_at = started_at # type: typing.Optional[datetime.datetime]
-        self.version_number = version_number # type: typing.Optional[int]
+    def __init__(self, *args, **kwargs):
+        self.execution_number = kwargs.get('execution_number')
+        self.job_id = kwargs.get('job_id')
+        self.last_updated_at = kwargs.get('last_updated_at')
+        self.queued_at = kwargs.get('queued_at')
+        self.started_at = kwargs.get('started_at')
+        self.version_number = kwargs.get('version_number')
+        for key, val in zip(['execution_number', 'job_id', 'last_updated_at', 'queued_at', 'started_at', 'version_number'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -645,10 +654,11 @@ class JobExecutionSummary(awsiot.ModeledClass):
 class JobExecutionsChangedEvent(awsiot.ModeledClass):
     __slots__ = ['jobs', 'timestamp']
 
-    def __init__(self, jobs=None, timestamp=None):
-        # type: (typing.Optional[typing.Dict[str, typing.List[JobExecutionSummary]]], typing.Optional[datetime.datetime]) -> None
-        self.jobs = jobs # type: typing.Optional[typing.Dict[str, typing.List[JobExecutionSummary]]]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        self.jobs = kwargs.get('jobs')
+        self.timestamp = kwargs.get('timestamp')
+        for key, val in zip(['jobs', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -665,9 +675,10 @@ class JobExecutionsChangedEvent(awsiot.ModeledClass):
 class JobExecutionsChangedSubscriptionRequest(awsiot.ModeledClass):
     __slots__ = ['thing_name']
 
-    def __init__(self, thing_name=None):
-        # type: (typing.Optional[str]) -> None
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.thing_name = kwargs.get('thing_name')
+        for key, val in zip(['thing_name'], args):
+            setattr(self, key, val)
 
 class JobStatus:
     CANCELED = 'CANCELED'
@@ -682,10 +693,11 @@ class JobStatus:
 class NextJobExecutionChangedEvent(awsiot.ModeledClass):
     __slots__ = ['execution', 'timestamp']
 
-    def __init__(self, execution=None, timestamp=None):
-        # type: (typing.Optional[JobExecutionData], typing.Optional[datetime.datetime]) -> None
-        self.execution = execution # type: typing.Optional[JobExecutionData]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        self.execution = kwargs.get('execution')
+        self.timestamp = kwargs.get('timestamp')
+        for key, val in zip(['execution', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -702,20 +714,22 @@ class NextJobExecutionChangedEvent(awsiot.ModeledClass):
 class NextJobExecutionChangedSubscriptionRequest(awsiot.ModeledClass):
     __slots__ = ['thing_name']
 
-    def __init__(self, thing_name=None):
-        # type: (typing.Optional[str]) -> None
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.thing_name = kwargs.get('thing_name')
+        for key, val in zip(['thing_name'], args):
+            setattr(self, key, val)
 
 class RejectedError(awsiot.ModeledClass):
     __slots__ = ['client_token', 'code', 'execution_state', 'message', 'timestamp']
 
-    def __init__(self, client_token=None, code=None, execution_state=None, message=None, timestamp=None):
-        # type: (typing.Optional[str], typing.Optional[str], typing.Optional[JobExecutionState], typing.Optional[str], typing.Optional[datetime.datetime]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.code = code # type: typing.Optional[str]
-        self.execution_state = execution_state # type: typing.Optional[JobExecutionState]
-        self.message = message # type: typing.Optional[str]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        self.client_token = kwargs.get('client_token')
+        self.code = kwargs.get('code')
+        self.execution_state = kwargs.get('execution_state')
+        self.message = kwargs.get('message')
+        self.timestamp = kwargs.get('timestamp')
+        for key, val in zip(['client_token', 'code', 'execution_state', 'message', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -752,11 +766,12 @@ class RejectedErrorCode:
 class StartNextJobExecutionResponse(awsiot.ModeledClass):
     __slots__ = ['client_token', 'execution', 'timestamp']
 
-    def __init__(self, client_token=None, execution=None, timestamp=None):
-        # type: (typing.Optional[str], typing.Optional[JobExecutionData], typing.Optional[datetime.datetime]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.execution = execution # type: typing.Optional[JobExecutionData]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        self.client_token = kwargs.get('client_token')
+        self.execution = kwargs.get('execution')
+        self.timestamp = kwargs.get('timestamp')
+        for key, val in zip(['client_token', 'execution', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -776,12 +791,13 @@ class StartNextJobExecutionResponse(awsiot.ModeledClass):
 class StartNextPendingJobExecutionRequest(awsiot.ModeledClass):
     __slots__ = ['client_token', 'status_details', 'step_timeout_in_minutes', 'thing_name']
 
-    def __init__(self, client_token=None, status_details=None, step_timeout_in_minutes=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[int], typing.Optional[str]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.status_details = status_details # type: typing.Optional[typing.Dict[str, str]]
-        self.step_timeout_in_minutes = step_timeout_in_minutes # type: typing.Optional[int]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.client_token = kwargs.get('client_token')
+        self.status_details = kwargs.get('status_details')
+        self.step_timeout_in_minutes = kwargs.get('step_timeout_in_minutes')
+        self.thing_name = kwargs.get('thing_name')
+        for key, val in zip(['client_token', 'status_details', 'step_timeout_in_minutes', 'thing_name'], args):
+            setattr(self, key, val)
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
@@ -797,25 +813,27 @@ class StartNextPendingJobExecutionRequest(awsiot.ModeledClass):
 class StartNextPendingJobExecutionSubscriptionRequest(awsiot.ModeledClass):
     __slots__ = ['thing_name']
 
-    def __init__(self, thing_name=None):
-        # type: (typing.Optional[str]) -> None
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.thing_name = kwargs.get('thing_name')
+        for key, val in zip(['thing_name'], args):
+            setattr(self, key, val)
 
 class UpdateJobExecutionRequest(awsiot.ModeledClass):
     __slots__ = ['client_token', 'execution_number', 'expected_version', 'include_job_document', 'include_job_execution_state', 'job_id', 'status', 'status_details', 'step_timeout_in_minutes', 'thing_name']
 
-    def __init__(self, client_token=None, execution_number=None, expected_version=None, include_job_document=None, include_job_execution_state=None, job_id=None, status=None, status_details=None, step_timeout_in_minutes=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[int], typing.Optional[int], typing.Optional[bool], typing.Optional[bool], typing.Optional[str], typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[int], typing.Optional[str]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.execution_number = execution_number # type: typing.Optional[int]
-        self.expected_version = expected_version # type: typing.Optional[int]
-        self.include_job_document = include_job_document # type: typing.Optional[bool]
-        self.include_job_execution_state = include_job_execution_state # type: typing.Optional[bool]
-        self.job_id = job_id # type: typing.Optional[str]
-        self.status = status # type: typing.Optional[str]
-        self.status_details = status_details # type: typing.Optional[typing.Dict[str, str]]
-        self.step_timeout_in_minutes = step_timeout_in_minutes # type: typing.Optional[int]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.client_token = kwargs.get('client_token')
+        self.execution_number = kwargs.get('execution_number')
+        self.expected_version = kwargs.get('expected_version')
+        self.include_job_document = kwargs.get('include_job_document')
+        self.include_job_execution_state = kwargs.get('include_job_execution_state')
+        self.job_id = kwargs.get('job_id')
+        self.status = kwargs.get('status')
+        self.status_details = kwargs.get('status_details')
+        self.step_timeout_in_minutes = kwargs.get('step_timeout_in_minutes')
+        self.thing_name = kwargs.get('thing_name')
+        for key, val in zip(['client_token', 'execution_number', 'expected_version', 'include_job_document', 'include_job_execution_state', 'job_id', 'status', 'status_details', 'step_timeout_in_minutes', 'thing_name'], args):
+            setattr(self, key, val)
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
@@ -841,12 +859,13 @@ class UpdateJobExecutionRequest(awsiot.ModeledClass):
 class UpdateJobExecutionResponse(awsiot.ModeledClass):
     __slots__ = ['client_token', 'execution_state', 'job_document', 'timestamp']
 
-    def __init__(self, client_token=None, execution_state=None, job_document=None, timestamp=None):
-        # type: (typing.Optional[str], typing.Optional[JobExecutionState], typing.Optional[typing.Dict[str, typing.Any]], typing.Optional[datetime.datetime]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.execution_state = execution_state # type: typing.Optional[JobExecutionState]
-        self.job_document = job_document # type: typing.Optional[typing.Dict[str, typing.Any]]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        self.client_token = kwargs.get('client_token')
+        self.execution_state = kwargs.get('execution_state')
+        self.job_document = kwargs.get('job_document')
+        self.timestamp = kwargs.get('timestamp')
+        for key, val in zip(['client_token', 'execution_state', 'job_document', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -869,8 +888,9 @@ class UpdateJobExecutionResponse(awsiot.ModeledClass):
 class UpdateJobExecutionSubscriptionRequest(awsiot.ModeledClass):
     __slots__ = ['job_id', 'thing_name']
 
-    def __init__(self, job_id=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[str]) -> None
-        self.job_id = job_id # type: typing.Optional[str]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.job_id = kwargs.get('job_id')
+        self.thing_name = kwargs.get('thing_name')
+        for key, val in zip(['job_id', 'thing_name'], args):
+            setattr(self, key, val)
 

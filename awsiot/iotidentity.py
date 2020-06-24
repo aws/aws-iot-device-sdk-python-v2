@@ -259,9 +259,10 @@ class IotIdentityClient(awsiot.MqttServiceClient):
 class CreateCertificateFromCsrRequest(awsiot.ModeledClass):
     __slots__ = ['certificate_signing_request']
 
-    def __init__(self, certificate_signing_request=None):
-        # type: (typing.Optional[str]) -> None
-        self.certificate_signing_request = certificate_signing_request # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.certificate_signing_request = kwargs.get('certificate_signing_request')
+        for key, val in zip(['certificate_signing_request'], args):
+            setattr(self, key, val)
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
@@ -273,11 +274,12 @@ class CreateCertificateFromCsrRequest(awsiot.ModeledClass):
 class CreateCertificateFromCsrResponse(awsiot.ModeledClass):
     __slots__ = ['certificate_id', 'certificate_ownership_token', 'certificate_pem']
 
-    def __init__(self, certificate_id=None, certificate_ownership_token=None, certificate_pem=None):
-        # type: (typing.Optional[str], typing.Optional[str], typing.Optional[str]) -> None
-        self.certificate_id = certificate_id # type: typing.Optional[str]
-        self.certificate_ownership_token = certificate_ownership_token # type: typing.Optional[str]
-        self.certificate_pem = certificate_pem # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.certificate_id = kwargs.get('certificate_id')
+        self.certificate_ownership_token = kwargs.get('certificate_ownership_token')
+        self.certificate_pem = kwargs.get('certificate_pem')
+        for key, val in zip(['certificate_id', 'certificate_ownership_token', 'certificate_pem'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -297,26 +299,27 @@ class CreateCertificateFromCsrResponse(awsiot.ModeledClass):
 class CreateCertificateFromCsrSubscriptionRequest(awsiot.ModeledClass):
     __slots__ = []
 
-    def __init__(self):
-        # type: () -> None
-        pass
+    def __init__(self, *args, **kwargs):
+        for key, val in zip([], args):
+            setattr(self, key, val)
 
 class CreateKeysAndCertificateRequest(awsiot.ModeledClass):
     __slots__ = []
 
-    def __init__(self):
-        # type: () -> None
-        pass
+    def __init__(self, *args, **kwargs):
+        for key, val in zip([], args):
+            setattr(self, key, val)
 
 class CreateKeysAndCertificateResponse(awsiot.ModeledClass):
     __slots__ = ['certificate_id', 'certificate_ownership_token', 'certificate_pem', 'private_key']
 
-    def __init__(self, certificate_id=None, certificate_ownership_token=None, certificate_pem=None, private_key=None):
-        # type: (typing.Optional[str], typing.Optional[str], typing.Optional[str], typing.Optional[str]) -> None
-        self.certificate_id = certificate_id # type: typing.Optional[str]
-        self.certificate_ownership_token = certificate_ownership_token # type: typing.Optional[str]
-        self.certificate_pem = certificate_pem # type: typing.Optional[str]
-        self.private_key = private_key # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.certificate_id = kwargs.get('certificate_id')
+        self.certificate_ownership_token = kwargs.get('certificate_ownership_token')
+        self.certificate_pem = kwargs.get('certificate_pem')
+        self.private_key = kwargs.get('private_key')
+        for key, val in zip(['certificate_id', 'certificate_ownership_token', 'certificate_pem', 'private_key'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -339,18 +342,19 @@ class CreateKeysAndCertificateResponse(awsiot.ModeledClass):
 class CreateKeysAndCertificateSubscriptionRequest(awsiot.ModeledClass):
     __slots__ = []
 
-    def __init__(self):
-        # type: () -> None
-        pass
+    def __init__(self, *args, **kwargs):
+        for key, val in zip([], args):
+            setattr(self, key, val)
 
 class ErrorResponse(awsiot.ModeledClass):
     __slots__ = ['error_code', 'error_message', 'status_code']
 
-    def __init__(self, error_code=None, error_message=None, status_code=None):
-        # type: (typing.Optional[str], typing.Optional[str], typing.Optional[int]) -> None
-        self.error_code = error_code # type: typing.Optional[str]
-        self.error_message = error_message # type: typing.Optional[str]
-        self.status_code = status_code # type: typing.Optional[int]
+    def __init__(self, *args, **kwargs):
+        self.error_code = kwargs.get('error_code')
+        self.error_message = kwargs.get('error_message')
+        self.status_code = kwargs.get('status_code')
+        for key, val in zip(['error_code', 'error_message', 'status_code'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -370,11 +374,12 @@ class ErrorResponse(awsiot.ModeledClass):
 class RegisterThingRequest(awsiot.ModeledClass):
     __slots__ = ['certificate_ownership_token', 'parameters', 'template_name']
 
-    def __init__(self, certificate_ownership_token=None, parameters=None, template_name=None):
-        # type: (typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[str]) -> None
-        self.certificate_ownership_token = certificate_ownership_token # type: typing.Optional[str]
-        self.parameters = parameters # type: typing.Optional[typing.Dict[str, str]]
-        self.template_name = template_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.certificate_ownership_token = kwargs.get('certificate_ownership_token')
+        self.parameters = kwargs.get('parameters')
+        self.template_name = kwargs.get('template_name')
+        for key, val in zip(['certificate_ownership_token', 'parameters', 'template_name'], args):
+            setattr(self, key, val)
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
@@ -388,10 +393,11 @@ class RegisterThingRequest(awsiot.ModeledClass):
 class RegisterThingResponse(awsiot.ModeledClass):
     __slots__ = ['device_configuration', 'thing_name']
 
-    def __init__(self, device_configuration=None, thing_name=None):
-        # type: (typing.Optional[typing.Dict[str, str]], typing.Optional[str]) -> None
-        self.device_configuration = device_configuration # type: typing.Optional[typing.Dict[str, str]]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.device_configuration = kwargs.get('device_configuration')
+        self.thing_name = kwargs.get('thing_name')
+        for key, val in zip(['device_configuration', 'thing_name'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -408,7 +414,8 @@ class RegisterThingResponse(awsiot.ModeledClass):
 class RegisterThingSubscriptionRequest(awsiot.ModeledClass):
     __slots__ = ['template_name']
 
-    def __init__(self, template_name=None):
-        # type: (typing.Optional[str]) -> None
-        self.template_name = template_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        self.template_name = kwargs.get('template_name')
+        for key, val in zip(['template_name'], args):
+            setattr(self, key, val)
 
