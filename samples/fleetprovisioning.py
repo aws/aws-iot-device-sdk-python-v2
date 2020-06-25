@@ -339,7 +339,7 @@ if __name__ == '__main__':
             createcertificatefromcsr_subscribed_rejected_future.result()
 
 
-        registerthing_subscription_request = iotidentity.RegisterThingSubscriptionRequest(args.templateName)
+        registerthing_subscription_request = iotidentity.RegisterThingSubscriptionRequest(template_name=args.templateName)
 
         print("Subscribing to RegisterThing Accepted topic...")
         registerthing_subscribed_accepted_future, _ = identity_client.subscribe_to_register_thing_accepted(
