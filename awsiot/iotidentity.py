@@ -257,10 +257,28 @@ class IotIdentityClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ErrorResponse.from_payload)
 
 class CreateCertificateFromCsrRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *certificate_signing_request* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['certificate_signing_request']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a CreateCertificateFromCsrRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *certificate_signing_request* (``str``)
+        """
+
         self.certificate_signing_request = kwargs.get('certificate_signing_request')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['certificate_signing_request'], args):
             setattr(self, key, val)
 
@@ -272,12 +290,34 @@ class CreateCertificateFromCsrRequest(awsiot.ModeledClass):
         return payload
 
 class CreateCertificateFromCsrResponse(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *certificate_id* (``str``)
+        * *certificate_ownership_token* (``str``)
+        * *certificate_pem* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['certificate_id', 'certificate_ownership_token', 'certificate_pem']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a CreateCertificateFromCsrResponse instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *certificate_id* (``str``)
+            * *certificate_ownership_token* (``str``)
+            * *certificate_pem* (``str``)
+        """
+
         self.certificate_id = kwargs.get('certificate_id')
         self.certificate_ownership_token = kwargs.get('certificate_ownership_token')
         self.certificate_pem = kwargs.get('certificate_pem')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['certificate_id', 'certificate_ownership_token', 'certificate_pem'], args):
             setattr(self, key, val)
 
@@ -297,27 +337,81 @@ class CreateCertificateFromCsrResponse(awsiot.ModeledClass):
         return new
 
 class CreateCertificateFromCsrSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = []
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a CreateCertificateFromCsrSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+        """
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip([], args):
             setattr(self, key, val)
 
 class CreateKeysAndCertificateRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = []
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a CreateKeysAndCertificateRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+        """
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip([], args):
             setattr(self, key, val)
 
 class CreateKeysAndCertificateResponse(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *certificate_id* (``str``)
+        * *certificate_ownership_token* (``str``)
+        * *certificate_pem* (``str``)
+        * *private_key* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['certificate_id', 'certificate_ownership_token', 'certificate_pem', 'private_key']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a CreateKeysAndCertificateResponse instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *certificate_id* (``str``)
+            * *certificate_ownership_token* (``str``)
+            * *certificate_pem* (``str``)
+            * *private_key* (``str``)
+        """
+
         self.certificate_id = kwargs.get('certificate_id')
         self.certificate_ownership_token = kwargs.get('certificate_ownership_token')
         self.certificate_pem = kwargs.get('certificate_pem')
         self.private_key = kwargs.get('private_key')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['certificate_id', 'certificate_ownership_token', 'certificate_pem', 'private_key'], args):
             setattr(self, key, val)
 
@@ -340,19 +434,56 @@ class CreateKeysAndCertificateResponse(awsiot.ModeledClass):
         return new
 
 class CreateKeysAndCertificateSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = []
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a CreateKeysAndCertificateSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+        """
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip([], args):
             setattr(self, key, val)
 
 class ErrorResponse(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *error_code* (``str``)
+        * *error_message* (``str``)
+        * *status_code* (``int``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['error_code', 'error_message', 'status_code']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a ErrorResponse instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *error_code* (``str``)
+            * *error_message* (``str``)
+            * *status_code* (``int``)
+        """
+
         self.error_code = kwargs.get('error_code')
         self.error_message = kwargs.get('error_message')
         self.status_code = kwargs.get('status_code')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['error_code', 'error_message', 'status_code'], args):
             setattr(self, key, val)
 
@@ -372,12 +503,34 @@ class ErrorResponse(awsiot.ModeledClass):
         return new
 
 class RegisterThingRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *certificate_ownership_token* (``str``)
+        * *parameters* (``typing.Dict[str, str]``)
+        * *template_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['certificate_ownership_token', 'parameters', 'template_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a RegisterThingRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *certificate_ownership_token* (``str``)
+            * *parameters* (``typing.Dict[str, str]``)
+            * *template_name* (``str``)
+        """
+
         self.certificate_ownership_token = kwargs.get('certificate_ownership_token')
         self.parameters = kwargs.get('parameters')
         self.template_name = kwargs.get('template_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['certificate_ownership_token', 'parameters', 'template_name'], args):
             setattr(self, key, val)
 
@@ -391,11 +544,31 @@ class RegisterThingRequest(awsiot.ModeledClass):
         return payload
 
 class RegisterThingResponse(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *device_configuration* (``typing.Dict[str, str]``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['device_configuration', 'thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a RegisterThingResponse instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *device_configuration* (``typing.Dict[str, str]``)
+            * *thing_name* (``str``)
+        """
+
         self.device_configuration = kwargs.get('device_configuration')
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['device_configuration', 'thing_name'], args):
             setattr(self, key, val)
 
@@ -412,10 +585,28 @@ class RegisterThingResponse(awsiot.ModeledClass):
         return new
 
 class RegisterThingSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *template_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['template_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a RegisterThingSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *template_name* (``str``)
+        """
+
         self.template_name = kwargs.get('template_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['template_name'], args):
             setattr(self, key, val)
 

@@ -23,6 +23,8 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def publish_delete_named_shadow(self, request, qos):
         # type: (DeleteNamedShadowRequest, int) -> concurrent.futures.Future
         """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic
+
         Parameters:
         request - `DeleteNamedShadowRequest` instance.
         qos     - The Quality of Service guarantee of this message
@@ -65,6 +67,8 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def publish_get_named_shadow(self, request, qos):
         # type: (GetNamedShadowRequest, int) -> concurrent.futures.Future
         """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic
+
         Parameters:
         request - `GetNamedShadowRequest` instance.
         qos     - The Quality of Service guarantee of this message
@@ -107,6 +111,8 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def publish_update_named_shadow(self, request, qos):
         # type: (UpdateNamedShadowRequest, int) -> concurrent.futures.Future
         """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic
+
         Parameters:
         request - `UpdateNamedShadowRequest` instance.
         qos     - The Quality of Service guarantee of this message
@@ -149,6 +155,8 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_delete_named_shadow_accepted(self, request, qos, callback):
         # type: (DeleteNamedShadowSubscriptionRequest, int, typing.Callable[[DeleteShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-accepted-pub-sub-topic
+
         Parameters:
         request - `DeleteNamedShadowSubscriptionRequest` instance.
         qos     - The Quality of Service guarantee of this message
@@ -180,6 +188,8 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_delete_named_shadow_rejected(self, request, qos, callback):
         # type: (DeleteNamedShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-rejected-pub-sub-topic
+
         Parameters:
         request - `DeleteNamedShadowSubscriptionRequest` instance.
         qos     - The Quality of Service guarantee of this message
@@ -273,6 +283,8 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_get_named_shadow_accepted(self, request, qos, callback):
         # type: (GetNamedShadowSubscriptionRequest, int, typing.Callable[[GetShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-accepted-pub-sub-topic
+
         Parameters:
         request - `GetNamedShadowSubscriptionRequest` instance.
         qos     - The Quality of Service guarantee of this message
@@ -304,6 +316,8 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_get_named_shadow_rejected(self, request, qos, callback):
         # type: (GetNamedShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-rejected-pub-sub-topic
+
         Parameters:
         request - `GetNamedShadowSubscriptionRequest` instance.
         qos     - The Quality of Service guarantee of this message
@@ -397,6 +411,8 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_named_shadow_delta_updated_events(self, request, qos, callback):
         # type: (NamedShadowDeltaUpdatedSubscriptionRequest, int, typing.Callable[[ShadowDeltaUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic
+
         Parameters:
         request - `NamedShadowDeltaUpdatedSubscriptionRequest` instance.
         qos     - The Quality of Service guarantee of this message
@@ -428,6 +444,8 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_named_shadow_updated_events(self, request, qos, callback):
         # type: (NamedShadowUpdatedSubscriptionRequest, int, typing.Callable[[ShadowUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic
+
         Parameters:
         request - `NamedShadowUpdatedSubscriptionRequest` instance.
         qos     - The Quality of Service guarantee of this message
@@ -521,6 +539,8 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_update_named_shadow_accepted(self, request, qos, callback):
         # type: (UpdateNamedShadowSubscriptionRequest, int, typing.Callable[[UpdateShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-accepted-pub-sub-topic
+
         Parameters:
         request - `UpdateNamedShadowSubscriptionRequest` instance.
         qos     - The Quality of Service guarantee of this message
@@ -552,6 +572,8 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_update_named_shadow_rejected(self, request, qos, callback):
         # type: (UpdateNamedShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-rejected-pub-sub-topic
+
         Parameters:
         request - `UpdateNamedShadowSubscriptionRequest` instance.
         qos     - The Quality of Service guarantee of this message
@@ -643,12 +665,34 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ErrorResponse.from_payload)
 
 class DeleteNamedShadowRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *shadow_name* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'shadow_name', 'thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a DeleteNamedShadowRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *shadow_name* (``str``)
+            * *thing_name* (``str``)
+        """
+
         self.client_token = kwargs.get('client_token')
         self.shadow_name = kwargs.get('shadow_name')
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['client_token', 'shadow_name', 'thing_name'], args):
             setattr(self, key, val)
 
@@ -660,20 +704,60 @@ class DeleteNamedShadowRequest(awsiot.ModeledClass):
         return payload
 
 class DeleteNamedShadowSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *shadow_name* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['shadow_name', 'thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a DeleteNamedShadowSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *shadow_name* (``str``)
+            * *thing_name* (``str``)
+        """
+
         self.shadow_name = kwargs.get('shadow_name')
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
 
 class DeleteShadowRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a DeleteShadowRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *thing_name* (``str``)
+        """
+
         self.client_token = kwargs.get('client_token')
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
 
@@ -685,12 +769,34 @@ class DeleteShadowRequest(awsiot.ModeledClass):
         return payload
 
 class DeleteShadowResponse(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *timestamp* (``datetime.datetime``)
+        * *version* (``int``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'timestamp', 'version']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a DeleteShadowResponse instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *timestamp* (``datetime.datetime``)
+            * *version* (``int``)
+        """
+
         self.client_token = kwargs.get('client_token')
         self.timestamp = kwargs.get('timestamp')
         self.version = kwargs.get('version')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['timestamp', 'version'], args):
             setattr(self, key, val)
 
@@ -710,21 +816,63 @@ class DeleteShadowResponse(awsiot.ModeledClass):
         return new
 
 class DeleteShadowSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a DeleteShadowSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *thing_name* (``str``)
+        """
+
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
 
 class ErrorResponse(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *code* (``int``)
+        * *message* (``str``)
+        * *timestamp* (``datetime.datetime``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'code', 'message', 'timestamp']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a ErrorResponse instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *code* (``int``)
+            * *message* (``str``)
+            * *timestamp* (``datetime.datetime``)
+        """
+
         self.client_token = kwargs.get('client_token')
         self.code = kwargs.get('code')
         self.message = kwargs.get('message')
         self.timestamp = kwargs.get('timestamp')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['client_token', 'code', 'message', 'timestamp'], args):
             setattr(self, key, val)
 
@@ -747,12 +895,34 @@ class ErrorResponse(awsiot.ModeledClass):
         return new
 
 class GetNamedShadowRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *shadow_name* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'shadow_name', 'thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a GetNamedShadowRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *shadow_name* (``str``)
+            * *thing_name* (``str``)
+        """
+
         self.client_token = kwargs.get('client_token')
         self.shadow_name = kwargs.get('shadow_name')
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['client_token', 'shadow_name', 'thing_name'], args):
             setattr(self, key, val)
 
@@ -764,20 +934,60 @@ class GetNamedShadowRequest(awsiot.ModeledClass):
         return payload
 
 class GetNamedShadowSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *shadow_name* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['shadow_name', 'thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a GetNamedShadowSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *shadow_name* (``str``)
+            * *thing_name* (``str``)
+        """
+
         self.shadow_name = kwargs.get('shadow_name')
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
 
 class GetShadowRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a GetShadowRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *thing_name* (``str``)
+        """
+
         self.client_token = kwargs.get('client_token')
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
 
@@ -789,14 +999,40 @@ class GetShadowRequest(awsiot.ModeledClass):
         return payload
 
 class GetShadowResponse(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *metadata* (``ShadowMetadata``)
+        * *state* (``ShadowStateWithDelta``)
+        * *timestamp* (``datetime.datetime``)
+        * *version* (``int``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'metadata', 'state', 'timestamp', 'version']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a GetShadowResponse instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *metadata* (``ShadowMetadata``)
+            * *state* (``ShadowStateWithDelta``)
+            * *timestamp* (``datetime.datetime``)
+            * *version* (``int``)
+        """
+
         self.client_token = kwargs.get('client_token')
         self.metadata = kwargs.get('metadata')
         self.state = kwargs.get('state')
         self.timestamp = kwargs.get('timestamp')
         self.version = kwargs.get('version')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['metadata', 'state', 'timestamp', 'version'], args):
             setattr(self, key, val)
 
@@ -822,39 +1058,121 @@ class GetShadowResponse(awsiot.ModeledClass):
         return new
 
 class GetShadowSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a GetShadowSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *thing_name* (``str``)
+        """
+
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
 
 class NamedShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *shadow_name* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['shadow_name', 'thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a NamedShadowDeltaUpdatedSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *shadow_name* (``str``)
+            * *thing_name* (``str``)
+        """
+
         self.shadow_name = kwargs.get('shadow_name')
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
 
 class NamedShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *shadow_name* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['shadow_name', 'thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a NamedShadowUpdatedSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *shadow_name* (``str``)
+            * *thing_name* (``str``)
+        """
+
         self.shadow_name = kwargs.get('shadow_name')
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
 
 class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *metadata* (``typing.Dict[str, typing.Any]``)
+        * *state* (``typing.Dict[str, typing.Any]``)
+        * *timestamp* (``datetime.datetime``)
+        * *version* (``int``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['metadata', 'state', 'timestamp', 'version']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a ShadowDeltaUpdatedEvent instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *metadata* (``typing.Dict[str, typing.Any]``)
+            * *state* (``typing.Dict[str, typing.Any]``)
+            * *timestamp* (``datetime.datetime``)
+            * *version* (``int``)
+        """
+
         self.metadata = kwargs.get('metadata')
         self.state = kwargs.get('state')
         self.timestamp = kwargs.get('timestamp')
         self.version = kwargs.get('version')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['metadata', 'state', 'timestamp', 'version'], args):
             setattr(self, key, val)
 
@@ -877,19 +1195,57 @@ class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
         return new
 
 class ShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a ShadowDeltaUpdatedSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *thing_name* (``str``)
+        """
+
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
 
 class ShadowMetadata(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *desired* (``typing.Dict[str, typing.Any]``)
+        * *reported* (``typing.Dict[str, typing.Any]``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['desired', 'reported']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a ShadowMetadata instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *desired* (``typing.Dict[str, typing.Any]``)
+            * *reported* (``typing.Dict[str, typing.Any]``)
+        """
+
         self.desired = kwargs.get('desired')
         self.reported = kwargs.get('reported')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['desired', 'reported'], args):
             setattr(self, key, val)
 
@@ -906,11 +1262,31 @@ class ShadowMetadata(awsiot.ModeledClass):
         return new
 
 class ShadowState(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *desired* (``typing.Dict[str, typing.Any]``)
+        * *reported* (``typing.Dict[str, typing.Any]``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['desired', 'reported']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a ShadowState instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *desired* (``typing.Dict[str, typing.Any]``)
+            * *reported* (``typing.Dict[str, typing.Any]``)
+        """
+
         self.desired = kwargs.get('desired')
         self.reported = kwargs.get('reported')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['desired', 'reported'], args):
             setattr(self, key, val)
 
@@ -936,12 +1312,34 @@ class ShadowState(awsiot.ModeledClass):
         return payload
 
 class ShadowStateWithDelta(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *delta* (``typing.Dict[str, typing.Any]``)
+        * *desired* (``typing.Dict[str, typing.Any]``)
+        * *reported* (``typing.Dict[str, typing.Any]``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['delta', 'desired', 'reported']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a ShadowStateWithDelta instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *delta* (``typing.Dict[str, typing.Any]``)
+            * *desired* (``typing.Dict[str, typing.Any]``)
+            * *reported* (``typing.Dict[str, typing.Any]``)
+        """
+
         self.delta = kwargs.get('delta')
         self.desired = kwargs.get('desired')
         self.reported = kwargs.get('reported')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['delta', 'desired', 'reported'], args):
             setattr(self, key, val)
 
@@ -961,12 +1359,34 @@ class ShadowStateWithDelta(awsiot.ModeledClass):
         return new
 
 class ShadowUpdatedEvent(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *current* (``ShadowUpdatedSnapshot``)
+        * *previous* (``ShadowUpdatedSnapshot``)
+        * *timestamp* (``datetime.datetime``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['current', 'previous', 'timestamp']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a ShadowUpdatedEvent instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *current* (``ShadowUpdatedSnapshot``)
+            * *previous* (``ShadowUpdatedSnapshot``)
+            * *timestamp* (``datetime.datetime``)
+        """
+
         self.current = kwargs.get('current')
         self.previous = kwargs.get('previous')
         self.timestamp = kwargs.get('timestamp')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['current', 'previous', 'timestamp'], args):
             setattr(self, key, val)
 
@@ -986,12 +1406,34 @@ class ShadowUpdatedEvent(awsiot.ModeledClass):
         return new
 
 class ShadowUpdatedSnapshot(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *metadata* (``ShadowMetadata``)
+        * *state* (``ShadowState``)
+        * *version* (``int``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['metadata', 'state', 'version']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a ShadowUpdatedSnapshot instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *metadata* (``ShadowMetadata``)
+            * *state* (``ShadowState``)
+            * *version* (``int``)
+        """
+
         self.metadata = kwargs.get('metadata')
         self.state = kwargs.get('state')
         self.version = kwargs.get('version')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['metadata', 'state', 'version'], args):
             setattr(self, key, val)
 
@@ -1011,22 +1453,66 @@ class ShadowUpdatedSnapshot(awsiot.ModeledClass):
         return new
 
 class ShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a ShadowUpdatedSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *thing_name* (``str``)
+        """
+
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
 
 class UpdateNamedShadowRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *shadow_name* (``str``)
+        * *state* (``ShadowState``)
+        * *thing_name* (``str``)
+        * *version* (``int``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'shadow_name', 'state', 'thing_name', 'version']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a UpdateNamedShadowRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *shadow_name* (``str``)
+            * *state* (``ShadowState``)
+            * *thing_name* (``str``)
+            * *version* (``int``)
+        """
+
         self.client_token = kwargs.get('client_token')
         self.shadow_name = kwargs.get('shadow_name')
         self.state = kwargs.get('state')
         self.thing_name = kwargs.get('thing_name')
         self.version = kwargs.get('version')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['client_token', 'shadow_name', 'state', 'thing_name', 'version'], args):
             setattr(self, key, val)
 
@@ -1042,22 +1528,66 @@ class UpdateNamedShadowRequest(awsiot.ModeledClass):
         return payload
 
 class UpdateNamedShadowSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *shadow_name* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['shadow_name', 'thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a UpdateNamedShadowSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *shadow_name* (``str``)
+            * *thing_name* (``str``)
+        """
+
         self.shadow_name = kwargs.get('shadow_name')
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
 
 class UpdateShadowRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *state* (``ShadowState``)
+        * *thing_name* (``str``)
+        * *version* (``int``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'state', 'thing_name', 'version']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a UpdateShadowRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *state* (``ShadowState``)
+            * *thing_name* (``str``)
+            * *version* (``int``)
+        """
+
         self.client_token = kwargs.get('client_token')
         self.state = kwargs.get('state')
         self.thing_name = kwargs.get('thing_name')
         self.version = kwargs.get('version')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['client_token', 'state', 'thing_name', 'version'], args):
             setattr(self, key, val)
 
@@ -1073,14 +1603,40 @@ class UpdateShadowRequest(awsiot.ModeledClass):
         return payload
 
 class UpdateShadowResponse(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *metadata* (``ShadowMetadata``)
+        * *state* (``ShadowState``)
+        * *timestamp* (``datetime.datetime``)
+        * *version* (``int``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'metadata', 'state', 'timestamp', 'version']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a UpdateShadowResponse instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *metadata* (``ShadowMetadata``)
+            * *state* (``ShadowState``)
+            * *timestamp* (``datetime.datetime``)
+            * *version* (``int``)
+        """
+
         self.client_token = kwargs.get('client_token')
         self.metadata = kwargs.get('metadata')
         self.state = kwargs.get('state')
         self.timestamp = kwargs.get('timestamp')
         self.version = kwargs.get('version')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['client_token', 'metadata', 'state', 'timestamp', 'version'], args):
             setattr(self, key, val)
 
@@ -1106,10 +1662,28 @@ class UpdateShadowResponse(awsiot.ModeledClass):
         return new
 
 class UpdateShadowSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['thing_name']
 
     def __init__(self, *args, **kwargs):
+        r"""Initializes a UpdateShadowSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *thing_name* (``str``)
+        """
+
         self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
 
