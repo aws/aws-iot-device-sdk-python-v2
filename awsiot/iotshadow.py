@@ -748,8 +748,15 @@ class DeleteShadowRequest(awsiot.ModeledClass):
         self.thing_name = kwargs.get('thing_name')
 
         # for backwards compatibility, read any arguments that used to be accepted by position
-        for key, val in zip(['thing_name'], args):
-            setattr(self, key, val)
+        if len(args) == 1:
+            # if one positional parameter was passed, it must be the thing_name because it is
+            # a required parameter
+            setattr(self, 'thing_name', args[0])
+        else:
+            # if two parameters were passed, it must be the case that they are in the order
+            # of client_token, thing_name; nothing else could have ever worked
+            setattr(self, 'client_token', args[0])
+            setattr(self, 'thing_name', args[1])
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
@@ -978,8 +985,15 @@ class GetShadowRequest(awsiot.ModeledClass):
         self.thing_name = kwargs.get('thing_name')
 
         # for backwards compatibility, read any arguments that used to be accepted by position
-        for key, val in zip(['thing_name'], args):
-            setattr(self, key, val)
+        if len(args) == 1:
+            # if one positional parameter was passed, it must be the thing_name because it is
+            # a required parameter
+            setattr(self, 'thing_name', args[0])
+        else:
+            # if two parameters were passed, it must be the case that they are in the order
+            # of client_token, thing_name; nothing else could have ever worked
+            setattr(self, 'client_token', args[0])
+            setattr(self, 'thing_name', args[1])
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
