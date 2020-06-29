@@ -752,7 +752,7 @@ class DeleteShadowRequest(awsiot.ModeledClass):
             # if one positional parameter was passed, it must be the thing_name because it is
             # a required parameter
             setattr(self, 'thing_name', args[0])
-        else:
+        elif len(args) == 2:
             # if two parameters were passed, it must be the case that they are in the order
             # of client_token, thing_name; nothing else could have ever worked
             setattr(self, 'client_token', args[0])
@@ -989,7 +989,7 @@ class GetShadowRequest(awsiot.ModeledClass):
             # if one positional parameter was passed, it must be the thing_name because it is
             # a required parameter
             setattr(self, 'thing_name', args[0])
-        else:
+        elif len(args) == 2:
             # if two parameters were passed, it must be the case that they are in the order
             # of client_token, thing_name; nothing else could have ever worked
             setattr(self, 'client_token', args[0])
