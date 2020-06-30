@@ -1,4 +1,4 @@
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright Amazon.com, Inc. or its affiliates.  All rights reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
 # This file is generated
@@ -417,15 +417,42 @@ class IotJobsClient(awsiot.MqttServiceClient):
             payload_to_class_fn=RejectedError.from_payload)
 
 class DescribeJobExecutionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *execution_number* (``int``)
+        * *include_job_document* (``bool``)
+        * *job_id* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'execution_number', 'include_job_document', 'job_id', 'thing_name']
 
-    def __init__(self, client_token=None, execution_number=None, include_job_document=None, job_id=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[int], typing.Optional[bool], typing.Optional[str], typing.Optional[str]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.execution_number = execution_number # type: typing.Optional[int]
-        self.include_job_document = include_job_document # type: typing.Optional[bool]
-        self.job_id = job_id # type: typing.Optional[str]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a DescribeJobExecutionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *execution_number* (``int``)
+            * *include_job_document* (``bool``)
+            * *job_id* (``str``)
+            * *thing_name* (``str``)
+        """
+
+        self.client_token = kwargs.get('client_token')
+        self.execution_number = kwargs.get('execution_number')
+        self.include_job_document = kwargs.get('include_job_document')
+        self.job_id = kwargs.get('job_id')
+        self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['client_token', 'execution_number', 'include_job_document', 'job_id', 'thing_name'], args):
+            setattr(self, key, val)
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
@@ -439,13 +466,36 @@ class DescribeJobExecutionRequest(awsiot.ModeledClass):
         return payload
 
 class DescribeJobExecutionResponse(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *execution* (``JobExecutionData``)
+        * *timestamp* (``datetime.datetime``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'execution', 'timestamp']
 
-    def __init__(self, client_token=None, execution=None, timestamp=None):
-        # type: (typing.Optional[str], typing.Optional[JobExecutionData], typing.Optional[datetime.datetime]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.execution = execution # type: typing.Optional[JobExecutionData]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a DescribeJobExecutionResponse instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *execution* (``JobExecutionData``)
+            * *timestamp* (``datetime.datetime``)
+        """
+
+        self.client_token = kwargs.get('client_token')
+        self.execution = kwargs.get('execution')
+        self.timestamp = kwargs.get('timestamp')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['client_token', 'execution', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -463,20 +513,62 @@ class DescribeJobExecutionResponse(awsiot.ModeledClass):
         return new
 
 class DescribeJobExecutionSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *job_id* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['job_id', 'thing_name']
 
-    def __init__(self, job_id=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[str]) -> None
-        self.job_id = job_id # type: typing.Optional[str]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a DescribeJobExecutionSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *job_id* (``str``)
+            * *thing_name* (``str``)
+        """
+
+        self.job_id = kwargs.get('job_id')
+        self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['job_id', 'thing_name'], args):
+            setattr(self, key, val)
 
 class GetPendingJobExecutionsRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'thing_name']
 
-    def __init__(self, client_token=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[str]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a GetPendingJobExecutionsRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *thing_name* (``str``)
+        """
+
+        self.client_token = kwargs.get('client_token')
+        self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['client_token', 'thing_name'], args):
+            setattr(self, key, val)
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
@@ -486,14 +578,39 @@ class GetPendingJobExecutionsRequest(awsiot.ModeledClass):
         return payload
 
 class GetPendingJobExecutionsResponse(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *in_progress_jobs* (``typing.List[JobExecutionSummary]``)
+        * *queued_jobs* (``typing.List[JobExecutionSummary]``)
+        * *timestamp* (``datetime.datetime``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'in_progress_jobs', 'queued_jobs', 'timestamp']
 
-    def __init__(self, client_token=None, in_progress_jobs=None, queued_jobs=None, timestamp=None):
-        # type: (typing.Optional[str], typing.Optional[typing.List[JobExecutionSummary]], typing.Optional[typing.List[JobExecutionSummary]], typing.Optional[datetime.datetime]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.in_progress_jobs = in_progress_jobs # type: typing.Optional[typing.List[JobExecutionSummary]]
-        self.queued_jobs = queued_jobs # type: typing.Optional[typing.List[JobExecutionSummary]]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a GetPendingJobExecutionsResponse instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *in_progress_jobs* (``typing.List[JobExecutionSummary]``)
+            * *queued_jobs* (``typing.List[JobExecutionSummary]``)
+            * *timestamp* (``datetime.datetime``)
+        """
+
+        self.client_token = kwargs.get('client_token')
+        self.in_progress_jobs = kwargs.get('in_progress_jobs')
+        self.queued_jobs = kwargs.get('queued_jobs')
+        self.timestamp = kwargs.get('timestamp')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['client_token', 'in_progress_jobs', 'queued_jobs', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -514,27 +631,83 @@ class GetPendingJobExecutionsResponse(awsiot.ModeledClass):
         return new
 
 class GetPendingJobExecutionsSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['thing_name']
 
-    def __init__(self, thing_name=None):
-        # type: (typing.Optional[str]) -> None
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a GetPendingJobExecutionsSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *thing_name* (``str``)
+        """
+
+        self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['thing_name'], args):
+            setattr(self, key, val)
 
 class JobExecutionData(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *execution_number* (``int``)
+        * *job_document* (``typing.Dict[str, typing.Any]``)
+        * *job_id* (``str``)
+        * *last_updated_at* (``datetime.datetime``)
+        * *queued_at* (``datetime.datetime``)
+        * *started_at* (``datetime.datetime``)
+        * *status* (``str``)
+        * *status_details* (``typing.Dict[str, str]``)
+        * *thing_name* (``str``)
+        * *version_number* (``int``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['execution_number', 'job_document', 'job_id', 'last_updated_at', 'queued_at', 'started_at', 'status', 'status_details', 'thing_name', 'version_number']
 
-    def __init__(self, execution_number=None, job_document=None, job_id=None, last_updated_at=None, queued_at=None, started_at=None, status=None, status_details=None, thing_name=None, version_number=None):
-        # type: (typing.Optional[int], typing.Optional[typing.Dict[str, typing.Any]], typing.Optional[str], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[str], typing.Optional[int]) -> None
-        self.execution_number = execution_number # type: typing.Optional[int]
-        self.job_document = job_document # type: typing.Optional[typing.Dict[str, typing.Any]]
-        self.job_id = job_id # type: typing.Optional[str]
-        self.last_updated_at = last_updated_at # type: typing.Optional[datetime.datetime]
-        self.queued_at = queued_at # type: typing.Optional[datetime.datetime]
-        self.started_at = started_at # type: typing.Optional[datetime.datetime]
-        self.status = status # type: typing.Optional[str]
-        self.status_details = status_details # type: typing.Optional[typing.Dict[str, str]]
-        self.thing_name = thing_name # type: typing.Optional[str]
-        self.version_number = version_number # type: typing.Optional[int]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a JobExecutionData instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *execution_number* (``int``)
+            * *job_document* (``typing.Dict[str, typing.Any]``)
+            * *job_id* (``str``)
+            * *last_updated_at* (``datetime.datetime``)
+            * *queued_at* (``datetime.datetime``)
+            * *started_at* (``datetime.datetime``)
+            * *status* (``str``)
+            * *status_details* (``typing.Dict[str, str]``)
+            * *thing_name* (``str``)
+            * *version_number* (``int``)
+        """
+
+        self.execution_number = kwargs.get('execution_number')
+        self.job_document = kwargs.get('job_document')
+        self.job_id = kwargs.get('job_id')
+        self.last_updated_at = kwargs.get('last_updated_at')
+        self.queued_at = kwargs.get('queued_at')
+        self.started_at = kwargs.get('started_at')
+        self.status = kwargs.get('status')
+        self.status_details = kwargs.get('status_details')
+        self.thing_name = kwargs.get('thing_name')
+        self.version_number = kwargs.get('version_number')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['execution_number', 'job_document', 'job_id', 'last_updated_at', 'queued_at', 'started_at', 'status', 'status_details', 'thing_name', 'version_number'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -573,13 +746,36 @@ class JobExecutionData(awsiot.ModeledClass):
         return new
 
 class JobExecutionState(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *status* (``str``)
+        * *status_details* (``typing.Dict[str, str]``)
+        * *version_number* (``int``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['status', 'status_details', 'version_number']
 
-    def __init__(self, status=None, status_details=None, version_number=None):
-        # type: (typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[int]) -> None
-        self.status = status # type: typing.Optional[str]
-        self.status_details = status_details # type: typing.Optional[typing.Dict[str, str]]
-        self.version_number = version_number # type: typing.Optional[int]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a JobExecutionState instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *status* (``str``)
+            * *status_details* (``typing.Dict[str, str]``)
+            * *version_number* (``int``)
+        """
+
+        self.status = kwargs.get('status')
+        self.status_details = kwargs.get('status_details')
+        self.version_number = kwargs.get('version_number')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['status', 'status_details', 'version_number'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -597,16 +793,45 @@ class JobExecutionState(awsiot.ModeledClass):
         return new
 
 class JobExecutionSummary(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *execution_number* (``int``)
+        * *job_id* (``str``)
+        * *last_updated_at* (``datetime.datetime``)
+        * *queued_at* (``datetime.datetime``)
+        * *started_at* (``datetime.datetime``)
+        * *version_number* (``int``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['execution_number', 'job_id', 'last_updated_at', 'queued_at', 'started_at', 'version_number']
 
-    def __init__(self, execution_number=None, job_id=None, last_updated_at=None, queued_at=None, started_at=None, version_number=None):
-        # type: (typing.Optional[int], typing.Optional[str], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[datetime.datetime], typing.Optional[int]) -> None
-        self.execution_number = execution_number # type: typing.Optional[int]
-        self.job_id = job_id # type: typing.Optional[str]
-        self.last_updated_at = last_updated_at # type: typing.Optional[datetime.datetime]
-        self.queued_at = queued_at # type: typing.Optional[datetime.datetime]
-        self.started_at = started_at # type: typing.Optional[datetime.datetime]
-        self.version_number = version_number # type: typing.Optional[int]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a JobExecutionSummary instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *execution_number* (``int``)
+            * *job_id* (``str``)
+            * *last_updated_at* (``datetime.datetime``)
+            * *queued_at* (``datetime.datetime``)
+            * *started_at* (``datetime.datetime``)
+            * *version_number* (``int``)
+        """
+
+        self.execution_number = kwargs.get('execution_number')
+        self.job_id = kwargs.get('job_id')
+        self.last_updated_at = kwargs.get('last_updated_at')
+        self.queued_at = kwargs.get('queued_at')
+        self.started_at = kwargs.get('started_at')
+        self.version_number = kwargs.get('version_number')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['execution_number', 'job_id', 'last_updated_at', 'queued_at', 'started_at', 'version_number'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -633,12 +858,33 @@ class JobExecutionSummary(awsiot.ModeledClass):
         return new
 
 class JobExecutionsChangedEvent(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *jobs* (``typing.Dict[str, typing.List[JobExecutionSummary]]``)
+        * *timestamp* (``datetime.datetime``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['jobs', 'timestamp']
 
-    def __init__(self, jobs=None, timestamp=None):
-        # type: (typing.Optional[typing.Dict[str, typing.List[JobExecutionSummary]]], typing.Optional[datetime.datetime]) -> None
-        self.jobs = jobs # type: typing.Optional[typing.Dict[str, typing.List[JobExecutionSummary]]]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a JobExecutionsChangedEvent instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *jobs* (``typing.Dict[str, typing.List[JobExecutionSummary]]``)
+            * *timestamp* (``datetime.datetime``)
+        """
+
+        self.jobs = kwargs.get('jobs')
+        self.timestamp = kwargs.get('timestamp')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['jobs', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -653,11 +899,30 @@ class JobExecutionsChangedEvent(awsiot.ModeledClass):
         return new
 
 class JobExecutionsChangedSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['thing_name']
 
-    def __init__(self, thing_name=None):
-        # type: (typing.Optional[str]) -> None
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a JobExecutionsChangedSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *thing_name* (``str``)
+        """
+
+        self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['thing_name'], args):
+            setattr(self, key, val)
 
 class JobStatus:
     CANCELED = 'CANCELED'
@@ -670,12 +935,33 @@ class JobStatus:
     REMOVED = 'REMOVED'
 
 class NextJobExecutionChangedEvent(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *execution* (``JobExecutionData``)
+        * *timestamp* (``datetime.datetime``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['execution', 'timestamp']
 
-    def __init__(self, execution=None, timestamp=None):
-        # type: (typing.Optional[JobExecutionData], typing.Optional[datetime.datetime]) -> None
-        self.execution = execution # type: typing.Optional[JobExecutionData]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a NextJobExecutionChangedEvent instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *execution* (``JobExecutionData``)
+            * *timestamp* (``datetime.datetime``)
+        """
+
+        self.execution = kwargs.get('execution')
+        self.timestamp = kwargs.get('timestamp')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['execution', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -690,22 +976,68 @@ class NextJobExecutionChangedEvent(awsiot.ModeledClass):
         return new
 
 class NextJobExecutionChangedSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['thing_name']
 
-    def __init__(self, thing_name=None):
-        # type: (typing.Optional[str]) -> None
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a NextJobExecutionChangedSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *thing_name* (``str``)
+        """
+
+        self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['thing_name'], args):
+            setattr(self, key, val)
 
 class RejectedError(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *code* (``str``)
+        * *execution_state* (``JobExecutionState``)
+        * *message* (``str``)
+        * *timestamp* (``datetime.datetime``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'code', 'execution_state', 'message', 'timestamp']
 
-    def __init__(self, client_token=None, code=None, execution_state=None, message=None, timestamp=None):
-        # type: (typing.Optional[str], typing.Optional[str], typing.Optional[JobExecutionState], typing.Optional[str], typing.Optional[datetime.datetime]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.code = code # type: typing.Optional[str]
-        self.execution_state = execution_state # type: typing.Optional[JobExecutionState]
-        self.message = message # type: typing.Optional[str]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a RejectedError instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *code* (``str``)
+            * *execution_state* (``JobExecutionState``)
+            * *message* (``str``)
+            * *timestamp* (``datetime.datetime``)
+        """
+
+        self.client_token = kwargs.get('client_token')
+        self.code = kwargs.get('code')
+        self.execution_state = kwargs.get('execution_state')
+        self.message = kwargs.get('message')
+        self.timestamp = kwargs.get('timestamp')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['client_token', 'code', 'execution_state', 'message', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -740,13 +1072,36 @@ class RejectedErrorCode:
     TERMINAL_STATE_REACHED = 'TerminalStateReached'
 
 class StartNextJobExecutionResponse(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *execution* (``JobExecutionData``)
+        * *timestamp* (``datetime.datetime``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'execution', 'timestamp']
 
-    def __init__(self, client_token=None, execution=None, timestamp=None):
-        # type: (typing.Optional[str], typing.Optional[JobExecutionData], typing.Optional[datetime.datetime]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.execution = execution # type: typing.Optional[JobExecutionData]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a StartNextJobExecutionResponse instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *execution* (``JobExecutionData``)
+            * *timestamp* (``datetime.datetime``)
+        """
+
+        self.client_token = kwargs.get('client_token')
+        self.execution = kwargs.get('execution')
+        self.timestamp = kwargs.get('timestamp')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['client_token', 'execution', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -764,14 +1119,39 @@ class StartNextJobExecutionResponse(awsiot.ModeledClass):
         return new
 
 class StartNextPendingJobExecutionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *status_details* (``typing.Dict[str, str]``)
+        * *step_timeout_in_minutes* (``int``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'status_details', 'step_timeout_in_minutes', 'thing_name']
 
-    def __init__(self, client_token=None, status_details=None, step_timeout_in_minutes=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[int], typing.Optional[str]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.status_details = status_details # type: typing.Optional[typing.Dict[str, str]]
-        self.step_timeout_in_minutes = step_timeout_in_minutes # type: typing.Optional[int]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a StartNextPendingJobExecutionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *status_details* (``typing.Dict[str, str]``)
+            * *step_timeout_in_minutes* (``int``)
+            * *thing_name* (``str``)
+        """
+
+        self.client_token = kwargs.get('client_token')
+        self.status_details = kwargs.get('status_details')
+        self.step_timeout_in_minutes = kwargs.get('step_timeout_in_minutes')
+        self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['client_token', 'status_details', 'step_timeout_in_minutes', 'thing_name'], args):
+            setattr(self, key, val)
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
@@ -785,27 +1165,83 @@ class StartNextPendingJobExecutionRequest(awsiot.ModeledClass):
         return payload
 
 class StartNextPendingJobExecutionSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['thing_name']
 
-    def __init__(self, thing_name=None):
-        # type: (typing.Optional[str]) -> None
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a StartNextPendingJobExecutionSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *thing_name* (``str``)
+        """
+
+        self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['thing_name'], args):
+            setattr(self, key, val)
 
 class UpdateJobExecutionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *execution_number* (``int``)
+        * *expected_version* (``int``)
+        * *include_job_document* (``bool``)
+        * *include_job_execution_state* (``bool``)
+        * *job_id* (``str``)
+        * *status* (``str``)
+        * *status_details* (``typing.Dict[str, str]``)
+        * *step_timeout_in_minutes* (``int``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'execution_number', 'expected_version', 'include_job_document', 'include_job_execution_state', 'job_id', 'status', 'status_details', 'step_timeout_in_minutes', 'thing_name']
 
-    def __init__(self, client_token=None, execution_number=None, expected_version=None, include_job_document=None, include_job_execution_state=None, job_id=None, status=None, status_details=None, step_timeout_in_minutes=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[int], typing.Optional[int], typing.Optional[bool], typing.Optional[bool], typing.Optional[str], typing.Optional[str], typing.Optional[typing.Dict[str, str]], typing.Optional[int], typing.Optional[str]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.execution_number = execution_number # type: typing.Optional[int]
-        self.expected_version = expected_version # type: typing.Optional[int]
-        self.include_job_document = include_job_document # type: typing.Optional[bool]
-        self.include_job_execution_state = include_job_execution_state # type: typing.Optional[bool]
-        self.job_id = job_id # type: typing.Optional[str]
-        self.status = status # type: typing.Optional[str]
-        self.status_details = status_details # type: typing.Optional[typing.Dict[str, str]]
-        self.step_timeout_in_minutes = step_timeout_in_minutes # type: typing.Optional[int]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a UpdateJobExecutionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *execution_number* (``int``)
+            * *expected_version* (``int``)
+            * *include_job_document* (``bool``)
+            * *include_job_execution_state* (``bool``)
+            * *job_id* (``str``)
+            * *status* (``str``)
+            * *status_details* (``typing.Dict[str, str]``)
+            * *step_timeout_in_minutes* (``int``)
+            * *thing_name* (``str``)
+        """
+
+        self.client_token = kwargs.get('client_token')
+        self.execution_number = kwargs.get('execution_number')
+        self.expected_version = kwargs.get('expected_version')
+        self.include_job_document = kwargs.get('include_job_document')
+        self.include_job_execution_state = kwargs.get('include_job_execution_state')
+        self.job_id = kwargs.get('job_id')
+        self.status = kwargs.get('status')
+        self.status_details = kwargs.get('status_details')
+        self.step_timeout_in_minutes = kwargs.get('step_timeout_in_minutes')
+        self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['client_token', 'execution_number', 'expected_version', 'include_job_document', 'include_job_execution_state', 'job_id', 'status', 'status_details', 'step_timeout_in_minutes', 'thing_name'], args):
+            setattr(self, key, val)
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
@@ -829,14 +1265,39 @@ class UpdateJobExecutionRequest(awsiot.ModeledClass):
         return payload
 
 class UpdateJobExecutionResponse(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *client_token* (``str``)
+        * *execution_state* (``JobExecutionState``)
+        * *job_document* (``typing.Dict[str, typing.Any]``)
+        * *timestamp* (``datetime.datetime``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['client_token', 'execution_state', 'job_document', 'timestamp']
 
-    def __init__(self, client_token=None, execution_state=None, job_document=None, timestamp=None):
-        # type: (typing.Optional[str], typing.Optional[JobExecutionState], typing.Optional[typing.Dict[str, typing.Any]], typing.Optional[datetime.datetime]) -> None
-        self.client_token = client_token # type: typing.Optional[str]
-        self.execution_state = execution_state # type: typing.Optional[JobExecutionState]
-        self.job_document = job_document # type: typing.Optional[typing.Dict[str, typing.Any]]
-        self.timestamp = timestamp # type: typing.Optional[datetime.datetime]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a UpdateJobExecutionResponse instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *client_token* (``str``)
+            * *execution_state* (``JobExecutionState``)
+            * *job_document* (``typing.Dict[str, typing.Any]``)
+            * *timestamp* (``datetime.datetime``)
+        """
+
+        self.client_token = kwargs.get('client_token')
+        self.execution_state = kwargs.get('execution_state')
+        self.job_document = kwargs.get('job_document')
+        self.timestamp = kwargs.get('timestamp')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['client_token', 'execution_state', 'job_document', 'timestamp'], args):
+            setattr(self, key, val)
 
     @classmethod
     def from_payload(cls, payload):
@@ -857,10 +1318,31 @@ class UpdateJobExecutionResponse(awsiot.ModeledClass):
         return new
 
 class UpdateJobExecutionSubscriptionRequest(awsiot.ModeledClass):
+    r"""
+    Attributes:
+        * *job_id* (``str``)
+        * *thing_name* (``str``)
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+    """
+
     __slots__ = ['job_id', 'thing_name']
 
-    def __init__(self, job_id=None, thing_name=None):
-        # type: (typing.Optional[str], typing.Optional[str]) -> None
-        self.job_id = job_id # type: typing.Optional[str]
-        self.thing_name = thing_name # type: typing.Optional[str]
+    def __init__(self, *args, **kwargs):
+        r"""Initializes a UpdateJobExecutionSubscriptionRequest instance
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *job_id* (``str``)
+            * *thing_name* (``str``)
+        """
+
+        self.job_id = kwargs.get('job_id')
+        self.thing_name = kwargs.get('thing_name')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip(['job_id', 'thing_name'], args):
+            setattr(self, key, val)
 
