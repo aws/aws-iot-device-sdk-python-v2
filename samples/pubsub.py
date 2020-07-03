@@ -9,6 +9,7 @@ from awsiot import mqtt_connection_builder
 import sys
 import threading
 import time
+from uuid import uuid4
 
 # This sample uses the Message Broker for AWS IoT to send and receive messages
 # through an MQTT connection. On startup, the device connects to the server,
@@ -24,8 +25,8 @@ parser.add_argument('--key', help="File path to your private key, in PEM format.
 parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. " +
                                       "Necessary if MQTT server uses a certificate that's not already in " +
                                       "your trust store.")
-parser.add_argument('--client-id', default='samples-client-id', help="Client ID for MQTT connection.")
-parser.add_argument('--topic', default="samples/test", help="Topic to subscribe to, and publish messages to.")
+parser.add_argument('--client-id', default="test-" + str(uuid4()), help="Client ID for MQTT connection.")
+parser.add_argument('--topic', default="test/topic", help="Topic to subscribe to, and publish messages to.")
 parser.add_argument('--message', default="Hello World!", help="Message to publish. " +
                                                               "Specify empty string to publish nothing.")
 parser.add_argument('--count', default=10, type=int, help="Number of messages to publish/receive before exiting. " +
