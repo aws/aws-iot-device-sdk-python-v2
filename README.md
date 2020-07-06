@@ -4,14 +4,14 @@ This document provides information about the AWS IoT device SDK for Python V2.
 If you have any issues or feature requests, please file an issue or pull request.
 
 This SDK is built on the AWS Common Runtime, a collection of libraries
-([1](https://github.com/awslabs/aws-c-common),
-[2](https://github.com/awslabs/aws-c-io),
-[3](https://github.com/awslabs/aws-c-mqtt),
-[4](https://github.com/awslabs/aws-c-compression),
-[5](https://github.com/awslabs/aws-c-http),
-[6](https://github.com/awslabs/aws-c-cal),
-[7](https://github.com/awslabs/aws-c-auth),
-[8](https://github.com/awslabs/s2n) ...) written in C to be
+([aws-c-common](https://github.com/awslabs/aws-c-common),
+[aws-c-io](https://github.com/awslabs/aws-c-io),
+[aws-c-mqtt](https://github.com/awslabs/aws-c-mqtt),
+[aws-c-compression](https://github.com/awslabs/aws-c-compression),
+[aws-c-http](https://github.com/awslabs/aws-c-http),
+[aws-c-cal](https://github.com/awslabs/aws-c-cal),
+[aws-c-auth](https://github.com/awslabs/aws-c-auth),
+[s2n](https://github.com/awslabs/s2n) ...) written in C to be
 cross-platform, high-performance, secure, and reliable. The libraries are bound
 to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([Github](https://github.com/awslabs/aws-crt-python)).
 
@@ -28,7 +28,7 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 ## Installation
 
 ### Minimum Requirements
-*   Python 3.5+ or Python 2.7+
+*   Python 3.5+
 
 ### Install from PyPI
 ```

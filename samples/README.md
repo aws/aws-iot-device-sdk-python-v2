@@ -21,6 +21,7 @@ Your Thing's
 [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
 must provide privileges for this sample to connect, subscribe, publish,
 and receive.
+
 <details>
 <summary>(see sample policy)</summary>
 <pre>
