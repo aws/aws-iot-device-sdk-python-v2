@@ -1,15 +1,5 @@
-# Copyright 2010-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License").
-# You may not use this file except in compliance with the License.
-# A copy of the License is located at
-#
-#  http://aws.amazon.com/apache2.0
-#
-# or in the "license" file accompanying this file. This file is distributed
-# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-# express or implied. See the License for the specific language governing
-# permissions and limitations under the License.
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0.
 
 from __future__ import absolute_import
 from __future__ import print_function
@@ -295,7 +285,7 @@ if __name__ == '__main__':
         # to succeed before publishing the corresponding "request".
         print("Subscribing to Delta events...")
         delta_subscribed_future, _ = shadow_client.subscribe_to_shadow_delta_updated_events(
-            request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(args.thing_name),
+            request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(thing_name=args.thing_name),
             qos=mqtt.QoS.AT_LEAST_ONCE,
             callback=on_shadow_delta_updated)
 
@@ -304,12 +294,12 @@ if __name__ == '__main__':
 
         print("Subscribing to Update responses...")
         update_accepted_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_accepted(
-            request=iotshadow.UpdateShadowSubscriptionRequest(args.thing_name),
+            request=iotshadow.UpdateShadowSubscriptionRequest(thing_name=args.thing_name),
             qos=mqtt.QoS.AT_LEAST_ONCE,
             callback=on_update_shadow_accepted)
 
         update_rejected_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_rejected(
-            request=iotshadow.UpdateShadowSubscriptionRequest(args.thing_name),
+            request=iotshadow.UpdateShadowSubscriptionRequest(thing_name=args.thing_name),
             qos=mqtt.QoS.AT_LEAST_ONCE,
             callback=on_update_shadow_rejected)
 
@@ -319,12 +309,12 @@ if __name__ == '__main__':
 
         print("Subscribing to Get responses...")
         get_accepted_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_accepted(
-            request=iotshadow.GetShadowSubscriptionRequest(args.thing_name),
+            request=iotshadow.GetShadowSubscriptionRequest(thing_name=args.thing_name),
             qos=mqtt.QoS.AT_LEAST_ONCE,
             callback=on_get_shadow_accepted)
 
         get_rejected_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_rejected(
-            request=iotshadow.GetShadowSubscriptionRequest(args.thing_name),
+            request=iotshadow.GetShadowSubscriptionRequest(thing_name=args.thing_name),
             qos=mqtt.QoS.AT_LEAST_ONCE,
             callback=on_get_shadow_rejected)
 
@@ -338,7 +328,7 @@ if __name__ == '__main__':
         # The response will be received by the on_get_accepted() callback
         print("Requesting current shadow state...")
         publish_get_future = shadow_client.publish_get_shadow(
-            request=iotshadow.GetShadowRequest(args.thing_name),
+            request=iotshadow.GetShadowRequest(thing_name=args.thing_name),
             qos=mqtt.QoS.AT_LEAST_ONCE)
 
         # Ensure that publish succeeds
