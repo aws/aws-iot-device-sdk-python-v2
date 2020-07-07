@@ -65,7 +65,7 @@ Use the following sources for information :
 *   Check api and developer guides.
 *   Check for similar issues already opened.
 
-If you still can’t find a solution to your problem open an [issue](issues)
+If you still can’t find a solution to your problem open an [issue](https://github.com/aws/aws-iot-device-sdk-python-v2/issues)
 
 
 
@@ -74,8 +74,8 @@ If you still can’t find a solution to your problem open an [issue](issues)
 We need your help in making this SDK great. Please participate in the community and contribute to this effort by submitting issues, participating in discussion forums and submitting pull requests through the following channels.
 
 *   [Contributions Guidelines](master/CONTRIBUTING.md)
-*   Articulate your feature request or upvote existing ones on our [Issues](issues?q=is%3Aissue+is%3Aopen+label%3Afeature-request) page.
-*   Submit [Issues](issues)
+*   Articulate your feature request or upvote existing ones on our [Issues](https://github.com/aws/aws-iot-device-sdk-python-v2/issues?q=is%3Aissue+is%3Aopen+label%3Afeature-request) page.
+*   Submit [Issues](https://github.com/aws/aws-iot-device-sdk-python-v2/issues)
 
 
 
@@ -83,7 +83,7 @@ We need your help in making this SDK great. Please participate in the community 
 
 *   [AWS IoT Core Documentation](https://docs.aws.amazon.com/iot/)
 *   [Developer Guide](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html) ([source](https://github.com/awsdocs/aws-iot-docs))
-*   [Issues](issues)
+*   [Issues](https://github.com/aws/aws-iot-device-sdk-python-v2/issues)
 *   [Dev Blog](https://aws.amazon.com/blogs/?awsf.blog-master-iot=category-internet-of-things%23amazon-freertos%7Ccategory-internet-of-things%23aws-greengrass%7Ccategory-internet-of-things%23aws-iot-analytics%7Ccategory-internet-of-things%23aws-iot-button%7Ccategory-internet-of-things%23aws-iot-device-defender%7Ccategory-internet-of-things%23aws-iot-device-management%7Ccategory-internet-of-things%23aws-iot-platform)
 
 Integration with AWS IoT Services such as
