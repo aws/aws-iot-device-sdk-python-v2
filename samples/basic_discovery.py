@@ -19,7 +19,7 @@ parser.add_argument('-r', '--root-ca', action='store', dest='root_ca_path', help
 parser.add_argument('-c', '--cert', action='store', required=True, dest='certificate_path', help='Certificate file path')
 parser.add_argument('-k', '--key', action='store', required=True, dest='private_key_path', help='Private key file path')
 parser.add_argument('-n', '--thing-name', action='store', required=True, dest='thing_name', help='Targeted thing name')
-parser.add_argument('-t', '--topic', action='store', dest='topic', default='sdk/test/Python', help='Targeted topic')
+parser.add_argument('-t', '--topic', action='store', dest='topic', default='test/topic', help='Targeted topic')
 parser.add_argument('-m', '--mode', action='store', dest='mode', default='both',
                     help='Operation modes: %s'%str(allowed_actions))
 parser.add_argument('-M', '--message', action='store', dest='message', default='Hello World!',

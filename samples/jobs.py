@@ -12,6 +12,7 @@ import sys
 import threading
 import time
 import traceback
+from uuid import uuid4
 
 # - Overview -
 # This sample uses the AWS IoT Jobs Service to receive and execute operations
@@ -42,7 +43,7 @@ parser.add_argument('--key', help="File path to your private key file, in PEM fo
 parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. " +
                                       "Necessary if MQTT server uses a certificate that's not already in " +
                                       "your trust store")
-parser.add_argument('--client-id', default='samples-client-id', help="Client ID for MQTT connection.")
+parser.add_argument('--client-id', default="test-" + str(uuid4()), help="Client ID for MQTT connection.")
 parser.add_argument('--thing-name', required=True, help="The name assigned to your IoT Thing")
 parser.add_argument('--job-time', default=5, type=float, help="Emulate working on job by sleeping this many seconds.")
 parser.add_argument('--use-websocket', default=False, action='store_true',

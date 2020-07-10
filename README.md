@@ -56,8 +56,6 @@ sudo apt-get install libssl-dev
 
 [Samples README](samples)
 
-
-
 ## Getting Help
 
 Use the following sources for information :
@@ -66,8 +64,6 @@ Use the following sources for information :
 *   Check for similar issues already opened.
 
 If you still can’t find a solution to your problem open an [issue](https://github.com/aws/aws-iot-device-sdk-python-v2/issues)
-
-
 
 ## Giving Feedback and Contributions
 
@@ -90,7 +86,6 @@ Integration with AWS IoT Services such as
 [Device Shadow](https://docs.aws.amazon.com/iot/latest/developerguide/iot-device-shadows.html)
 and [Jobs](https://docs.aws.amazon.com/iot/latest/developerguide/iot-jobs.html)
 is provided by code that been generated from a model of the service.
-
 
 
 # License
