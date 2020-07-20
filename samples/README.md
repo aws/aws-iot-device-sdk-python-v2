@@ -306,7 +306,7 @@ get the sample up and running.  These steps assume you have the AWS CLI installe
 sufficient permission to perform all of the listed operations.   These steps are based on provisioning setup steps
 that can be found at https://docs.aws.amazon.com/freertos/latest/lib-ref/c-sdk/provisioning/provisioning_tests.html#provisioning_system_tests_setup
 
-First, create an IAM role that will be needed by a fleet provisioning template. Replace RoleName with a name of the role you want to create. 
+First, create the IAM role that will be needed by the fleet provisioning template. Replace RoleName with a name of the role you want to create. 
 <pre>
 aws iam create-role \
     --role-name [RoleName] \
@@ -318,7 +318,7 @@ aws iam attach-role-policy \
         --role-name [RoleName] \
         --policy-arn arn:aws:iam::aws:policy/service-role/AWSIoTThingsRegistration
 </pre>
-Finally, create the template resource which will be used for provisioning the demo application. This needs to be done only 
+Finally, create the template resource which will be used for provisioning by the demo application. This needs to be done only 
 once.  To create a template, the following AWS CLI command may be used. Replace TemplateName with the name of the fleet 
 provisioning template you want to create. Replace RoleName with the name of the role you created previously. Replace 
 TemplateJSON with the template body as a JSON string (containing escape characters). Replace account with your AWS 
@@ -326,11 +326,11 @@ account number.
 <pre>
 aws iot create-provisioning-template \
         --template-name [TemplateName] \
-        --provisioning-role-arn arn:aws:iam::<account>:service-role/[RoleName] \
+        --provisioning-role-arn arn:aws:iam::[account]:service-role/[RoleName] \
         --template-body "[TemplateJSON]" \
         --enabled 
 </pre>
-These instructions assume you have used the following for the template body:
+The rest of the instructions assume you have used the following for the template body:
 <pre>
 {\"Parameters\":{\"DeviceLocation\":{\"Type\":\"String\"},\"AWS::IoT::Certificate::Id\":{\"Type\":\"String\"},\"SerialNumber\":{\"Type\":\"String\"}},\"Mappings\":{\"LocationTable\":{\"Seattle\":{\"LocationUrl\":\"https://example.aws\"}}},\"Resources\":{\"thing\":{\"Type\":\"AWS::IoT::Thing\",\"Properties\":{\"ThingName\":{\"Fn::Join\":[\"\",[\"ThingPrefix_\",{\"Ref\":\"SerialNumber\"}]]},\"AttributePayload\":{\"version\":\"v1\",\"serialNumber\":\"serialNumber\"}},\"OverrideSettings\":{\"AttributePayload\":\"MERGE\",\"ThingTypeName\":\"REPLACE\",\"ThingGroups\":\"DO_NOTHING\"}},\"certificate\":{\"Type\":\"AWS::IoT::Certificate\",\"Properties\":{\"CertificateId\":{\"Ref\":\"AWS::IoT::Certificate::Id\"},\"Status\":\"Active\"},\"OverrideSettings\":{\"Status\":\"REPLACE\"}},\"policy\":{\"Type\":\"AWS::IoT::Policy\",\"Properties\":{\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"iot:Connect\",\"iot:Subscribe\",\"iot:Publish\",\"iot:Receive\"],\"Resource\":\"*\"}]}}}},\"DeviceConfiguration\":{\"FallbackUrl\":\"https://www.example.com/test-site\",\"LocationUrl\":{\"Fn::FindInMap\":[\"LocationTable\",{\"Ref\":\"DeviceLocation\"},\"LocationUrl\"]}}}
 </pre>
@@ -346,7 +346,7 @@ We've included a script in the utils folder that creates certificate and key fil
 create-provisioning-claim. These dynamically sourced certificates are only valid for five minutes.  When running the command, 
 you'll need to substitute the name of the template you previously created, and on Windows, replace the paths with something appropriate.
 
-Create a temporary provisioning claim certificate set:
+(Optional) Create a temporary provisioning claim certificate set:
 <pre>
 aws iot create-provisioning-claim --template-name [TemplateName] | python ../utils/parse_cert_set_result.py --path /tmp --filename provision
 </pre>
@@ -362,7 +362,7 @@ python fleetprovisioning.py --endpoint [your endpoint]-ats.iot.us-west-2.amazona
 Notice that we provided substitution values for the two parameters in the template body, DeviceLocation and SerialNumber.
 
 ##### Run the sample using the certificate signing request workflow
-To use the sample with this workflow, you'll need to create a certificate signing request that can be used.
+To run the sample with this workflow, you'll need to create a certificate signing request.
 
 First create a certificate-key pair:
 <pre>
@@ -374,14 +374,14 @@ Next create a certificate signing request from it:
 openssl req -new -key /tmp/deviceCert.key -out /tmp/deviceCert.csr
 </pre>
 
-As with the previous run, we'll create a temporary certificate set from a provisioning claim.  This step can
+(Optional) As with the previous workflow, we'll create a temporary certificate set from a provisioning claim.  This step can
 be skipped if you're using a certificate set capable of provisioning the device:
 
 <pre>
 aws iot create-provisioning-claim --template-name [TemplateName] | python ../utils/parse_cert_set_result.py --path /tmp --filename provision
 </pre>
 
-Finally, supply the certificate signing request while invoking the provisioning sample.  As with the previous sample, if
+Finally, supply the certificate signing request while invoking the provisioning sample.  As with the previous workflow, if
 using a permanent certificate set, replace the paths specified in the --cert and --key arguments.
 <pre>
 python fleetprovisioning.py --endpoint [your endpoint]-ats.iot.us-west-2.amazonaws.com --root-ca [pathToRootCA] --cert /tmp/provision.cert.pem --key /tmp/provision.private.key --templateName [TemplateName]--templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" --csr /tmp/deviceCert.csr 
