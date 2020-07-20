@@ -303,7 +303,7 @@ and receive.
 ##### Aws Resource Setup
 Fleet provisioning requires some additional AWS resources be set up first.  This section documents the steps you need to take to
 get the sample up and running.  These steps assume you have the AWS CLI installed and the default user/credentials has
-sufficient permission to perform all of the listed operations.   These steps are based on provisioning setup steps
+sufficient permission to perform all of the listed operations.  These steps are based on provisioning setup steps
 that can be found at [Embedded C SDK Setup](https://docs.aws.amazon.com/freertos/latest/lib-ref/c-sdk/provisioning/provisioning_tests.html#provisioning_system_tests_setup)
 
 First, create the IAM role that will be needed by the fleet provisioning template. Replace `RoleName` with a name of the role you want to create. 
@@ -352,11 +352,11 @@ aws iot create-provisioning-claim --template-name [TemplateName] | python ../uti
 </pre>
 
 The provisioning claim's cert and key set have been written to `/tmp/provision*`.  Now you can use these temporary keys
-to perform the actual provisioning.  If you are not using the temporary provisioning certificate, replaces the paths for `--cert` 
+to perform the actual provisioning.  If you are not using the temporary provisioning certificate, replace the paths for `--cert` 
 and `--key` appropriately:
 
 <pre>
-python fleetprovisioning.py --endpoint [your endpoint]-ats.iot.us-west-2.amazonaws.com --root-ca [pathToRootCA] --cert /tmp/provision.cert.pem --key /tmp/provision.private.key --templateName [TemplateName]--templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}"
+python fleetprovisioning.py --endpoint [your endpoint]-ats.iot.[region].amazonaws.com --root-ca [pathToRootCA] --cert /tmp/provision.cert.pem --key /tmp/provision.private.key --templateName [TemplateName]--templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}"
 </pre>
 
 Notice that we provided substitution values for the two parameters in the template body, `DeviceLocation` and `SerialNumber`.
@@ -382,9 +382,9 @@ aws iot create-provisioning-claim --template-name [TemplateName] | python ../uti
 </pre>
 
 Finally, supply the certificate signing request while invoking the provisioning sample.  As with the previous workflow, if
-using a permanent certificate set, replace the paths specified in the `--cert` and `--key` arguments.
+using a permanent certificate set, replace the paths specified in the `--cert` and `--key` arguments:
 <pre>
-python fleetprovisioning.py --endpoint [your endpoint]-ats.iot.us-west-2.amazonaws.com --root-ca [pathToRootCA] --cert /tmp/provision.cert.pem --key /tmp/provision.private.key --templateName [TemplateName]--templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" --csr /tmp/deviceCert.csr 
+python fleetprovisioning.py --endpoint [your endpoint]-ats.iot.[region].amazonaws.com --root-ca [pathToRootCA] --cert /tmp/provision.cert.pem --key /tmp/provision.private.key --templateName [TemplateName]--templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" --csr /tmp/deviceCert.csr 
 </pre>
 
 ## basic discovery
