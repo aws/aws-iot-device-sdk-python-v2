@@ -17,7 +17,7 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 
 
 *__Jump To:__*
-* [OSX-Only TLS Behavior](#OSX-Only-TLS-Behavior)
+* [Mac-Only TLS Behavior](#Mac-Only-TLS-Behavior)
 * [Installation](#Installation)
 * [Samples](samples)
 * [Getting Help](#Getting-Help)
@@ -26,9 +26,9 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 
 
 
-## OSX-Only TLS Behavior
+## Mac-Only TLS Behavior
 
-Please note that on OSX, once a private key is used with a certificate, that certificate-key pair is imported into the OSX Keychain.  All subsequent uses of that certificate will use the stored private key and ignore anything passed in programmatically.
+Please note that on Mac, once a private key is used with a certificate, that certificate-key pair is imported into the Mac Keychain.  All subsequent uses of that certificate will use the stored private key and ignore anything passed in programmatically.
 
 ## Installation
 
