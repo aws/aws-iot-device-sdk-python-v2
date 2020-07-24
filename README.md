@@ -17,22 +17,14 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 
 
 *__Jump To:__*
-* [Mac-Only TLS Behavior](#Mac-Only-TLS-Behavior)
 * [Installation](#Installation)
+* [Mac-Only TLS Behavior](#Mac-Only-TLS-Behavior)
 * [Samples](samples)
 * [Getting Help](#Getting-Help)
 * [Giving Feedback and Contributions](#Giving-Feedback-and-Contributions)
 * [More Resources](#More-Resources)
 
 
-
-## Mac-Only TLS Behavior
-
-Please note that on Mac, once a private key is used with a certificate, that certificate-key pair is imported into the Mac Keychain.  All subsequent uses of that certificate will use the stored private key and ignore anything passed in programmatically.  When a stored private key from the Keychain is used, the following will be logged at the "info" log level:
-
-```
-static: certificate has an existing certificate-key pair that was previously imported into the Keychain.  Using key from Keychain instead of the one provided.
-```
 
 ## Installation
 
@@ -57,6 +49,16 @@ pip install ./aws-iot-device-sdk-python-v2
 sudo apt-get update
 sudo apt-get install cmake
 sudo apt-get install libssl-dev
+```
+
+
+
+## Mac-Only TLS Behavior
+
+Please note that on Mac, once a private key is used with a certificate, that certificate-key pair is imported into the Mac Keychain.  All subsequent uses of that certificate will use the stored private key and ignore anything passed in programmatically.  Beginning in v1.3.2, when a stored private key from the Keychain is used, the following will be logged at the "info" log level:
+
+```
+static: certificate has an existing certificate-key pair that was previously imported into the Keychain.  Using key from Keychain instead of the one provided.
 ```
 
 
