@@ -24,7 +24,6 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 * [More Resources](#More-Resources)
 
 
-
 ## Installation
 
 ### Minimum Requirements
@@ -51,7 +50,6 @@ sudo apt-get install libssl-dev
 ```
 
 
-
 ## Samples
 
 [Samples README](samples)
@@ -69,10 +67,9 @@ If you still can’t find a solution to your problem open an [issue](https://git
 
 We need your help in making this SDK great. Please participate in the community and contribute to this effort by submitting issues, participating in discussion forums and submitting pull requests through the following channels.
 
-*   [Contributions Guidelines](master/CONTRIBUTING.md)
+*   [Contributions Guidelines](/CONTRIBUTING.md)
 *   Articulate your feature request or upvote existing ones on our [Issues](https://github.com/aws/aws-iot-device-sdk-python-v2/issues?q=is%3Aissue+is%3Aopen+label%3Afeature-request) page.
 *   Submit [Issues](https://github.com/aws/aws-iot-device-sdk-python-v2/issues)
-
 
 
 ## More Resources

@@ -1,6 +1,6 @@
 # Samples
 
-## pubsub
+## Pubsub
 This sample uses the
 [Message Broker](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html)
 for AWS IoT to send and receive messages
@@ -61,7 +61,7 @@ and receive.
 </pre>
 </details>
 
-## shadow
+## Shadow
 
 This sample uses the AWS IoT
 [Device Shadow](https://docs.aws.amazon.com/iot/latest/developerguide/iot-device-shadows.html)
@@ -145,7 +145,7 @@ and receive.
 </pre>
 </details>
 
-## jobs
+## Jobs
 
 This sample uses the AWS IoT
 [Jobs](https://docs.aws.amazon.com/iot/latest/developerguide/iot-jobs.html)
@@ -230,7 +230,7 @@ and receive.
 </pre>
 </details>
 
-## fleet provisioning
+## Fleet Provisioning
 
 This sample uses the AWS IoT
 [Fleet provisioning](https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html)
@@ -298,9 +298,9 @@ and receive.
 </pre>
 </details>
 
-#### Fleet Provisioning Detailed Instructions
+### Fleet Provisioning Detailed Instructions
 
-##### Aws Resource Setup
+#### Aws Resource Setup
 Fleet provisioning requires some additional AWS resources be set up first.  This section documents the steps you need to take to
 get the sample up and running.  These steps assume you have the AWS CLI installed and the default user/credentials has
 sufficient permission to perform all of the listed operations.  These steps are based on provisioning setup steps
@@ -326,7 +326,7 @@ account number.
 <pre>
 aws iot create-provisioning-template \
         --template-name [TemplateName] \
-        --provisioning-role-arn arn:aws:iam::[account]:service-role/[RoleName] \
+        --provisioning-role-arn arn:aws:iam::[account]:role/[RoleName] \
         --template-body "[TemplateJSON]" \
         --enabled 
 </pre>
@@ -335,7 +335,7 @@ The rest of the instructions assume you have used the following for the template
 {\"Parameters\":{\"DeviceLocation\":{\"Type\":\"String\"},\"AWS::IoT::Certificate::Id\":{\"Type\":\"String\"},\"SerialNumber\":{\"Type\":\"String\"}},\"Mappings\":{\"LocationTable\":{\"Seattle\":{\"LocationUrl\":\"https://example.aws\"}}},\"Resources\":{\"thing\":{\"Type\":\"AWS::IoT::Thing\",\"Properties\":{\"ThingName\":{\"Fn::Join\":[\"\",[\"ThingPrefix_\",{\"Ref\":\"SerialNumber\"}]]},\"AttributePayload\":{\"version\":\"v1\",\"serialNumber\":\"serialNumber\"}},\"OverrideSettings\":{\"AttributePayload\":\"MERGE\",\"ThingTypeName\":\"REPLACE\",\"ThingGroups\":\"DO_NOTHING\"}},\"certificate\":{\"Type\":\"AWS::IoT::Certificate\",\"Properties\":{\"CertificateId\":{\"Ref\":\"AWS::IoT::Certificate::Id\"},\"Status\":\"Active\"},\"OverrideSettings\":{\"Status\":\"REPLACE\"}},\"policy\":{\"Type\":\"AWS::IoT::Policy\",\"Properties\":{\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"iot:Connect\",\"iot:Subscribe\",\"iot:Publish\",\"iot:Receive\"],\"Resource\":\"*\"}]}}}},\"DeviceConfiguration\":{\"FallbackUrl\":\"https://www.example.com/test-site\",\"LocationUrl\":{\"Fn::FindInMap\":[\"LocationTable\",{\"Ref\":\"DeviceLocation\"},\"LocationUrl\"]}}}
 </pre>
 If you use a different body, you may need to pass in different template parameters.
-##### Running the sample and provisioning using a certificate-key set from a provisioning claim
+#### Running the sample and provisioning using a certificate-key set from a provisioning claim
 
 To run the provisioning sample, you'll need a certificate and key set with sufficient permissions.  Provisioning certificates are normally 
 created ahead of time and placed on your device, but for this sample, we will just create them on the fly.  You can also
@@ -361,7 +361,7 @@ python fleetprovisioning.py --endpoint [your endpoint]-ats.iot.[region].amazonaw
 
 Notice that we provided substitution values for the two parameters in the template body, `DeviceLocation` and `SerialNumber`.
 
-##### Run the sample using the certificate signing request workflow
+#### Run the sample using the certificate signing request workflow
 To run the sample with this workflow, you'll need to create a certificate signing request.
 
 First create a certificate-key pair:
@@ -387,7 +387,7 @@ using a permanent certificate set, replace the paths specified in the `--cert` a
 python fleetprovisioning.py --endpoint [your endpoint]-ats.iot.[region].amazonaws.com --root-ca [pathToRootCA] --cert /tmp/provision.cert.pem --key /tmp/provision.private.key --templateName [TemplateName]--templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" --csr /tmp/deviceCert.csr 
 </pre>
 
-## basic discovery
+## Basic Discovery
 
 This sample intended for use directly with the
 [Getting Started with AWS IoT Greengrass](https://docs.aws.amazon.com/greengrass/latest/developerguide/gg-gs.html) guide.
