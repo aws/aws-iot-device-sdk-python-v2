@@ -13,7 +13,7 @@ Status updates are continually printed to the console.
 Source: `samples/pubsub.py`
 
 Run the sample like this:
-```
+``` sh
 python pubsub.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file>
 ```
 
@@ -84,7 +84,7 @@ value.
 Source: `samples/shadow.py`
 
 Run the sample like this:
-```
+``` sh
 python shadow.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
 ```
 
@@ -170,7 +170,7 @@ sample will be continually prompted to try another job until none remain.
 Source: `samples/jobs.py`
 
 Run the sample like this:
-```
+``` sh
 python jobs.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
 ```
 
@@ -242,12 +242,12 @@ publishes the request to corresponding topic and calls RegisterThing.
 Source: `samples/fleetprovisioning.py`
 
 Run the sample using createKeysAndCertificate:
-```
+``` sh
 python fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters>
 ```
 
 Run the sample using createCertificateFromCsr:
-```
+``` sh
 python fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters> --csr <csr file>
 ```
 
@@ -307,33 +307,33 @@ sufficient permission to perform all of the listed operations.  These steps are 
 that can be found at [Embedded C SDK Setup](https://docs.aws.amazon.com/freertos/latest/lib-ref/c-sdk/provisioning/provisioning_tests.html#provisioning_system_tests_setup)
 
 First, create the IAM role that will be needed by the fleet provisioning template. Replace `RoleName` with a name of the role you want to create. 
-<pre>
+``` sh
 aws iam create-role \
     --role-name [RoleName] \
     --assume-role-policy-document '{"Version":"2012-10-17","Statement":[{"Action":"sts:AssumeRole","Effect":"Allow","Principal":{"Service":"iot.amazonaws.com"}}]}'
-</pre>
+```
 Next, attach a policy to the role created in the first step. Replace `RoleName` with the name of the role you created previously.
-<pre>
+``` sh
 aws iam attach-role-policy \
         --role-name [RoleName] \
         --policy-arn arn:aws:iam::aws:policy/service-role/AWSIoTThingsRegistration
-</pre>
+```
 Finally, create the template resource which will be used for provisioning by the demo application. This needs to be done only 
 once.  To create a template, the following AWS CLI command may be used. Replace `TemplateName` with the name of the fleet 
 provisioning template you want to create. Replace `RoleName` with the name of the role you created previously. Replace 
 `TemplateJSON` with the template body as a JSON string (containing escape characters). Replace `account` with your AWS 
 account number. 
-<pre>
+``` sh
 aws iot create-provisioning-template \
         --template-name [TemplateName] \
         --provisioning-role-arn arn:aws:iam::[account]:role/[RoleName] \
         --template-body "[TemplateJSON]" \
         --enabled 
-</pre>
+```
 The rest of the instructions assume you have used the following for the template body:
-<pre>
+``` sh
 {\"Parameters\":{\"DeviceLocation\":{\"Type\":\"String\"},\"AWS::IoT::Certificate::Id\":{\"Type\":\"String\"},\"SerialNumber\":{\"Type\":\"String\"}},\"Mappings\":{\"LocationTable\":{\"Seattle\":{\"LocationUrl\":\"https://example.aws\"}}},\"Resources\":{\"thing\":{\"Type\":\"AWS::IoT::Thing\",\"Properties\":{\"ThingName\":{\"Fn::Join\":[\"\",[\"ThingPrefix_\",{\"Ref\":\"SerialNumber\"}]]},\"AttributePayload\":{\"version\":\"v1\",\"serialNumber\":\"serialNumber\"}},\"OverrideSettings\":{\"AttributePayload\":\"MERGE\",\"ThingTypeName\":\"REPLACE\",\"ThingGroups\":\"DO_NOTHING\"}},\"certificate\":{\"Type\":\"AWS::IoT::Certificate\",\"Properties\":{\"CertificateId\":{\"Ref\":\"AWS::IoT::Certificate::Id\"},\"Status\":\"Active\"},\"OverrideSettings\":{\"Status\":\"REPLACE\"}},\"policy\":{\"Type\":\"AWS::IoT::Policy\",\"Properties\":{\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"iot:Connect\",\"iot:Subscribe\",\"iot:Publish\",\"iot:Receive\"],\"Resource\":\"*\"}]}}}},\"DeviceConfiguration\":{\"FallbackUrl\":\"https://www.example.com/test-site\",\"LocationUrl\":{\"Fn::FindInMap\":[\"LocationTable\",{\"Ref\":\"DeviceLocation\"},\"LocationUrl\"]}}}
-</pre>
+```
 If you use a different body, you may need to pass in different template parameters.
 #### Running the sample and provisioning using a certificate-key set from a provisioning claim
 
