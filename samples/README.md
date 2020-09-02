@@ -387,7 +387,7 @@ using a permanent certificate set, replace the paths specified in the `--cert` a
 python fleetprovisioning.py --endpoint [your endpoint]-ats.iot.[region].amazonaws.com --root-ca [pathToRootCA] --cert /tmp/provision.cert.pem --key /tmp/provision.private.key --templateName [TemplateName]--templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" --csr /tmp/deviceCert.csr 
 </pre>
 
-## Basic Discovery
+## Greengrass Discovery
 
 This sample intended for use directly with the
 [Getting Started with AWS IoT Greengrass](https://docs.aws.amazon.com/greengrass/latest/developerguide/gg-gs.html) guide.
