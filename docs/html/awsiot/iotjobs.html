@@ -1,0 +1,1469 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>awsiot.iotjobs &#8212; AWS IoT Device SDK Python v2  documentation</title>
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="awsiot.iotshadow" href="iotshadow.html" />
+    <link rel="prev" title="awsiot.iotidentity" href="iotidentity.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="iotshadow.html" title="awsiot.iotshadow"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="iotidentity.html" title="awsiot.iotidentity"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">AWS IoT Device SDK Python v2  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">awsiot.iotjobs</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-awsiot.iotjobs">
+<span id="awsiot-iotjobs"></span><h1>awsiot.iotjobs<a class="headerlink" href="#module-awsiot.iotjobs" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="awsiot.iotjobs.IotJobsClient">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">IotJobsClient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mqtt_connection</span><span class="p">:</span> <span class="n">awscrt.mqtt.Connection</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.publish_describe_job_execution">
+<code class="sig-name descname">publish_describe_job_execution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionRequest" title="awsiot.iotjobs.DescribeJobExecutionRequest">awsiot.iotjobs.DescribeJobExecutionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; concurrent.futures._base.Future<a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.publish_describe_job_execution" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution</a></p>
+<p>Parameters:
+request - <cite>DescribeJobExecutionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message</p>
+<p>Returns a concurrent.futures.Future, whose result will be None if the
+request is successfully published. The Future’s result will be an
+exception if the request cannot be published.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.publish_get_pending_job_executions">
+<code class="sig-name descname">publish_get_pending_job_executions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsRequest" title="awsiot.iotjobs.GetPendingJobExecutionsRequest">awsiot.iotjobs.GetPendingJobExecutionsRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; concurrent.futures._base.Future<a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.publish_get_pending_job_executions" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions</a></p>
+<p>Parameters:
+request - <cite>GetPendingJobExecutionsRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message</p>
+<p>Returns a concurrent.futures.Future, whose result will be None if the
+request is successfully published. The Future’s result will be an
+exception if the request cannot be published.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.publish_start_next_pending_job_execution">
+<code class="sig-name descname">publish_start_next_pending_job_execution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest" title="awsiot.iotjobs.StartNextPendingJobExecutionRequest">awsiot.iotjobs.StartNextPendingJobExecutionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; concurrent.futures._base.Future<a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.publish_start_next_pending_job_execution" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution</a></p>
+<p>Parameters:
+request - <cite>StartNextPendingJobExecutionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message</p>
+<p>Returns a concurrent.futures.Future, whose result will be None if the
+request is successfully published. The Future’s result will be an
+exception if the request cannot be published.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.publish_update_job_execution">
+<code class="sig-name descname">publish_update_job_execution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionRequest" title="awsiot.iotjobs.UpdateJobExecutionRequest">awsiot.iotjobs.UpdateJobExecutionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; concurrent.futures._base.Future<a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.publish_update_job_execution" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution</a></p>
+<p>Parameters:
+request - <cite>UpdateJobExecutionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message</p>
+<p>Returns a concurrent.futures.Future, whose result will be None if the
+request is successfully published. The Future’s result will be an
+exception if the request cannot be published.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_describe_job_execution_accepted">
+<code class="sig-name descname">subscribe_to_describe_job_execution_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest" title="awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest">awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">callback</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionResponse" title="awsiot.iotjobs.DescribeJobExecutionResponse">awsiot.iotjobs.DescribeJobExecutionResponse</a><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>concurrent.futures._base.Future<span class="p">, </span>str<span class="p">]</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_describe_job_execution_accepted" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution</a></p>
+<p>Parameters:
+request - <cite>DescribeJobExecutionSubscriptionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message
+callback - Callback to invoke each time the event is received.</p>
+<blockquote>
+<div><p>The callback should take 1 argument of type <cite>DescribeJobExecutionResponse</cite>.
+The callback is not expected to return anything.</p>
+</div></blockquote>
+<p>Returns two values immediately. The first is a <cite>concurrent.futures.Future</cite>
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_describe_job_execution_rejected">
+<code class="sig-name descname">subscribe_to_describe_job_execution_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest" title="awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest">awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">callback</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError">awsiot.iotjobs.RejectedError</a><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>concurrent.futures._base.Future<span class="p">, </span>str<span class="p">]</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_describe_job_execution_rejected" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution</a></p>
+<p>Parameters:
+request - <cite>DescribeJobExecutionSubscriptionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message
+callback - Callback to invoke each time the event is received.</p>
+<blockquote>
+<div><p>The callback should take 1 argument of type <cite>RejectedError</cite>.
+The callback is not expected to return anything.</p>
+</div></blockquote>
+<p>Returns two values immediately. The first is a <cite>concurrent.futures.Future</cite>
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_get_pending_job_executions_accepted">
+<code class="sig-name descname">subscribe_to_get_pending_job_executions_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest" title="awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest">awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">callback</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse" title="awsiot.iotjobs.GetPendingJobExecutionsResponse">awsiot.iotjobs.GetPendingJobExecutionsResponse</a><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>concurrent.futures._base.Future<span class="p">, </span>str<span class="p">]</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_get_pending_job_executions_accepted" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions</a></p>
+<p>Parameters:
+request - <cite>GetPendingJobExecutionsSubscriptionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message
+callback - Callback to invoke each time the event is received.</p>
+<blockquote>
+<div><p>The callback should take 1 argument of type <cite>GetPendingJobExecutionsResponse</cite>.
+The callback is not expected to return anything.</p>
+</div></blockquote>
+<p>Returns two values immediately. The first is a <cite>concurrent.futures.Future</cite>
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_get_pending_job_executions_rejected">
+<code class="sig-name descname">subscribe_to_get_pending_job_executions_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest" title="awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest">awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">callback</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError">awsiot.iotjobs.RejectedError</a><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>concurrent.futures._base.Future<span class="p">, </span>str<span class="p">]</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_get_pending_job_executions_rejected" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions</a></p>
+<p>Parameters:
+request - <cite>GetPendingJobExecutionsSubscriptionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message
+callback - Callback to invoke each time the event is received.</p>
+<blockquote>
+<div><p>The callback should take 1 argument of type <cite>RejectedError</cite>.
+The callback is not expected to return anything.</p>
+</div></blockquote>
+<p>Returns two values immediately. The first is a <cite>concurrent.futures.Future</cite>
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_job_executions_changed_events">
+<code class="sig-name descname">subscribe_to_job_executions_changed_events</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest" title="awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest">awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">callback</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><a class="reference internal" href="#awsiot.iotjobs.JobExecutionsChangedEvent" title="awsiot.iotjobs.JobExecutionsChangedEvent">awsiot.iotjobs.JobExecutionsChangedEvent</a><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>concurrent.futures._base.Future<span class="p">, </span>str<span class="p">]</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_job_executions_changed_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-jobexecutionschanged">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-jobexecutionschanged</a></p>
+<p>Parameters:
+request - <cite>JobExecutionsChangedSubscriptionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message
+callback - Callback to invoke each time the event is received.</p>
+<blockquote>
+<div><p>The callback should take 1 argument of type <cite>JobExecutionsChangedEvent</cite>.
+The callback is not expected to return anything.</p>
+</div></blockquote>
+<p>Returns two values immediately. The first is a <cite>concurrent.futures.Future</cite>
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_next_job_execution_changed_events">
+<code class="sig-name descname">subscribe_to_next_job_execution_changed_events</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest" title="awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest">awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">callback</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><a class="reference internal" href="#awsiot.iotjobs.NextJobExecutionChangedEvent" title="awsiot.iotjobs.NextJobExecutionChangedEvent">awsiot.iotjobs.NextJobExecutionChangedEvent</a><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>concurrent.futures._base.Future<span class="p">, </span>str<span class="p">]</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_next_job_execution_changed_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-nextjobexecutionchanged">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-nextjobexecutionchanged</a></p>
+<p>Parameters:
+request - <cite>NextJobExecutionChangedSubscriptionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message
+callback - Callback to invoke each time the event is received.</p>
+<blockquote>
+<div><p>The callback should take 1 argument of type <cite>NextJobExecutionChangedEvent</cite>.
+The callback is not expected to return anything.</p>
+</div></blockquote>
+<p>Returns two values immediately. The first is a <cite>concurrent.futures.Future</cite>
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_start_next_pending_job_execution_accepted">
+<code class="sig-name descname">subscribe_to_start_next_pending_job_execution_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest" title="awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest">awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">callback</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><a class="reference internal" href="#awsiot.iotjobs.StartNextJobExecutionResponse" title="awsiot.iotjobs.StartNextJobExecutionResponse">awsiot.iotjobs.StartNextJobExecutionResponse</a><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>concurrent.futures._base.Future<span class="p">, </span>str<span class="p">]</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_start_next_pending_job_execution_accepted" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution</a></p>
+<p>Parameters:
+request - <cite>StartNextPendingJobExecutionSubscriptionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message
+callback - Callback to invoke each time the event is received.</p>
+<blockquote>
+<div><p>The callback should take 1 argument of type <cite>StartNextJobExecutionResponse</cite>.
+The callback is not expected to return anything.</p>
+</div></blockquote>
+<p>Returns two values immediately. The first is a <cite>concurrent.futures.Future</cite>
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_start_next_pending_job_execution_rejected">
+<code class="sig-name descname">subscribe_to_start_next_pending_job_execution_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest" title="awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest">awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">callback</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError">awsiot.iotjobs.RejectedError</a><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>concurrent.futures._base.Future<span class="p">, </span>str<span class="p">]</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_start_next_pending_job_execution_rejected" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution</a></p>
+<p>Parameters:
+request - <cite>StartNextPendingJobExecutionSubscriptionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message
+callback - Callback to invoke each time the event is received.</p>
+<blockquote>
+<div><p>The callback should take 1 argument of type <cite>RejectedError</cite>.
+The callback is not expected to return anything.</p>
+</div></blockquote>
+<p>Returns two values immediately. The first is a <cite>concurrent.futures.Future</cite>
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_update_job_execution_accepted">
+<code class="sig-name descname">subscribe_to_update_job_execution_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest" title="awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest">awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">callback</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionResponse" title="awsiot.iotjobs.UpdateJobExecutionResponse">awsiot.iotjobs.UpdateJobExecutionResponse</a><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>concurrent.futures._base.Future<span class="p">, </span>str<span class="p">]</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_update_job_execution_accepted" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution</a></p>
+<p>Parameters:
+request - <cite>UpdateJobExecutionSubscriptionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message
+callback - Callback to invoke each time the event is received.</p>
+<blockquote>
+<div><p>The callback should take 1 argument of type <cite>UpdateJobExecutionResponse</cite>.
+The callback is not expected to return anything.</p>
+</div></blockquote>
+<p>Returns two values immediately. The first is a <cite>concurrent.futures.Future</cite>
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_update_job_execution_rejected">
+<code class="sig-name descname">subscribe_to_update_job_execution_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest" title="awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest">awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest</a></span></em>, <em class="sig-param"><span class="n">qos</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">callback</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError">awsiot.iotjobs.RejectedError</a><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>concurrent.futures._base.Future<span class="p">, </span>str<span class="p">]</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_update_job_execution_rejected" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution</a></p>
+<p>Parameters:
+request - <cite>UpdateJobExecutionSubscriptionRequest</cite> instance.
+qos     - The Quality of Service guarantee of this message
+callback - Callback to invoke each time the event is received.</p>
+<blockquote>
+<div><p>The callback should take 1 argument of type <cite>RejectedError</cite>.
+The callback is not expected to return anything.</p>
+</div></blockquote>
+<p>Returns two values immediately. The first is a <cite>concurrent.futures.Future</cite>
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.DescribeJobExecutionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">DescribeJobExecutionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *client_token*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *execution_number*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *include_job_document*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *job_id*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *thing_name*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a DescribeJobExecutionRequest instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>client_token</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>execution_number</em> (<code class="docutils literal notranslate"><span class="pre">int</span></code>)</p></li>
+<li><p><em>include_job_document</em> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>)</p></li>
+<li><p><em>job_id</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>thing_name</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.DescribeJobExecutionResponse">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">DescribeJobExecutionResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionResponse" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *client_token*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *execution*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">JobExecutionData</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *timestamp*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a DescribeJobExecutionResponse instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>client_token</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>execution</em> (<code class="docutils literal notranslate"><span class="pre">JobExecutionData</span></code>)</p></li>
+<li><p><em>timestamp</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">DescribeJobExecutionSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *job_id*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *thing_name*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a DescribeJobExecutionSubscriptionRequest instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>job_id</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>thing_name</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.GetPendingJobExecutionsRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">GetPendingJobExecutionsRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsRequest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *client_token*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *thing_name*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a GetPendingJobExecutionsRequest instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>client_token</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>thing_name</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.GetPendingJobExecutionsResponse">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">GetPendingJobExecutionsResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *client_token*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *in_progress_jobs*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">typing.List[JobExecutionSummary]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *queued_jobs*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">typing.List[JobExecutionSummary]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *timestamp*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a GetPendingJobExecutionsResponse instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>client_token</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>in_progress_jobs</em> (<code class="docutils literal notranslate"><span class="pre">typing.List[JobExecutionSummary]</span></code>)</p></li>
+<li><p><em>queued_jobs</em> (<code class="docutils literal notranslate"><span class="pre">typing.List[JobExecutionSummary]</span></code>)</p></li>
+<li><p><em>timestamp</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">GetPendingJobExecutionsSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *thing_name*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a GetPendingJobExecutionsSubscriptionRequest instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>thing_name</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.JobExecutionData">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">JobExecutionData</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *execution_number*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *job_document*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">typing.Any]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *job_id*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *last_updated_at*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *queued_at*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *started_at*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *status*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *status_details*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">str]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *thing_name*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *version_number*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a JobExecutionData instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>execution_number</em> (<code class="docutils literal notranslate"><span class="pre">int</span></code>)</p></li>
+<li><p><em>job_document</em> (<code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">typing.Any]</span></code>)</p></li>
+<li><p><em>job_id</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>last_updated_at</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+<li><p><em>queued_at</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+<li><p><em>started_at</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+<li><p><em>status</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>status_details</em> (<code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">str]</span></code>)</p></li>
+<li><p><em>thing_name</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>version_number</em> (<code class="docutils literal notranslate"><span class="pre">int</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.JobExecutionState">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">JobExecutionState</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *status*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *status_details*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">str]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *version_number*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a JobExecutionState instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>status</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>status_details</em> (<code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">str]</span></code>)</p></li>
+<li><p><em>version_number</em> (<code class="docutils literal notranslate"><span class="pre">int</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.JobExecutionSummary">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">JobExecutionSummary</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *execution_number*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *job_id*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *last_updated_at*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *queued_at*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *started_at*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *version_number*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a JobExecutionSummary instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>execution_number</em> (<code class="docutils literal notranslate"><span class="pre">int</span></code>)</p></li>
+<li><p><em>job_id</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>last_updated_at</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+<li><p><em>queued_at</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+<li><p><em>started_at</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+<li><p><em>version_number</em> (<code class="docutils literal notranslate"><span class="pre">int</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.JobExecutionsChangedEvent">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">JobExecutionsChangedEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedEvent" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *jobs*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">typing.List[JobExecutionSummary]]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *timestamp*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a JobExecutionsChangedEvent instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>jobs</em> (<code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">typing.List[JobExecutionSummary]]</span></code>)</p></li>
+<li><p><em>timestamp</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">JobExecutionsChangedSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *thing_name*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a JobExecutionsChangedSubscriptionRequest instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>thing_name</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.NextJobExecutionChangedEvent">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">NextJobExecutionChangedEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedEvent" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *execution*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">JobExecutionData</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *timestamp*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a NextJobExecutionChangedEvent instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>execution</em> (<code class="docutils literal notranslate"><span class="pre">JobExecutionData</span></code>)</p></li>
+<li><p><em>timestamp</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">NextJobExecutionChangedSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *thing_name*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a NextJobExecutionChangedSubscriptionRequest instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>thing_name</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.RejectedError">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">RejectedError</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.RejectedError" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *client_token*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *code*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *execution_state*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">JobExecutionState</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *message*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *timestamp*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a RejectedError instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>client_token</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>code</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>execution_state</em> (<code class="docutils literal notranslate"><span class="pre">JobExecutionState</span></code>)</p></li>
+<li><p><em>message</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>timestamp</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.StartNextJobExecutionResponse">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">StartNextJobExecutionResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.StartNextJobExecutionResponse" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *client_token*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *execution*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">JobExecutionData</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *timestamp*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a StartNextJobExecutionResponse instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>client_token</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>execution</em> (<code class="docutils literal notranslate"><span class="pre">JobExecutionData</span></code>)</p></li>
+<li><p><em>timestamp</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.StartNextPendingJobExecutionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">StartNextPendingJobExecutionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *client_token*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *status_details*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">str]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *step_timeout_in_minutes*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *thing_name*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a StartNextPendingJobExecutionRequest instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>client_token</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>status_details</em> (<code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">str]</span></code>)</p></li>
+<li><p><em>step_timeout_in_minutes</em> (<code class="docutils literal notranslate"><span class="pre">int</span></code>)</p></li>
+<li><p><em>thing_name</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">StartNextPendingJobExecutionSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *thing_name*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a StartNextPendingJobExecutionSubscriptionRequest instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>thing_name</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.UpdateJobExecutionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">UpdateJobExecutionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *client_token*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *execution_number*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *expected_version*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *include_job_document*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *include_job_execution_state*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *job_id*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *status*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *status_details*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">str]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *step_timeout_in_minutes*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *thing_name*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a UpdateJobExecutionRequest instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>client_token</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>execution_number</em> (<code class="docutils literal notranslate"><span class="pre">int</span></code>)</p></li>
+<li><p><em>expected_version</em> (<code class="docutils literal notranslate"><span class="pre">int</span></code>)</p></li>
+<li><p><em>include_job_document</em> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>)</p></li>
+<li><p><em>include_job_execution_state</em> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>)</p></li>
+<li><p><em>job_id</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>status</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>status_details</em> (<code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">str]</span></code>)</p></li>
+<li><p><em>step_timeout_in_minutes</em> (<code class="docutils literal notranslate"><span class="pre">int</span></code>)</p></li>
+<li><p><em>thing_name</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.UpdateJobExecutionResponse">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">UpdateJobExecutionResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *client_token*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *execution_state*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">JobExecutionState</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *job_document*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">typing.Any]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *timestamp*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a UpdateJobExecutionResponse instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>client_token</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>execution_state</em> (<code class="docutils literal notranslate"><span class="pre">JobExecutionState</span></code>)</p></li>
+<li><p><em>job_document</em> (<code class="docutils literal notranslate"><span class="pre">typing.Dict[str,</span> <span class="pre">typing.Any]</span></code>)</p></li>
+<li><p><em>timestamp</em> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">UpdateJobExecutionSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *job_id*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">\* *thing_name*</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<p>Initializes a UpdateJobExecutionSubscriptionRequest instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – See below</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>job_id</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+<li><p><em>thing_name</em> (<code class="docutils literal notranslate"><span class="pre">str</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="iotidentity.html"
+                        title="previous chapter">awsiot.iotidentity</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="iotshadow.html"
+                        title="next chapter">awsiot.iotshadow</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/awsiot/iotjobs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="iotshadow.html" title="awsiot.iotshadow"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="iotidentity.html" title="awsiot.iotidentity"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">AWS IoT Device SDK Python v2  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">awsiot.iotjobs</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Amazon Web Services, Inc.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
