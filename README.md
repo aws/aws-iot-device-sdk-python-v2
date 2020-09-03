@@ -1,4 +1,4 @@
-# AWS IoT SDK for Python v2
+# AWS IoT Device SDK for Python v2
 This document provides information about the AWS IoT device SDK for Python V2.
 
 If you have any issues or feature requests, please file an issue or pull request.
