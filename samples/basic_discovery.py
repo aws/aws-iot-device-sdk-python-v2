@@ -44,7 +44,6 @@ if args.root_ca_path:
 tls_context = io.ClientTlsContext(tls_options)
 
 socket_options = io.SocketOptions()
-socket_options.connect_timeout_ms = 3000
 
 print('Performing greengrass discovery...')
 discovery_client = DiscoveryClient(client_bootstrap, socket_options, tls_context, args.region)
