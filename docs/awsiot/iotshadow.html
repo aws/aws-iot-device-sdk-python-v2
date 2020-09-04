@@ -1,0 +1,1748 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>awsiot.iotshadow &#8212; AWS IoT Device SDK Python v2  documentation</title>
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="awsiot.iotjobs" href="iotjobs.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="iotjobs.html" title="awsiot.iotjobs"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">AWS IoT Device SDK Python v2  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">awsiot.iotshadow</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-awsiot.iotshadow">
+<span id="awsiot-iotshadow"></span><h1>awsiot.iotshadow<a class="headerlink" href="#module-awsiot.iotshadow" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="awsiot.iotshadow.IotShadowClient">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">IotShadowClient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mqtt_connection</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mqtt_connection</strong> (<em>mqtt.Connection</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.publish_delete_named_shadow">
+<code class="sig-name descname">publish_delete_named_shadow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.publish_delete_named_shadow" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteNamedShadowRequest" title="awsiot.iotshadow.DeleteNamedShadowRequest"><em>awsiot.iotshadow.DeleteNamedShadowRequest</em></a>) – <cite>DeleteNamedShadowRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Future whose result will be None if the
+request is successfully published. The Future’s result will be an
+exception if the request cannot be published.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>concurrent.futures._base.Future</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.publish_delete_shadow">
+<code class="sig-name descname">publish_delete_shadow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.publish_delete_shadow" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteShadowRequest" title="awsiot.iotshadow.DeleteShadowRequest"><em>awsiot.iotshadow.DeleteShadowRequest</em></a>) – <cite>DeleteShadowRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Future whose result will be None if the
+request is successfully published. The Future’s result will be an
+exception if the request cannot be published.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>concurrent.futures._base.Future</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.publish_get_named_shadow">
+<code class="sig-name descname">publish_get_named_shadow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.publish_get_named_shadow" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetNamedShadowRequest" title="awsiot.iotshadow.GetNamedShadowRequest"><em>awsiot.iotshadow.GetNamedShadowRequest</em></a>) – <cite>GetNamedShadowRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Future whose result will be None if the
+request is successfully published. The Future’s result will be an
+exception if the request cannot be published.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>concurrent.futures._base.Future</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.publish_get_shadow">
+<code class="sig-name descname">publish_get_shadow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.publish_get_shadow" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetShadowRequest" title="awsiot.iotshadow.GetShadowRequest"><em>awsiot.iotshadow.GetShadowRequest</em></a>) – <cite>GetShadowRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Future whose result will be None if the
+request is successfully published. The Future’s result will be an
+exception if the request cannot be published.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>concurrent.futures._base.Future</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.publish_update_named_shadow">
+<code class="sig-name descname">publish_update_named_shadow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.publish_update_named_shadow" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateNamedShadowRequest" title="awsiot.iotshadow.UpdateNamedShadowRequest"><em>awsiot.iotshadow.UpdateNamedShadowRequest</em></a>) – <cite>UpdateNamedShadowRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Future whose result will be None if the
+request is successfully published. The Future’s result will be an
+exception if the request cannot be published.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>concurrent.futures._base.Future</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.publish_update_shadow">
+<code class="sig-name descname">publish_update_shadow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.publish_update_shadow" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateShadowRequest" title="awsiot.iotshadow.UpdateShadowRequest"><em>awsiot.iotshadow.UpdateShadowRequest</em></a>) – <cite>UpdateShadowRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Future whose result will be None if the
+request is successfully published. The Future’s result will be an
+exception if the request cannot be published.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>concurrent.futures._base.Future</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_delete_named_shadow_accepted">
+<code class="sig-name descname">subscribe_to_delete_named_shadow_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_delete_named_shadow_accepted" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-accepted-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-accepted-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest" title="awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest</em></a>) – <cite>DeleteNamedShadowSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.DeleteShadowResponse" title="awsiot.iotshadow.DeleteShadowResponse"><em>awsiot.iotshadow.DeleteShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>DeleteShadowResponse</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_delete_named_shadow_rejected">
+<code class="sig-name descname">subscribe_to_delete_named_shadow_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_delete_named_shadow_rejected" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-rejected-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-rejected-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest" title="awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest</em></a>) – <cite>DeleteNamedShadowSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>ErrorResponse</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_delete_shadow_accepted">
+<code class="sig-name descname">subscribe_to_delete_shadow_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_delete_shadow_accepted" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-accepted-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-accepted-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteShadowSubscriptionRequest" title="awsiot.iotshadow.DeleteShadowSubscriptionRequest"><em>awsiot.iotshadow.DeleteShadowSubscriptionRequest</em></a>) – <cite>DeleteShadowSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.DeleteShadowResponse" title="awsiot.iotshadow.DeleteShadowResponse"><em>awsiot.iotshadow.DeleteShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>DeleteShadowResponse</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_delete_shadow_rejected">
+<code class="sig-name descname">subscribe_to_delete_shadow_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_delete_shadow_rejected" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-rejected-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-rejected-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteShadowSubscriptionRequest" title="awsiot.iotshadow.DeleteShadowSubscriptionRequest"><em>awsiot.iotshadow.DeleteShadowSubscriptionRequest</em></a>) – <cite>DeleteShadowSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>ErrorResponse</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_get_named_shadow_accepted">
+<code class="sig-name descname">subscribe_to_get_named_shadow_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_get_named_shadow_accepted" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-accepted-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-accepted-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetNamedShadowSubscriptionRequest" title="awsiot.iotshadow.GetNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.GetNamedShadowSubscriptionRequest</em></a>) – <cite>GetNamedShadowSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.GetShadowResponse" title="awsiot.iotshadow.GetShadowResponse"><em>awsiot.iotshadow.GetShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>GetShadowResponse</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_get_named_shadow_rejected">
+<code class="sig-name descname">subscribe_to_get_named_shadow_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_get_named_shadow_rejected" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-rejected-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-rejected-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetNamedShadowSubscriptionRequest" title="awsiot.iotshadow.GetNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.GetNamedShadowSubscriptionRequest</em></a>) – <cite>GetNamedShadowSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>ErrorResponse</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_get_shadow_accepted">
+<code class="sig-name descname">subscribe_to_get_shadow_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_get_shadow_accepted" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-accepted-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-accepted-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetShadowSubscriptionRequest" title="awsiot.iotshadow.GetShadowSubscriptionRequest"><em>awsiot.iotshadow.GetShadowSubscriptionRequest</em></a>) – <cite>GetShadowSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.GetShadowResponse" title="awsiot.iotshadow.GetShadowResponse"><em>awsiot.iotshadow.GetShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>GetShadowResponse</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_get_shadow_rejected">
+<code class="sig-name descname">subscribe_to_get_shadow_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_get_shadow_rejected" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-rejected-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-rejected-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetShadowSubscriptionRequest" title="awsiot.iotshadow.GetShadowSubscriptionRequest"><em>awsiot.iotshadow.GetShadowSubscriptionRequest</em></a>) – <cite>GetShadowSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>ErrorResponse</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_named_shadow_delta_updated_events">
+<code class="sig-name descname">subscribe_to_named_shadow_delta_updated_events</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_named_shadow_delta_updated_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest" title="awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest"><em>awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest</em></a>) – <cite>NamedShadowDeltaUpdatedSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent" title="awsiot.iotshadow.ShadowDeltaUpdatedEvent"><em>awsiot.iotshadow.ShadowDeltaUpdatedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>ShadowDeltaUpdatedEvent</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_named_shadow_updated_events">
+<code class="sig-name descname">subscribe_to_named_shadow_updated_events</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_named_shadow_updated_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest" title="awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest"><em>awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest</em></a>) – <cite>NamedShadowUpdatedSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedEvent" title="awsiot.iotshadow.ShadowUpdatedEvent"><em>awsiot.iotshadow.ShadowUpdatedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>ShadowUpdatedEvent</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_shadow_delta_updated_events">
+<code class="sig-name descname">subscribe_to_shadow_delta_updated_events</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_shadow_delta_updated_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest" title="awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest"><em>awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest</em></a>) – <cite>ShadowDeltaUpdatedSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent" title="awsiot.iotshadow.ShadowDeltaUpdatedEvent"><em>awsiot.iotshadow.ShadowDeltaUpdatedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>ShadowDeltaUpdatedEvent</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_shadow_updated_events">
+<code class="sig-name descname">subscribe_to_shadow_updated_events</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_shadow_updated_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedSubscriptionRequest" title="awsiot.iotshadow.ShadowUpdatedSubscriptionRequest"><em>awsiot.iotshadow.ShadowUpdatedSubscriptionRequest</em></a>) – <cite>ShadowUpdatedSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedEvent" title="awsiot.iotshadow.ShadowUpdatedEvent"><em>awsiot.iotshadow.ShadowUpdatedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>ShadowUpdatedEvent</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_update_named_shadow_accepted">
+<code class="sig-name descname">subscribe_to_update_named_shadow_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_update_named_shadow_accepted" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-accepted-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-accepted-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest" title="awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest</em></a>) – <cite>UpdateNamedShadowSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.UpdateShadowResponse" title="awsiot.iotshadow.UpdateShadowResponse"><em>awsiot.iotshadow.UpdateShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>UpdateShadowResponse</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_update_named_shadow_rejected">
+<code class="sig-name descname">subscribe_to_update_named_shadow_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_update_named_shadow_rejected" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-rejected-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-rejected-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest" title="awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest</em></a>) – <cite>UpdateNamedShadowSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>ErrorResponse</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_update_shadow_accepted">
+<code class="sig-name descname">subscribe_to_update_shadow_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_update_shadow_accepted" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-accepted-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-accepted-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateShadowSubscriptionRequest" title="awsiot.iotshadow.UpdateShadowSubscriptionRequest"><em>awsiot.iotshadow.UpdateShadowSubscriptionRequest</em></a>) – <cite>UpdateShadowSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.UpdateShadowResponse" title="awsiot.iotshadow.UpdateShadowResponse"><em>awsiot.iotshadow.UpdateShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>UpdateShadowResponse</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="awsiot.iotshadow.IotShadowClient.subscribe_to_update_shadow_rejected">
+<code class="sig-name descname">subscribe_to_update_shadow_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient.subscribe_to_update_shadow_rejected" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-rejected-pub-sub-topic">https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-rejected-pub-sub-topic</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateShadowSubscriptionRequest" title="awsiot.iotshadow.UpdateShadowSubscriptionRequest"><em>awsiot.iotshadow.UpdateShadowSubscriptionRequest</em></a>) – <cite>UpdateShadowSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+The callback should take 1 argument of type <cite>ErrorResponse</cite>.
+The callback is not expected to return anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with two values. The first is a Future
+which will contain a result of <cite>None</cite> when the server has acknowledged
+the subscription, or an exception if the subscription fails. The second
+value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
+receiving messages. Note that messages may arrive before the
+subscription is acknowledged.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.DeleteNamedShadowRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">DeleteNamedShadowRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.DeleteNamedShadowRequest.client_token">
+<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowRequest.client_token" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.DeleteNamedShadowRequest.shadow_name">
+<code class="sig-name descname">shadow_name</code><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.DeleteNamedShadowRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">DeleteNamedShadowSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest.shadow_name">
+<code class="sig-name descname">shadow_name</code><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.DeleteShadowRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">DeleteShadowRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.DeleteShadowRequest.client_token">
+<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowRequest.client_token" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.DeleteShadowRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.DeleteShadowResponse">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">DeleteShadowResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.DeleteShadowResponse.client_token">
+<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowResponse.client_token" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.DeleteShadowResponse.timestamp">
+<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowResponse.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime.datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.DeleteShadowResponse.version">
+<code class="sig-name descname">version</code><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowResponse.version" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.DeleteShadowSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">DeleteShadowSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.DeleteShadowSubscriptionRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.ErrorResponse">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">ErrorResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ErrorResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>code</strong> (<em>int</em>) – </p></li>
+<li><p><strong>message</strong> (<em>str</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ErrorResponse.client_token">
+<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotshadow.ErrorResponse.client_token" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ErrorResponse.code">
+<code class="sig-name descname">code</code><a class="headerlink" href="#awsiot.iotshadow.ErrorResponse.code" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ErrorResponse.message">
+<code class="sig-name descname">message</code><a class="headerlink" href="#awsiot.iotshadow.ErrorResponse.message" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ErrorResponse.timestamp">
+<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotshadow.ErrorResponse.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime.datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.GetNamedShadowRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">GetNamedShadowRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetNamedShadowRequest.client_token">
+<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowRequest.client_token" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetNamedShadowRequest.shadow_name">
+<code class="sig-name descname">shadow_name</code><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetNamedShadowRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.GetNamedShadowSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">GetNamedShadowSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetNamedShadowSubscriptionRequest.shadow_name">
+<code class="sig-name descname">shadow_name</code><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowSubscriptionRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetNamedShadowSubscriptionRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.GetShadowRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">GetShadowRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.GetShadowRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetShadowRequest.client_token">
+<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotshadow.GetShadowRequest.client_token" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetShadowRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.GetShadowRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.GetShadowResponse">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">GetShadowResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.GetShadowResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>metadata</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowMetadata" title="awsiot.iotshadow.ShadowMetadata"><em>ShadowMetadata</em></a>) – </p></li>
+<li><p><strong>state</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowStateWithDelta" title="awsiot.iotshadow.ShadowStateWithDelta"><em>ShadowStateWithDelta</em></a>) – </p></li>
+<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetShadowResponse.client_token">
+<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotshadow.GetShadowResponse.client_token" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetShadowResponse.metadata">
+<code class="sig-name descname">metadata</code><a class="headerlink" href="#awsiot.iotshadow.GetShadowResponse.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotshadow.ShadowMetadata" title="awsiot.iotshadow.ShadowMetadata">ShadowMetadata</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetShadowResponse.state">
+<code class="sig-name descname">state</code><a class="headerlink" href="#awsiot.iotshadow.GetShadowResponse.state" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotshadow.ShadowStateWithDelta" title="awsiot.iotshadow.ShadowStateWithDelta">ShadowStateWithDelta</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetShadowResponse.timestamp">
+<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotshadow.GetShadowResponse.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime.datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetShadowResponse.version">
+<code class="sig-name descname">version</code><a class="headerlink" href="#awsiot.iotshadow.GetShadowResponse.version" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.GetShadowSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">GetShadowSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.GetShadowSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.GetShadowSubscriptionRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.GetShadowSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">NamedShadowDeltaUpdatedSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest.shadow_name">
+<code class="sig-name descname">shadow_name</code><a class="headerlink" href="#awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">NamedShadowUpdatedSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest.shadow_name">
+<code class="sig-name descname">shadow_name</code><a class="headerlink" href="#awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.ShadowDeltaUpdatedEvent">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">ShadowDeltaUpdatedEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metadata</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
+<li><p><strong>state</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowDeltaUpdatedEvent.metadata">
+<code class="sig-name descname">metadata</code><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowDeltaUpdatedEvent.state">
+<code class="sig-name descname">state</code><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent.state" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowDeltaUpdatedEvent.timestamp">
+<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime.datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowDeltaUpdatedEvent.version">
+<code class="sig-name descname">version</code><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent.version" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">ShadowDeltaUpdatedSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.ShadowMetadata">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">ShadowMetadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowMetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>desired</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
+<li><p><strong>reported</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowMetadata.desired">
+<code class="sig-name descname">desired</code><a class="headerlink" href="#awsiot.iotshadow.ShadowMetadata.desired" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowMetadata.reported">
+<code class="sig-name descname">reported</code><a class="headerlink" href="#awsiot.iotshadow.ShadowMetadata.reported" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.ShadowState">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">ShadowState</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowState" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>desired</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
+<li><p><strong>reported</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowState.desired">
+<code class="sig-name descname">desired</code><a class="headerlink" href="#awsiot.iotshadow.ShadowState.desired" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowState.reported">
+<code class="sig-name descname">reported</code><a class="headerlink" href="#awsiot.iotshadow.ShadowState.reported" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.ShadowStateWithDelta">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">ShadowStateWithDelta</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowStateWithDelta" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delta</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
+<li><p><strong>desired</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
+<li><p><strong>reported</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowStateWithDelta.delta">
+<code class="sig-name descname">delta</code><a class="headerlink" href="#awsiot.iotshadow.ShadowStateWithDelta.delta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowStateWithDelta.desired">
+<code class="sig-name descname">desired</code><a class="headerlink" href="#awsiot.iotshadow.ShadowStateWithDelta.desired" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowStateWithDelta.reported">
+<code class="sig-name descname">reported</code><a class="headerlink" href="#awsiot.iotshadow.ShadowStateWithDelta.reported" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.ShadowUpdatedEvent">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">ShadowUpdatedEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>current</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedSnapshot" title="awsiot.iotshadow.ShadowUpdatedSnapshot"><em>ShadowUpdatedSnapshot</em></a>) – </p></li>
+<li><p><strong>previous</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedSnapshot" title="awsiot.iotshadow.ShadowUpdatedSnapshot"><em>ShadowUpdatedSnapshot</em></a>) – </p></li>
+<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowUpdatedEvent.current">
+<code class="sig-name descname">current</code><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedEvent.current" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedSnapshot" title="awsiot.iotshadow.ShadowUpdatedSnapshot">ShadowUpdatedSnapshot</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowUpdatedEvent.previous">
+<code class="sig-name descname">previous</code><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedEvent.previous" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedSnapshot" title="awsiot.iotshadow.ShadowUpdatedSnapshot">ShadowUpdatedSnapshot</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowUpdatedEvent.timestamp">
+<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedEvent.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime.datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.ShadowUpdatedSnapshot">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">ShadowUpdatedSnapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedSnapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metadata</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowMetadata" title="awsiot.iotshadow.ShadowMetadata"><em>ShadowMetadata</em></a>) – </p></li>
+<li><p><strong>state</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowState" title="awsiot.iotshadow.ShadowState"><em>ShadowState</em></a>) – </p></li>
+<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowUpdatedSnapshot.metadata">
+<code class="sig-name descname">metadata</code><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedSnapshot.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotshadow.ShadowMetadata" title="awsiot.iotshadow.ShadowMetadata">ShadowMetadata</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowUpdatedSnapshot.state">
+<code class="sig-name descname">state</code><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedSnapshot.state" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotshadow.ShadowState" title="awsiot.iotshadow.ShadowState">ShadowState</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowUpdatedSnapshot.version">
+<code class="sig-name descname">version</code><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedSnapshot.version" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.ShadowUpdatedSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">ShadowUpdatedSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.ShadowUpdatedSubscriptionRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.UpdateNamedShadowRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">UpdateNamedShadowRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>state</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowState" title="awsiot.iotshadow.ShadowState"><em>ShadowState</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateNamedShadowRequest.client_token">
+<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowRequest.client_token" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateNamedShadowRequest.shadow_name">
+<code class="sig-name descname">shadow_name</code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateNamedShadowRequest.state">
+<code class="sig-name descname">state</code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowRequest.state" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotshadow.ShadowState" title="awsiot.iotshadow.ShadowState">ShadowState</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateNamedShadowRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateNamedShadowRequest.version">
+<code class="sig-name descname">version</code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowRequest.version" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">UpdateNamedShadowSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest.shadow_name">
+<code class="sig-name descname">shadow_name</code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.UpdateShadowRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">UpdateShadowRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>state</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowState" title="awsiot.iotshadow.ShadowState"><em>ShadowState</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateShadowRequest.client_token">
+<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowRequest.client_token" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateShadowRequest.state">
+<code class="sig-name descname">state</code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowRequest.state" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotshadow.ShadowState" title="awsiot.iotshadow.ShadowState">ShadowState</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateShadowRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateShadowRequest.version">
+<code class="sig-name descname">version</code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowRequest.version" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.UpdateShadowResponse">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">UpdateShadowResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>metadata</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowMetadata" title="awsiot.iotshadow.ShadowMetadata"><em>ShadowMetadata</em></a>) – </p></li>
+<li><p><strong>state</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowState" title="awsiot.iotshadow.ShadowState"><em>ShadowState</em></a>) – </p></li>
+<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateShadowResponse.client_token">
+<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowResponse.client_token" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateShadowResponse.metadata">
+<code class="sig-name descname">metadata</code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowResponse.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotshadow.ShadowMetadata" title="awsiot.iotshadow.ShadowMetadata">ShadowMetadata</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateShadowResponse.state">
+<code class="sig-name descname">state</code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowResponse.state" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotshadow.ShadowState" title="awsiot.iotshadow.ShadowState">ShadowState</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateShadowResponse.timestamp">
+<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowResponse.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime.datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateShadowResponse.version">
+<code class="sig-name descname">version</code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowResponse.version" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="awsiot.iotshadow.UpdateShadowSubscriptionRequest">
+<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotshadow.</code><code class="sig-name descname">UpdateShadowSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="awsiot.iotshadow.UpdateShadowSubscriptionRequest.thing_name">
+<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="iotjobs.html"
+                        title="previous chapter">awsiot.iotjobs</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/awsiot/iotshadow.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="iotjobs.html" title="awsiot.iotjobs"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">AWS IoT Device SDK Python v2  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">awsiot.iotshadow</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Amazon Web Services, Inc.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
