@@ -7,7 +7,7 @@ import awsiot
 from concurrent.futures import Future
 import json
 
-class DiscoveryClient(object):
+class DiscoveryClient:
     __slots__ = ['_bootstrap', '_tls_context', '_socket_options', '_region', '_tls_connection_options', '_gg_server_name', 'gg_url', 'port']
 
     def __init__(self, bootstrap, socket_options, tls_context, region):
@@ -63,7 +63,7 @@ class DiscoveryClient(object):
                 http_stream = connection.request(
                     request=request,
                     on_body=on_incoming_body)
-               
+
                 http_stream.activate()
                 http_stream.completion_future.add_done_callback(on_request_complete)
 

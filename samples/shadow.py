@@ -1,8 +1,6 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from __future__ import absolute_import
-from __future__ import print_function
 import argparse
 from awscrt import auth, io, mqtt, http
 from awsiot import iotshadow
@@ -64,7 +62,7 @@ shadow_property = ""
 
 SHADOW_VALUE_DEFAULT = "off"
 
-class LockedData(object):
+class LockedData:
     def __init__(self):
         self.lock = threading.Lock()
         self.shadow_value = None
@@ -207,10 +205,7 @@ def user_input_thread_fn():
     while True:
         try:
             # Read user input
-            try:
-                new_value = raw_input() # python 2 only
-            except NameError:
-                new_value = input() # python 3 only
+            new_value = input()
 
             # If user wants to quit sample, then quit.
             # Otherwise change the shadow value.

@@ -10,7 +10,7 @@ into usable pem files that you can make IoT connections with.
 
 Example usage:
 
-aws iot create-provisioning-claim --template-name <TemplateName> | python parse_cert_set_result.py --path <PathToOutputtedCerts> --filename <Filename>
+aws iot create-provisioning-claim --template-name <TemplateName> | python3 parse_cert_set_result.py --path <PathToOutputtedCerts> --filename <Filename>
 
 """
 
