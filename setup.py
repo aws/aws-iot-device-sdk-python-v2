@@ -11,11 +11,9 @@ setup(
     description='AWS IoT SDK based on the AWS Common Runtime',
     author='AWS SDK Common Runtime Team',
     url='https://github.com/aws/aws-iot-device-sdk-python-v2',
-    packages = ['awsiot'],
+    packages=['awsiot'],
     install_requires=[
-        'awscrt==0.8.0',
-        'futures;python_version<"3.2"',
-        'typing;python_version<"3.5"',
+        'awscrt==0.9.0',
     ],
-    python_requires='>=2.7',
+    python_requires='>=3.5',
 )

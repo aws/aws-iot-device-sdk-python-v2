@@ -1,8 +1,6 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from __future__ import absolute_import
-from __future__ import print_function
 import argparse
 from awscrt import auth, http, io, mqtt
 from awsiot import iotjobs
@@ -64,7 +62,7 @@ mqtt_connection = None
 jobs_client = None
 thing_name = ""
 
-class LockedData(object):
+class LockedData:
     def __init__(self):
         self.lock = threading.Lock()
         self.disconnect_called = False

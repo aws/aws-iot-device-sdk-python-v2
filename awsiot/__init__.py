@@ -19,7 +19,7 @@ T = TypeVar('T')
 PayloadObj = Dict[str, Any]
 PayloadToClassFn = Callable[[PayloadObj], T]
 
-class MqttServiceClient(object):
+class MqttServiceClient:
     """
     Base class for an AWS MQTT Service Client
     """
@@ -153,7 +153,7 @@ class MqttServiceClient(object):
 
         return future, topic
 
-class ModeledClass(object):
+class ModeledClass:
     """
     Base for input/output classes generated from an AWS service model.
     """

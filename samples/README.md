@@ -1,4 +1,4 @@
-# Sample apps for the AWS IoT Device SDK for Python v2
+# Sample apps for the AWS IoT Device SDK v2 for Python
 
 * [pubsub](#pubsub)
 * [shadow](#shadow)
@@ -19,7 +19,7 @@ Source: `samples/pubsub.py`
 
 Run the sample like this:
 ```
-python pubsub.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file>
+python3 pubsub.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file>
 ```
 
 Your Thing's
@@ -90,7 +90,7 @@ Source: `samples/shadow.py`
 
 Run the sample like this:
 ```
-python shadow.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
+python3 shadow.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
 ```
 
 Your Thing's
@@ -176,7 +176,7 @@ Source: `samples/jobs.py`
 
 Run the sample like this:
 ```
-python jobs.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
+python3 jobs.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
 ```
 
 Your Thing's
@@ -248,12 +248,12 @@ Source: `samples/fleetprovisioning.py`
 
 Run the sample using createKeysAndCertificate:
 ```
-python fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters>
+python3 fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters>
 ```
 
 Run the sample using createCertificateFromCsr:
 ```
-python fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters> --csr <csr file>
+python3 fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters> --csr <csr file>
 ```
 
 Your Thing's
@@ -353,7 +353,7 @@ you'll need to substitute the name of the template you previously created, and o
 
 (Optional) Create a temporary provisioning claim certificate set:
 <pre>
-aws iot create-provisioning-claim --template-name [TemplateName] | python ../utils/parse_cert_set_result.py --path /tmp --filename provision
+aws iot create-provisioning-claim --template-name [TemplateName] | python3 ../utils/parse_cert_set_result.py --path /tmp --filename provision
 </pre>
 
 The provisioning claim's cert and key set have been written to `/tmp/provision*`.  Now you can use these temporary keys
@@ -361,7 +361,7 @@ to perform the actual provisioning.  If you are not using the temporary provisio
 and `--key` appropriately:
 
 <pre>
-python fleetprovisioning.py --endpoint [your endpoint]-ats.iot.[region].amazonaws.com --root-ca [pathToRootCA] --cert /tmp/provision.cert.pem --key /tmp/provision.private.key --templateName [TemplateName]--templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}"
+python3 fleetprovisioning.py --endpoint [your endpoint]-ats.iot.[region].amazonaws.com --root-ca [pathToRootCA] --cert /tmp/provision.cert.pem --key /tmp/provision.private.key --templateName [TemplateName]--templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}"
 </pre>
 
 Notice that we provided substitution values for the two parameters in the template body, `DeviceLocation` and `SerialNumber`.
@@ -383,13 +383,13 @@ openssl req -new -key /tmp/deviceCert.key -out /tmp/deviceCert.csr
 be skipped if you're using a certificate set capable of provisioning the device:
 
 <pre>
-aws iot create-provisioning-claim --template-name [TemplateName] | python ../utils/parse_cert_set_result.py --path /tmp --filename provision
+aws iot create-provisioning-claim --template-name [TemplateName] | python3 ../utils/parse_cert_set_result.py --path /tmp --filename provision
 </pre>
 
 Finally, supply the certificate signing request while invoking the provisioning sample.  As with the previous workflow, if
 using a permanent certificate set, replace the paths specified in the `--cert` and `--key` arguments:
 <pre>
-python fleetprovisioning.py --endpoint [your endpoint]-ats.iot.[region].amazonaws.com --root-ca [pathToRootCA] --cert /tmp/provision.cert.pem --key /tmp/provision.private.key --templateName [TemplateName]--templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" --csr /tmp/deviceCert.csr
+python3 fleetprovisioning.py --endpoint [your endpoint]-ats.iot.[region].amazonaws.com --root-ca [pathToRootCA] --cert /tmp/provision.cert.pem --key /tmp/provision.private.key --templateName [TemplateName]--templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" --csr /tmp/deviceCert.csr
 </pre>
 
 ## basic discovery

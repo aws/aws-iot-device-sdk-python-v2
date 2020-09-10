@@ -1,6 +1,5 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
-from __future__ import absolute_import, print_function
 import awsiot
 import boto3
 import botocore.exceptions
@@ -43,10 +42,7 @@ class Config:
 
         # boto3 caches the HTTPS connection for the API calls, which appears to the unit test
         # framework as a leak, so ignore it, that's not what we're testing here
-        try:
-            warnings.simplefilter('ignore', ResourceWarning)
-        except NameError:  # Python 2 has no ResourceWarning
-            pass
+        warnings.simplefilter('ignore', ResourceWarning)
 
         try:
             secrets = boto3.client('secretsmanager')

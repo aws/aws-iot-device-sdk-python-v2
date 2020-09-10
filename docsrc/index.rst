@@ -1,10 +1,10 @@
-.. AWS IoT Device SDK Python v2 documentation master file, created by
+.. AWS IoT Device SDK v2 for Python documentation master file, created by
    sphinx-quickstart on Mon Aug 17 14:57:36 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-AWS IoT Device SDK Python v2
-============================
+AWS IoT Device SDK v2 for Python
+================================
 
 Python bindings for the AWS IoT Device API.
 
@@ -18,7 +18,7 @@ API Reference
 -------------
 .. toctree::
    :maxdepth: 2
-   
+
    awsiot/greengrass_discovery
    awsiot/iotidentity
    awsiot/iotjobs

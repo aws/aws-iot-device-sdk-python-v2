@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'AWS IoT Device SDK Python v2'
+project = 'AWS IoT Device SDK v2 for Python'
 copyright = '%s, Amazon Web Services, Inc' % datetime.now().year
 author = 'Amazon Web Services, Inc'
 
