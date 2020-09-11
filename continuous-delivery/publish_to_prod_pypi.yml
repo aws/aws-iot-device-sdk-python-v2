@@ -16,8 +16,8 @@ phases:
       - sed --in-place -E "s/version='.+'/version='${PKG_VERSION}'/" setup.py
   build:
     commands:
-      - echo Build started on `date` 
-      - python3 setup.py sdist bdist_wheel --universal
+      - echo Build started on `date`
+      - python3 setup.py sdist bdist_wheel
       - python3 -m twine upload -r pypi dist/*
   post_build:
     commands:
