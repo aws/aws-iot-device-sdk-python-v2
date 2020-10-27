@@ -11,7 +11,8 @@ DEFAULT_INDEX_URL = 'https://pypi.python.org/pypi'
 def wait(package, version, index_url=DEFAULT_INDEX_URL, timeout=DEFAULT_TIMEOUT, interval=DEFAULT_INTERVAL):
     give_up_time = time.time() + timeout
     while True:
-        output = subprocess.check_output([sys.executable, '-m', 'pip', 'search', '--index', index_url, package])
+        output = subprocess.check_output([sys.executable, '-m', 'pip', 'search',
+                                          '--no-cache-dir', '--index', index_url, package])
         output = output.decode()
 
         # output looks like: 'awscrt (0.3.1)  - A common runtime for AWS Python projects\n...'
