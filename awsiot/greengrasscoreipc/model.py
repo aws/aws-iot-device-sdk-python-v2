@@ -6,10 +6,13 @@
 import awsiot.eventstreamrpc as rpc
 import base64
 import datetime
-import enum
+import typing
 
 
 class GreengrassCoreIPCError(rpc.ErrorShape):
+    """
+    Base for all error messages sent by server.
+    """
 
     def _get_error_type_string(self) -> str:
         # overridden in subclasses
@@ -25,80 +28,75 @@ class GreengrassCoreIPCError(rpc.ErrorShape):
         return self._get_error_type_string() == 'client'
 
 
-class _UnionMixin:
-    """Mixin to make a "tagged union" class."""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        super().__setattr__('_active_union_attr', None)
+class RunWithInfo(rpc.Shape):
+    """
+    RunWithInfo
 
-    def __setattr__(self, name, value):
-        """Set attr, and clear any previously active attr"""
-        # Set value first, so we don't need to unwind if an exception happens.
-        super().__setattr__(name, value)
-        if not name.startswith('_'):
-            if self._active_union_attr is not None and self._active_union_attr != name:
-                super().__setattr__(self._active_union_attr, None)
-            super().__setattr__('_active_union_attr', name)
+    All attributes are None by default, and may be set by keyword in the constructor.
 
+    Keyword Args:
+        posix_user
 
-class _ExplicitlyNullMixin:
-    """Mixin to allow a class's attributes to be "explicitly null"."""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        super().__setattr__('_explicitly_null_attrs', set())
-
-    def __setattr__(self, name, value):
-        """Set attr, attr is no longer explicitly null, even if value is None"""
-        # set value first, so we don't need to unwind if an exception happens
-        super().__setattr__(name, value)
-        if not name.startswith('_'):
-            if name in self._explicitly_null_attrs:
-                self._explicitly_null_attrs.remove(name)
-
-    def set_explicitly_null(self, attr_name: str):
-        """
-        Set named attribute to be "explicitly null".
-
-        The attribute's value becomes None, and it will be written as null
-        in JSON payloads If an attribute's value is None, but not set
-        "explicitly null" then the attribute is omitted entirely from the
-        JSON payload.
-
-        (normally, an attribute whose value is None is
-        omitted entirely from the payload).
-
-        Any future assignments to the attribute will remove its
-        "explicitly null" designation.
-        """
-        if attr_name.startswith('_'):
-            raise AttributeError("cannot set private attribute '{}' explicitly null".format(attr_name))
-        setattr(self, attr_name, None)
-        self._explicitly_null_attrs.add(attr_name)
-
-    def is_explicitly_null(self, attr_name: str) -> bool:
-        """
-        Return whether named attribute is "explicitly null".
-
-        An "explicitly null" attribute is None, and was null in the JSON
-        payload it came from. If an attribute is not present in the JSON
-        payload it came from, it is None, but not "explicitly null".
-        """
-        return attr_name in self._explicitly_null_attrs
-
-
-class PostComponentUpdateEvent(rpc.Shape, _ExplicitlyNullMixin):
+    Attributes:
+        posix_user
+    """
 
     def __init__(self, *,
-                 deployment_id=None):
+                 posix_user: typing.Optional[str] = None):
         super().__init__()
-        self.deployment_id = deployment_id
+        self.posix_user = posix_user  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.deployment_id is None:
-            if self.is_explicitly_null('deployment_id'):
-                payload['deploymentId'] = None
-        else:
+        if self.posix_user is not None:
+            payload['posixUser'] = self.posix_user
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'posixUser' in payload:
+            new.posix_user = payload['posixUser']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#RunWithInfo'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class PostComponentUpdateEvent(rpc.Shape):
+    """
+    PostComponentUpdateEvent
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        deployment_id
+
+    Attributes:
+        deployment_id
+    """
+
+    def __init__(self, *,
+                 deployment_id: typing.Optional[str] = None):
+        super().__init__()
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
+
+    def _to_payload(self):
+        payload = {}
+        if self.deployment_id is not None:
             payload['deploymentId'] = self.deployment_id
         return payload
 
@@ -106,10 +104,7 @@ class PostComponentUpdateEvent(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'deploymentId' in payload:
-            if payload['deploymentId'] is None:
-                new.set_explicitly_null('deployment_id')
-            else:
-                new.deployment_id = payload['deploymentId']
+            new.deployment_id = payload['deploymentId']
         return new
 
     @classmethod
@@ -118,38 +113,44 @@ class PostComponentUpdateEvent(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['deployment_id']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, PostComponentUpdateEvent):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class PreComponentUpdateEvent(rpc.Shape, _ExplicitlyNullMixin):
+class PreComponentUpdateEvent(rpc.Shape):
+    """
+    PreComponentUpdateEvent
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        deployment_id
+        is_ggc_restarting
+
+    Attributes:
+        deployment_id
+        is_ggc_restarting
+    """
 
     def __init__(self, *,
-                 deployment_id=None,
-                 is_ggc_restarting=None):
+                 deployment_id: typing.Optional[str] = None,
+                 is_ggc_restarting: typing.Optional[bool] = None):
         super().__init__()
-        self.deployment_id = deployment_id
-        self.is_ggc_restarting = is_ggc_restarting
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
+        self.is_ggc_restarting = is_ggc_restarting  # type: typing.Optional[bool]
 
     def _to_payload(self):
         payload = {}
-        if self.deployment_id is None:
-            if self.is_explicitly_null('deployment_id'):
-                payload['deploymentId'] = None
-        else:
+        if self.deployment_id is not None:
             payload['deploymentId'] = self.deployment_id
-        if self.is_ggc_restarting is None:
-            if self.is_explicitly_null('is_ggc_restarting'):
-                payload['isGgcRestarting'] = None
-        else:
+        if self.is_ggc_restarting is not None:
             payload['isGgcRestarting'] = self.is_ggc_restarting
         return payload
 
@@ -157,15 +158,9 @@ class PreComponentUpdateEvent(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'deploymentId' in payload:
-            if payload['deploymentId'] is None:
-                new.set_explicitly_null('deployment_id')
-            else:
-                new.deployment_id = payload['deploymentId']
+            new.deployment_id = payload['deploymentId']
         if 'isGgcRestarting' in payload:
-            if payload['isGgcRestarting'] is None:
-                new.set_explicitly_null('is_ggc_restarting')
-            else:
-                new.is_ggc_restarting = payload['isGgcRestarting']
+            new.is_ggc_restarting = payload['isGgcRestarting']
         return new
 
     @classmethod
@@ -174,19 +169,22 @@ class PreComponentUpdateEvent(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['deployment_id', 'is_ggc_restarting']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, PreComponentUpdateEvent):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class LifecycleState(enum.Enum):
+class LifecycleState:
+    """
+    LifecycleState enum
+    """
+
     RUNNING = 'RUNNING'
     ERRORED = 'ERRORED'
     NEW = 'NEW'
@@ -196,60 +194,45 @@ class LifecycleState(enum.Enum):
     STARTING = 'STARTING'
     STOPPING = 'STOPPING'
 
-    def _to_payload(self):
-        return self.value
 
-    @classmethod
-    def _from_payload(cls, value):
-        try:
-            return cls(value)
-        except ValueError:
-            unknown = object.__new__(cls)
-            unknown._name_ = 'UNKNOWN'
-            unknown._value_ = value
-            return unknown
+class DeploymentStatus:
+    """
+    DeploymentStatus enum
+    """
 
-
-class DeploymentStatus(enum.Enum):
     QUEUED = 'QUEUED'
     IN_PROGRESS = 'IN_PROGRESS'
     SUCCEEDED = 'SUCCEEDED'
     FAILED = 'FAILED'
 
-    def _to_payload(self):
-        return self.value
 
-    @classmethod
-    def _from_payload(cls, value):
-        try:
-            return cls(value)
-        except ValueError:
-            unknown = object.__new__(cls)
-            unknown._name_ = 'UNKNOWN'
-            unknown._value_ = value
-            return unknown
+class ValidateConfigurationUpdateEvent(rpc.Shape):
+    """
+    ValidateConfigurationUpdateEvent
 
+    All attributes are None by default, and may be set by keyword in the constructor.
 
-class ValidateConfigurationUpdateEvent(rpc.Shape, _ExplicitlyNullMixin):
+    Keyword Args:
+        configuration
+        deployment_id
+
+    Attributes:
+        configuration
+        deployment_id
+    """
 
     def __init__(self, *,
-                 configuration=None,
-                 deployment_id=None):
+                 configuration: typing.Optional[typing.Dict[str, typing.Any]] = None,
+                 deployment_id: typing.Optional[str] = None):
         super().__init__()
-        self.configuration = configuration
-        self.deployment_id = deployment_id
+        self.configuration = configuration  # type: typing.Optional[typing.Dict[str, typing.Any]]
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.configuration is None:
-            if self.is_explicitly_null('configuration'):
-                payload['configuration'] = None
-        else:
+        if self.configuration is not None:
             payload['configuration'] = self.configuration
-        if self.deployment_id is None:
-            if self.is_explicitly_null('deployment_id'):
-                payload['deploymentId'] = None
-        else:
+        if self.deployment_id is not None:
             payload['deploymentId'] = self.deployment_id
         return payload
 
@@ -257,15 +240,9 @@ class ValidateConfigurationUpdateEvent(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'configuration' in payload:
-            if payload['configuration'] is None:
-                new.set_explicitly_null('configuration')
-            else:
-                new.configuration = payload['configuration']
+            new.configuration = payload['configuration']
         if 'deploymentId' in payload:
-            if payload['deploymentId'] is None:
-                new.set_explicitly_null('deployment_id')
-            else:
-                new.deployment_id = payload['deploymentId']
+            new.deployment_id = payload['deploymentId']
         return new
 
     @classmethod
@@ -274,56 +251,53 @@ class ValidateConfigurationUpdateEvent(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['configuration', 'deployment_id']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ValidateConfigurationUpdateEvent):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ConfigurationValidityStatus(enum.Enum):
+class ConfigurationValidityStatus:
+    """
+    ConfigurationValidityStatus enum
+    """
+
     ACCEPTED = 'ACCEPTED'
     REJECTED = 'REJECTED'
 
-    def _to_payload(self):
-        return self.value
 
-    @classmethod
-    def _from_payload(cls, value):
-        try:
-            return cls(value)
-        except ValueError:
-            unknown = object.__new__(cls)
-            unknown._name_ = 'UNKNOWN'
-            unknown._value_ = value
-            return unknown
+class ConfigurationUpdateEvent(rpc.Shape):
+    """
+    ConfigurationUpdateEvent
 
+    All attributes are None by default, and may be set by keyword in the constructor.
 
-class ConfigurationUpdateEvent(rpc.Shape, _ExplicitlyNullMixin):
+    Keyword Args:
+        component_name
+        key_path
+
+    Attributes:
+        component_name
+        key_path
+    """
 
     def __init__(self, *,
-                 component_name=None,
-                 key_path=None):
+                 component_name: typing.Optional[str] = None,
+                 key_path: typing.Optional[typing.List[str]] = None):
         super().__init__()
-        self.component_name = component_name
-        self.key_path = key_path
+        self.component_name = component_name  # type: typing.Optional[str]
+        self.key_path = key_path  # type: typing.Optional[typing.List[str]]
 
     def _to_payload(self):
         payload = {}
-        if self.component_name is None:
-            if self.is_explicitly_null('component_name'):
-                payload['componentName'] = None
-        else:
+        if self.component_name is not None:
             payload['componentName'] = self.component_name
-        if self.key_path is None:
-            if self.is_explicitly_null('key_path'):
-                payload['keyPath'] = None
-        else:
+        if self.key_path is not None:
             payload['keyPath'] = self.key_path
         return payload
 
@@ -331,15 +305,9 @@ class ConfigurationUpdateEvent(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'componentName' in payload:
-            if payload['componentName'] is None:
-                new.set_explicitly_null('component_name')
-            else:
-                new.component_name = payload['componentName']
+            new.component_name = payload['componentName']
         if 'keyPath' in payload:
-            if payload['keyPath'] is None:
-                new.set_explicitly_null('key_path')
-            else:
-                new.key_path = payload['keyPath']
+            new.key_path = payload['keyPath']
         return new
 
     @classmethod
@@ -348,31 +316,38 @@ class ConfigurationUpdateEvent(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['component_name', 'key_path']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ConfigurationUpdateEvent):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class BinaryMessage(rpc.Shape, _ExplicitlyNullMixin):
+class BinaryMessage(rpc.Shape):
+    """
+    BinaryMessage
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
 
     def __init__(self, *,
-                 message=None):
+                 message: typing.Optional[bytes] = None):
         super().__init__()
-        self.message = message
+        self.message = message  # type: typing.Optional[bytes]
 
     def _to_payload(self):
         payload = {}
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = base64.b64encode(self.message).decode()
         return payload
 
@@ -380,10 +355,7 @@ class BinaryMessage(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = base64.b64decode(payload['message'])
+            new.message = base64.b64decode(payload['message'])
         return new
 
     @classmethod
@@ -392,31 +364,38 @@ class BinaryMessage(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, BinaryMessage):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class JsonMessage(rpc.Shape, _ExplicitlyNullMixin):
+class JsonMessage(rpc.Shape):
+    """
+    JsonMessage
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
 
     def __init__(self, *,
-                 message=None):
+                 message: typing.Optional[typing.Dict[str, typing.Any]] = None):
         super().__init__()
-        self.message = message
+        self.message = message  # type: typing.Optional[typing.Dict[str, typing.Any]]
 
     def _to_payload(self):
         payload = {}
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -424,10 +403,7 @@ class JsonMessage(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -436,38 +412,44 @@ class JsonMessage(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, JsonMessage):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class MQTTMessage(rpc.Shape, _ExplicitlyNullMixin):
+class MQTTMessage(rpc.Shape):
+    """
+    MQTTMessage
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        topic_name
+        payload
+
+    Attributes:
+        topic_name
+        payload
+    """
 
     def __init__(self, *,
-                 topic_name=None,
-                 payload=None):
+                 topic_name: typing.Optional[str] = None,
+                 payload: typing.Optional[bytes] = None):
         super().__init__()
-        self.topic_name = topic_name
-        self.payload = payload
+        self.topic_name = topic_name  # type: typing.Optional[str]
+        self.payload = payload  # type: typing.Optional[bytes]
 
     def _to_payload(self):
         payload = {}
-        if self.topic_name is None:
-            if self.is_explicitly_null('topic_name'):
-                payload['topicName'] = None
-        else:
+        if self.topic_name is not None:
             payload['topicName'] = self.topic_name
-        if self.payload is None:
-            if self.is_explicitly_null('payload'):
-                payload['payload'] = None
-        else:
+        if self.payload is not None:
             payload['payload'] = base64.b64encode(self.payload).decode()
         return payload
 
@@ -475,15 +457,9 @@ class MQTTMessage(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'topicName' in payload:
-            if payload['topicName'] is None:
-                new.set_explicitly_null('topic_name')
-            else:
-                new.topic_name = payload['topicName']
+            new.topic_name = payload['topicName']
         if 'payload' in payload:
-            if payload['payload'] is None:
-                new.set_explicitly_null('payload')
-            else:
-                new.payload = base64.b64decode(payload['payload'])
+            new.payload = base64.b64decode(payload['payload'])
         return new
 
     @classmethod
@@ -492,41 +468,46 @@ class MQTTMessage(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['topic_name', 'payload']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, MQTTMessage):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ComponentUpdatePolicyEvents(rpc.Shape, _UnionMixin):
+class ComponentUpdatePolicyEvents(rpc.Shape):
     """
-    This is a "tagged union" class.
+    MQTTMessage is a "tagged union" class.
 
-    When any attribute's value is set, all other attributes' values will
-    become None.
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        pre_update_event
+        post_update_event
+
+    Attributes:
+        pre_update_event
+        post_update_event
     """
+
     def __init__(self, *,
                  pre_update_event=None,
                  post_update_event=None):
         super().__init__()
-        self.pre_update_event = None
-        self.post_update_event = None
-        if pre_update_event is not None:
-            self.pre_update_event = pre_update_event
-        if post_update_event is not None:
-            self.post_update_event = post_update_event
+        self.pre_update_event = pre_update_event
+        self.post_update_event = post_update_event
 
     def _to_payload(self):
         payload = {}
-        if self.pre_update_event is not None and self._active_union_attr == 'pre_update_event':
+        if self.pre_update_event is not None:
             payload['preUpdateEvent'] = self.pre_update_event._to_payload()
-        if self.post_update_event is not None and self._active_union_attr == 'post_update_event':
+        if self.post_update_event is not None:
             payload['postUpdateEvent'] = self.post_update_event._to_payload()
         return payload
 
@@ -545,52 +526,56 @@ class ComponentUpdatePolicyEvents(rpc.Shape, _UnionMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['pre_update_event', 'post_update_event']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ComponentUpdatePolicyEvents):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ComponentDetails(rpc.Shape, _ExplicitlyNullMixin):
+class ComponentDetails(rpc.Shape):
+    """
+    ComponentDetails
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name
+        version
+        state
+        configuration
+
+    Attributes:
+        component_name
+        version
+        state
+        configuration
+    """
 
     def __init__(self, *,
-                 component_name=None,
-                 version=None,
-                 state=None,
-                 configuration=None):
+                 component_name: typing.Optional[str] = None,
+                 version: typing.Optional[str] = None,
+                 state: typing.Optional[str] = None,
+                 configuration: typing.Optional[typing.Dict[str, typing.Any]] = None):
         super().__init__()
-        self.component_name = component_name
-        self.version = version
-        self.state = state
-        self.configuration = configuration
+        self.component_name = component_name  # type: typing.Optional[str]
+        self.version = version  # type: typing.Optional[str]
+        self.state = state  # type: typing.Optional[str]
+        self.configuration = configuration  # type: typing.Optional[typing.Dict[str, typing.Any]]
 
     def _to_payload(self):
         payload = {}
-        if self.component_name is None:
-            if self.is_explicitly_null('component_name'):
-                payload['componentName'] = None
-        else:
+        if self.component_name is not None:
             payload['componentName'] = self.component_name
-        if self.version is None:
-            if self.is_explicitly_null('version'):
-                payload['version'] = None
-        else:
+        if self.version is not None:
             payload['version'] = self.version
-        if self.state is None:
-            if self.is_explicitly_null('state'):
-                payload['state'] = None
-        else:
-            payload['state'] = self.state._to_payload()
-        if self.configuration is None:
-            if self.is_explicitly_null('configuration'):
-                payload['configuration'] = None
-        else:
+        if self.state is not None:
+            payload['state'] = self.state
+        if self.configuration is not None:
             payload['configuration'] = self.configuration
         return payload
 
@@ -598,25 +583,13 @@ class ComponentDetails(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'componentName' in payload:
-            if payload['componentName'] is None:
-                new.set_explicitly_null('component_name')
-            else:
-                new.component_name = payload['componentName']
+            new.component_name = payload['componentName']
         if 'version' in payload:
-            if payload['version'] is None:
-                new.set_explicitly_null('version')
-            else:
-                new.version = payload['version']
+            new.version = payload['version']
         if 'state' in payload:
-            if payload['state'] is None:
-                new.set_explicitly_null('state')
-            else:
-                new.state = LifecycleState._from_payload(payload['state'])
+            new.state = payload['state']
         if 'configuration' in payload:
-            if payload['configuration'] is None:
-                new.set_explicitly_null('configuration')
-            else:
-                new.configuration = payload['configuration']
+            new.configuration = payload['configuration']
         return new
 
     @classmethod
@@ -625,41 +598,46 @@ class ComponentDetails(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['component_name', 'version', 'state', 'configuration']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ComponentDetails):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SubscriptionResponseMessage(rpc.Shape, _UnionMixin):
+class SubscriptionResponseMessage(rpc.Shape):
     """
-    This is a "tagged union" class.
+    ComponentDetails is a "tagged union" class.
 
-    When any attribute's value is set, all other attributes' values will
-    become None.
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        json_message
+        binary_message
+
+    Attributes:
+        json_message
+        binary_message
     """
+
     def __init__(self, *,
                  json_message=None,
                  binary_message=None):
         super().__init__()
-        self.json_message = None
-        self.binary_message = None
-        if json_message is not None:
-            self.json_message = json_message
-        if binary_message is not None:
-            self.binary_message = binary_message
+        self.json_message = json_message
+        self.binary_message = binary_message
 
     def _to_payload(self):
         payload = {}
-        if self.json_message is not None and self._active_union_attr == 'json_message':
+        if self.json_message is not None:
             payload['jsonMessage'] = self.json_message._to_payload()
-        if self.binary_message is not None and self._active_union_attr == 'binary_message':
+        if self.binary_message is not None:
             payload['binaryMessage'] = self.binary_message._to_payload()
         return payload
 
@@ -678,59 +656,55 @@ class SubscriptionResponseMessage(rpc.Shape, _UnionMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['json_message', 'binary_message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SubscriptionResponseMessage):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ReportedLifecycleState(enum.Enum):
+class ReportedLifecycleState:
+    """
+    ReportedLifecycleState enum
+    """
+
     RUNNING = 'RUNNING'
     ERRORED = 'ERRORED'
 
-    def _to_payload(self):
-        return self.value
 
-    @classmethod
-    def _from_payload(cls, value):
-        try:
-            return cls(value)
-        except ValueError:
-            unknown = object.__new__(cls)
-            unknown._name_ = 'UNKNOWN'
-            unknown._value_ = value
-            return unknown
-
-
-class SecretValue(rpc.Shape, _UnionMixin):
+class SecretValue(rpc.Shape):
     """
-    This is a "tagged union" class.
+    ComponentDetails is a "tagged union" class.
 
-    When any attribute's value is set, all other attributes' values will
-    become None.
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        secret_string
+        secret_binary
+
+    Attributes:
+        secret_string
+        secret_binary
     """
+
     def __init__(self, *,
                  secret_string=None,
                  secret_binary=None):
         super().__init__()
-        self.secret_string = None
-        self.secret_binary = None
-        if secret_string is not None:
-            self.secret_string = secret_string
-        if secret_binary is not None:
-            self.secret_binary = secret_binary
+        self.secret_string = secret_string
+        self.secret_binary = secret_binary
 
     def _to_payload(self):
         payload = {}
-        if self.secret_string is not None and self._active_union_attr == 'secret_string':
+        if self.secret_string is not None:
             payload['secretString'] = self.secret_string
-        if self.secret_binary is not None and self._active_union_attr == 'secret_binary':
+        if self.secret_binary is not None:
             payload['secretBinary'] = base64.b64encode(self.secret_binary).decode()
         return payload
 
@@ -749,54 +723,54 @@ class SecretValue(rpc.Shape, _UnionMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['secret_string', 'secret_binary']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SecretValue):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class LocalDeployment(rpc.Shape, _ExplicitlyNullMixin):
+class LocalDeployment(rpc.Shape):
+    """
+    LocalDeployment
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        deployment_id
+        status
+
+    Attributes:
+        deployment_id
+        status
+    """
 
     def __init__(self, *,
-                 deployment_id=None,
-                 status=None):
+                 deployment_id: typing.Optional[str] = None,
+                 status: typing.Optional[str] = None):
         super().__init__()
-        self.deployment_id = deployment_id
-        self.status = status
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
+        self.status = status  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.deployment_id is None:
-            if self.is_explicitly_null('deployment_id'):
-                payload['deploymentId'] = None
-        else:
+        if self.deployment_id is not None:
             payload['deploymentId'] = self.deployment_id
-        if self.status is None:
-            if self.is_explicitly_null('status'):
-                payload['status'] = None
-        else:
-            payload['status'] = self.status._to_payload()
+        if self.status is not None:
+            payload['status'] = self.status
         return payload
 
     @classmethod
     def _from_payload(cls, payload):
         new = cls()
         if 'deploymentId' in payload:
-            if payload['deploymentId'] is None:
-                new.set_explicitly_null('deployment_id')
-            else:
-                new.deployment_id = payload['deploymentId']
+            new.deployment_id = payload['deploymentId']
         if 'status' in payload:
-            if payload['status'] is None:
-                new.set_explicitly_null('status')
-            else:
-                new.status = DeploymentStatus._from_payload(payload['status'])
+            new.status = payload['status']
         return new
 
     @classmethod
@@ -805,53 +779,49 @@ class LocalDeployment(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['deployment_id', 'status']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, LocalDeployment):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class RequestStatus(enum.Enum):
+class RequestStatus:
+    """
+    RequestStatus enum
+    """
+
     SUCCEEDED = 'SUCCEEDED'
     FAILED = 'FAILED'
 
-    def _to_payload(self):
-        return self.value
 
-    @classmethod
-    def _from_payload(cls, value):
-        try:
-            return cls(value)
-        except ValueError:
-            unknown = object.__new__(cls)
-            unknown._name_ = 'UNKNOWN'
-            unknown._value_ = value
-            return unknown
-
-
-class ValidateConfigurationUpdateEvents(rpc.Shape, _UnionMixin):
+class ValidateConfigurationUpdateEvents(rpc.Shape):
     """
-    This is a "tagged union" class.
+    LocalDeployment is a "tagged union" class.
 
-    When any attribute's value is set, all other attributes' values will
-    become None.
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        validate_configuration_update_event
+
+    Attributes:
+        validate_configuration_update_event
     """
+
     def __init__(self, *,
                  validate_configuration_update_event=None):
         super().__init__()
-        self.validate_configuration_update_event = None
-        if validate_configuration_update_event is not None:
-            self.validate_configuration_update_event = validate_configuration_update_event
+        self.validate_configuration_update_event = validate_configuration_update_event
 
     def _to_payload(self):
         payload = {}
-        if self.validate_configuration_update_event is not None and self._active_union_attr == 'validate_configuration_update_event':
+        if self.validate_configuration_update_event is not None:
             payload['validateConfigurationUpdateEvent'] = self.validate_configuration_update_event._to_payload()
         return payload
 
@@ -868,45 +838,50 @@ class ValidateConfigurationUpdateEvents(rpc.Shape, _UnionMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['validate_configuration_update_event']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ValidateConfigurationUpdateEvents):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ConfigurationValidityReport(rpc.Shape, _ExplicitlyNullMixin):
+class ConfigurationValidityReport(rpc.Shape):
+    """
+    ConfigurationValidityReport
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        status
+        deployment_id
+        message
+
+    Attributes:
+        status
+        deployment_id
+        message
+    """
 
     def __init__(self, *,
-                 status=None,
-                 deployment_id=None,
-                 message=None):
+                 status: typing.Optional[str] = None,
+                 deployment_id: typing.Optional[str] = None,
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.status = status
-        self.deployment_id = deployment_id
-        self.message = message
+        self.status = status  # type: typing.Optional[str]
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
+        self.message = message  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.status is None:
-            if self.is_explicitly_null('status'):
-                payload['status'] = None
-        else:
-            payload['status'] = self.status._to_payload()
-        if self.deployment_id is None:
-            if self.is_explicitly_null('deployment_id'):
-                payload['deploymentId'] = None
-        else:
+        if self.status is not None:
+            payload['status'] = self.status
+        if self.deployment_id is not None:
             payload['deploymentId'] = self.deployment_id
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -914,20 +889,11 @@ class ConfigurationValidityReport(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'status' in payload:
-            if payload['status'] is None:
-                new.set_explicitly_null('status')
-            else:
-                new.status = ConfigurationValidityStatus._from_payload(payload['status'])
+            new.status = payload['status']
         if 'deploymentId' in payload:
-            if payload['deploymentId'] is None:
-                new.set_explicitly_null('deployment_id')
-            else:
-                new.deployment_id = payload['deploymentId']
+            new.deployment_id = payload['deploymentId']
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -936,35 +902,40 @@ class ConfigurationValidityReport(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['status', 'deployment_id', 'message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ConfigurationValidityReport):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ConfigurationUpdateEvents(rpc.Shape, _UnionMixin):
+class ConfigurationUpdateEvents(rpc.Shape):
     """
-    This is a "tagged union" class.
+    ConfigurationValidityReport is a "tagged union" class.
 
-    When any attribute's value is set, all other attributes' values will
-    become None.
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        configuration_update_event
+
+    Attributes:
+        configuration_update_event
     """
+
     def __init__(self, *,
                  configuration_update_event=None):
         super().__init__()
-        self.configuration_update_event = None
-        if configuration_update_event is not None:
-            self.configuration_update_event = configuration_update_event
+        self.configuration_update_event = configuration_update_event
 
     def _to_payload(self):
         payload = {}
-        if self.configuration_update_event is not None and self._active_union_attr == 'configuration_update_event':
+        if self.configuration_update_event is not None:
             payload['configurationUpdateEvent'] = self.configuration_update_event._to_payload()
         return payload
 
@@ -981,41 +952,46 @@ class ConfigurationUpdateEvents(rpc.Shape, _UnionMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['configuration_update_event']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ConfigurationUpdateEvents):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class PublishMessage(rpc.Shape, _UnionMixin):
+class PublishMessage(rpc.Shape):
     """
-    This is a "tagged union" class.
+    ConfigurationValidityReport is a "tagged union" class.
 
-    When any attribute's value is set, all other attributes' values will
-    become None.
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        json_message
+        binary_message
+
+    Attributes:
+        json_message
+        binary_message
     """
+
     def __init__(self, *,
                  json_message=None,
                  binary_message=None):
         super().__init__()
-        self.json_message = None
-        self.binary_message = None
-        if json_message is not None:
-            self.json_message = json_message
-        if binary_message is not None:
-            self.binary_message = binary_message
+        self.json_message = json_message
+        self.binary_message = binary_message
 
     def _to_payload(self):
         payload = {}
-        if self.json_message is not None and self._active_union_attr == 'json_message':
+        if self.json_message is not None:
             payload['jsonMessage'] = self.json_message._to_payload()
-        if self.binary_message is not None and self._active_union_attr == 'binary_message':
+        if self.binary_message is not None:
             payload['binaryMessage'] = self.binary_message._to_payload()
         return payload
 
@@ -1034,35 +1010,40 @@ class PublishMessage(rpc.Shape, _UnionMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['json_message', 'binary_message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, PublishMessage):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class IoTCoreMessage(rpc.Shape, _UnionMixin):
+class IoTCoreMessage(rpc.Shape):
     """
-    This is a "tagged union" class.
+    ConfigurationValidityReport is a "tagged union" class.
 
-    When any attribute's value is set, all other attributes' values will
-    become None.
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
     """
+
     def __init__(self, *,
                  message=None):
         super().__init__()
-        self.message = None
-        if message is not None:
-            self.message = message
+        self.message = message
 
     def _to_payload(self):
         payload = {}
-        if self.message is not None and self._active_union_attr == 'message':
+        if self.message is not None:
             payload['message'] = self.message._to_payload()
         return payload
 
@@ -1079,49 +1060,47 @@ class IoTCoreMessage(rpc.Shape, _UnionMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, IoTCoreMessage):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class QOS(enum.Enum):
+class QOS:
+    """
+    QOS enum
+    """
+
     AT_MOST_ONCE = '0'
     AT_LEAST_ONCE = '1'
 
-    def _to_payload(self):
-        return self.value
 
-    @classmethod
-    def _from_payload(cls, value):
-        try:
-            return cls(value)
-        except ValueError:
-            unknown = object.__new__(cls)
-            unknown._name_ = 'UNKNOWN'
-            unknown._value_ = value
-            return unknown
+class CreateLocalDeploymentResponse(rpc.Shape):
+    """
+    CreateLocalDeploymentResponse
 
+    All attributes are None by default, and may be set by keyword in the constructor.
 
-class CreateLocalDeploymentResponse(rpc.Shape, _ExplicitlyNullMixin):
+    Keyword Args:
+        deployment_id
+
+    Attributes:
+        deployment_id
+    """
 
     def __init__(self, *,
-                 deployment_id=None):
+                 deployment_id: typing.Optional[str] = None):
         super().__init__()
-        self.deployment_id = deployment_id
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.deployment_id is None:
-            if self.is_explicitly_null('deployment_id'):
-                payload['deploymentId'] = None
-        else:
+        if self.deployment_id is not None:
             payload['deploymentId'] = self.deployment_id
         return payload
 
@@ -1129,10 +1108,7 @@ class CreateLocalDeploymentResponse(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'deploymentId' in payload:
-            if payload['deploymentId'] is None:
-                new.set_explicitly_null('deployment_id')
-            else:
-                new.deployment_id = payload['deploymentId']
+            new.deployment_id = payload['deploymentId']
         return new
 
     @classmethod
@@ -1141,59 +1117,62 @@ class CreateLocalDeploymentResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['deployment_id']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, CreateLocalDeploymentResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class CreateLocalDeploymentRequest(rpc.Shape, _ExplicitlyNullMixin):
+class CreateLocalDeploymentRequest(rpc.Shape):
+    """
+    CreateLocalDeploymentRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        group_name
+        root_component_versions_to_add
+        root_components_to_remove
+        component_to_configuration
+        component_to_run_with_info
+
+    Attributes:
+        group_name
+        root_component_versions_to_add
+        root_components_to_remove
+        component_to_configuration
+        component_to_run_with_info
+    """
 
     def __init__(self, *,
-                 group_name=None,
-                 root_component_versions_to_add=None,
-                 root_components_to_remove=None,
-                 component_to_configuration=None,
-                 component_to_run_with_info=None):
+                 group_name: typing.Optional[str] = None,
+                 root_component_versions_to_add: typing.Optional[typing.Dict[str, str]] = None,
+                 root_components_to_remove: typing.Optional[typing.List[str]] = None,
+                 component_to_configuration: typing.Optional[typing.Dict[str, typing.Dict[str, typing.Any]]] = None,
+                 component_to_run_with_info: typing.Optional[typing.Dict[str, RunWithInfo]] = None):
         super().__init__()
-        self.group_name = group_name
-        self.root_component_versions_to_add = root_component_versions_to_add
-        self.root_components_to_remove = root_components_to_remove
-        self.component_to_configuration = component_to_configuration
-        self.component_to_run_with_info = component_to_run_with_info
+        self.group_name = group_name  # type: typing.Optional[str]
+        self.root_component_versions_to_add = root_component_versions_to_add  # type: typing.Optional[typing.Dict[str, str]]
+        self.root_components_to_remove = root_components_to_remove  # type: typing.Optional[typing.List[str]]
+        self.component_to_configuration = component_to_configuration  # type: typing.Optional[typing.Dict[str, typing.Dict[str, typing.Any]]]
+        self.component_to_run_with_info = component_to_run_with_info  # type: typing.Optional[typing.Dict[str, RunWithInfo]]
 
     def _to_payload(self):
         payload = {}
-        if self.group_name is None:
-            if self.is_explicitly_null('group_name'):
-                payload['groupName'] = None
-        else:
+        if self.group_name is not None:
             payload['groupName'] = self.group_name
-        if self.root_component_versions_to_add is None:
-            if self.is_explicitly_null('root_component_versions_to_add'):
-                payload['rootComponentVersionsToAdd'] = None
-        else:
+        if self.root_component_versions_to_add is not None:
             payload['rootComponentVersionsToAdd'] = self.root_component_versions_to_add
-        if self.root_components_to_remove is None:
-            if self.is_explicitly_null('root_components_to_remove'):
-                payload['rootComponentsToRemove'] = None
-        else:
+        if self.root_components_to_remove is not None:
             payload['rootComponentsToRemove'] = self.root_components_to_remove
-        if self.component_to_configuration is None:
-            if self.is_explicitly_null('component_to_configuration'):
-                payload['componentToConfiguration'] = None
-        else:
+        if self.component_to_configuration is not None:
             payload['componentToConfiguration'] = self.component_to_configuration
-        if self.component_to_run_with_info is None:
-            if self.is_explicitly_null('component_to_run_with_info'):
-                payload['componentToRunWithInfo'] = None
-        else:
+        if self.component_to_run_with_info is not None:
             payload['componentToRunWithInfo'] = {k: v._to_payload() for k, v in self.component_to_run_with_info.items()}
         return payload
 
@@ -1201,30 +1180,15 @@ class CreateLocalDeploymentRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'groupName' in payload:
-            if payload['groupName'] is None:
-                new.set_explicitly_null('group_name')
-            else:
-                new.group_name = payload['groupName']
+            new.group_name = payload['groupName']
         if 'rootComponentVersionsToAdd' in payload:
-            if payload['rootComponentVersionsToAdd'] is None:
-                new.set_explicitly_null('root_component_versions_to_add')
-            else:
-                new.root_component_versions_to_add = payload['rootComponentVersionsToAdd']
+            new.root_component_versions_to_add = payload['rootComponentVersionsToAdd']
         if 'rootComponentsToRemove' in payload:
-            if payload['rootComponentsToRemove'] is None:
-                new.set_explicitly_null('root_components_to_remove')
-            else:
-                new.root_components_to_remove = payload['rootComponentsToRemove']
+            new.root_components_to_remove = payload['rootComponentsToRemove']
         if 'componentToConfiguration' in payload:
-            if payload['componentToConfiguration'] is None:
-                new.set_explicitly_null('component_to_configuration')
-            else:
-                new.component_to_configuration = payload['componentToConfiguration']
+            new.component_to_configuration = payload['componentToConfiguration']
         if 'componentToRunWithInfo' in payload:
-            if payload['componentToRunWithInfo'] is None:
-                new.set_explicitly_null('component_to_run_with_info')
-            else:
-                new.component_to_run_with_info = {k: RunWithInfo._from_payload(v) for k,v in payload['componentToRunWithInfo'].items()}
+            new.component_to_run_with_info = {k: RunWithInfo._from_payload(v) for k,v in payload['componentToRunWithInfo'].items()}
         return new
 
     @classmethod
@@ -1233,38 +1197,44 @@ class CreateLocalDeploymentRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['group_name', 'root_component_versions_to_add', 'root_components_to_remove', 'component_to_configuration', 'component_to_run_with_info']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, CreateLocalDeploymentRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class StopComponentResponse(rpc.Shape, _ExplicitlyNullMixin):
+class StopComponentResponse(rpc.Shape):
+    """
+    StopComponentResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        stop_status
+        message
+
+    Attributes:
+        stop_status
+        message
+    """
 
     def __init__(self, *,
-                 stop_status=None,
-                 message=None):
+                 stop_status: typing.Optional[str] = None,
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.stop_status = stop_status
-        self.message = message
+        self.stop_status = stop_status  # type: typing.Optional[str]
+        self.message = message  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.stop_status is None:
-            if self.is_explicitly_null('stop_status'):
-                payload['stopStatus'] = None
-        else:
-            payload['stopStatus'] = self.stop_status._to_payload()
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.stop_status is not None:
+            payload['stopStatus'] = self.stop_status
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -1272,15 +1242,9 @@ class StopComponentResponse(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'stopStatus' in payload:
-            if payload['stopStatus'] is None:
-                new.set_explicitly_null('stop_status')
-            else:
-                new.stop_status = RequestStatus._from_payload(payload['stopStatus'])
+            new.stop_status = payload['stopStatus']
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -1289,31 +1253,38 @@ class StopComponentResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['stop_status', 'message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, StopComponentResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class StopComponentRequest(rpc.Shape, _ExplicitlyNullMixin):
+class StopComponentRequest(rpc.Shape):
+    """
+    StopComponentRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name
+
+    Attributes:
+        component_name
+    """
 
     def __init__(self, *,
-                 component_name=None):
+                 component_name: typing.Optional[str] = None):
         super().__init__()
-        self.component_name = component_name
+        self.component_name = component_name  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.component_name is None:
-            if self.is_explicitly_null('component_name'):
-                payload['componentName'] = None
-        else:
+        if self.component_name is not None:
             payload['componentName'] = self.component_name
         return payload
 
@@ -1321,10 +1292,7 @@ class StopComponentRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'componentName' in payload:
-            if payload['componentName'] is None:
-                new.set_explicitly_null('component_name')
-            else:
-                new.component_name = payload['componentName']
+            new.component_name = payload['componentName']
         return new
 
     @classmethod
@@ -1333,31 +1301,38 @@ class StopComponentRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['component_name']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, StopComponentRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ListLocalDeploymentsResponse(rpc.Shape, _ExplicitlyNullMixin):
+class ListLocalDeploymentsResponse(rpc.Shape):
+    """
+    ListLocalDeploymentsResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        local_deployments
+
+    Attributes:
+        local_deployments
+    """
 
     def __init__(self, *,
-                 local_deployments=None):
+                 local_deployments: typing.Optional[typing.List[LocalDeployment]] = None):
         super().__init__()
-        self.local_deployments = local_deployments
+        self.local_deployments = local_deployments  # type: typing.Optional[typing.List[LocalDeployment]]
 
     def _to_payload(self):
         payload = {}
-        if self.local_deployments is None:
-            if self.is_explicitly_null('local_deployments'):
-                payload['localDeployments'] = None
-        else:
+        if self.local_deployments is not None:
             payload['localDeployments'] = [i._to_payload() for i in self.local_deployments]
         return payload
 
@@ -1365,10 +1340,7 @@ class ListLocalDeploymentsResponse(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'localDeployments' in payload:
-            if payload['localDeployments'] is None:
-                new.set_explicitly_null('local_deployments')
-            else:
-                new.local_deployments = [LocalDeployment._from_payload(i) for i in payload['localDeployments']]
+            new.local_deployments = [LocalDeployment._from_payload(i) for i in payload['localDeployments']]
         return new
 
     @classmethod
@@ -1377,19 +1349,21 @@ class ListLocalDeploymentsResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['local_deployments']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ListLocalDeploymentsResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ListLocalDeploymentsRequest(rpc.Shape, _ExplicitlyNullMixin):
+class ListLocalDeploymentsRequest(rpc.Shape):
+    """
+    ListLocalDeploymentsRequest
+    """
 
     def __init__(self):
         super().__init__()
@@ -1409,19 +1383,21 @@ class ListLocalDeploymentsRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ListLocalDeploymentsRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SubscribeToComponentUpdatesResponse(rpc.Shape, _ExplicitlyNullMixin):
+class SubscribeToComponentUpdatesResponse(rpc.Shape):
+    """
+    SubscribeToComponentUpdatesResponse
+    """
 
     def __init__(self):
         super().__init__()
@@ -1441,19 +1417,21 @@ class SubscribeToComponentUpdatesResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SubscribeToComponentUpdatesResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SubscribeToComponentUpdatesRequest(rpc.Shape, _ExplicitlyNullMixin):
+class SubscribeToComponentUpdatesRequest(rpc.Shape):
+    """
+    SubscribeToComponentUpdatesRequest
+    """
 
     def __init__(self):
         super().__init__()
@@ -1473,31 +1451,38 @@ class SubscribeToComponentUpdatesRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SubscribeToComponentUpdatesRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class GetComponentDetailsResponse(rpc.Shape, _ExplicitlyNullMixin):
+class GetComponentDetailsResponse(rpc.Shape):
+    """
+    GetComponentDetailsResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_details
+
+    Attributes:
+        component_details
+    """
 
     def __init__(self, *,
-                 component_details=None):
+                 component_details: typing.Optional[ComponentDetails] = None):
         super().__init__()
-        self.component_details = component_details
+        self.component_details = component_details  # type: typing.Optional[ComponentDetails]
 
     def _to_payload(self):
         payload = {}
-        if self.component_details is None:
-            if self.is_explicitly_null('component_details'):
-                payload['componentDetails'] = None
-        else:
+        if self.component_details is not None:
             payload['componentDetails'] = self.component_details._to_payload()
         return payload
 
@@ -1505,10 +1490,7 @@ class GetComponentDetailsResponse(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'componentDetails' in payload:
-            if payload['componentDetails'] is None:
-                new.set_explicitly_null('component_details')
-            else:
-                new.component_details = ComponentDetails._from_payload(payload['componentDetails'])
+            new.component_details = ComponentDetails._from_payload(payload['componentDetails'])
         return new
 
     @classmethod
@@ -1517,31 +1499,38 @@ class GetComponentDetailsResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['component_details']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, GetComponentDetailsResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class GetComponentDetailsRequest(rpc.Shape, _ExplicitlyNullMixin):
+class GetComponentDetailsRequest(rpc.Shape):
+    """
+    GetComponentDetailsRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name
+
+    Attributes:
+        component_name
+    """
 
     def __init__(self, *,
-                 component_name=None):
+                 component_name: typing.Optional[str] = None):
         super().__init__()
-        self.component_name = component_name
+        self.component_name = component_name  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.component_name is None:
-            if self.is_explicitly_null('component_name'):
-                payload['componentName'] = None
-        else:
+        if self.component_name is not None:
             payload['componentName'] = self.component_name
         return payload
 
@@ -1549,10 +1538,7 @@ class GetComponentDetailsRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'componentName' in payload:
-            if payload['componentName'] is None:
-                new.set_explicitly_null('component_name')
-            else:
-                new.component_name = payload['componentName']
+            new.component_name = payload['componentName']
         return new
 
     @classmethod
@@ -1561,31 +1547,38 @@ class GetComponentDetailsRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['component_name']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, GetComponentDetailsRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SubscribeToTopicResponse(rpc.Shape, _ExplicitlyNullMixin):
+class SubscribeToTopicResponse(rpc.Shape):
+    """
+    SubscribeToTopicResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        topic_name
+
+    Attributes:
+        topic_name
+    """
 
     def __init__(self, *,
-                 topic_name=None):
+                 topic_name: typing.Optional[str] = None):
         super().__init__()
-        self.topic_name = topic_name
+        self.topic_name = topic_name  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.topic_name is None:
-            if self.is_explicitly_null('topic_name'):
-                payload['topicName'] = None
-        else:
+        if self.topic_name is not None:
             payload['topicName'] = self.topic_name
         return payload
 
@@ -1593,10 +1586,7 @@ class SubscribeToTopicResponse(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'topicName' in payload:
-            if payload['topicName'] is None:
-                new.set_explicitly_null('topic_name')
-            else:
-                new.topic_name = payload['topicName']
+            new.topic_name = payload['topicName']
         return new
 
     @classmethod
@@ -1605,31 +1595,38 @@ class SubscribeToTopicResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['topic_name']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SubscribeToTopicResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SubscribeToTopicRequest(rpc.Shape, _ExplicitlyNullMixin):
+class SubscribeToTopicRequest(rpc.Shape):
+    """
+    SubscribeToTopicRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        topic
+
+    Attributes:
+        topic
+    """
 
     def __init__(self, *,
-                 topic=None):
+                 topic: typing.Optional[str] = None):
         super().__init__()
-        self.topic = topic
+        self.topic = topic  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.topic is None:
-            if self.is_explicitly_null('topic'):
-                payload['topic'] = None
-        else:
+        if self.topic is not None:
             payload['topic'] = self.topic
         return payload
 
@@ -1637,10 +1634,7 @@ class SubscribeToTopicRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'topic' in payload:
-            if payload['topic'] is None:
-                new.set_explicitly_null('topic')
-            else:
-                new.topic = payload['topic']
+            new.topic = payload['topic']
         return new
 
     @classmethod
@@ -1649,38 +1643,44 @@ class SubscribeToTopicRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['topic']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SubscribeToTopicRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class GetConfigurationResponse(rpc.Shape, _ExplicitlyNullMixin):
+class GetConfigurationResponse(rpc.Shape):
+    """
+    GetConfigurationResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name
+        value
+
+    Attributes:
+        component_name
+        value
+    """
 
     def __init__(self, *,
-                 component_name=None,
-                 value=None):
+                 component_name: typing.Optional[str] = None,
+                 value: typing.Optional[typing.Dict[str, typing.Any]] = None):
         super().__init__()
-        self.component_name = component_name
-        self.value = value
+        self.component_name = component_name  # type: typing.Optional[str]
+        self.value = value  # type: typing.Optional[typing.Dict[str, typing.Any]]
 
     def _to_payload(self):
         payload = {}
-        if self.component_name is None:
-            if self.is_explicitly_null('component_name'):
-                payload['componentName'] = None
-        else:
+        if self.component_name is not None:
             payload['componentName'] = self.component_name
-        if self.value is None:
-            if self.is_explicitly_null('value'):
-                payload['value'] = None
-        else:
+        if self.value is not None:
             payload['value'] = self.value
         return payload
 
@@ -1688,15 +1688,9 @@ class GetConfigurationResponse(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'componentName' in payload:
-            if payload['componentName'] is None:
-                new.set_explicitly_null('component_name')
-            else:
-                new.component_name = payload['componentName']
+            new.component_name = payload['componentName']
         if 'value' in payload:
-            if payload['value'] is None:
-                new.set_explicitly_null('value')
-            else:
-                new.value = payload['value']
+            new.value = payload['value']
         return new
 
     @classmethod
@@ -1705,38 +1699,44 @@ class GetConfigurationResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['component_name', 'value']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, GetConfigurationResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class GetConfigurationRequest(rpc.Shape, _ExplicitlyNullMixin):
+class GetConfigurationRequest(rpc.Shape):
+    """
+    GetConfigurationRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name
+        key_path
+
+    Attributes:
+        component_name
+        key_path
+    """
 
     def __init__(self, *,
-                 component_name=None,
-                 key_path=None):
+                 component_name: typing.Optional[str] = None,
+                 key_path: typing.Optional[typing.List[str]] = None):
         super().__init__()
-        self.component_name = component_name
-        self.key_path = key_path
+        self.component_name = component_name  # type: typing.Optional[str]
+        self.key_path = key_path  # type: typing.Optional[typing.List[str]]
 
     def _to_payload(self):
         payload = {}
-        if self.component_name is None:
-            if self.is_explicitly_null('component_name'):
-                payload['componentName'] = None
-        else:
+        if self.component_name is not None:
             payload['componentName'] = self.component_name
-        if self.key_path is None:
-            if self.is_explicitly_null('key_path'):
-                payload['keyPath'] = None
-        else:
+        if self.key_path is not None:
             payload['keyPath'] = self.key_path
         return payload
 
@@ -1744,15 +1744,9 @@ class GetConfigurationRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'componentName' in payload:
-            if payload['componentName'] is None:
-                new.set_explicitly_null('component_name')
-            else:
-                new.component_name = payload['componentName']
+            new.component_name = payload['componentName']
         if 'keyPath' in payload:
-            if payload['keyPath'] is None:
-                new.set_explicitly_null('key_path')
-            else:
-                new.key_path = payload['keyPath']
+            new.key_path = payload['keyPath']
         return new
 
     @classmethod
@@ -1761,19 +1755,21 @@ class GetConfigurationRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['component_name', 'key_path']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, GetConfigurationRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class UpdateStateResponse(rpc.Shape, _ExplicitlyNullMixin):
+class UpdateStateResponse(rpc.Shape):
+    """
+    UpdateStateResponse
+    """
 
     def __init__(self):
         super().__init__()
@@ -1793,42 +1789,46 @@ class UpdateStateResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, UpdateStateResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class UpdateStateRequest(rpc.Shape, _ExplicitlyNullMixin):
+class UpdateStateRequest(rpc.Shape):
+    """
+    UpdateStateRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        state
+
+    Attributes:
+        state
+    """
 
     def __init__(self, *,
-                 state=None):
+                 state: typing.Optional[str] = None):
         super().__init__()
-        self.state = state
+        self.state = state  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.state is None:
-            if self.is_explicitly_null('state'):
-                payload['state'] = None
-        else:
-            payload['state'] = self.state._to_payload()
+        if self.state is not None:
+            payload['state'] = self.state
         return payload
 
     @classmethod
     def _from_payload(cls, payload):
         new = cls()
         if 'state' in payload:
-            if payload['state'] is None:
-                new.set_explicitly_null('state')
-            else:
-                new.state = ReportedLifecycleState._from_payload(payload['state'])
+            new.state = payload['state']
         return new
 
     @classmethod
@@ -1837,52 +1837,56 @@ class UpdateStateRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['state']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, UpdateStateRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class GetSecretValueResponse(rpc.Shape, _ExplicitlyNullMixin):
+class GetSecretValueResponse(rpc.Shape):
+    """
+    GetSecretValueResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        secret_id
+        version_id
+        version_stage
+        secret_value
+
+    Attributes:
+        secret_id
+        version_id
+        version_stage
+        secret_value
+    """
 
     def __init__(self, *,
-                 secret_id=None,
-                 version_id=None,
-                 version_stage=None,
-                 secret_value=None):
+                 secret_id: typing.Optional[str] = None,
+                 version_id: typing.Optional[str] = None,
+                 version_stage: typing.Optional[typing.List[str]] = None,
+                 secret_value: typing.Optional[SecretValue] = None):
         super().__init__()
-        self.secret_id = secret_id
-        self.version_id = version_id
-        self.version_stage = version_stage
-        self.secret_value = secret_value
+        self.secret_id = secret_id  # type: typing.Optional[str]
+        self.version_id = version_id  # type: typing.Optional[str]
+        self.version_stage = version_stage  # type: typing.Optional[typing.List[str]]
+        self.secret_value = secret_value  # type: typing.Optional[SecretValue]
 
     def _to_payload(self):
         payload = {}
-        if self.secret_id is None:
-            if self.is_explicitly_null('secret_id'):
-                payload['secretId'] = None
-        else:
+        if self.secret_id is not None:
             payload['secretId'] = self.secret_id
-        if self.version_id is None:
-            if self.is_explicitly_null('version_id'):
-                payload['versionId'] = None
-        else:
+        if self.version_id is not None:
             payload['versionId'] = self.version_id
-        if self.version_stage is None:
-            if self.is_explicitly_null('version_stage'):
-                payload['versionStage'] = None
-        else:
+        if self.version_stage is not None:
             payload['versionStage'] = self.version_stage
-        if self.secret_value is None:
-            if self.is_explicitly_null('secret_value'):
-                payload['secretValue'] = None
-        else:
+        if self.secret_value is not None:
             payload['secretValue'] = self.secret_value._to_payload()
         return payload
 
@@ -1890,25 +1894,13 @@ class GetSecretValueResponse(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'secretId' in payload:
-            if payload['secretId'] is None:
-                new.set_explicitly_null('secret_id')
-            else:
-                new.secret_id = payload['secretId']
+            new.secret_id = payload['secretId']
         if 'versionId' in payload:
-            if payload['versionId'] is None:
-                new.set_explicitly_null('version_id')
-            else:
-                new.version_id = payload['versionId']
+            new.version_id = payload['versionId']
         if 'versionStage' in payload:
-            if payload['versionStage'] is None:
-                new.set_explicitly_null('version_stage')
-            else:
-                new.version_stage = payload['versionStage']
+            new.version_stage = payload['versionStage']
         if 'secretValue' in payload:
-            if payload['secretValue'] is None:
-                new.set_explicitly_null('secret_value')
-            else:
-                new.secret_value = SecretValue._from_payload(payload['secretValue'])
+            new.secret_value = SecretValue._from_payload(payload['secretValue'])
         return new
 
     @classmethod
@@ -1917,45 +1909,50 @@ class GetSecretValueResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['secret_id', 'version_id', 'version_stage', 'secret_value']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, GetSecretValueResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class GetSecretValueRequest(rpc.Shape, _ExplicitlyNullMixin):
+class GetSecretValueRequest(rpc.Shape):
+    """
+    GetSecretValueRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        secret_id
+        version_id
+        version_stage
+
+    Attributes:
+        secret_id
+        version_id
+        version_stage
+    """
 
     def __init__(self, *,
-                 secret_id=None,
-                 version_id=None,
-                 version_stage=None):
+                 secret_id: typing.Optional[str] = None,
+                 version_id: typing.Optional[str] = None,
+                 version_stage: typing.Optional[str] = None):
         super().__init__()
-        self.secret_id = secret_id
-        self.version_id = version_id
-        self.version_stage = version_stage
+        self.secret_id = secret_id  # type: typing.Optional[str]
+        self.version_id = version_id  # type: typing.Optional[str]
+        self.version_stage = version_stage  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.secret_id is None:
-            if self.is_explicitly_null('secret_id'):
-                payload['secretId'] = None
-        else:
+        if self.secret_id is not None:
             payload['secretId'] = self.secret_id
-        if self.version_id is None:
-            if self.is_explicitly_null('version_id'):
-                payload['versionId'] = None
-        else:
+        if self.version_id is not None:
             payload['versionId'] = self.version_id
-        if self.version_stage is None:
-            if self.is_explicitly_null('version_stage'):
-                payload['versionStage'] = None
-        else:
+        if self.version_stage is not None:
             payload['versionStage'] = self.version_stage
         return payload
 
@@ -1963,20 +1960,11 @@ class GetSecretValueRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'secretId' in payload:
-            if payload['secretId'] is None:
-                new.set_explicitly_null('secret_id')
-            else:
-                new.secret_id = payload['secretId']
+            new.secret_id = payload['secretId']
         if 'versionId' in payload:
-            if payload['versionId'] is None:
-                new.set_explicitly_null('version_id')
-            else:
-                new.version_id = payload['versionId']
+            new.version_id = payload['versionId']
         if 'versionStage' in payload:
-            if payload['versionStage'] is None:
-                new.set_explicitly_null('version_stage')
-            else:
-                new.version_stage = payload['versionStage']
+            new.version_stage = payload['versionStage']
         return new
 
     @classmethod
@@ -1985,31 +1973,38 @@ class GetSecretValueRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['secret_id', 'version_id', 'version_stage']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, GetSecretValueRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class GetLocalDeploymentStatusResponse(rpc.Shape, _ExplicitlyNullMixin):
+class GetLocalDeploymentStatusResponse(rpc.Shape):
+    """
+    GetLocalDeploymentStatusResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        deployment
+
+    Attributes:
+        deployment
+    """
 
     def __init__(self, *,
-                 deployment=None):
+                 deployment: typing.Optional[LocalDeployment] = None):
         super().__init__()
-        self.deployment = deployment
+        self.deployment = deployment  # type: typing.Optional[LocalDeployment]
 
     def _to_payload(self):
         payload = {}
-        if self.deployment is None:
-            if self.is_explicitly_null('deployment'):
-                payload['deployment'] = None
-        else:
+        if self.deployment is not None:
             payload['deployment'] = self.deployment._to_payload()
         return payload
 
@@ -2017,10 +2012,7 @@ class GetLocalDeploymentStatusResponse(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'deployment' in payload:
-            if payload['deployment'] is None:
-                new.set_explicitly_null('deployment')
-            else:
-                new.deployment = LocalDeployment._from_payload(payload['deployment'])
+            new.deployment = LocalDeployment._from_payload(payload['deployment'])
         return new
 
     @classmethod
@@ -2029,31 +2021,38 @@ class GetLocalDeploymentStatusResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['deployment']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, GetLocalDeploymentStatusResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class GetLocalDeploymentStatusRequest(rpc.Shape, _ExplicitlyNullMixin):
+class GetLocalDeploymentStatusRequest(rpc.Shape):
+    """
+    GetLocalDeploymentStatusRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        deployment_id
+
+    Attributes:
+        deployment_id
+    """
 
     def __init__(self, *,
-                 deployment_id=None):
+                 deployment_id: typing.Optional[str] = None):
         super().__init__()
-        self.deployment_id = deployment_id
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.deployment_id is None:
-            if self.is_explicitly_null('deployment_id'):
-                payload['deploymentId'] = None
-        else:
+        if self.deployment_id is not None:
             payload['deploymentId'] = self.deployment_id
         return payload
 
@@ -2061,10 +2060,7 @@ class GetLocalDeploymentStatusRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'deploymentId' in payload:
-            if payload['deploymentId'] is None:
-                new.set_explicitly_null('deployment_id')
-            else:
-                new.deployment_id = payload['deploymentId']
+            new.deployment_id = payload['deploymentId']
         return new
 
     @classmethod
@@ -2073,34 +2069,41 @@ class GetLocalDeploymentStatusRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['deployment_id']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, GetLocalDeploymentStatusRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ComponentNotFoundError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
+class ComponentNotFoundError(GreengrassCoreIPCError):
+    """
+    ComponentNotFoundError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
 
     def __init__(self, *,
-                 message=None):
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.message = message
+        self.message = message  # type: typing.Optional[str]
 
     def _get_error_type_string(self):
         return 'client'
 
     def _to_payload(self):
         payload = {}
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -2108,10 +2111,7 @@ class ComponentNotFoundError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -2120,38 +2120,44 @@ class ComponentNotFoundError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ComponentNotFoundError):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class RestartComponentResponse(rpc.Shape, _ExplicitlyNullMixin):
+class RestartComponentResponse(rpc.Shape):
+    """
+    RestartComponentResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        restart_status
+        message
+
+    Attributes:
+        restart_status
+        message
+    """
 
     def __init__(self, *,
-                 restart_status=None,
-                 message=None):
+                 restart_status: typing.Optional[str] = None,
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.restart_status = restart_status
-        self.message = message
+        self.restart_status = restart_status  # type: typing.Optional[str]
+        self.message = message  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.restart_status is None:
-            if self.is_explicitly_null('restart_status'):
-                payload['restartStatus'] = None
-        else:
-            payload['restartStatus'] = self.restart_status._to_payload()
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.restart_status is not None:
+            payload['restartStatus'] = self.restart_status
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -2159,15 +2165,9 @@ class RestartComponentResponse(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'restartStatus' in payload:
-            if payload['restartStatus'] is None:
-                new.set_explicitly_null('restart_status')
-            else:
-                new.restart_status = RequestStatus._from_payload(payload['restartStatus'])
+            new.restart_status = payload['restartStatus']
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -2176,31 +2176,38 @@ class RestartComponentResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['restart_status', 'message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, RestartComponentResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class RestartComponentRequest(rpc.Shape, _ExplicitlyNullMixin):
+class RestartComponentRequest(rpc.Shape):
+    """
+    RestartComponentRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name
+
+    Attributes:
+        component_name
+    """
 
     def __init__(self, *,
-                 component_name=None):
+                 component_name: typing.Optional[str] = None):
         super().__init__()
-        self.component_name = component_name
+        self.component_name = component_name  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.component_name is None:
-            if self.is_explicitly_null('component_name'):
-                payload['componentName'] = None
-        else:
+        if self.component_name is not None:
             payload['componentName'] = self.component_name
         return payload
 
@@ -2208,10 +2215,7 @@ class RestartComponentRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'componentName' in payload:
-            if payload['componentName'] is None:
-                new.set_explicitly_null('component_name')
-            else:
-                new.component_name = payload['componentName']
+            new.component_name = payload['componentName']
         return new
 
     @classmethod
@@ -2220,34 +2224,41 @@ class RestartComponentRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['component_name']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, RestartComponentRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class InvalidArtifactsDirectoryPathError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
+class InvalidArtifactsDirectoryPathError(GreengrassCoreIPCError):
+    """
+    InvalidArtifactsDirectoryPathError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
 
     def __init__(self, *,
-                 message=None):
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.message = message
+        self.message = message  # type: typing.Optional[str]
 
     def _get_error_type_string(self):
         return 'client'
 
     def _to_payload(self):
         payload = {}
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -2255,10 +2266,7 @@ class InvalidArtifactsDirectoryPathError(GreengrassCoreIPCError, _ExplicitlyNull
     def _from_payload(cls, payload):
         new = cls()
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -2267,34 +2275,41 @@ class InvalidArtifactsDirectoryPathError(GreengrassCoreIPCError, _ExplicitlyNull
 
     def __repr__(self):
         attrs = []
-        for attr in ['message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, InvalidArtifactsDirectoryPathError):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class InvalidRecipeDirectoryPathError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
+class InvalidRecipeDirectoryPathError(GreengrassCoreIPCError):
+    """
+    InvalidRecipeDirectoryPathError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
 
     def __init__(self, *,
-                 message=None):
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.message = message
+        self.message = message  # type: typing.Optional[str]
 
     def _get_error_type_string(self):
         return 'client'
 
     def _to_payload(self):
         payload = {}
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -2302,10 +2317,7 @@ class InvalidRecipeDirectoryPathError(GreengrassCoreIPCError, _ExplicitlyNullMix
     def _from_payload(cls, payload):
         new = cls()
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -2314,19 +2326,21 @@ class InvalidRecipeDirectoryPathError(GreengrassCoreIPCError, _ExplicitlyNullMix
 
     def __repr__(self):
         attrs = []
-        for attr in ['message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, InvalidRecipeDirectoryPathError):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class UpdateRecipesAndArtifactsResponse(rpc.Shape, _ExplicitlyNullMixin):
+class UpdateRecipesAndArtifactsResponse(rpc.Shape):
+    """
+    UpdateRecipesAndArtifactsResponse
+    """
 
     def __init__(self):
         super().__init__()
@@ -2346,38 +2360,44 @@ class UpdateRecipesAndArtifactsResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, UpdateRecipesAndArtifactsResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class UpdateRecipesAndArtifactsRequest(rpc.Shape, _ExplicitlyNullMixin):
+class UpdateRecipesAndArtifactsRequest(rpc.Shape):
+    """
+    UpdateRecipesAndArtifactsRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        recipe_directory_path
+        artifacts_directory_path
+
+    Attributes:
+        recipe_directory_path
+        artifacts_directory_path
+    """
 
     def __init__(self, *,
-                 recipe_directory_path=None,
-                 artifacts_directory_path=None):
+                 recipe_directory_path: typing.Optional[str] = None,
+                 artifacts_directory_path: typing.Optional[str] = None):
         super().__init__()
-        self.recipe_directory_path = recipe_directory_path
-        self.artifacts_directory_path = artifacts_directory_path
+        self.recipe_directory_path = recipe_directory_path  # type: typing.Optional[str]
+        self.artifacts_directory_path = artifacts_directory_path  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.recipe_directory_path is None:
-            if self.is_explicitly_null('recipe_directory_path'):
-                payload['recipeDirectoryPath'] = None
-        else:
+        if self.recipe_directory_path is not None:
             payload['recipeDirectoryPath'] = self.recipe_directory_path
-        if self.artifacts_directory_path is None:
-            if self.is_explicitly_null('artifacts_directory_path'):
-                payload['artifactsDirectoryPath'] = None
-        else:
+        if self.artifacts_directory_path is not None:
             payload['artifactsDirectoryPath'] = self.artifacts_directory_path
         return payload
 
@@ -2385,15 +2405,9 @@ class UpdateRecipesAndArtifactsRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'recipeDirectoryPath' in payload:
-            if payload['recipeDirectoryPath'] is None:
-                new.set_explicitly_null('recipe_directory_path')
-            else:
-                new.recipe_directory_path = payload['recipeDirectoryPath']
+            new.recipe_directory_path = payload['recipeDirectoryPath']
         if 'artifactsDirectoryPath' in payload:
-            if payload['artifactsDirectoryPath'] is None:
-                new.set_explicitly_null('artifacts_directory_path')
-            else:
-                new.artifacts_directory_path = payload['artifactsDirectoryPath']
+            new.artifacts_directory_path = payload['artifactsDirectoryPath']
         return new
 
     @classmethod
@@ -2402,34 +2416,41 @@ class UpdateRecipesAndArtifactsRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['recipe_directory_path', 'artifacts_directory_path']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, UpdateRecipesAndArtifactsRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class InvalidTokenError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
+class InvalidTokenError(GreengrassCoreIPCError):
+    """
+    InvalidTokenError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
 
     def __init__(self, *,
-                 message=None):
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.message = message
+        self.message = message  # type: typing.Optional[str]
 
     def _get_error_type_string(self):
         return 'server'
 
     def _to_payload(self):
         payload = {}
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -2437,10 +2458,7 @@ class InvalidTokenError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -2449,31 +2467,38 @@ class InvalidTokenError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, InvalidTokenError):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ValidateAuthorizationTokenResponse(rpc.Shape, _ExplicitlyNullMixin):
+class ValidateAuthorizationTokenResponse(rpc.Shape):
+    """
+    ValidateAuthorizationTokenResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        is_valid
+
+    Attributes:
+        is_valid
+    """
 
     def __init__(self, *,
-                 is_valid=None):
+                 is_valid: typing.Optional[bool] = None):
         super().__init__()
-        self.is_valid = is_valid
+        self.is_valid = is_valid  # type: typing.Optional[bool]
 
     def _to_payload(self):
         payload = {}
-        if self.is_valid is None:
-            if self.is_explicitly_null('is_valid'):
-                payload['isValid'] = None
-        else:
+        if self.is_valid is not None:
             payload['isValid'] = self.is_valid
         return payload
 
@@ -2481,10 +2506,7 @@ class ValidateAuthorizationTokenResponse(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'isValid' in payload:
-            if payload['isValid'] is None:
-                new.set_explicitly_null('is_valid')
-            else:
-                new.is_valid = payload['isValid']
+            new.is_valid = payload['isValid']
         return new
 
     @classmethod
@@ -2493,31 +2515,38 @@ class ValidateAuthorizationTokenResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['is_valid']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ValidateAuthorizationTokenResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ValidateAuthorizationTokenRequest(rpc.Shape, _ExplicitlyNullMixin):
+class ValidateAuthorizationTokenRequest(rpc.Shape):
+    """
+    ValidateAuthorizationTokenRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        token
+
+    Attributes:
+        token
+    """
 
     def __init__(self, *,
-                 token=None):
+                 token: typing.Optional[str] = None):
         super().__init__()
-        self.token = token
+        self.token = token  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.token is None:
-            if self.is_explicitly_null('token'):
-                payload['token'] = None
-        else:
+        if self.token is not None:
             payload['token'] = self.token
         return payload
 
@@ -2525,10 +2554,7 @@ class ValidateAuthorizationTokenRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'token' in payload:
-            if payload['token'] is None:
-                new.set_explicitly_null('token')
-            else:
-                new.token = payload['token']
+            new.token = payload['token']
         return new
 
     @classmethod
@@ -2537,19 +2563,21 @@ class ValidateAuthorizationTokenRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['token']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ValidateAuthorizationTokenRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SubscribeToValidateConfigurationUpdatesResponse(rpc.Shape, _ExplicitlyNullMixin):
+class SubscribeToValidateConfigurationUpdatesResponse(rpc.Shape):
+    """
+    SubscribeToValidateConfigurationUpdatesResponse
+    """
 
     def __init__(self):
         super().__init__()
@@ -2569,19 +2597,21 @@ class SubscribeToValidateConfigurationUpdatesResponse(rpc.Shape, _ExplicitlyNull
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SubscribeToValidateConfigurationUpdatesResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SubscribeToValidateConfigurationUpdatesRequest(rpc.Shape, _ExplicitlyNullMixin):
+class SubscribeToValidateConfigurationUpdatesRequest(rpc.Shape):
+    """
+    SubscribeToValidateConfigurationUpdatesRequest
+    """
 
     def __init__(self):
         super().__init__()
@@ -2601,34 +2631,41 @@ class SubscribeToValidateConfigurationUpdatesRequest(rpc.Shape, _ExplicitlyNullM
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SubscribeToValidateConfigurationUpdatesRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class FailedUpdateConditionCheckError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
+class FailedUpdateConditionCheckError(GreengrassCoreIPCError):
+    """
+    FailedUpdateConditionCheckError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
 
     def __init__(self, *,
-                 message=None):
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.message = message
+        self.message = message  # type: typing.Optional[str]
 
     def _get_error_type_string(self):
         return 'client'
 
     def _to_payload(self):
         payload = {}
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -2636,10 +2673,7 @@ class FailedUpdateConditionCheckError(GreengrassCoreIPCError, _ExplicitlyNullMix
     def _from_payload(cls, payload):
         new = cls()
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -2648,34 +2682,41 @@ class FailedUpdateConditionCheckError(GreengrassCoreIPCError, _ExplicitlyNullMix
 
     def __repr__(self):
         attrs = []
-        for attr in ['message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, FailedUpdateConditionCheckError):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ConflictError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
+class ConflictError(GreengrassCoreIPCError):
+    """
+    ConflictError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
 
     def __init__(self, *,
-                 message=None):
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.message = message
+        self.message = message  # type: typing.Optional[str]
 
     def _get_error_type_string(self):
         return 'client'
 
     def _to_payload(self):
         payload = {}
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -2683,10 +2724,7 @@ class ConflictError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -2695,19 +2733,21 @@ class ConflictError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ConflictError):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class UpdateConfigurationResponse(rpc.Shape, _ExplicitlyNullMixin):
+class UpdateConfigurationResponse(rpc.Shape):
+    """
+    UpdateConfigurationResponse
+    """
 
     def __init__(self):
         super().__init__()
@@ -2727,45 +2767,50 @@ class UpdateConfigurationResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, UpdateConfigurationResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class UpdateConfigurationRequest(rpc.Shape, _ExplicitlyNullMixin):
+class UpdateConfigurationRequest(rpc.Shape):
+    """
+    UpdateConfigurationRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        key_path
+        timestamp
+        value_to_merge
+
+    Attributes:
+        key_path
+        timestamp
+        value_to_merge
+    """
 
     def __init__(self, *,
-                 key_path=None,
-                 timestamp=None,
-                 value_to_merge=None):
+                 key_path: typing.Optional[typing.List[str]] = None,
+                 timestamp: typing.Optional[datetime.datetime] = None,
+                 value_to_merge: typing.Optional[typing.Dict[str, typing.Any]] = None):
         super().__init__()
-        self.key_path = key_path
-        self.timestamp = timestamp
-        self.value_to_merge = value_to_merge
+        self.key_path = key_path  # type: typing.Optional[typing.List[str]]
+        self.timestamp = timestamp  # type: typing.Optional[datetime.datetime]
+        self.value_to_merge = value_to_merge  # type: typing.Optional[typing.Dict[str, typing.Any]]
 
     def _to_payload(self):
         payload = {}
-        if self.key_path is None:
-            if self.is_explicitly_null('key_path'):
-                payload['keyPath'] = None
-        else:
+        if self.key_path is not None:
             payload['keyPath'] = self.key_path
-        if self.timestamp is None:
-            if self.is_explicitly_null('timestamp'):
-                payload['timestamp'] = None
-        else:
+        if self.timestamp is not None:
             payload['timestamp'] = self.timestamp.timestamp()
-        if self.value_to_merge is None:
-            if self.is_explicitly_null('value_to_merge'):
-                payload['valueToMerge'] = None
-        else:
+        if self.value_to_merge is not None:
             payload['valueToMerge'] = self.value_to_merge
         return payload
 
@@ -2773,20 +2818,11 @@ class UpdateConfigurationRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'keyPath' in payload:
-            if payload['keyPath'] is None:
-                new.set_explicitly_null('key_path')
-            else:
-                new.key_path = payload['keyPath']
+            new.key_path = payload['keyPath']
         if 'timestamp' in payload:
-            if payload['timestamp'] is None:
-                new.set_explicitly_null('timestamp')
-            else:
-                new.timestamp = datetime.datetime.fromtimestamp(payload['timestamp'], datetime.timezone.utc)
+            new.timestamp = datetime.datetime.fromtimestamp(payload['timestamp'], datetime.timezone.utc)
         if 'valueToMerge' in payload:
-            if payload['valueToMerge'] is None:
-                new.set_explicitly_null('value_to_merge')
-            else:
-                new.value_to_merge = payload['valueToMerge']
+            new.value_to_merge = payload['valueToMerge']
         return new
 
     @classmethod
@@ -2795,19 +2831,21 @@ class UpdateConfigurationRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['key_path', 'timestamp', 'value_to_merge']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, UpdateConfigurationRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SendConfigurationValidityReportResponse(rpc.Shape, _ExplicitlyNullMixin):
+class SendConfigurationValidityReportResponse(rpc.Shape):
+    """
+    SendConfigurationValidityReportResponse
+    """
 
     def __init__(self):
         super().__init__()
@@ -2827,31 +2865,38 @@ class SendConfigurationValidityReportResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SendConfigurationValidityReportResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SendConfigurationValidityReportRequest(rpc.Shape, _ExplicitlyNullMixin):
+class SendConfigurationValidityReportRequest(rpc.Shape):
+    """
+    SendConfigurationValidityReportRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        configuration_validity_report
+
+    Attributes:
+        configuration_validity_report
+    """
 
     def __init__(self, *,
-                 configuration_validity_report=None):
+                 configuration_validity_report: typing.Optional[ConfigurationValidityReport] = None):
         super().__init__()
-        self.configuration_validity_report = configuration_validity_report
+        self.configuration_validity_report = configuration_validity_report  # type: typing.Optional[ConfigurationValidityReport]
 
     def _to_payload(self):
         payload = {}
-        if self.configuration_validity_report is None:
-            if self.is_explicitly_null('configuration_validity_report'):
-                payload['configurationValidityReport'] = None
-        else:
+        if self.configuration_validity_report is not None:
             payload['configurationValidityReport'] = self.configuration_validity_report._to_payload()
         return payload
 
@@ -2859,10 +2904,7 @@ class SendConfigurationValidityReportRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'configurationValidityReport' in payload:
-            if payload['configurationValidityReport'] is None:
-                new.set_explicitly_null('configuration_validity_report')
-            else:
-                new.configuration_validity_report = ConfigurationValidityReport._from_payload(payload['configurationValidityReport'])
+            new.configuration_validity_report = ConfigurationValidityReport._from_payload(payload['configurationValidityReport'])
         return new
 
     @classmethod
@@ -2871,34 +2913,41 @@ class SendConfigurationValidityReportRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['configuration_validity_report']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SendConfigurationValidityReportRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class InvalidArgumentsError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
+class InvalidArgumentsError(GreengrassCoreIPCError):
+    """
+    InvalidArgumentsError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
 
     def __init__(self, *,
-                 message=None):
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.message = message
+        self.message = message  # type: typing.Optional[str]
 
     def _get_error_type_string(self):
         return 'client'
 
     def _to_payload(self):
         payload = {}
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -2906,10 +2955,7 @@ class InvalidArgumentsError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -2918,19 +2964,21 @@ class InvalidArgumentsError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, InvalidArgumentsError):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class DeferComponentUpdateResponse(rpc.Shape, _ExplicitlyNullMixin):
+class DeferComponentUpdateResponse(rpc.Shape):
+    """
+    DeferComponentUpdateResponse
+    """
 
     def __init__(self):
         super().__init__()
@@ -2950,45 +2998,50 @@ class DeferComponentUpdateResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, DeferComponentUpdateResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class DeferComponentUpdateRequest(rpc.Shape, _ExplicitlyNullMixin):
+class DeferComponentUpdateRequest(rpc.Shape):
+    """
+    DeferComponentUpdateRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        deployment_id
+        message
+        recheck_after_ms
+
+    Attributes:
+        deployment_id
+        message
+        recheck_after_ms
+    """
 
     def __init__(self, *,
-                 deployment_id=None,
-                 message=None,
-                 recheck_after_ms=None):
+                 deployment_id: typing.Optional[str] = None,
+                 message: typing.Optional[str] = None,
+                 recheck_after_ms: typing.Optional[int] = None):
         super().__init__()
-        self.deployment_id = deployment_id
-        self.message = message
-        self.recheck_after_ms = recheck_after_ms
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
+        self.message = message  # type: typing.Optional[str]
+        self.recheck_after_ms = recheck_after_ms  # type: typing.Optional[int]
 
     def _to_payload(self):
         payload = {}
-        if self.deployment_id is None:
-            if self.is_explicitly_null('deployment_id'):
-                payload['deploymentId'] = None
-        else:
+        if self.deployment_id is not None:
             payload['deploymentId'] = self.deployment_id
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
-        if self.recheck_after_ms is None:
-            if self.is_explicitly_null('recheck_after_ms'):
-                payload['recheckAfterMs'] = None
-        else:
+        if self.recheck_after_ms is not None:
             payload['recheckAfterMs'] = self.recheck_after_ms
         return payload
 
@@ -2996,20 +3049,11 @@ class DeferComponentUpdateRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'deploymentId' in payload:
-            if payload['deploymentId'] is None:
-                new.set_explicitly_null('deployment_id')
-            else:
-                new.deployment_id = payload['deploymentId']
+            new.deployment_id = payload['deploymentId']
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         if 'recheckAfterMs' in payload:
-            if payload['recheckAfterMs'] is None:
-                new.set_explicitly_null('recheck_after_ms')
-            else:
-                new.recheck_after_ms = int(payload['recheckAfterMs'])
+            new.recheck_after_ms = int(payload['recheckAfterMs'])
         return new
 
     @classmethod
@@ -3018,45 +3062,50 @@ class DeferComponentUpdateRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['deployment_id', 'message', 'recheck_after_ms']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, DeferComponentUpdateRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class CreateDebugPasswordResponse(rpc.Shape, _ExplicitlyNullMixin):
+class CreateDebugPasswordResponse(rpc.Shape):
+    """
+    CreateDebugPasswordResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        password
+        username
+        password_expiration
+
+    Attributes:
+        password
+        username
+        password_expiration
+    """
 
     def __init__(self, *,
-                 password=None,
-                 username=None,
-                 password_expiration=None):
+                 password: typing.Optional[str] = None,
+                 username: typing.Optional[str] = None,
+                 password_expiration: typing.Optional[datetime.datetime] = None):
         super().__init__()
-        self.password = password
-        self.username = username
-        self.password_expiration = password_expiration
+        self.password = password  # type: typing.Optional[str]
+        self.username = username  # type: typing.Optional[str]
+        self.password_expiration = password_expiration  # type: typing.Optional[datetime.datetime]
 
     def _to_payload(self):
         payload = {}
-        if self.password is None:
-            if self.is_explicitly_null('password'):
-                payload['password'] = None
-        else:
+        if self.password is not None:
             payload['password'] = self.password
-        if self.username is None:
-            if self.is_explicitly_null('username'):
-                payload['username'] = None
-        else:
+        if self.username is not None:
             payload['username'] = self.username
-        if self.password_expiration is None:
-            if self.is_explicitly_null('password_expiration'):
-                payload['passwordExpiration'] = None
-        else:
+        if self.password_expiration is not None:
             payload['passwordExpiration'] = self.password_expiration.timestamp()
         return payload
 
@@ -3064,20 +3113,11 @@ class CreateDebugPasswordResponse(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'password' in payload:
-            if payload['password'] is None:
-                new.set_explicitly_null('password')
-            else:
-                new.password = payload['password']
+            new.password = payload['password']
         if 'username' in payload:
-            if payload['username'] is None:
-                new.set_explicitly_null('username')
-            else:
-                new.username = payload['username']
+            new.username = payload['username']
         if 'passwordExpiration' in payload:
-            if payload['passwordExpiration'] is None:
-                new.set_explicitly_null('password_expiration')
-            else:
-                new.password_expiration = datetime.datetime.fromtimestamp(payload['passwordExpiration'], datetime.timezone.utc)
+            new.password_expiration = datetime.datetime.fromtimestamp(payload['passwordExpiration'], datetime.timezone.utc)
         return new
 
     @classmethod
@@ -3086,19 +3126,21 @@ class CreateDebugPasswordResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['password', 'username', 'password_expiration']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, CreateDebugPasswordResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class CreateDebugPasswordRequest(rpc.Shape, _ExplicitlyNullMixin):
+class CreateDebugPasswordRequest(rpc.Shape):
+    """
+    CreateDebugPasswordRequest
+    """
 
     def __init__(self):
         super().__init__()
@@ -3118,31 +3160,38 @@ class CreateDebugPasswordRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, CreateDebugPasswordRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ListComponentsResponse(rpc.Shape, _ExplicitlyNullMixin):
+class ListComponentsResponse(rpc.Shape):
+    """
+    ListComponentsResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        components
+
+    Attributes:
+        components
+    """
 
     def __init__(self, *,
-                 components=None):
+                 components: typing.Optional[typing.List[ComponentDetails]] = None):
         super().__init__()
-        self.components = components
+        self.components = components  # type: typing.Optional[typing.List[ComponentDetails]]
 
     def _to_payload(self):
         payload = {}
-        if self.components is None:
-            if self.is_explicitly_null('components'):
-                payload['components'] = None
-        else:
+        if self.components is not None:
             payload['components'] = [i._to_payload() for i in self.components]
         return payload
 
@@ -3150,10 +3199,7 @@ class ListComponentsResponse(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'components' in payload:
-            if payload['components'] is None:
-                new.set_explicitly_null('components')
-            else:
-                new.components = [ComponentDetails._from_payload(i) for i in payload['components']]
+            new.components = [ComponentDetails._from_payload(i) for i in payload['components']]
         return new
 
     @classmethod
@@ -3162,19 +3208,21 @@ class ListComponentsResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['components']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ListComponentsResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ListComponentsRequest(rpc.Shape, _ExplicitlyNullMixin):
+class ListComponentsRequest(rpc.Shape):
+    """
+    ListComponentsRequest
+    """
 
     def __init__(self):
         super().__init__()
@@ -3194,48 +3242,53 @@ class ListComponentsRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ListComponentsRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ResourceNotFoundError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
+class ResourceNotFoundError(GreengrassCoreIPCError):
+    """
+    ResourceNotFoundError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+        resource_type
+        resource_name
+
+    Attributes:
+        message
+        resource_type
+        resource_name
+    """
 
     def __init__(self, *,
-                 message=None,
-                 resource_type=None,
-                 resource_name=None):
+                 message: typing.Optional[str] = None,
+                 resource_type: typing.Optional[str] = None,
+                 resource_name: typing.Optional[str] = None):
         super().__init__()
-        self.message = message
-        self.resource_type = resource_type
-        self.resource_name = resource_name
+        self.message = message  # type: typing.Optional[str]
+        self.resource_type = resource_type  # type: typing.Optional[str]
+        self.resource_name = resource_name  # type: typing.Optional[str]
 
     def _get_error_type_string(self):
         return 'client'
 
     def _to_payload(self):
         payload = {}
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
-        if self.resource_type is None:
-            if self.is_explicitly_null('resource_type'):
-                payload['resourceType'] = None
-        else:
+        if self.resource_type is not None:
             payload['resourceType'] = self.resource_type
-        if self.resource_name is None:
-            if self.is_explicitly_null('resource_name'):
-                payload['resourceName'] = None
-        else:
+        if self.resource_name is not None:
             payload['resourceName'] = self.resource_name
         return payload
 
@@ -3243,20 +3296,11 @@ class ResourceNotFoundError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         if 'resourceType' in payload:
-            if payload['resourceType'] is None:
-                new.set_explicitly_null('resource_type')
-            else:
-                new.resource_type = payload['resourceType']
+            new.resource_type = payload['resourceType']
         if 'resourceName' in payload:
-            if payload['resourceName'] is None:
-                new.set_explicitly_null('resource_name')
-            else:
-                new.resource_name = payload['resourceName']
+            new.resource_name = payload['resourceName']
         return new
 
     @classmethod
@@ -3265,19 +3309,21 @@ class ResourceNotFoundError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['message', 'resource_type', 'resource_name']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ResourceNotFoundError):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SubscribeToConfigurationUpdateResponse(rpc.Shape, _ExplicitlyNullMixin):
+class SubscribeToConfigurationUpdateResponse(rpc.Shape):
+    """
+    SubscribeToConfigurationUpdateResponse
+    """
 
     def __init__(self):
         super().__init__()
@@ -3297,38 +3343,44 @@ class SubscribeToConfigurationUpdateResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SubscribeToConfigurationUpdateResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SubscribeToConfigurationUpdateRequest(rpc.Shape, _ExplicitlyNullMixin):
+class SubscribeToConfigurationUpdateRequest(rpc.Shape):
+    """
+    SubscribeToConfigurationUpdateRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name
+        key_path
+
+    Attributes:
+        component_name
+        key_path
+    """
 
     def __init__(self, *,
-                 component_name=None,
-                 key_path=None):
+                 component_name: typing.Optional[str] = None,
+                 key_path: typing.Optional[typing.List[str]] = None):
         super().__init__()
-        self.component_name = component_name
-        self.key_path = key_path
+        self.component_name = component_name  # type: typing.Optional[str]
+        self.key_path = key_path  # type: typing.Optional[typing.List[str]]
 
     def _to_payload(self):
         payload = {}
-        if self.component_name is None:
-            if self.is_explicitly_null('component_name'):
-                payload['componentName'] = None
-        else:
+        if self.component_name is not None:
             payload['componentName'] = self.component_name
-        if self.key_path is None:
-            if self.is_explicitly_null('key_path'):
-                payload['keyPath'] = None
-        else:
+        if self.key_path is not None:
             payload['keyPath'] = self.key_path
         return payload
 
@@ -3336,15 +3388,9 @@ class SubscribeToConfigurationUpdateRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'componentName' in payload:
-            if payload['componentName'] is None:
-                new.set_explicitly_null('component_name')
-            else:
-                new.component_name = payload['componentName']
+            new.component_name = payload['componentName']
         if 'keyPath' in payload:
-            if payload['keyPath'] is None:
-                new.set_explicitly_null('key_path')
-            else:
-                new.key_path = payload['keyPath']
+            new.key_path = payload['keyPath']
         return new
 
     @classmethod
@@ -3353,19 +3399,21 @@ class SubscribeToConfigurationUpdateRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['component_name', 'key_path']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SubscribeToConfigurationUpdateRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class PublishToIoTCoreResponse(rpc.Shape, _ExplicitlyNullMixin):
+class PublishToIoTCoreResponse(rpc.Shape):
+    """
+    PublishToIoTCoreResponse
+    """
 
     def __init__(self):
         super().__init__()
@@ -3385,45 +3433,50 @@ class PublishToIoTCoreResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, PublishToIoTCoreResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class PublishToIoTCoreRequest(rpc.Shape, _ExplicitlyNullMixin):
+class PublishToIoTCoreRequest(rpc.Shape):
+    """
+    PublishToIoTCoreRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        topic_name
+        qos
+        payload
+
+    Attributes:
+        topic_name
+        qos
+        payload
+    """
 
     def __init__(self, *,
-                 topic_name=None,
-                 qos=None,
-                 payload=None):
+                 topic_name: typing.Optional[str] = None,
+                 qos: typing.Optional[str] = None,
+                 payload: typing.Optional[bytes] = None):
         super().__init__()
-        self.topic_name = topic_name
-        self.qos = qos
-        self.payload = payload
+        self.topic_name = topic_name  # type: typing.Optional[str]
+        self.qos = qos  # type: typing.Optional[str]
+        self.payload = payload  # type: typing.Optional[bytes]
 
     def _to_payload(self):
         payload = {}
-        if self.topic_name is None:
-            if self.is_explicitly_null('topic_name'):
-                payload['topicName'] = None
-        else:
+        if self.topic_name is not None:
             payload['topicName'] = self.topic_name
-        if self.qos is None:
-            if self.is_explicitly_null('qos'):
-                payload['qos'] = None
-        else:
-            payload['qos'] = self.qos._to_payload()
-        if self.payload is None:
-            if self.is_explicitly_null('payload'):
-                payload['payload'] = None
-        else:
+        if self.qos is not None:
+            payload['qos'] = self.qos
+        if self.payload is not None:
             payload['payload'] = base64.b64encode(self.payload).decode()
         return payload
 
@@ -3431,20 +3484,11 @@ class PublishToIoTCoreRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'topicName' in payload:
-            if payload['topicName'] is None:
-                new.set_explicitly_null('topic_name')
-            else:
-                new.topic_name = payload['topicName']
+            new.topic_name = payload['topicName']
         if 'qos' in payload:
-            if payload['qos'] is None:
-                new.set_explicitly_null('qos')
-            else:
-                new.qos = QOS._from_payload(payload['qos'])
+            new.qos = payload['qos']
         if 'payload' in payload:
-            if payload['payload'] is None:
-                new.set_explicitly_null('payload')
-            else:
-                new.payload = base64.b64decode(payload['payload'])
+            new.payload = base64.b64decode(payload['payload'])
         return new
 
     @classmethod
@@ -3453,19 +3497,21 @@ class PublishToIoTCoreRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['topic_name', 'qos', 'payload']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, PublishToIoTCoreRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class PublishToTopicResponse(rpc.Shape, _ExplicitlyNullMixin):
+class PublishToTopicResponse(rpc.Shape):
+    """
+    PublishToTopicResponse
+    """
 
     def __init__(self):
         super().__init__()
@@ -3485,38 +3531,44 @@ class PublishToTopicResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, PublishToTopicResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class PublishToTopicRequest(rpc.Shape, _ExplicitlyNullMixin):
+class PublishToTopicRequest(rpc.Shape):
+    """
+    PublishToTopicRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        topic
+        publish_message
+
+    Attributes:
+        topic
+        publish_message
+    """
 
     def __init__(self, *,
-                 topic=None,
-                 publish_message=None):
+                 topic: typing.Optional[str] = None,
+                 publish_message: typing.Optional[PublishMessage] = None):
         super().__init__()
-        self.topic = topic
-        self.publish_message = publish_message
+        self.topic = topic  # type: typing.Optional[str]
+        self.publish_message = publish_message  # type: typing.Optional[PublishMessage]
 
     def _to_payload(self):
         payload = {}
-        if self.topic is None:
-            if self.is_explicitly_null('topic'):
-                payload['topic'] = None
-        else:
+        if self.topic is not None:
             payload['topic'] = self.topic
-        if self.publish_message is None:
-            if self.is_explicitly_null('publish_message'):
-                payload['publishMessage'] = None
-        else:
+        if self.publish_message is not None:
             payload['publishMessage'] = self.publish_message._to_payload()
         return payload
 
@@ -3524,15 +3576,9 @@ class PublishToTopicRequest(rpc.Shape, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'topic' in payload:
-            if payload['topic'] is None:
-                new.set_explicitly_null('topic')
-            else:
-                new.topic = payload['topic']
+            new.topic = payload['topic']
         if 'publishMessage' in payload:
-            if payload['publishMessage'] is None:
-                new.set_explicitly_null('publish_message')
-            else:
-                new.publish_message = PublishMessage._from_payload(payload['publishMessage'])
+            new.publish_message = PublishMessage._from_payload(payload['publishMessage'])
         return new
 
     @classmethod
@@ -3541,34 +3587,41 @@ class PublishToTopicRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['topic', 'publish_message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, PublishToTopicRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class UnauthorizedError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
+class UnauthorizedError(GreengrassCoreIPCError):
+    """
+    UnauthorizedError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
 
     def __init__(self, *,
-                 message=None):
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.message = message
+        self.message = message  # type: typing.Optional[str]
 
     def _get_error_type_string(self):
         return 'client'
 
     def _to_payload(self):
         payload = {}
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -3576,10 +3629,7 @@ class UnauthorizedError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -3588,34 +3638,41 @@ class UnauthorizedError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, UnauthorizedError):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class ServiceError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
+class ServiceError(GreengrassCoreIPCError):
+    """
+    ServiceError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
 
     def __init__(self, *,
-                 message=None):
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.message = message
+        self.message = message  # type: typing.Optional[str]
 
     def _get_error_type_string(self):
         return 'server'
 
     def _to_payload(self):
         payload = {}
-        if self.message is None:
-            if self.is_explicitly_null('message'):
-                payload['message'] = None
-        else:
+        if self.message is not None:
             payload['message'] = self.message
         return payload
 
@@ -3623,10 +3680,7 @@ class ServiceError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
     def _from_payload(cls, payload):
         new = cls()
         if 'message' in payload:
-            if payload['message'] is None:
-                new.set_explicitly_null('message')
-            else:
-                new.message = payload['message']
+            new.message = payload['message']
         return new
 
     @classmethod
@@ -3635,19 +3689,21 @@ class ServiceError(GreengrassCoreIPCError, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['message']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, ServiceError):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SubscribeToIoTCoreResponse(rpc.Shape, _ExplicitlyNullMixin):
+class SubscribeToIoTCoreResponse(rpc.Shape):
+    """
+    SubscribeToIoTCoreResponse
+    """
 
     def __init__(self):
         super().__init__()
@@ -3667,54 +3723,54 @@ class SubscribeToIoTCoreResponse(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in []:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SubscribeToIoTCoreResponse):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
-class SubscribeToIoTCoreRequest(rpc.Shape, _ExplicitlyNullMixin):
+class SubscribeToIoTCoreRequest(rpc.Shape):
+    """
+    SubscribeToIoTCoreRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        topic_name
+        qos
+
+    Attributes:
+        topic_name
+        qos
+    """
 
     def __init__(self, *,
-                 topic_name=None,
-                 qos=None):
+                 topic_name: typing.Optional[str] = None,
+                 qos: typing.Optional[str] = None):
         super().__init__()
-        self.topic_name = topic_name
-        self.qos = qos
+        self.topic_name = topic_name  # type: typing.Optional[str]
+        self.qos = qos  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.topic_name is None:
-            if self.is_explicitly_null('topic_name'):
-                payload['topicName'] = None
-        else:
+        if self.topic_name is not None:
             payload['topicName'] = self.topic_name
-        if self.qos is None:
-            if self.is_explicitly_null('qos'):
-                payload['qos'] = None
-        else:
-            payload['qos'] = self.qos._to_payload()
+        if self.qos is not None:
+            payload['qos'] = self.qos
         return payload
 
     @classmethod
     def _from_payload(cls, payload):
         new = cls()
         if 'topicName' in payload:
-            if payload['topicName'] is None:
-                new.set_explicitly_null('topic_name')
-            else:
-                new.topic_name = payload['topicName']
+            new.topic_name = payload['topicName']
         if 'qos' in payload:
-            if payload['qos'] is None:
-                new.set_explicitly_null('qos')
-            else:
-                new.qos = QOS._from_payload(payload['qos'])
+            new.qos = payload['qos']
         return new
 
     @classmethod
@@ -3723,19 +3779,19 @@ class SubscribeToIoTCoreRequest(rpc.Shape, _ExplicitlyNullMixin):
 
     def __repr__(self):
         attrs = []
-        for attr in ['topic_name', 'qos']:
-            val = getattr(self, attr)
+        for attr, val in self.__dict__.items():
             if val is not None:
                 attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
-        if isinstance(other, SubscribeToIoTCoreRequest):
+        if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
 
 
 SHAPE_INDEX = rpc.ShapeIndex([
+    RunWithInfo,
     PostComponentUpdateEvent,
     PreComponentUpdateEvent,
     ValidateConfigurationUpdateEvent,
@@ -4309,5 +4365,3 @@ class _CreateLocalDeploymentOperation(rpc.ClientOperation):
     @classmethod
     def _response_stream_type(cls):
         return None
-
-
