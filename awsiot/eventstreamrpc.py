@@ -93,6 +93,26 @@ class MessageAmendment:
         self.headers = headers
         self.payload = payload
 
+    @staticmethod
+    def create_static_authtoken_amender(authtoken: str) -> Callable[[], 'MessageAmendment']:
+        """
+        Create function that amends payload: b'{"authToken": "..."}'
+
+        Args:
+            authtoken: value of "authToken" in the payload.
+                The same value is always used, even if the amender
+                is called multiple times over the life of the application.
+
+        Returns:
+            The result is appropriate for passing to the Connection's
+            connect_message_amender init arg.
+        """
+        def _amend():
+            payload_str = '{"authToken": "%s"}' % authtoken
+            return MessageAmendment(payload=payload_str.encode())
+
+        return _amend
+
 
 class _ClientState(Enum):
     DISCONNECTED = auto()
@@ -214,7 +234,7 @@ class _ProtocolConnectionHandler(protocol.ClientConnectionHandler):
                         else:
                             synced.state = _ClientState.DISCONNECTING
                             synced.close_reason = AccessDeniedError(
-                                message="Connection access denied to event stream RPC server")
+                                "Connection access denied to event stream RPC server")
                             synced.current_connection.close()
                 # complete future and invoke callback after lock is released
                 if connect_future:
