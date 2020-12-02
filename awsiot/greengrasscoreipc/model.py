@@ -1080,6 +1080,108 @@ class QOS:
     AT_LEAST_ONCE = '1'
 
 
+class InvalidArtifactsDirectoryPathError(GreengrassCoreIPCError):
+    """
+    InvalidArtifactsDirectoryPathError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
+
+    def __init__(self, *,
+                 message: typing.Optional[str] = None):
+        super().__init__()
+        self.message = message  # type: typing.Optional[str]
+
+    def _get_error_type_string(self):
+        return 'client'
+
+    def _to_payload(self):
+        payload = {}
+        if self.message is not None:
+            payload['message'] = self.message
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'message' in payload:
+            new.message = payload['message']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#InvalidArtifactsDirectoryPathError'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class InvalidRecipeDirectoryPathError(GreengrassCoreIPCError):
+    """
+    InvalidRecipeDirectoryPathError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message
+
+    Attributes:
+        message
+    """
+
+    def __init__(self, *,
+                 message: typing.Optional[str] = None):
+        super().__init__()
+        self.message = message  # type: typing.Optional[str]
+
+    def _get_error_type_string(self):
+        return 'client'
+
+    def _to_payload(self):
+        payload = {}
+        if self.message is not None:
+            payload['message'] = self.message
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'message' in payload:
+            new.message = payload['message']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#InvalidRecipeDirectoryPathError'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
 class CreateLocalDeploymentResponse(rpc.Shape):
     """
     CreateLocalDeploymentResponse
@@ -1140,6 +1242,8 @@ class CreateLocalDeploymentRequest(rpc.Shape):
         root_components_to_remove
         component_to_configuration
         component_to_run_with_info
+        recipe_directory_path
+        artifacts_directory_path
 
     Attributes:
         group_name
@@ -1147,6 +1251,8 @@ class CreateLocalDeploymentRequest(rpc.Shape):
         root_components_to_remove
         component_to_configuration
         component_to_run_with_info
+        recipe_directory_path
+        artifacts_directory_path
     """
 
     def __init__(self, *,
@@ -1154,13 +1260,17 @@ class CreateLocalDeploymentRequest(rpc.Shape):
                  root_component_versions_to_add: typing.Optional[typing.Dict[str, str]] = None,
                  root_components_to_remove: typing.Optional[typing.List[str]] = None,
                  component_to_configuration: typing.Optional[typing.Dict[str, typing.Dict[str, typing.Any]]] = None,
-                 component_to_run_with_info: typing.Optional[typing.Dict[str, RunWithInfo]] = None):
+                 component_to_run_with_info: typing.Optional[typing.Dict[str, RunWithInfo]] = None,
+                 recipe_directory_path: typing.Optional[str] = None,
+                 artifacts_directory_path: typing.Optional[str] = None):
         super().__init__()
         self.group_name = group_name  # type: typing.Optional[str]
         self.root_component_versions_to_add = root_component_versions_to_add  # type: typing.Optional[typing.Dict[str, str]]
         self.root_components_to_remove = root_components_to_remove  # type: typing.Optional[typing.List[str]]
         self.component_to_configuration = component_to_configuration  # type: typing.Optional[typing.Dict[str, typing.Dict[str, typing.Any]]]
         self.component_to_run_with_info = component_to_run_with_info  # type: typing.Optional[typing.Dict[str, RunWithInfo]]
+        self.recipe_directory_path = recipe_directory_path  # type: typing.Optional[str]
+        self.artifacts_directory_path = artifacts_directory_path  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
@@ -1174,6 +1284,10 @@ class CreateLocalDeploymentRequest(rpc.Shape):
             payload['componentToConfiguration'] = self.component_to_configuration
         if self.component_to_run_with_info is not None:
             payload['componentToRunWithInfo'] = {k: v._to_payload() for k, v in self.component_to_run_with_info.items()}
+        if self.recipe_directory_path is not None:
+            payload['recipeDirectoryPath'] = self.recipe_directory_path
+        if self.artifacts_directory_path is not None:
+            payload['artifactsDirectoryPath'] = self.artifacts_directory_path
         return payload
 
     @classmethod
@@ -1189,6 +1303,10 @@ class CreateLocalDeploymentRequest(rpc.Shape):
             new.component_to_configuration = payload['componentToConfiguration']
         if 'componentToRunWithInfo' in payload:
             new.component_to_run_with_info = {k: RunWithInfo._from_payload(v) for k,v in payload['componentToRunWithInfo'].items()}
+        if 'recipeDirectoryPath' in payload:
+            new.recipe_directory_path = payload['recipeDirectoryPath']
+        if 'artifactsDirectoryPath' in payload:
+            new.artifacts_directory_path = payload['artifactsDirectoryPath']
         return new
 
     @classmethod
@@ -2221,198 +2339,6 @@ class RestartComponentRequest(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#RestartComponentRequest'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class InvalidArtifactsDirectoryPathError(GreengrassCoreIPCError):
-    """
-    InvalidArtifactsDirectoryPathError
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        message
-
-    Attributes:
-        message
-    """
-
-    def __init__(self, *,
-                 message: typing.Optional[str] = None):
-        super().__init__()
-        self.message = message  # type: typing.Optional[str]
-
-    def _get_error_type_string(self):
-        return 'client'
-
-    def _to_payload(self):
-        payload = {}
-        if self.message is not None:
-            payload['message'] = self.message
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'message' in payload:
-            new.message = payload['message']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#InvalidArtifactsDirectoryPathError'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class InvalidRecipeDirectoryPathError(GreengrassCoreIPCError):
-    """
-    InvalidRecipeDirectoryPathError
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        message
-
-    Attributes:
-        message
-    """
-
-    def __init__(self, *,
-                 message: typing.Optional[str] = None):
-        super().__init__()
-        self.message = message  # type: typing.Optional[str]
-
-    def _get_error_type_string(self):
-        return 'client'
-
-    def _to_payload(self):
-        payload = {}
-        if self.message is not None:
-            payload['message'] = self.message
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'message' in payload:
-            new.message = payload['message']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#InvalidRecipeDirectoryPathError'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class UpdateRecipesAndArtifactsResponse(rpc.Shape):
-    """
-    UpdateRecipesAndArtifactsResponse
-    """
-
-    def __init__(self):
-        super().__init__()
-
-    def _to_payload(self):
-        payload = {}
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#UpdateRecipesAndArtifactsResponse'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class UpdateRecipesAndArtifactsRequest(rpc.Shape):
-    """
-    UpdateRecipesAndArtifactsRequest
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        recipe_directory_path
-        artifacts_directory_path
-
-    Attributes:
-        recipe_directory_path
-        artifacts_directory_path
-    """
-
-    def __init__(self, *,
-                 recipe_directory_path: typing.Optional[str] = None,
-                 artifacts_directory_path: typing.Optional[str] = None):
-        super().__init__()
-        self.recipe_directory_path = recipe_directory_path  # type: typing.Optional[str]
-        self.artifacts_directory_path = artifacts_directory_path  # type: typing.Optional[str]
-
-    def _to_payload(self):
-        payload = {}
-        if self.recipe_directory_path is not None:
-            payload['recipeDirectoryPath'] = self.recipe_directory_path
-        if self.artifacts_directory_path is not None:
-            payload['artifactsDirectoryPath'] = self.artifacts_directory_path
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'recipeDirectoryPath' in payload:
-            new.recipe_directory_path = payload['recipeDirectoryPath']
-        if 'artifactsDirectoryPath' in payload:
-            new.artifacts_directory_path = payload['artifactsDirectoryPath']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#UpdateRecipesAndArtifactsRequest'
 
     def __repr__(self):
         attrs = []
@@ -3802,6 +3728,8 @@ SHAPE_INDEX = rpc.ShapeIndex([
     ComponentDetails,
     LocalDeployment,
     ConfigurationValidityReport,
+    InvalidArtifactsDirectoryPathError,
+    InvalidRecipeDirectoryPathError,
     CreateLocalDeploymentResponse,
     CreateLocalDeploymentRequest,
     StopComponentResponse,
@@ -3825,10 +3753,6 @@ SHAPE_INDEX = rpc.ShapeIndex([
     ComponentNotFoundError,
     RestartComponentResponse,
     RestartComponentRequest,
-    InvalidArtifactsDirectoryPathError,
-    InvalidRecipeDirectoryPathError,
-    UpdateRecipesAndArtifactsResponse,
-    UpdateRecipesAndArtifactsRequest,
     InvalidTokenError,
     ValidateAuthorizationTokenResponse,
     ValidateAuthorizationTokenRequest,
@@ -4097,28 +4021,6 @@ class _ValidateAuthorizationTokenOperation(rpc.ClientOperation):
     @classmethod
     def _response_type(cls):
         return ValidateAuthorizationTokenResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _UpdateRecipesAndArtifactsOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#UpdateRecipesAndArtifacts'
-
-    @classmethod
-    def _request_type(cls):
-        return UpdateRecipesAndArtifactsRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return UpdateRecipesAndArtifactsResponse
 
     @classmethod
     def _response_stream_type(cls):
