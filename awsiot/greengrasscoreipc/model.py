@@ -3796,7 +3796,7 @@ class _SubscribeToIoTCoreOperation(rpc.ClientOperation):
 
     @classmethod
     def _request_stream_type(cls):
-        return IoTCoreMessage
+        return None
 
     @classmethod
     def _response_type(cls):
@@ -3804,7 +3804,7 @@ class _SubscribeToIoTCoreOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_stream_type(cls):
-        return None
+        return IoTCoreMessage
 
 
 class _PublishToTopicOperation(rpc.ClientOperation):
@@ -3862,7 +3862,7 @@ class _SubscribeToConfigurationUpdateOperation(rpc.ClientOperation):
 
     @classmethod
     def _request_stream_type(cls):
-        return ConfigurationUpdateEvents
+        return None
 
     @classmethod
     def _response_type(cls):
@@ -3870,7 +3870,7 @@ class _SubscribeToConfigurationUpdateOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_stream_type(cls):
-        return None
+        return ConfigurationUpdateEvents
 
 
 class _ListComponentsOperation(rpc.ClientOperation):
@@ -3994,7 +3994,7 @@ class _SubscribeToValidateConfigurationUpdatesOperation(rpc.ClientOperation):
 
     @classmethod
     def _request_stream_type(cls):
-        return ValidateConfigurationUpdateEvents
+        return None
 
     @classmethod
     def _response_type(cls):
@@ -4002,7 +4002,7 @@ class _SubscribeToValidateConfigurationUpdatesOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_stream_type(cls):
-        return None
+        return ValidateConfigurationUpdateEvents
 
 
 class _ValidateAuthorizationTokenOperation(rpc.ClientOperation):
@@ -4148,7 +4148,7 @@ class _SubscribeToTopicOperation(rpc.ClientOperation):
 
     @classmethod
     def _request_stream_type(cls):
-        return SubscriptionResponseMessage
+        return None
 
     @classmethod
     def _response_type(cls):
@@ -4156,7 +4156,7 @@ class _SubscribeToTopicOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_stream_type(cls):
-        return None
+        return SubscriptionResponseMessage
 
 
 class _GetComponentDetailsOperation(rpc.ClientOperation):
@@ -4192,7 +4192,7 @@ class _SubscribeToComponentUpdatesOperation(rpc.ClientOperation):
 
     @classmethod
     def _request_stream_type(cls):
-        return ComponentUpdatePolicyEvents
+        return None
 
     @classmethod
     def _response_type(cls):
@@ -4200,7 +4200,7 @@ class _SubscribeToComponentUpdatesOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_stream_type(cls):
-        return None
+        return ComponentUpdatePolicyEvents
 
 
 class _ListLocalDeploymentsOperation(rpc.ClientOperation):
