@@ -1,12 +1,12 @@
 import test.echotestrpc.model as model
 import test.echotestrpc.client as client
-from awsiot.eventstreamrpc import (Connection, Header, LifecycleHandler, MessageAmendment)
+from awsiot.eventstreamrpc import (Connection, Header, LifecycleHandler, MessageAmendment, StreamResponseHandler)
 from awscrt.io import (ClientBootstrap, DefaultHostResolver, EventLoopGroup)
-from concurrent.futures import Future
 from datetime import datetime, timezone
 import logging
 import os
 from queue import Queue
+from threading import Event
 from unittest import skipUnless, TestCase
 
 import awsiot.greengrasscoreipc.client
@@ -18,37 +18,37 @@ logging.basicConfig(level=logging.DEBUG, format='[%(levelname)s] [%(name)s] - %(
 EVENTSTREAM_ECHO_TEST = os.getenv('EVENTSTREAM_ECHO_TEST')
 
 
-class StreamHandler(client.EchoStreamMessagesStreamHandler):
+class StreamHandler(StreamResponseHandler):
     def __init__(self):
         super().__init__()
         self.events = Queue()
         self.errors = Queue()
-        self.closed = Future()
+        self.closed = Event()
         self.error_callback_return_val = True
         # set this before activating operation
         self.operation = None
         # if something happens out of order, this gets set
         self.freakout = None
 
-    def on_stream_event(self, event: model.EchoStreamingMessage) -> None:
+    def on_stream_event(self, event):
         if not self.operation.get_response().done():
             self.freakout = "received event before initial response"
-        if self.closed.done():
+        if self.closed.is_set():
             self.freakout = "received event after close"
         self.events.put(event)
 
     def on_stream_error(self, error: Exception) -> bool:
         if not self.operation.get_response().done():
             self.freakout = "received event before initial response"
-        if self.closed.done():
+        if self.closed.is_set():
             self.freakout = "received event after close"
         self.errors.put(error)
         return self.error_callback_return_val
 
-    def on_stream_closed(self) -> None:
-        if self.closed.done():
+    def on_stream_closed(self):
+        if self.closed.is_set():
             self.freakout = "received closed event twice"
-        self.closed.set_result(None)
+        self.closed.set()
 
 
 def connect_amender():
@@ -127,6 +127,10 @@ class RpcTest(TestCase):
         # and timezone info due to datetime->timestamp->datetime conversion
         self.assertEqual(request.message, response.message)
 
+        # must close connection
+        close_future = self.connection.close()
+        self.assertIsNone(close_future.exception(TIMEOUT))
+
     def test_echo_streaming_message(self):
         self._connect()
 
@@ -147,6 +151,26 @@ class RpcTest(TestCase):
         response_event = handler.events.get(timeout=TIMEOUT)
         self.assertEqual(request_event, response_event)
 
+        # must close connection
+        close_future = self.connection.close()
+        self.assertIsNone(close_future.exception(TIMEOUT))
+        self.assertTrue(handler.closed.is_set())
+
         # make sure nothing went wrong that we didn't expect to go wrong
         self.assertTrue(handler.errors.empty())
         self.assertIsNone(handler.freakout)
+
+    def test_cause_service_error(self):
+        # test the CauseServiceError operation,
+        # which always responds with a ServiceError
+        # and then terminates the connection
+        self._connect()
+
+        operation = self.echo_client.new_cause_service_error()
+
+        # send initial request
+        flush = operation.activate(model.CauseServiceErrorRequest())
+
+        # get response
+        response_exception = operation.get_response().exception(TIMEOUT)
+        self.assertIsInstance(response_exception, model.ServiceError)

@@ -58,37 +58,101 @@ class EventStreamOperationError(RuntimeError):
 
 
 class AccessDeniedError(EventStreamOperationError):
+    """
+    Access Denied
+    """
+
     def __init__(self, *args):
         super().__init__('aws#AccessDenied', *args)
 
 
 class UnmappedDataError(RuntimeError):
+    """
+    Received data that does not map to a known model type.
+    """
     pass
 
 
 class SerializeError(RuntimeError):
+    """
+    Error serializing data to send.
+    """
     pass
 
 
 class DeserializeError(RuntimeError):
+    """
+    Error deserializing received data.
+    """
     pass
 
 
 class LifecycleHandler:
+    """
+    Base class for handling connection events.
+
+    Inherit from this class and override methods to handle connection events.
+    All callbacks for this connection will be invoked on the same thread.
+    If the connection attempt fails, no callbacks will be invoked.
+    If the connection attempt succeeds, on_connect() will be the first callback
+    invoked and on_disconnect() will always be the last.
+
+    Note that an open network connection MUST be closed via Connection.close()
+    to avoid leaking resources.
+    """
+
     def on_connect(self):
+        """
+        Invoked when the connection has been fully established.
+
+        This will always be the first callback invoked on the handler.
+        This will not be invoked if the connection attempt failed.
+        """
         pass
 
     def on_disconnect(self, reason: Optional[Exception]):
+        """
+        Invoked when an open connection has disconnected.
+
+        This will always be the last callback invoked on the handler.
+        This will not be invoked if the connection attempt failed.
+
+        Args:
+            reason: Reason will be None if the user initiated the shutdown,
+                otherwise the reason will be an Exception.
+        """
         pass
 
     def on_error(self, error: Exception) -> bool:
+        """
+        Invoked when a connection-level error occurs.
+
+        Args:
+            reason: An Exception explaining the error
+
+        Returns:
+            True if the connection should be terminated as a result of the error,
+            or False if the connection should continute.
+        """
         pass
 
     def on_ping(self, headers: Sequence[Header], payload: bytes):
+        """
+        Invoked when a ping is received.
+        """
         pass
 
 
 class MessageAmendment:
+    """
+    Data to add to an event-stream message.
+
+    Args:
+        headers: Headers to add (optional)
+
+        payload: Binary payload data (optional)
+    """
+
     def __init__(self, *, headers: Optional[Sequence[Header]] = None, payload: Optional[bytes] = None):
         self.headers = headers
         self.payload = payload
@@ -258,6 +322,32 @@ class _ProtocolConnectionHandler(protocol.ClientConnectionHandler):
 
 
 class Connection:
+    """
+    A client connection to event-stream RPC service.
+
+    connect() must be called to open the network connection before interacting
+    with the service.
+
+    Note that close() MUST be called to end an open network connection.
+    Failure to do so will result in leaked resources.
+
+    Reconnect is possible by calling connect() again after the connection
+    has finished closing/disconnecting.
+
+    Keyword Args:
+        host_name: Remote host name.
+
+        port: Remote port.
+
+        bootstrap: ClientBootstrap to use when initiating socket connection.
+
+        socket_options: Optional socket options.
+            If None is provided, the default options are used.
+
+        tls_connection_options: Optional TLS connection options.
+            If None is provided, then the connection will be attempted over
+            plain-text.
+    """
 
     class _Synced:
         """
@@ -302,6 +392,25 @@ class Connection:
         self._synced = Connection._Synced()
 
     def connect(self, lifecycle_handler: LifecycleHandler) -> Future:
+        """
+        Asynchronously open a network connection.
+
+        Note that close() MUST be called to end a network connection
+        that is open (or in the process of connecting).
+        Failure to do so will result in leaked resources.
+
+        Args:
+            lifecycle_handler: Handler for events over the course of this
+                network connection. See :class:`LifecycleHandler` for more info.
+                Handler methods will only be invoked if the connect attempt
+                succeeds.
+
+        Returns:
+            A Future which completes when the connection succeeds or fails.
+            If successful, the Future will contain None.
+            Otherwise it will contain an exception explaining the reason
+            for failure.
+        """
         future = Future()
         future.set_running_or_notify_cancel()  # prevent cancellation
         with self._synced as synced:
@@ -422,13 +531,13 @@ class ShapeIndex:
     """
 
     def __init__(self, shape_types: Sequence[type]):
-        self.shape_types = {i._model_name() for i in shape_types}
+        self._shapes_type_by_name = {i._model_name(): i for i in shape_types}
 
     def find_shape_type(self, model_name: str) -> type:
         """
         Returns Shape type with given model_name, or None
         """
-        return self.shape_types.get(model_name)
+        return self._shapes_type_by_name.get(model_name)
 
 
 class StreamResponseHandler:
