@@ -1,7 +1,9 @@
 import test.echotestrpc.model as model
 import test.echotestrpc.client as client
-from awsiot.eventstreamrpc import (Connection, Header, LifecycleHandler, MessageAmendment, StreamResponseHandler)
-from awscrt.io import (ClientBootstrap, DefaultHostResolver, EventLoopGroup)
+from awsiot.eventstreamrpc import (Connection, Header, LifecycleHandler,
+                                   MessageAmendment, SerializeError, StreamResponseHandler)
+from awscrt.io import (ClientBootstrap, DefaultHostResolver, EventLoopGroup,
+                       init_logging, LogLevel)
 from datetime import datetime, timezone
 import logging
 import os
@@ -13,9 +15,11 @@ import awsiot.greengrasscoreipc.client
 
 TIMEOUT = 10
 
-logging.basicConfig(level=logging.DEBUG, format='[%(levelname)s] [%(name)s] - %(message)s')
+#logging.basicConfig(level=logging.DEBUG, format='[%(levelname)s] [%(name)s] - %(message)s')
+#init_logging(LogLevel.Trace, 'stderr')
 
 EVENTSTREAM_ECHO_TEST = os.getenv('EVENTSTREAM_ECHO_TEST')
+
 
 
 class StreamHandler(StreamResponseHandler):
@@ -68,10 +72,8 @@ class RpcTest(TestCase):
             bootstrap=bootstrap,
             connect_message_amender=connect_amender)
         self.lifecycle_handler = LifecycleHandler()
-        print("connecting...")
         connect_future = self.connection.connect(self.lifecycle_handler)
         connect_future.result(TIMEOUT)
-        print("connected")
 
         self.echo_client = client.EchoTestRPCClient(self.connection)
 
@@ -108,7 +110,7 @@ class RpcTest(TestCase):
         self.assertIsNone(request_flush.result(TIMEOUT))
 
         response = operation.get_response().result(TIMEOUT)
-        print("RESULT:", response)
+
         self.assertIsInstance(response, model.EchoMessageResponse)
         self.assertIsInstance(response.message, model.MessageData)
         # explicit tests for each member so it's clear exactly what went wrong
@@ -126,6 +128,21 @@ class RpcTest(TestCase):
         # if this fails, it's likely due to the datetime losing precision
         # and timezone info due to datetime->timestamp->datetime conversion
         self.assertEqual(request.message, response.message)
+
+        # must close connection
+        close_future = self.connection.close()
+        self.assertIsNone(close_future.exception(TIMEOUT))
+
+    def test_bad_activate(self):
+        self._connect()
+
+        operation = self.echo_client.new_echo_message()
+
+        bad_request = model.EchoMessageRequest()
+        bad_request.message = ".message is not supposed to be a string"
+
+        with self.assertRaises(SerializeError):
+            operation.activate(bad_request)
 
         # must close connection
         close_future = self.connection.close()
