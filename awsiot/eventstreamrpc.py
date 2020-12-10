@@ -713,7 +713,7 @@ class ClientOperation(Operation):
             shape = self._shape_from_json_payload(payload, found_type)
             raise shape
         except Exception as e:
-            self._handle_error(e)
+            self._handle_error(e, flags)
 
     def _handle_data(self, model_name, payload):
         """
@@ -743,21 +743,28 @@ class ClientOperation(Operation):
             shape = self._shape_from_json_payload(payload, expected_type)
             self._stream_handler.on_stream_event(shape)
 
-    def _handle_error(self, error):
+    def _handle_error(self, error, message_flags):
         """
         Pass along an APPLICATION_ERROR payload, or an exception encountered while
         processing an APPLICATION_MESSAGE, as a failed 1st response
         or a stream-error.
         """
+        stream_already_terminated = message_flags & protocol.MessageFlag.TERMINATE_STREAM
         try:
             if self._message_count == 1:
                 # error from 1st message is "response" error.
                 self._initial_response_future.set_exception(error)
                 # errors on initial response must terminate the stream
-                self.close()
+                if not stream_already_terminated:
+                    self.close()
             elif self._stream_handler is not None:
                 # error from subsequent messages are "stream errors"
-                self._stream_handler.on_stream_error(error)
+                # If this callback returns True (or forgets to return a value)
+                # then close the stream
+                return_val = self._stream_handler.on_stream_error(error)
+                if return_val or return_val is None:
+                    if not stream_already_terminated:
+                        self.close()
             else:
                 # this operation did not expect more than 1 message
                 raise error

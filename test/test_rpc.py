@@ -21,7 +21,6 @@ TIMEOUT = 10
 EVENTSTREAM_ECHO_TEST = os.getenv('EVENTSTREAM_ECHO_TEST')
 
 
-
 class StreamHandler(StreamResponseHandler):
     def __init__(self):
         super().__init__()
@@ -186,8 +185,12 @@ class RpcTest(TestCase):
         operation = self.echo_client.new_cause_service_error()
 
         # send initial request
-        flush = operation.activate(model.CauseServiceErrorRequest())
+        operation.activate(model.CauseServiceErrorRequest())
 
         # get response
         response_exception = operation.get_response().exception(TIMEOUT)
         self.assertIsInstance(response_exception, model.ServiceError)
+
+        # close connection
+        close_future = self.connection.close()
+        self.assertIsNone(close_future.exception(TIMEOUT))
