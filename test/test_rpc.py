@@ -8,7 +8,9 @@ from datetime import datetime, timezone
 import logging
 import os
 from queue import Queue
+from sys import stderr
 from threading import Event
+from typing import Optional, Sequence
 from unittest import skipUnless, TestCase
 
 import awsiot.greengrasscoreipc.client
@@ -21,8 +23,44 @@ TIMEOUT = 10
 EVENTSTREAM_ECHO_TEST = os.getenv('EVENTSTREAM_ECHO_TEST')
 
 
+class ConnectionLifecycleHandler(LifecycleHandler):
+    def __init__(self, on_freakout):
+        self.connect_event = Event()
+        self.disconnect_event = Event()
+        self.disconnect_reason = None
+        self.errors = Queue()
+        self.pings = Queue()
+        # if something happens out of order, call this
+        self._freakout = on_freakout
+
+    def on_connect(self):
+        if self.disconnect_event.isSet():
+            self._freakout("on_disconnect fired before on_connect()")
+        if self.connect_event.isSet():
+            self._freakout("on_connect fired multiple times")
+        else:
+            self.connect_event.set()
+
+    def on_disconnect(self, reason: Optional[Exception]):
+        if not self.connect_event.isSet():
+            self._freakout("on_disconnect fired before on_connect")
+        if self.disconnect_event.isSet():
+            self._freakout("on_disconnect fired multiple times")
+        else:
+            if reason is not None and not isinstance(reason, Exception):
+                self._freakout("on_disconnect reason is not an exception")
+            self.disconnect_reason = reason
+            self.disconnect_event.set()
+
+    def on_error(self, error: Exception) -> bool:
+        self.errors.put(error)
+
+    def on_ping(self, headers: Sequence[Header], payload: bytes):
+        self.pings.put({'headers': headers, 'payload': payload})
+
+
 class StreamHandler(StreamResponseHandler):
-    def __init__(self):
+    def __init__(self, on_freakout):
         super().__init__()
         self.events = Queue()
         self.errors = Queue()
@@ -30,27 +68,29 @@ class StreamHandler(StreamResponseHandler):
         self.error_callback_return_val = True
         # set this before activating operation
         self.operation = None
-        # if something happens out of order, this gets set
-        self.freakout = None
+        # if something happens out of order, call this
+        self._freakout = on_freakout
 
     def on_stream_event(self, event):
         if not self.operation.get_response().done():
-            self.freakout = "received event before initial response"
+            self._freakout("received event before initial response")
         if self.closed.is_set():
-            self.freakout = "received event after close"
+            self._freakout("received event after close")
         self.events.put(event)
 
     def on_stream_error(self, error: Exception) -> bool:
         if not self.operation.get_response().done():
-            self.freakout = "received event before initial response"
+            self._freakout("received event before initial response")
         if self.closed.is_set():
-            self.freakout = "received event after close"
+            self._freakout("received event after close")
+        if not isinstance(error, Exception):
+            self._freakout("on_stream_error delivered non-error")
         self.errors.put(error)
         return self.error_callback_return_val
 
     def on_stream_closed(self):
         if self.closed.is_set():
-            self.freakout = "received closed event twice"
+            self._freakout("received closed event twice")
         self.closed.set()
 
 
@@ -59,8 +99,21 @@ def connect_amender():
     return MessageAmendment(headers=headers)
 
 
+def bad_connect_amender():
+    headers = [Header.from_string('client-name', 'rejected.testy_mc_failureson')]
+    return MessageAmendment(headers=headers)
+
+
 @skipUnless(EVENTSTREAM_ECHO_TEST, "Skipping until we have permanent echo server")
 class RpcTest(TestCase):
+    def _on_handler_freakout(self, msg):
+        print(msg, file=stderr)
+        if not hasattr(self, 'freakout_msg'):
+            self.freakout_msg = msg
+
+    def _assertNoHandlerFreakout(self):
+        self.assertIsNone(getattr(self, 'freakout_msg', None))
+
     def _connect(self):
         elg = EventLoopGroup()
         resolver = DefaultHostResolver(elg)
@@ -70,11 +123,44 @@ class RpcTest(TestCase):
             port=8033,
             bootstrap=bootstrap,
             connect_message_amender=connect_amender)
-        self.lifecycle_handler = LifecycleHandler()
+        self.lifecycle_handler = ConnectionLifecycleHandler(self._on_handler_freakout)
         connect_future = self.connection.connect(self.lifecycle_handler)
         connect_future.result(TIMEOUT)
 
         self.echo_client = client.EchoTestRPCClient(self.connection)
+
+    def _bad_connect(self, bad_host=False, bad_client_name=False):
+        elg = EventLoopGroup()
+        resolver = DefaultHostResolver(elg)
+        bootstrap = ClientBootstrap(elg, resolver)
+        host_name = 'badhostname' if bad_host else '127.0.0.1'
+        amender = bad_connect_amender if bad_client_name else connect_amender
+        self.connection = Connection(
+            host_name=host_name,
+            port=8033,
+            bootstrap=bootstrap,
+            connect_message_amender=amender)
+        self.lifecycle_handler = ConnectionLifecycleHandler(self._on_handler_freakout)
+        connect_future = self.connection.connect(self.lifecycle_handler)
+        connect_exception = connect_future.exception(TIMEOUT)
+
+        # connect attempt should fail
+        self.assertIsNotNone(connect_exception)
+
+        # no lifecycle events should have fired
+        self.assertFalse(self.lifecycle_handler.connect_event.isSet())
+        self.assertFalse(self.lifecycle_handler.disconnect_event.isSet())
+        self.assertTrue(self.lifecycle_handler.errors.empty())
+
+        self._assertNoHandlerFreakout()
+
+    def test_connect_failed_socket(self):
+        # test failure from the CONNECTING_TO_SOCKET phase
+        self._bad_connect(bad_host=True)
+
+    def test_connect_failed_connack(self):
+        # test failure from the WAITING_FOR_CONNECT_ACK phse
+        self._bad_connect(bad_client_name=True)
 
     def test_echo_message(self):
         self._connect()
@@ -132,6 +218,8 @@ class RpcTest(TestCase):
         close_future = self.connection.close()
         self.assertIsNone(close_future.exception(TIMEOUT))
 
+        self._assertNoHandlerFreakout()
+
     def test_bad_activate(self):
         self._connect()
 
@@ -147,10 +235,12 @@ class RpcTest(TestCase):
         close_future = self.connection.close()
         self.assertIsNone(close_future.exception(TIMEOUT))
 
+        self._assertNoHandlerFreakout()
+
     def test_echo_streaming_message(self):
         self._connect()
 
-        handler = StreamHandler()
+        handler = StreamHandler(self._on_handler_freakout)
         operation = self.echo_client.new_echo_stream_messages(handler)
         handler.operation = operation
 
@@ -174,7 +264,7 @@ class RpcTest(TestCase):
 
         # make sure nothing went wrong that we didn't expect to go wrong
         self.assertTrue(handler.errors.empty())
-        self.assertIsNone(handler.freakout)
+        self._assertNoHandlerFreakout()
 
     def test_cause_service_error(self):
         # test the CauseServiceError operation,
@@ -194,3 +284,4 @@ class RpcTest(TestCase):
         # close connection
         close_future = self.connection.close()
         self.assertIsNone(close_future.exception(TIMEOUT))
+        self._assertNoHandlerFreakout()
