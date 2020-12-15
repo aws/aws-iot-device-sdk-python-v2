@@ -8,7 +8,7 @@ from awscrt.eventstream import Header, HeaderType
 import awscrt.eventstream.rpc as protocol
 from awscrt.io import (ClientBootstrap, SocketOptions, TlsConnectionOptions)
 from concurrent.futures import Future
-from enum import auto, Enum
+from enum import Enum
 import json
 import logging
 from threading import Lock
@@ -179,11 +179,11 @@ class MessageAmendment:
 
 
 class _ClientState(Enum):
-    DISCONNECTED = auto()
-    CONNECTING_TO_SOCKET = auto()
-    WAITING_FOR_CONNECT_ACK = auto()
-    CONNECTED = auto()
-    DISCONNECTING = auto()
+    DISCONNECTED = 1
+    CONNECTING_TO_SOCKET = 2
+    WAITING_FOR_CONNECT_ACK = 3
+    CONNECTED = 4
+    DISCONNECTING = 5
 
 
 class _ProtocolConnectionHandler(protocol.ClientConnectionHandler):
