@@ -426,11 +426,20 @@ class RpcTest(TestCase):
         # test that response future completes if connection is closed
         # before actual response is received.
 
-        # this test is timing dependent, the response might actually
+        # this test is timing dependent, the response could theoretically
         # come on another thread before this thread can close the connection,
-        # so run it in a loop till we get the timing we want
+        # so run test in a loop till we get the timing we want
         closed_before_response = False
+
+        # give up after a reasonably high number of tries
+        # (note: first try always passes on my 2019 macbook pro, with localhost server)
+        tries = 0
+        max_tries = 100
+
         while not closed_before_response:
+            self.assertLess(tries, max_tries, "Test couldn't get result it wanted after many tries")
+            tries += 1
+
             self._connect()
 
             stream_handler = StreamHandler(self._on_handler_freakout)
