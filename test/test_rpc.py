@@ -1,15 +1,26 @@
 import test.echotestrpc.model as model
 import test.echotestrpc.client as client
-from awsiot.eventstreamrpc import (Connection, Header, LifecycleHandler,
-                                   MessageAmendment, SerializeError, StreamResponseHandler)
+from awsiot.eventstreamrpc import (
+    AccessDeniedError,
+    Connection,
+    ConnectionClosedError,
+    EventStreamError,
+    LifecycleHandler,
+    MessageAmendment,
+    SerializeError,
+    StreamClosedError,
+    StreamResponseHandler)
 from awscrt.io import (ClientBootstrap, DefaultHostResolver, EventLoopGroup,
                        init_logging, LogLevel)
+from awscrt.eventstream import Header, HeaderType
+from awscrt.eventstream.rpc import MessageType
 from datetime import datetime, timezone
 import logging
 import os
 from queue import Queue
 from sys import stderr
 from threading import Event
+from time import sleep
 from typing import Optional, Sequence
 from unittest import skipUnless, TestCase
 
@@ -29,6 +40,7 @@ class ConnectionLifecycleHandler(LifecycleHandler):
         self.disconnect_event = Event()
         self.disconnect_reason = None
         self.errors = Queue()
+        self.error_callback_return_val = True
         self.pings = Queue()
         # if something happens out of order, call this
         self._freakout = on_freakout
@@ -54,6 +66,7 @@ class ConnectionLifecycleHandler(LifecycleHandler):
 
     def on_error(self, error: Exception) -> bool:
         self.errors.put(error)
+        return self.error_callback_return_val
 
     def on_ping(self, headers: Sequence[Header], payload: bytes):
         self.pings.put({'headers': headers, 'payload': payload})
@@ -99,11 +112,6 @@ def connect_amender():
     return MessageAmendment(headers=headers)
 
 
-def bad_connect_amender():
-    headers = [Header.from_string('client-name', 'rejected.testy_mc_failureson')]
-    return MessageAmendment(headers=headers)
-
-
 @skipUnless(EVENTSTREAM_ECHO_TEST, "Skipping until we have permanent echo server")
 class RpcTest(TestCase):
     def _on_handler_freakout(self, msg):
@@ -114,7 +122,7 @@ class RpcTest(TestCase):
     def _assertNoHandlerFreakout(self):
         self.assertIsNone(getattr(self, 'freakout_msg', None))
 
-    def _connect(self):
+    def setUp(self):
         elg = EventLoopGroup()
         resolver = DefaultHostResolver(elg)
         bootstrap = ClientBootstrap(elg, resolver)
@@ -123,23 +131,21 @@ class RpcTest(TestCase):
             port=8033,
             bootstrap=bootstrap,
             connect_message_amender=connect_amender)
-        self.lifecycle_handler = ConnectionLifecycleHandler(self._on_handler_freakout)
+
+    def _connect(self, lifecycle_handler=None):
+        if lifecycle_handler:
+            self.lifecycle_handler = lifecycle_handler
+        else:
+            self.lifecycle_handler = ConnectionLifecycleHandler(self._on_handler_freakout)
         connect_future = self.connection.connect(self.lifecycle_handler)
         connect_future.result(TIMEOUT)
-
         self.echo_client = client.EchoTestRPCClient(self.connection)
 
-    def _bad_connect(self, bad_host=False, bad_client_name=False):
-        elg = EventLoopGroup()
-        resolver = DefaultHostResolver(elg)
-        bootstrap = ClientBootstrap(elg, resolver)
-        host_name = 'badhostname' if bad_host else '127.0.0.1'
-        amender = bad_connect_amender if bad_client_name else connect_amender
-        self.connection = Connection(
-            host_name=host_name,
-            port=8033,
-            bootstrap=bootstrap,
-            connect_message_amender=amender)
+    def _bad_connect(self, bad_host=False, amender=None):
+        if bad_host:
+            self.connection.host_name = 'badhostname'
+        if amender:
+            self.connection._connect_message_amender = amender
         self.lifecycle_handler = ConnectionLifecycleHandler(self._on_handler_freakout)
         connect_future = self.connection.connect(self.lifecycle_handler)
         connect_exception = connect_future.exception(TIMEOUT)
@@ -154,13 +160,44 @@ class RpcTest(TestCase):
 
         self._assertNoHandlerFreakout()
 
+        return connect_exception
+
+    def _close_connection(self):
+        # helper to do normal close of healthy connection
+        close_future = self.connection.close()
+        close_exception = close_future.exception(TIMEOUT)
+        self.assertIsNone(close_exception)
+        self.assertTrue(self.lifecycle_handler.disconnect_event.wait(TIMEOUT))
+        self.assertIsNone(self.lifecycle_handler.disconnect_reason)
+        self.assertTrue(self.lifecycle_handler.errors.empty())
+        self._assertNoHandlerFreakout()
+
     def test_connect_failed_socket(self):
         # test failure from the CONNECTING_TO_SOCKET phase
         self._bad_connect(bad_host=True)
 
     def test_connect_failed_connack(self):
-        # test failure from the WAITING_FOR_CONNECT_ACK phse
-        self._bad_connect(bad_client_name=True)
+        # test failure from the WAITING_FOR_CONNECT_ACK phase
+        def _amender():
+            headers = [Header.from_string('client-name', 'rejected.testy_mc_failureson')]
+            return MessageAmendment(headers=headers)
+        exception = self._bad_connect(amender=_amender)
+        self.assertIsInstance(exception, AccessDeniedError)
+
+    def test_connect_failed_amender_exception(self):
+        # test failure due to connect_amender exception
+        error = RuntimeError('Purposefully raising error in amender callback')
+
+        def _amender():
+            raise error
+        exception = self._bad_connect(amender=_amender)
+        self.assertIs(exception, error)
+
+    def test_connect_failed_amender_bad_return(self):
+        # test failure due to amender returning bad data
+        def _amender():
+            return 'a string is not a MessageAmendment'
+        self._bad_connect(amender=_amender)
 
     def test_echo_message(self):
         self._connect()
@@ -214,11 +251,7 @@ class RpcTest(TestCase):
         # and timezone info due to datetime->timestamp->datetime conversion
         self.assertEqual(request.message, response.message)
 
-        # must close connection
-        close_future = self.connection.close()
-        self.assertIsNone(close_future.exception(TIMEOUT))
-
-        self._assertNoHandlerFreakout()
+        self._close_connection()
 
     def test_bad_activate(self):
         self._connect()
@@ -231,18 +264,14 @@ class RpcTest(TestCase):
         with self.assertRaises(SerializeError):
             operation.activate(bad_request)
 
-        # must close connection
-        close_future = self.connection.close()
-        self.assertIsNone(close_future.exception(TIMEOUT))
+        self._close_connection()
 
-        self._assertNoHandlerFreakout()
-
-    def test_echo_streaming_message(self):
+    def test_echo_stream_messages(self):
         self._connect()
 
-        handler = StreamHandler(self._on_handler_freakout)
-        operation = self.echo_client.new_echo_stream_messages(handler)
-        handler.operation = operation
+        stream_handler = StreamHandler(self._on_handler_freakout)
+        operation = self.echo_client.new_echo_stream_messages(stream_handler)
+        stream_handler.operation = operation
 
         # send initial request
         flush = operation.activate(model.EchoStreamingRequest())
@@ -254,22 +283,16 @@ class RpcTest(TestCase):
         flush.result(TIMEOUT)
 
         # recv streaming response
-        response_event = handler.events.get(timeout=TIMEOUT)
+        response_event = stream_handler.events.get(timeout=TIMEOUT)
         self.assertEqual(request_event, response_event)
 
-        # must close connection
-        close_future = self.connection.close()
-        self.assertIsNone(close_future.exception(TIMEOUT))
-        self.assertTrue(handler.closed.is_set())
-
-        # make sure nothing went wrong that we didn't expect to go wrong
-        self.assertTrue(handler.errors.empty())
-        self._assertNoHandlerFreakout()
+        self._close_connection()
+        self.assertTrue(stream_handler.closed.is_set())
+        self.assertTrue(stream_handler.errors.empty())
 
     def test_cause_service_error(self):
         # test the CauseServiceError operation,
         # which always responds with a ServiceError
-        # and then terminates the connection
         self._connect()
 
         operation = self.echo_client.new_cause_service_error()
@@ -281,7 +304,146 @@ class RpcTest(TestCase):
         response_exception = operation.get_response().exception(TIMEOUT)
         self.assertIsInstance(response_exception, model.ServiceError)
 
-        # close connection
-        close_future = self.connection.close()
-        self.assertIsNone(close_future.exception(TIMEOUT))
-        self._assertNoHandlerFreakout()
+        self._close_connection()
+
+    def test_cause_stream_service_to_error(self):
+        # test CauseStreamServiceToError operation,
+        # Responds to initial request normally then throws a ServiceError on stream response
+        self._connect()
+
+        # set up operation
+        stream_handler = StreamHandler(self._on_handler_freakout)
+        stream_handler.error_callback_return_val = False
+        op = self.echo_client.new_cause_stream_service_to_error(stream_handler)
+        stream_handler.operation = op
+
+        # send initial request, normal response should come back
+        request = model.EchoStreamingRequest()
+        op.activate(request)
+        op.get_response().result()
+
+        # send subsequent streaming message, streaming error should come back
+        msg_to_send = model.EchoStreamingMessage(stream_message=model.MessageData())
+        op.send_stream_event(msg_to_send)
+
+        stream_error = stream_handler.errors.get(timeout=TIMEOUT)
+        self.assertIsInstance(stream_error, model.ServiceError)
+
+        self._close_connection()
+        self.assertTrue(stream_handler.closed.is_set())
+        self.assertTrue(stream_handler.errors.empty())
+
+    def test_connection_error(self):
+        # test that everything acts as expected if server sends
+        # connection-level error
+        self._connect()
+
+        # reach deep into private inner workings of the connection to manually
+        # send a bad message to the server.
+        self.connection._synced.current_connection.send_protocol_message(
+            headers=[Header.from_int32(':stream-id', -999)],
+            message_type=MessageType.APPLICATION_MESSAGE,
+        )
+
+        # should receive PROTOCOL_ERROR in response to bad message
+        error = self.lifecycle_handler.errors.get(timeout=TIMEOUT)
+        self.assertIsInstance(error, EventStreamError)
+
+        # server kills connection after PROTOCOL_ERROR
+        self.assertTrue(self.lifecycle_handler.disconnect_event.wait(TIMEOUT))
+        self.assertIsInstance(self.lifecycle_handler.disconnect_reason, EventStreamError)
+
+    def test_close_with_reason(self):
+        # test that, if an error is passed to connection.close(err),
+        # it carries through
+        self._connect()
+
+        my_error = RuntimeError('my close reason')
+        close_future = self.connection.close(my_error)
+        close_reason = close_future.exception(TIMEOUT)
+
+        self.assertIs(my_error, close_reason)
+        self.assertTrue(self.lifecycle_handler.disconnect_event.wait(TIMEOUT))
+        self.assertIs(my_error, self.lifecycle_handler.disconnect_reason)
+
+    def test_reconnect(self):
+        # test that a Connection can connect and disconnect multiple times
+        self._connect()
+        self._close_connection()
+
+        self._connect()
+        self._close_connection()
+
+    def test_close_during_setup(self):
+        # Test that it's safe to call close() while the connection is still setting up.
+
+        # There are multiple stages to the async connect() and we'd like
+        # to stress close() being called in each of these phases.
+        # Hacky strategy to achieve this to, in a loop:
+        # - call async connect()
+        # - after some delay, call async close()
+        # - with each loop, the delay gets slightly longer
+        # - break out of loop loop once the delay is long enough that the
+        #   connect() is completing before we ever call close()
+        delay_increment_sec = 0.005
+        stop_after_n_successful_connections = 2
+
+        delay_sec = 0.0
+        successful_connections = 0
+        while successful_connections < stop_after_n_successful_connections:
+            # not using helper _connect() call because it blocks until async connect() completes
+            self.lifecycle_handler = ConnectionLifecycleHandler(self._on_handler_freakout)
+            connect_future = self.connection.connect(self.lifecycle_handler)
+
+            if delay_sec > 0.0:
+                sleep(delay_sec)
+            close_future = self.connection.close()
+
+            # wait for connect and close to complete
+            connect_exception = connect_future.exception(TIMEOUT)
+            close_exception = close_future.exception(TIMEOUT)
+
+            # close should have been clean
+            self.assertIsNone(close_exception)
+
+            # connect might have succeeded, or might have failed,
+            # depending on the timing of this thread's close() call
+            if connect_exception:
+                self.assertIsInstance(connect_exception, ConnectionClosedError)
+                # lifecycle handlers should NOT fire if connect setup failed
+                # wait a tiny bit to be 100% sure these never fire
+                self.assertFalse(self.lifecycle_handler.connect_event.wait(0.1))
+                self.assertFalse(self.lifecycle_handler.disconnect_event.wait(0.1))
+            else:
+                self.assertTrue(self.lifecycle_handler.connect_event.wait(TIMEOUT))
+                self.assertTrue(self.lifecycle_handler.disconnect_event.wait(TIMEOUT))
+                successful_connections += 1
+
+            delay_sec += delay_increment_sec
+            self._assertNoHandlerFreakout()
+
+    def test_operation_response_completes_if_connection_closed(self):
+        # test that response future completes if connection is closed
+        # before actual response is received.
+
+        # this test is timing dependent, the response might actually
+        # come on another thread before this thread can close the connection,
+        # so run it in a loop till we get the timing we want
+        closed_before_response = False
+        while not closed_before_response:
+            self._connect()
+
+            stream_handler = StreamHandler(self._on_handler_freakout)
+            operation = self.echo_client.new_echo_stream_messages(stream_handler)
+            stream_handler.operation = operation
+
+            operation.activate(model.EchoStreamingRequest())
+            close_future = self.connection.close()
+
+            try:
+                response = operation.get_response().result(TIMEOUT)
+            except StreamClosedError:
+                closed_before_response = True
+
+            # wait for close to complete before attempting reconnect
+            close_future.result(TIMEOUT)

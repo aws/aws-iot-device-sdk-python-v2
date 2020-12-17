@@ -270,7 +270,7 @@ class _ProtocolConnectionHandler(protocol.ClientConnectionHandler):
             # if user called close() without a reason,
             # set a reason that the setup_future has failed
             if reason is None:
-                reason = RuntimeError("close() called during connection setup")
+                reason = ConnectionClosedError("close() called during connection setup")
             logger.error("%r connect failed: %r", self.owner, reason)
             connect_future.set_exception(reason)
         else:
