@@ -4,6 +4,7 @@
 * [shadow](#shadow)
 * [fleet provisioning](#fleet-provisioning)
 * [basic discovery](#basic-discovery)
+* [IPC with AWS IoT Greengrass to publish to AWS IoT Core](#ipc-greengrass)
 
 ## pubsub
 This sample uses the
@@ -394,5 +395,11 @@ python3 fleetprovisioning.py --endpoint [your endpoint]-ats.iot.[region].amazona
 
 ## basic discovery
 
-This sample intended for use directly with the
+This sample is intended for use directly with the
 [Getting Started with AWS IoT Greengrass](https://docs.aws.amazon.com/greengrass/latest/developerguide/gg-gs.html) guide.
+
+## IPC with AWS IoT Greengrass to publish to AWS IoT Core
+
+This sample is intended to be deployed as an AWS IoT Greengrass component and it will publish MQTT messages from the device to AWS IoT Core.
+
+Source: `samples/ipc_greengrass.py`
