@@ -98,7 +98,7 @@ mqtt_connection = try_iot_endpoints()
 
 if args.mode == 'both' or args.mode == 'subscribe':
 
-    def on_publish(topic, payload, **kwargs):
+    def on_publish(topic, payload, dup, qos, retain, **kwargs):
         print('Publish received on topic {}'.format(topic))
         print(payload)
 

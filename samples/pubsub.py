@@ -76,7 +76,7 @@ def on_resubscribe_complete(resubscribe_future):
 
 
 # Callback when the subscribed topic receives a message
-def on_message_received(topic, payload, **kwargs):
+def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     print("Received message from topic '{}': {}".format(topic, payload))
     global received_count
     received_count += 1
