@@ -36,6 +36,6 @@ $(window).resize(function(){
         $("li.nav-item-0 a").text("Top");
     }
     else {
-        $("li.nav-item-0 a").text("AWS IoT Device SDK Python v2  documentation");
+        $("li.nav-item-0 a").text("AWS IoT Device SDK v2 for Python  documentation");
     }
 });

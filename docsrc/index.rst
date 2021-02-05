@@ -19,6 +19,7 @@ API Reference
 .. toctree::
    :maxdepth: 2
 
+   awsiot/greengrasscoreipc
    awsiot/greengrass_discovery
    awsiot/iotidentity
    awsiot/iotjobs
