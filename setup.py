@@ -8,6 +8,7 @@ from setuptools import setup, find_packages
 setup(
     name='awsiotsdk',
     version='1.0.0-dev',
+    license='Apache-2.0',
     description='AWS IoT SDK based on the AWS Common Runtime',
     author='AWS SDK Common Runtime Team',
     url='https://github.com/aws/aws-iot-device-sdk-python-v2',
