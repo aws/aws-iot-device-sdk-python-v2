@@ -132,7 +132,7 @@ class MqttServiceClient:
                 except Exception as e:
                     future.set_exception(e)
 
-            def callback_wrapper(topic, payload, **kwargs):
+            def callback_wrapper(topic, payload, dup, qos, retain, **kwargs):
                 try:
                     payload_obj = json.loads(payload.decode())
                     event = payload_to_class_fn(payload_obj)
