@@ -53,7 +53,7 @@
 <span id="awsiot-iotjobs"></span><h1>awsiot.iotjobs<a class="headerlink" href="#module-awsiot.iotjobs" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="awsiot.iotjobs.IotJobsClient">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">IotJobsClient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mqtt_connection</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">IotJobsClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mqtt_connection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>mqtt_connection</strong> (<em>mqtt.Connection</em>) – </p>
@@ -64,7 +64,7 @@
 </dl>
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.publish_describe_job_execution">
-<code class="sig-name descname">publish_describe_job_execution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.publish_describe_job_execution" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">publish_describe_job_execution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.publish_describe_job_execution" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -86,7 +86,7 @@ exception if the request cannot be published.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.publish_get_pending_job_executions">
-<code class="sig-name descname">publish_get_pending_job_executions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.publish_get_pending_job_executions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">publish_get_pending_job_executions</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.publish_get_pending_job_executions" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -108,7 +108,7 @@ exception if the request cannot be published.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.publish_start_next_pending_job_execution">
-<code class="sig-name descname">publish_start_next_pending_job_execution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.publish_start_next_pending_job_execution" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">publish_start_next_pending_job_execution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.publish_start_next_pending_job_execution" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -130,7 +130,7 @@ exception if the request cannot be published.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.publish_update_job_execution">
-<code class="sig-name descname">publish_update_job_execution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.publish_update_job_execution" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">publish_update_job_execution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.publish_update_job_execution" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -152,7 +152,7 @@ exception if the request cannot be published.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_describe_job_execution_accepted">
-<code class="sig-name descname">subscribe_to_describe_job_execution_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_describe_job_execution_accepted" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">subscribe_to_describe_job_execution_accepted</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_describe_job_execution_accepted" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -180,7 +180,7 @@ subscription is acknowledged.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_describe_job_execution_rejected">
-<code class="sig-name descname">subscribe_to_describe_job_execution_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_describe_job_execution_rejected" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">subscribe_to_describe_job_execution_rejected</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_describe_job_execution_rejected" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -208,7 +208,7 @@ subscription is acknowledged.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_get_pending_job_executions_accepted">
-<code class="sig-name descname">subscribe_to_get_pending_job_executions_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_get_pending_job_executions_accepted" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">subscribe_to_get_pending_job_executions_accepted</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_get_pending_job_executions_accepted" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -236,7 +236,7 @@ subscription is acknowledged.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_get_pending_job_executions_rejected">
-<code class="sig-name descname">subscribe_to_get_pending_job_executions_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_get_pending_job_executions_rejected" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">subscribe_to_get_pending_job_executions_rejected</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_get_pending_job_executions_rejected" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -264,7 +264,7 @@ subscription is acknowledged.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_job_executions_changed_events">
-<code class="sig-name descname">subscribe_to_job_executions_changed_events</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_job_executions_changed_events" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">subscribe_to_job_executions_changed_events</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_job_executions_changed_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-jobexecutionschanged">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-jobexecutionschanged</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -292,7 +292,7 @@ subscription is acknowledged.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_next_job_execution_changed_events">
-<code class="sig-name descname">subscribe_to_next_job_execution_changed_events</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_next_job_execution_changed_events" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">subscribe_to_next_job_execution_changed_events</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_next_job_execution_changed_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-nextjobexecutionchanged">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-nextjobexecutionchanged</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -320,7 +320,7 @@ subscription is acknowledged.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_start_next_pending_job_execution_accepted">
-<code class="sig-name descname">subscribe_to_start_next_pending_job_execution_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_start_next_pending_job_execution_accepted" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">subscribe_to_start_next_pending_job_execution_accepted</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_start_next_pending_job_execution_accepted" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -348,7 +348,7 @@ subscription is acknowledged.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_start_next_pending_job_execution_rejected">
-<code class="sig-name descname">subscribe_to_start_next_pending_job_execution_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_start_next_pending_job_execution_rejected" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">subscribe_to_start_next_pending_job_execution_rejected</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_start_next_pending_job_execution_rejected" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -376,7 +376,7 @@ subscription is acknowledged.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_update_job_execution_accepted">
-<code class="sig-name descname">subscribe_to_update_job_execution_accepted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_update_job_execution_accepted" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">subscribe_to_update_job_execution_accepted</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_update_job_execution_accepted" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -404,7 +404,7 @@ subscription is acknowledged.</p>
 
 <dl class="py method">
 <dt id="awsiot.iotjobs.IotJobsClient.subscribe_to_update_job_execution_rejected">
-<code class="sig-name descname">subscribe_to_update_job_execution_rejected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">qos</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_update_job_execution_rejected" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">subscribe_to_update_job_execution_rejected</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient.subscribe_to_update_job_execution_rejected" title="Permalink to this definition">¶</a></dt>
 <dd><p>API Docs: <a class="reference external" href="https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution">https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -434,7 +434,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.DescribeJobExecutionRequest">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">DescribeJobExecutionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">DescribeJobExecutionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -449,7 +449,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.DescribeJobExecutionRequest.client_token">
-<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.client_token" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -459,7 +459,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.DescribeJobExecutionRequest.execution_number">
-<code class="sig-name descname">execution_number</code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.execution_number" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">execution_number</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.execution_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
@@ -469,7 +469,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.DescribeJobExecutionRequest.include_job_document">
-<code class="sig-name descname">include_job_document</code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.include_job_document" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">include_job_document</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.include_job_document" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>bool</p>
@@ -479,7 +479,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.DescribeJobExecutionRequest.job_id">
-<code class="sig-name descname">job_id</code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.job_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">job_id</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -489,7 +489,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.DescribeJobExecutionRequest.thing_name">
-<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -501,7 +501,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.DescribeJobExecutionResponse">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">DescribeJobExecutionResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionResponse" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">DescribeJobExecutionResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -514,7 +514,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.DescribeJobExecutionResponse.client_token">
-<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionResponse.client_token" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionResponse.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -524,7 +524,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.DescribeJobExecutionResponse.execution">
-<code class="sig-name descname">execution</code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionResponse.execution" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">execution</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionResponse.execution" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotjobs.JobExecutionData" title="awsiot.iotjobs.JobExecutionData">JobExecutionData</a></p>
@@ -534,7 +534,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.DescribeJobExecutionResponse.timestamp">
-<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionResponse.timestamp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionResponse.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -546,7 +546,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">DescribeJobExecutionSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">DescribeJobExecutionSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -558,7 +558,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest.job_id">
-<code class="sig-name descname">job_id</code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest.job_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">job_id</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -568,7 +568,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest.thing_name">
-<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -580,7 +580,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsRequest">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">GetPendingJobExecutionsRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsRequest" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">GetPendingJobExecutionsRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -592,7 +592,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsRequest.client_token">
-<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsRequest.client_token" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -602,7 +602,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsRequest.thing_name">
-<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -614,7 +614,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsResponse">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">GetPendingJobExecutionsResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">GetPendingJobExecutionsResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -628,7 +628,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsResponse.client_token">
-<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse.client_token" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -638,7 +638,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsResponse.in_progress_jobs">
-<code class="sig-name descname">in_progress_jobs</code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse.in_progress_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">in_progress_jobs</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse.in_progress_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>typing.List[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]</p>
@@ -648,7 +648,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsResponse.queued_jobs">
-<code class="sig-name descname">queued_jobs</code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse.queued_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">queued_jobs</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse.queued_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>typing.List[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]</p>
@@ -658,7 +658,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsResponse.timestamp">
-<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse.timestamp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -670,7 +670,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">GetPendingJobExecutionsSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">GetPendingJobExecutionsSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -679,7 +679,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest.thing_name">
-<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -691,7 +691,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.JobExecutionData">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">JobExecutionData</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">JobExecutionData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -711,7 +711,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionData.execution_number">
-<code class="sig-name descname">execution_number</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.execution_number" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">execution_number</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.execution_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
@@ -721,7 +721,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionData.job_document">
-<code class="sig-name descname">job_document</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.job_document" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">job_document</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.job_document" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
@@ -731,7 +731,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionData.job_id">
-<code class="sig-name descname">job_id</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.job_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">job_id</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -741,7 +741,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionData.last_updated_at">
-<code class="sig-name descname">last_updated_at</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.last_updated_at" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">last_updated_at</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.last_updated_at" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -751,7 +751,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionData.queued_at">
-<code class="sig-name descname">queued_at</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.queued_at" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">queued_at</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.queued_at" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -761,7 +761,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionData.started_at">
-<code class="sig-name descname">started_at</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.started_at" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">started_at</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.started_at" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -771,7 +771,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionData.status">
-<code class="sig-name descname">status</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.status" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">status</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.status" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -781,7 +781,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionData.status_details">
-<code class="sig-name descname">status_details</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.status_details" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">status_details</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.status_details" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>typing.Dict[str, str]</p>
@@ -791,7 +791,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionData.thing_name">
-<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.thing_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -801,7 +801,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionData.version_number">
-<code class="sig-name descname">version_number</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.version_number" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">version_number</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.version_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
@@ -813,7 +813,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.JobExecutionState">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">JobExecutionState</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">JobExecutionState</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -826,7 +826,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionState.status">
-<code class="sig-name descname">status</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState.status" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">status</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState.status" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -836,7 +836,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionState.status_details">
-<code class="sig-name descname">status_details</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState.status_details" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">status_details</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState.status_details" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>typing.Dict[str, str]</p>
@@ -846,7 +846,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionState.version_number">
-<code class="sig-name descname">version_number</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState.version_number" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">version_number</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState.version_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
@@ -858,7 +858,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.JobExecutionSummary">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">JobExecutionSummary</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">JobExecutionSummary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -874,7 +874,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionSummary.execution_number">
-<code class="sig-name descname">execution_number</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.execution_number" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">execution_number</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.execution_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
@@ -884,7 +884,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionSummary.job_id">
-<code class="sig-name descname">job_id</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.job_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">job_id</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -894,7 +894,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionSummary.last_updated_at">
-<code class="sig-name descname">last_updated_at</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.last_updated_at" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">last_updated_at</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.last_updated_at" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -904,7 +904,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionSummary.queued_at">
-<code class="sig-name descname">queued_at</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.queued_at" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">queued_at</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.queued_at" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -914,7 +914,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionSummary.started_at">
-<code class="sig-name descname">started_at</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.started_at" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">started_at</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.started_at" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -924,7 +924,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionSummary.version_number">
-<code class="sig-name descname">version_number</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.version_number" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">version_number</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.version_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
@@ -936,7 +936,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.JobExecutionsChangedEvent">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">JobExecutionsChangedEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedEvent" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">JobExecutionsChangedEvent</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -948,7 +948,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionsChangedEvent.jobs">
-<code class="sig-name descname">jobs</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedEvent.jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">jobs</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedEvent.jobs" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>typing.Dict[str, typing.List[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]]</p>
@@ -958,7 +958,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionsChangedEvent.timestamp">
-<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedEvent.timestamp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedEvent.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -970,7 +970,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">JobExecutionsChangedSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">JobExecutionsChangedSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -979,7 +979,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest.thing_name">
-<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -991,7 +991,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.NextJobExecutionChangedEvent">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">NextJobExecutionChangedEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedEvent" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">NextJobExecutionChangedEvent</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -1003,7 +1003,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.NextJobExecutionChangedEvent.execution">
-<code class="sig-name descname">execution</code><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedEvent.execution" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">execution</span></code><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedEvent.execution" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotjobs.JobExecutionData" title="awsiot.iotjobs.JobExecutionData">JobExecutionData</a></p>
@@ -1013,7 +1013,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.NextJobExecutionChangedEvent.timestamp">
-<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedEvent.timestamp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedEvent.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -1025,7 +1025,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">NextJobExecutionChangedSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">NextJobExecutionChangedSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -1034,7 +1034,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest.thing_name">
-<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1046,7 +1046,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.RejectedError">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">RejectedError</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.RejectedError" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">RejectedError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.RejectedError" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -1061,7 +1061,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.RejectedError.client_token">
-<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.client_token" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1071,7 +1071,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.RejectedError.code">
-<code class="sig-name descname">code</code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.code" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">code</span></code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.code" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1081,7 +1081,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.RejectedError.execution_state">
-<code class="sig-name descname">execution_state</code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.execution_state" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">execution_state</span></code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.execution_state" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotjobs.JobExecutionState" title="awsiot.iotjobs.JobExecutionState">JobExecutionState</a></p>
@@ -1091,7 +1091,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.RejectedError.message">
-<code class="sig-name descname">message</code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">message</span></code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.message" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1101,7 +1101,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.RejectedError.timestamp">
-<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.timestamp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -1113,7 +1113,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.StartNextJobExecutionResponse">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">StartNextJobExecutionResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.StartNextJobExecutionResponse" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">StartNextJobExecutionResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.StartNextJobExecutionResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -1126,7 +1126,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.StartNextJobExecutionResponse.client_token">
-<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotjobs.StartNextJobExecutionResponse.client_token" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextJobExecutionResponse.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1136,7 +1136,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.StartNextJobExecutionResponse.execution">
-<code class="sig-name descname">execution</code><a class="headerlink" href="#awsiot.iotjobs.StartNextJobExecutionResponse.execution" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">execution</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextJobExecutionResponse.execution" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotjobs.JobExecutionData" title="awsiot.iotjobs.JobExecutionData">JobExecutionData</a></p>
@@ -1146,7 +1146,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.StartNextJobExecutionResponse.timestamp">
-<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotjobs.StartNextJobExecutionResponse.timestamp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextJobExecutionResponse.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -1158,7 +1158,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.StartNextPendingJobExecutionRequest">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">StartNextPendingJobExecutionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">StartNextPendingJobExecutionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -1172,7 +1172,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.StartNextPendingJobExecutionRequest.client_token">
-<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest.client_token" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1182,7 +1182,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.StartNextPendingJobExecutionRequest.status_details">
-<code class="sig-name descname">status_details</code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest.status_details" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">status_details</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest.status_details" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>typing.Dict[str, str]</p>
@@ -1192,7 +1192,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.StartNextPendingJobExecutionRequest.step_timeout_in_minutes">
-<code class="sig-name descname">step_timeout_in_minutes</code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest.step_timeout_in_minutes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">step_timeout_in_minutes</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest.step_timeout_in_minutes" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
@@ -1202,7 +1202,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.StartNextPendingJobExecutionRequest.thing_name">
-<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1214,7 +1214,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">StartNextPendingJobExecutionSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">StartNextPendingJobExecutionSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -1223,7 +1223,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest.thing_name">
-<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1235,7 +1235,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.UpdateJobExecutionRequest">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">UpdateJobExecutionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">UpdateJobExecutionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -1255,7 +1255,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionRequest.client_token">
-<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.client_token" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1265,7 +1265,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionRequest.execution_number">
-<code class="sig-name descname">execution_number</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.execution_number" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">execution_number</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.execution_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
@@ -1275,7 +1275,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionRequest.expected_version">
-<code class="sig-name descname">expected_version</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.expected_version" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">expected_version</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.expected_version" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
@@ -1285,7 +1285,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionRequest.include_job_document">
-<code class="sig-name descname">include_job_document</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.include_job_document" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">include_job_document</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.include_job_document" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>bool</p>
@@ -1295,7 +1295,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionRequest.include_job_execution_state">
-<code class="sig-name descname">include_job_execution_state</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.include_job_execution_state" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">include_job_execution_state</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.include_job_execution_state" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>bool</p>
@@ -1305,7 +1305,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionRequest.job_id">
-<code class="sig-name descname">job_id</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.job_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">job_id</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1315,7 +1315,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionRequest.status">
-<code class="sig-name descname">status</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.status" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">status</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.status" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1325,7 +1325,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionRequest.status_details">
-<code class="sig-name descname">status_details</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.status_details" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">status_details</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.status_details" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>typing.Dict[str, str]</p>
@@ -1335,7 +1335,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionRequest.step_timeout_in_minutes">
-<code class="sig-name descname">step_timeout_in_minutes</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.step_timeout_in_minutes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">step_timeout_in_minutes</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.step_timeout_in_minutes" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
@@ -1345,7 +1345,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionRequest.thing_name">
-<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1357,7 +1357,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.UpdateJobExecutionResponse">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">UpdateJobExecutionResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">UpdateJobExecutionResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -1371,7 +1371,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionResponse.client_token">
-<code class="sig-name descname">client_token</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse.client_token" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1381,7 +1381,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionResponse.execution_state">
-<code class="sig-name descname">execution_state</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse.execution_state" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">execution_state</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse.execution_state" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#awsiot.iotjobs.JobExecutionState" title="awsiot.iotjobs.JobExecutionState">JobExecutionState</a></p>
@@ -1391,7 +1391,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionResponse.job_document">
-<code class="sig-name descname">job_document</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse.job_document" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">job_document</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse.job_document" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
@@ -1401,7 +1401,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionResponse.timestamp">
-<code class="sig-name descname">timestamp</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse.timestamp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>datetime.datetime</p>
@@ -1413,7 +1413,7 @@ subscription is acknowledged.</p>
 
 <dl class="py class">
 <dt id="awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest">
-<em class="property">class </em><code class="sig-prename descclassname">awsiot.iotjobs.</code><code class="sig-name descname">UpdateJobExecutionSubscriptionRequest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">UpdateJobExecutionSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -1425,7 +1425,7 @@ subscription is acknowledged.</p>
 </dl>
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest.job_id">
-<code class="sig-name descname">job_id</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest.job_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">job_id</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1435,7 +1435,7 @@ subscription is acknowledged.</p>
 
 <dl class="py attribute">
 <dt id="awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest.thing_name">
-<code class="sig-name descname">thing_name</code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1502,7 +1502,7 @@ subscription is acknowledged.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Amazon Web Services, Inc.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.1.
     </div>
   </body>
 </html>
