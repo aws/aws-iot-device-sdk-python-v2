@@ -94,10 +94,10 @@ class LifecycleHandler:
     Inherit from this class and override methods to handle connection events.
     All callbacks for this connection will be invoked on the same thread.
     If the connection attempt fails, no callbacks will be invoked.
-    If the connection attempt succeeds, on_connect() will be the first callback
-    invoked and on_disconnect() will always be the last.
+    If the connection attempt succeeds, :meth:`on_connect()` will be the first callback
+    invoked and :meth:`on_disconnect()` will always be the last.
 
-    Note that an open network connection MUST be closed via Connection.close()
+    Note that an open network connection MUST be closed via :meth:`Connection.close()`
     to avoid leaking resources.
     """
 
@@ -118,7 +118,7 @@ class LifecycleHandler:
         This will not be invoked if the connection attempt failed.
 
         Args:
-            reason: Reason will be None if the user initiated the shutdown,
+            reason: Reason will be `None` if the user initiated the shutdown,
                 otherwise the reason will be an Exception.
         """
         pass
@@ -154,13 +154,16 @@ class MessageAmendment:
     """
 
     def __init__(self, *, headers: Optional[Sequence[Header]] = None, payload: Optional[bytes] = None):
-        self.headers = headers
-        self.payload = payload
+        #: Headers to add
+        self.headers: Optional[Sequence[Header]] = headers
+
+        #: Binary payload data
+        self.payload: Optional[bytes] = payload
 
     @staticmethod
     def create_static_authtoken_amender(authtoken: str) -> Callable[[], 'MessageAmendment']:
         """
-        Create function that amends payload: b'{"authToken": "..."}'
+        Create function that amends payload: `b'{"authToken": "..."}'`
 
         Args:
             authtoken: value of "authToken" in the payload.
@@ -168,8 +171,8 @@ class MessageAmendment:
                 is called multiple times over the life of the application.
 
         Returns:
-            The result is appropriate for passing to the Connection's
-            connect_message_amender init arg.
+            The result is appropriate for passing to the :class:`Connection`'s
+            `connect_message_amender` init arg.
         """
         def _amend():
             payload_str = '{"authToken": "%s"}' % authtoken
@@ -334,7 +337,7 @@ class Connection:
     Reconnect is possible by calling connect() again after the connection
     has finished closing/disconnecting.
 
-    Keyword Args:
+    Args:
         host_name: Remote host name.
 
         port: Remote port.
@@ -347,6 +350,12 @@ class Connection:
         tls_connection_options: Optional TLS connection options.
             If None is provided, then the connection will be attempted over
             plain-text.
+
+        connect_message_amender: Optional callable that should return a
+            :class:`MessageAmendment` for the
+            :attr:`~awscrt.eventstream.rpc.MessageType.CONNECT` message.
+            This callable will be invoked whenever a network connection is
+            being established.
     """
 
     class _Synced:
@@ -448,12 +457,12 @@ class Connection:
         is already closed or closing.
 
         Args:
-            reason (Optional[Exception]): If set, the connection will
+            reason: If set, the connection will
                 close with this error as the reason (unless
                 it was already closing for another reason).
 
         Returns:
-            concurrent.futures.Future: The future which will complete
+            The future which will complete
             when the shutdown process is done. The future will have an
             exception if shutdown was caused by an error, or a result
             of None if the shutdown was clean and user-initiated.

@@ -54,12 +54,10 @@
 <dl class="py class">
 <dt id="awsiot.iotidentity.IotIdentityClient">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotidentity.</span></code><code class="sig-name descname"><span class="pre">IotIdentityClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mqtt_connection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotidentity.IotIdentityClient" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.MqttServiceClient" title="awsiot.MqttServiceClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.MqttServiceClient</span></code></a></p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mqtt_connection</strong> (<em>mqtt.Connection</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p><strong>mqtt_connection</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><em>awscrt.mqtt.Connection</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py method">
@@ -70,7 +68,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrRequest" title="awsiot.iotidentity.CreateCertificateFromCsrRequest"><em>awsiot.iotidentity.CreateCertificateFromCsrRequest</em></a>) – <cite>CreateCertificateFromCsrRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -92,7 +90,7 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateRequest" title="awsiot.iotidentity.CreateKeysAndCertificateRequest"><em>awsiot.iotidentity.CreateKeysAndCertificateRequest</em></a>) – <cite>CreateKeysAndCertificateRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -114,7 +112,7 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.RegisterThingRequest" title="awsiot.iotidentity.RegisterThingRequest"><em>awsiot.iotidentity.RegisterThingRequest</em></a>) – <cite>RegisterThingRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -136,8 +134,8 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest" title="awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest"><em>awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest</em></a>) – <cite>CreateCertificateFromCsrSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrResponse" title="awsiot.iotidentity.CreateCertificateFromCsrResponse"><em>awsiot.iotidentity.CreateCertificateFromCsrResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrResponse" title="awsiot.iotidentity.CreateCertificateFromCsrResponse"><em>awsiot.iotidentity.CreateCertificateFromCsrResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>CreateCertificateFromCsrResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -151,7 +149,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -164,8 +162,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest" title="awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest"><em>awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest</em></a>) – <cite>CreateCertificateFromCsrSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -179,7 +177,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -192,8 +190,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest" title="awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest"><em>awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest</em></a>) – <cite>CreateKeysAndCertificateSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateResponse" title="awsiot.iotidentity.CreateKeysAndCertificateResponse"><em>awsiot.iotidentity.CreateKeysAndCertificateResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateResponse" title="awsiot.iotidentity.CreateKeysAndCertificateResponse"><em>awsiot.iotidentity.CreateKeysAndCertificateResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>CreateKeysAndCertificateResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -207,7 +205,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -220,8 +218,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest" title="awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest"><em>awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest</em></a>) – <cite>CreateKeysAndCertificateSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -235,7 +233,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -248,8 +246,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.RegisterThingSubscriptionRequest" title="awsiot.iotidentity.RegisterThingSubscriptionRequest"><em>awsiot.iotidentity.RegisterThingSubscriptionRequest</em></a>) – <cite>RegisterThingSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.RegisterThingResponse" title="awsiot.iotidentity.RegisterThingResponse"><em>awsiot.iotidentity.RegisterThingResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.RegisterThingResponse" title="awsiot.iotidentity.RegisterThingResponse"><em>awsiot.iotidentity.RegisterThingResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>RegisterThingResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -263,7 +261,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -276,8 +274,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.RegisterThingSubscriptionRequest" title="awsiot.iotidentity.RegisterThingSubscriptionRequest"><em>awsiot.iotidentity.RegisterThingSubscriptionRequest</em></a>) – <cite>RegisterThingSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -291,7 +289,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -301,10 +299,11 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotidentity.CreateCertificateFromCsrRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotidentity.</span></code><code class="sig-name descname"><span class="pre">CreateCertificateFromCsrRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotidentity.CreateCertificateFromCsrRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>certificate_signing_request</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>certificate_signing_request</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -312,7 +311,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">certificate_signing_request</span></code><a class="headerlink" href="#awsiot.iotidentity.CreateCertificateFromCsrRequest.certificate_signing_request" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -322,13 +321,14 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotidentity.CreateCertificateFromCsrResponse">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotidentity.</span></code><code class="sig-name descname"><span class="pre">CreateCertificateFromCsrResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotidentity.CreateCertificateFromCsrResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>certificate_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>certificate_ownership_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>certificate_pem</strong> (<em>str</em>) – </p></li>
+<li><p><strong>certificate_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>certificate_ownership_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>certificate_pem</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -337,7 +337,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">certificate_id</span></code><a class="headerlink" href="#awsiot.iotidentity.CreateCertificateFromCsrResponse.certificate_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -347,7 +347,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">certificate_ownership_token</span></code><a class="headerlink" href="#awsiot.iotidentity.CreateCertificateFromCsrResponse.certificate_ownership_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -357,7 +357,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">certificate_pem</span></code><a class="headerlink" href="#awsiot.iotidentity.CreateCertificateFromCsrResponse.certificate_pem" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -367,26 +367,29 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotidentity.</span></code><code class="sig-name descname"><span class="pre">CreateCertificateFromCsrSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class has no attributes.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>This class has no attributes.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="awsiot.iotidentity.CreateKeysAndCertificateRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotidentity.</span></code><code class="sig-name descname"><span class="pre">CreateKeysAndCertificateRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotidentity.CreateKeysAndCertificateRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class has no attributes.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>This class has no attributes.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="awsiot.iotidentity.CreateKeysAndCertificateResponse">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotidentity.</span></code><code class="sig-name descname"><span class="pre">CreateKeysAndCertificateResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotidentity.CreateKeysAndCertificateResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>certificate_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>certificate_ownership_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>certificate_pem</strong> (<em>str</em>) – </p></li>
-<li><p><strong>private_key</strong> (<em>str</em>) – </p></li>
+<li><p><strong>certificate_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>certificate_ownership_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>certificate_pem</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>private_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -395,7 +398,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">certificate_id</span></code><a class="headerlink" href="#awsiot.iotidentity.CreateKeysAndCertificateResponse.certificate_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -405,7 +408,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">certificate_ownership_token</span></code><a class="headerlink" href="#awsiot.iotidentity.CreateKeysAndCertificateResponse.certificate_ownership_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -415,7 +418,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">certificate_pem</span></code><a class="headerlink" href="#awsiot.iotidentity.CreateKeysAndCertificateResponse.certificate_pem" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -425,7 +428,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">private_key</span></code><a class="headerlink" href="#awsiot.iotidentity.CreateKeysAndCertificateResponse.private_key" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -435,19 +438,21 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotidentity.</span></code><code class="sig-name descname"><span class="pre">CreateKeysAndCertificateSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class has no attributes.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>This class has no attributes.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="awsiot.iotidentity.ErrorResponse">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotidentity.</span></code><code class="sig-name descname"><span class="pre">ErrorResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotidentity.ErrorResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>error_code</strong> (<em>str</em>) – </p></li>
-<li><p><strong>error_message</strong> (<em>str</em>) – </p></li>
-<li><p><strong>status_code</strong> (<em>int</em>) – </p></li>
+<li><p><strong>error_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>error_message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -456,7 +461,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">error_code</span></code><a class="headerlink" href="#awsiot.iotidentity.ErrorResponse.error_code" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -466,7 +471,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">error_message</span></code><a class="headerlink" href="#awsiot.iotidentity.ErrorResponse.error_message" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -476,7 +481,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">status_code</span></code><a class="headerlink" href="#awsiot.iotidentity.ErrorResponse.status_code" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -486,13 +491,14 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotidentity.RegisterThingRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotidentity.</span></code><code class="sig-name descname"><span class="pre">RegisterThingRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotidentity.RegisterThingRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>certificate_ownership_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>parameters</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>template_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>certificate_ownership_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>parameters</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>template_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -501,7 +507,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">certificate_ownership_token</span></code><a class="headerlink" href="#awsiot.iotidentity.RegisterThingRequest.certificate_ownership_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -511,7 +517,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">parameters</span></code><a class="headerlink" href="#awsiot.iotidentity.RegisterThingRequest.parameters" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, str]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -521,7 +527,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">template_name</span></code><a class="headerlink" href="#awsiot.iotidentity.RegisterThingRequest.template_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -531,12 +537,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotidentity.RegisterThingResponse">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotidentity.</span></code><code class="sig-name descname"><span class="pre">RegisterThingResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotidentity.RegisterThingResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>device_configuration</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>device_configuration</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -545,7 +552,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">device_configuration</span></code><a class="headerlink" href="#awsiot.iotidentity.RegisterThingResponse.device_configuration" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, str]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -555,7 +562,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotidentity.RegisterThingResponse.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -565,10 +572,11 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotidentity.RegisterThingSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotidentity.</span></code><code class="sig-name descname"><span class="pre">RegisterThingSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotidentity.RegisterThingSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>template_name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>template_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -576,7 +584,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">template_name</span></code><a class="headerlink" href="#awsiot.iotidentity.RegisterThingSubscriptionRequest.template_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>

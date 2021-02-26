@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 __all__ = [
+    'MqttServiceClient',
+    'ModeledClass',
     'iotjobs',
     'iotshadow',
     'greengrass_discovery',
@@ -19,28 +21,37 @@ T = TypeVar('T')
 PayloadObj = Dict[str, Any]
 PayloadToClassFn = Callable[[PayloadObj], T]
 
+
 class MqttServiceClient:
     """
     Base class for an AWS MQTT Service Client
+
+    Args:
+        mqtt_connection: MQTT connection to use
     """
 
-    def __init__(self, mqtt_connection):
-        # type: (mqtt.Connection) -> None
-        self._mqtt_connection = mqtt_connection # type: mqtt.Connection
+    def __init__(self, mqtt_connection: mqtt.Connection):
+        self._mqtt_connection: mqtt.Connection = mqtt_connection
 
     @property
-    def mqtt_connection(self):
+    def mqtt_connection(self) -> mqtt.Connection:
+        """
+        MQTT connection used by this client
+        """
         return self._mqtt_connection
 
-    def unsubscribe(self, topic):
-        # type: (str) -> Future
+    def unsubscribe(self, topic: str) -> Future:
         """
         Tell the MQTT server to stop sending messages to this topic.
 
-        Returns a `Future` whose result will be `None` when the server
-        has acknowledged the unsubscribe.
+        Args:
+            topic: Topic to unsubscribe from
+
+        Returns:
+            `Future` whose result will be `None` when the server
+            has acknowledged the unsubscribe.
         """
-        future = Future() # type: Future
+        future: Future = Future()
         try:
             def on_unsuback(unsuback_future):
                 if unsuback_future.exception():
@@ -56,8 +67,7 @@ class MqttServiceClient:
 
         return future
 
-    def _publish_operation(self, topic, qos, payload):
-        # type(str, int, Optional[PayloadObj]) -> Future
+    def _publish_operation(self, topic: str, qos: int, payload: Optional[PayloadObj]) -> Future:
         """
         Performs a 'Publish' style operation for an MQTT service.
 
@@ -71,7 +81,7 @@ class MqttServiceClient:
         server has acknowledged the message, or an exception if the
         publish fails.
         """
-        future = Future() # type: Future
+        future: Future = Future()
         try:
             def on_puback(puback_future):
                 if puback_future.exception():
@@ -96,8 +106,11 @@ class MqttServiceClient:
 
         return future
 
-    def _subscribe_operation(self, topic, qos, callback, payload_to_class_fn):
-        # type: (str, int, Callable[[T], None], PayloadToClassFn) -> Tuple[Future, str]
+    def _subscribe_operation(self,
+                             topic: str,
+                             qos: int,
+                             callback: Callable[[T], None],
+                             payload_to_class_fn: PayloadToClassFn) -> Tuple[Future, str]:
         """
         Performs a 'Subscribe' style operation for an MQTT service.
         Messages received from this topic are processed as JSON,
@@ -123,7 +136,7 @@ class MqttServiceClient:
         Note that messages may arrive before the subscription is acknowledged.
         """
 
-        future = Future() # type: Future
+        future: Future = Future()
         try:
             def on_suback(suback_future):
                 try:
@@ -136,7 +149,7 @@ class MqttServiceClient:
                 try:
                     payload_obj = json.loads(payload.decode())
                     event = payload_to_class_fn(payload_obj)
-                except:
+                except BaseException:
                     # can't deliver payload, invoke callback with None
                     event = None
                 callback(event)
@@ -152,6 +165,7 @@ class MqttServiceClient:
             future.set_exception(e)
 
         return future, topic
+
 
 class ModeledClass:
     """

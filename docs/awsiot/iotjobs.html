@@ -54,12 +54,10 @@
 <dl class="py class">
 <dt id="awsiot.iotjobs.IotJobsClient">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">IotJobsClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mqtt_connection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.IotJobsClient" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.MqttServiceClient" title="awsiot.MqttServiceClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.MqttServiceClient</span></code></a></p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mqtt_connection</strong> (<em>mqtt.Connection</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p><strong>mqtt_connection</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><em>awscrt.mqtt.Connection</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py method">
@@ -70,7 +68,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionRequest" title="awsiot.iotjobs.DescribeJobExecutionRequest"><em>awsiot.iotjobs.DescribeJobExecutionRequest</em></a>) – <cite>DescribeJobExecutionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -92,7 +90,7 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsRequest" title="awsiot.iotjobs.GetPendingJobExecutionsRequest"><em>awsiot.iotjobs.GetPendingJobExecutionsRequest</em></a>) – <cite>GetPendingJobExecutionsRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -114,7 +112,7 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest" title="awsiot.iotjobs.StartNextPendingJobExecutionRequest"><em>awsiot.iotjobs.StartNextPendingJobExecutionRequest</em></a>) – <cite>StartNextPendingJobExecutionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -136,7 +134,7 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionRequest" title="awsiot.iotjobs.UpdateJobExecutionRequest"><em>awsiot.iotjobs.UpdateJobExecutionRequest</em></a>) – <cite>UpdateJobExecutionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -158,8 +156,8 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest" title="awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest"><em>awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest</em></a>) – <cite>DescribeJobExecutionSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionResponse" title="awsiot.iotjobs.DescribeJobExecutionResponse"><em>awsiot.iotjobs.DescribeJobExecutionResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionResponse" title="awsiot.iotjobs.DescribeJobExecutionResponse"><em>awsiot.iotjobs.DescribeJobExecutionResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>DescribeJobExecutionResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -173,7 +171,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -186,8 +184,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest" title="awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest"><em>awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest</em></a>) – <cite>DescribeJobExecutionSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>RejectedError</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -201,7 +199,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -214,8 +212,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest" title="awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest"><em>awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest</em></a>) – <cite>GetPendingJobExecutionsSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse" title="awsiot.iotjobs.GetPendingJobExecutionsResponse"><em>awsiot.iotjobs.GetPendingJobExecutionsResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse" title="awsiot.iotjobs.GetPendingJobExecutionsResponse"><em>awsiot.iotjobs.GetPendingJobExecutionsResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>GetPendingJobExecutionsResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -229,7 +227,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -242,8 +240,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest" title="awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest"><em>awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest</em></a>) – <cite>GetPendingJobExecutionsSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>RejectedError</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -257,7 +255,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -270,8 +268,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest" title="awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest"><em>awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest</em></a>) – <cite>JobExecutionsChangedSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionsChangedEvent" title="awsiot.iotjobs.JobExecutionsChangedEvent"><em>awsiot.iotjobs.JobExecutionsChangedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionsChangedEvent" title="awsiot.iotjobs.JobExecutionsChangedEvent"><em>awsiot.iotjobs.JobExecutionsChangedEvent</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>JobExecutionsChangedEvent</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -285,7 +283,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -298,8 +296,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest" title="awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest"><em>awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest</em></a>) – <cite>NextJobExecutionChangedSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.NextJobExecutionChangedEvent" title="awsiot.iotjobs.NextJobExecutionChangedEvent"><em>awsiot.iotjobs.NextJobExecutionChangedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.NextJobExecutionChangedEvent" title="awsiot.iotjobs.NextJobExecutionChangedEvent"><em>awsiot.iotjobs.NextJobExecutionChangedEvent</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>NextJobExecutionChangedEvent</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -313,7 +311,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -326,8 +324,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest" title="awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest"><em>awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest</em></a>) – <cite>StartNextPendingJobExecutionSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.StartNextJobExecutionResponse" title="awsiot.iotjobs.StartNextJobExecutionResponse"><em>awsiot.iotjobs.StartNextJobExecutionResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.StartNextJobExecutionResponse" title="awsiot.iotjobs.StartNextJobExecutionResponse"><em>awsiot.iotjobs.StartNextJobExecutionResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>StartNextJobExecutionResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -341,7 +339,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -354,8 +352,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest" title="awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest"><em>awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest</em></a>) – <cite>StartNextPendingJobExecutionSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>RejectedError</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -369,7 +367,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -382,8 +380,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest" title="awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest"><em>awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest</em></a>) – <cite>UpdateJobExecutionSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionResponse" title="awsiot.iotjobs.UpdateJobExecutionResponse"><em>awsiot.iotjobs.UpdateJobExecutionResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionResponse" title="awsiot.iotjobs.UpdateJobExecutionResponse"><em>awsiot.iotjobs.UpdateJobExecutionResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>UpdateJobExecutionResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -397,7 +395,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -410,8 +408,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest" title="awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest"><em>awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest</em></a>) – <cite>UpdateJobExecutionSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>RejectedError</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -425,7 +423,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -435,15 +433,16 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.DescribeJobExecutionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">DescribeJobExecutionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>execution_number</strong> (<em>int</em>) – </p></li>
-<li><p><strong>include_job_document</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>job_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>execution_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
+<li><p><strong>include_job_document</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – </p></li>
+<li><p><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -452,7 +451,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -462,7 +461,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">execution_number</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.execution_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -472,7 +471,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">include_job_document</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.include_job_document" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -482,7 +481,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">job_id</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -492,7 +491,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -502,13 +501,14 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.DescribeJobExecutionResponse">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">DescribeJobExecutionResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 <li><p><strong>execution</strong> (<a class="reference internal" href="#awsiot.iotjobs.JobExecutionData" title="awsiot.iotjobs.JobExecutionData"><em>JobExecutionData</em></a>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -517,7 +517,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionResponse.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -537,7 +537,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionResponse.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -547,12 +547,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">DescribeJobExecutionSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>job_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -561,7 +562,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">job_id</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -571,7 +572,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -581,12 +582,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">GetPendingJobExecutionsRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -595,7 +597,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -605,7 +607,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -615,14 +617,15 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsResponse">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">GetPendingJobExecutionsResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>in_progress_jobs</strong> (<em>typing.List</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary"><em>JobExecutionSummary</em></a><em>]</em>) – </p></li>
-<li><p><strong>queued_jobs</strong> (<em>typing.List</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary"><em>JobExecutionSummary</em></a><em>]</em>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>in_progress_jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.9)"><em>typing.List</em></a><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary"><em>JobExecutionSummary</em></a><em>]</em>) – </p></li>
+<li><p><strong>queued_jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.9)"><em>typing.List</em></a><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary"><em>JobExecutionSummary</em></a><em>]</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -631,7 +634,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -641,7 +644,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">in_progress_jobs</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse.in_progress_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.List[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.9)">typing.List</a>[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -651,7 +654,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">queued_jobs</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse.queued_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.List[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.9)">typing.List</a>[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -661,7 +664,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -671,10 +674,11 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">GetPendingJobExecutionsSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -682,7 +686,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -692,20 +696,21 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.JobExecutionData">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">JobExecutionData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>execution_number</strong> (<em>int</em>) – </p></li>
-<li><p><strong>job_document</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
-<li><p><strong>job_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>last_updated_at</strong> (<em>datetime.datetime</em>) – </p></li>
-<li><p><strong>queued_at</strong> (<em>datetime.datetime</em>) – </p></li>
-<li><p><strong>started_at</strong> (<em>datetime.datetime</em>) – </p></li>
-<li><p><strong>status</strong> (<em>str</em>) – </p></li>
-<li><p><strong>status_details</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>version_number</strong> (<em>int</em>) – </p></li>
+<li><p><strong>execution_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
+<li><p><strong>job_document</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><em>typing.Any</em></a><em>]</em>) – </p></li>
+<li><p><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>last_updated_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
+<li><p><strong>queued_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
+<li><p><strong>started_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
+<li><p><strong>status</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>status_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>version_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -714,7 +719,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">execution_number</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.execution_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -724,7 +729,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">job_document</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.job_document" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, typing.Any]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -734,7 +739,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">job_id</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -744,7 +749,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">last_updated_at</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.last_updated_at" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -754,7 +759,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">queued_at</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.queued_at" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -764,7 +769,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">started_at</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.started_at" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -774,7 +779,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">status</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.status" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -784,7 +789,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">status_details</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.status_details" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, str]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -794,7 +799,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -804,7 +809,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">version_number</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionData.version_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -814,13 +819,14 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.JobExecutionState">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">JobExecutionState</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>status</strong> (<em>str</em>) – </p></li>
-<li><p><strong>status_details</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>version_number</strong> (<em>int</em>) – </p></li>
+<li><p><strong>status</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>status_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>version_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -829,7 +835,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">status</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState.status" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -839,7 +845,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">status_details</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState.status_details" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, str]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -849,7 +855,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">version_number</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionState.version_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -859,16 +865,17 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.JobExecutionSummary">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">JobExecutionSummary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>execution_number</strong> (<em>int</em>) – </p></li>
-<li><p><strong>job_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>last_updated_at</strong> (<em>datetime.datetime</em>) – </p></li>
-<li><p><strong>queued_at</strong> (<em>datetime.datetime</em>) – </p></li>
-<li><p><strong>started_at</strong> (<em>datetime.datetime</em>) – </p></li>
-<li><p><strong>version_number</strong> (<em>int</em>) – </p></li>
+<li><p><strong>execution_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
+<li><p><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>last_updated_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
+<li><p><strong>queued_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
+<li><p><strong>started_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
+<li><p><strong>version_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -877,7 +884,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">execution_number</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.execution_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -887,7 +894,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">job_id</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -897,7 +904,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">last_updated_at</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.last_updated_at" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -907,7 +914,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">queued_at</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.queued_at" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -917,7 +924,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">started_at</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.started_at" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -927,7 +934,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">version_number</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionSummary.version_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -937,12 +944,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.JobExecutionsChangedEvent">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">JobExecutionsChangedEvent</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedEvent" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>jobs</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.List</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary"><em>JobExecutionSummary</em></a><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.9)"><em>typing.List</em></a><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary"><em>JobExecutionSummary</em></a><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -951,7 +959,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">jobs</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedEvent.jobs" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, typing.List[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.9)">typing.List</a>[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -961,7 +969,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedEvent.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -971,10 +979,11 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">JobExecutionsChangedSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -982,7 +991,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -992,12 +1001,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.NextJobExecutionChangedEvent">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">NextJobExecutionChangedEvent</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedEvent" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>execution</strong> (<a class="reference internal" href="#awsiot.iotjobs.JobExecutionData" title="awsiot.iotjobs.JobExecutionData"><em>JobExecutionData</em></a>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1016,7 +1026,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedEvent.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1026,10 +1036,11 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">NextJobExecutionChangedSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -1037,7 +1048,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1047,15 +1058,16 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.RejectedError">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">RejectedError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.RejectedError" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>code</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 <li><p><strong>execution_state</strong> (<a class="reference internal" href="#awsiot.iotjobs.JobExecutionState" title="awsiot.iotjobs.JobExecutionState"><em>JobExecutionState</em></a>) – </p></li>
-<li><p><strong>message</strong> (<em>str</em>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1064,7 +1076,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1074,7 +1086,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">code</span></code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.code" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1094,7 +1106,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">message</span></code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.message" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1104,7 +1116,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.RejectedError.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1114,13 +1126,14 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.StartNextJobExecutionResponse">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">StartNextJobExecutionResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.StartNextJobExecutionResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 <li><p><strong>execution</strong> (<a class="reference internal" href="#awsiot.iotjobs.JobExecutionData" title="awsiot.iotjobs.JobExecutionData"><em>JobExecutionData</em></a>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1129,7 +1142,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextJobExecutionResponse.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1149,7 +1162,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextJobExecutionResponse.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1159,14 +1172,15 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.StartNextPendingJobExecutionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">StartNextPendingJobExecutionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>status_details</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>step_timeout_in_minutes</strong> (<em>int</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>status_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>step_timeout_in_minutes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1175,7 +1189,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1185,7 +1199,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">status_details</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest.status_details" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, str]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1195,7 +1209,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">step_timeout_in_minutes</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest.step_timeout_in_minutes" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1205,7 +1219,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1215,10 +1229,11 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">StartNextPendingJobExecutionSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -1226,7 +1241,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1236,20 +1251,21 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.UpdateJobExecutionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">UpdateJobExecutionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>execution_number</strong> (<em>int</em>) – </p></li>
-<li><p><strong>expected_version</strong> (<em>int</em>) – </p></li>
-<li><p><strong>include_job_document</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>include_job_execution_state</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>job_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>status</strong> (<em>str</em>) – </p></li>
-<li><p><strong>status_details</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>step_timeout_in_minutes</strong> (<em>int</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>execution_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
+<li><p><strong>expected_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
+<li><p><strong>include_job_document</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – </p></li>
+<li><p><strong>include_job_execution_state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – </p></li>
+<li><p><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>status</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>status_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>step_timeout_in_minutes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1258,7 +1274,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1268,7 +1284,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">execution_number</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.execution_number" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1278,7 +1294,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">expected_version</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.expected_version" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1288,7 +1304,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">include_job_document</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.include_job_document" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1298,7 +1314,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">include_job_execution_state</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.include_job_execution_state" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1308,7 +1324,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">job_id</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1318,7 +1334,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">status</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.status" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1328,7 +1344,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">status_details</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.status_details" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, str]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1338,7 +1354,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">step_timeout_in_minutes</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.step_timeout_in_minutes" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1348,7 +1364,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1358,14 +1374,15 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.UpdateJobExecutionResponse">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">UpdateJobExecutionResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 <li><p><strong>execution_state</strong> (<a class="reference internal" href="#awsiot.iotjobs.JobExecutionState" title="awsiot.iotjobs.JobExecutionState"><em>JobExecutionState</em></a>) – </p></li>
-<li><p><strong>job_document</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>job_document</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><em>typing.Any</em></a><em>]</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1374,7 +1391,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1394,7 +1411,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">job_document</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse.job_document" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, typing.Any]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1404,7 +1421,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionResponse.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1414,12 +1431,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotjobs.</span></code><code class="sig-name descname"><span class="pre">UpdateJobExecutionSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>job_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1428,7 +1446,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">job_id</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1438,7 +1456,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>

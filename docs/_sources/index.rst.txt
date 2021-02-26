@@ -19,6 +19,8 @@ API Reference
 .. toctree::
    :maxdepth: 2
 
+   awsiot/awsiot
+   awsiot/eventstreamrpc
    awsiot/greengrasscoreipc
    awsiot/greengrass_discovery
    awsiot/iotidentity

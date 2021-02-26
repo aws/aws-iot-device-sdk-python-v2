@@ -50,12 +50,10 @@
 <dl class="py class">
 <dt id="awsiot.iotshadow.IotShadowClient">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">IotShadowClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mqtt_connection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.IotShadowClient" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.MqttServiceClient" title="awsiot.MqttServiceClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.MqttServiceClient</span></code></a></p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mqtt_connection</strong> (<em>mqtt.Connection</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p><strong>mqtt_connection</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><em>awscrt.mqtt.Connection</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py method">
@@ -66,7 +64,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteNamedShadowRequest" title="awsiot.iotshadow.DeleteNamedShadowRequest"><em>awsiot.iotshadow.DeleteNamedShadowRequest</em></a>) – <cite>DeleteNamedShadowRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -88,7 +86,7 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteShadowRequest" title="awsiot.iotshadow.DeleteShadowRequest"><em>awsiot.iotshadow.DeleteShadowRequest</em></a>) – <cite>DeleteShadowRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -110,7 +108,7 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetNamedShadowRequest" title="awsiot.iotshadow.GetNamedShadowRequest"><em>awsiot.iotshadow.GetNamedShadowRequest</em></a>) – <cite>GetNamedShadowRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -132,7 +130,7 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetShadowRequest" title="awsiot.iotshadow.GetShadowRequest"><em>awsiot.iotshadow.GetShadowRequest</em></a>) – <cite>GetShadowRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -154,7 +152,7 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateNamedShadowRequest" title="awsiot.iotshadow.UpdateNamedShadowRequest"><em>awsiot.iotshadow.UpdateNamedShadowRequest</em></a>) – <cite>UpdateNamedShadowRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -176,7 +174,7 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateShadowRequest" title="awsiot.iotshadow.UpdateShadowRequest"><em>awsiot.iotshadow.UpdateShadowRequest</em></a>) – <cite>UpdateShadowRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -198,8 +196,8 @@ exception if the request cannot be published.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest" title="awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest</em></a>) – <cite>DeleteNamedShadowSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.DeleteShadowResponse" title="awsiot.iotshadow.DeleteShadowResponse"><em>awsiot.iotshadow.DeleteShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.DeleteShadowResponse" title="awsiot.iotshadow.DeleteShadowResponse"><em>awsiot.iotshadow.DeleteShadowResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>DeleteShadowResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -213,7 +211,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -226,8 +224,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest" title="awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest</em></a>) – <cite>DeleteNamedShadowSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -241,7 +239,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -254,8 +252,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteShadowSubscriptionRequest" title="awsiot.iotshadow.DeleteShadowSubscriptionRequest"><em>awsiot.iotshadow.DeleteShadowSubscriptionRequest</em></a>) – <cite>DeleteShadowSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.DeleteShadowResponse" title="awsiot.iotshadow.DeleteShadowResponse"><em>awsiot.iotshadow.DeleteShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.DeleteShadowResponse" title="awsiot.iotshadow.DeleteShadowResponse"><em>awsiot.iotshadow.DeleteShadowResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>DeleteShadowResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -269,7 +267,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -282,8 +280,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteShadowSubscriptionRequest" title="awsiot.iotshadow.DeleteShadowSubscriptionRequest"><em>awsiot.iotshadow.DeleteShadowSubscriptionRequest</em></a>) – <cite>DeleteShadowSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -297,7 +295,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -310,8 +308,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetNamedShadowSubscriptionRequest" title="awsiot.iotshadow.GetNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.GetNamedShadowSubscriptionRequest</em></a>) – <cite>GetNamedShadowSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.GetShadowResponse" title="awsiot.iotshadow.GetShadowResponse"><em>awsiot.iotshadow.GetShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.GetShadowResponse" title="awsiot.iotshadow.GetShadowResponse"><em>awsiot.iotshadow.GetShadowResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>GetShadowResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -325,7 +323,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -338,8 +336,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetNamedShadowSubscriptionRequest" title="awsiot.iotshadow.GetNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.GetNamedShadowSubscriptionRequest</em></a>) – <cite>GetNamedShadowSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -353,7 +351,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -366,8 +364,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetShadowSubscriptionRequest" title="awsiot.iotshadow.GetShadowSubscriptionRequest"><em>awsiot.iotshadow.GetShadowSubscriptionRequest</em></a>) – <cite>GetShadowSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.GetShadowResponse" title="awsiot.iotshadow.GetShadowResponse"><em>awsiot.iotshadow.GetShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.GetShadowResponse" title="awsiot.iotshadow.GetShadowResponse"><em>awsiot.iotshadow.GetShadowResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>GetShadowResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -381,7 +379,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -394,8 +392,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetShadowSubscriptionRequest" title="awsiot.iotshadow.GetShadowSubscriptionRequest"><em>awsiot.iotshadow.GetShadowSubscriptionRequest</em></a>) – <cite>GetShadowSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -409,7 +407,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -422,8 +420,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest" title="awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest"><em>awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest</em></a>) – <cite>NamedShadowDeltaUpdatedSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent" title="awsiot.iotshadow.ShadowDeltaUpdatedEvent"><em>awsiot.iotshadow.ShadowDeltaUpdatedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent" title="awsiot.iotshadow.ShadowDeltaUpdatedEvent"><em>awsiot.iotshadow.ShadowDeltaUpdatedEvent</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ShadowDeltaUpdatedEvent</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -437,7 +435,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -450,8 +448,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest" title="awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest"><em>awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest</em></a>) – <cite>NamedShadowUpdatedSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedEvent" title="awsiot.iotshadow.ShadowUpdatedEvent"><em>awsiot.iotshadow.ShadowUpdatedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedEvent" title="awsiot.iotshadow.ShadowUpdatedEvent"><em>awsiot.iotshadow.ShadowUpdatedEvent</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ShadowUpdatedEvent</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -465,7 +463,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -478,8 +476,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest" title="awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest"><em>awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest</em></a>) – <cite>ShadowDeltaUpdatedSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent" title="awsiot.iotshadow.ShadowDeltaUpdatedEvent"><em>awsiot.iotshadow.ShadowDeltaUpdatedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent" title="awsiot.iotshadow.ShadowDeltaUpdatedEvent"><em>awsiot.iotshadow.ShadowDeltaUpdatedEvent</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ShadowDeltaUpdatedEvent</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -493,7 +491,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -506,8 +504,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedSubscriptionRequest" title="awsiot.iotshadow.ShadowUpdatedSubscriptionRequest"><em>awsiot.iotshadow.ShadowUpdatedSubscriptionRequest</em></a>) – <cite>ShadowUpdatedSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedEvent" title="awsiot.iotshadow.ShadowUpdatedEvent"><em>awsiot.iotshadow.ShadowUpdatedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedEvent" title="awsiot.iotshadow.ShadowUpdatedEvent"><em>awsiot.iotshadow.ShadowUpdatedEvent</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ShadowUpdatedEvent</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -521,7 +519,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -534,8 +532,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest" title="awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest</em></a>) – <cite>UpdateNamedShadowSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.UpdateShadowResponse" title="awsiot.iotshadow.UpdateShadowResponse"><em>awsiot.iotshadow.UpdateShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.UpdateShadowResponse" title="awsiot.iotshadow.UpdateShadowResponse"><em>awsiot.iotshadow.UpdateShadowResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>UpdateShadowResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -549,7 +547,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -562,8 +560,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest" title="awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest</em></a>) – <cite>UpdateNamedShadowSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -577,7 +575,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -590,8 +588,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateShadowSubscriptionRequest" title="awsiot.iotshadow.UpdateShadowSubscriptionRequest"><em>awsiot.iotshadow.UpdateShadowSubscriptionRequest</em></a>) – <cite>UpdateShadowSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.UpdateShadowResponse" title="awsiot.iotshadow.UpdateShadowResponse"><em>awsiot.iotshadow.UpdateShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.UpdateShadowResponse" title="awsiot.iotshadow.UpdateShadowResponse"><em>awsiot.iotshadow.UpdateShadowResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>UpdateShadowResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -605,7 +603,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -618,8 +616,8 @@ subscription is acknowledged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateShadowSubscriptionRequest" title="awsiot.iotshadow.UpdateShadowSubscriptionRequest"><em>awsiot.iotshadow.UpdateShadowSubscriptionRequest</em></a>) – <cite>UpdateShadowSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<em>int</em>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -633,7 +631,7 @@ receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, str]</p>
+<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -643,13 +641,14 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.DeleteNamedShadowRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">DeleteNamedShadowRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>shadow_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -658,7 +657,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -668,7 +667,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">shadow_name</span></code><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -678,7 +677,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -688,12 +687,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">DeleteNamedShadowSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>shadow_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -702,7 +702,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">shadow_name</span></code><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -712,7 +712,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -722,12 +722,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.DeleteShadowRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">DeleteShadowRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -736,7 +737,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -746,7 +747,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -756,13 +757,14 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.DeleteShadowResponse">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">DeleteShadowResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
-<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
+<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -771,7 +773,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowResponse.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -781,7 +783,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowResponse.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -791,7 +793,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">version</span></code><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowResponse.version" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -801,10 +803,11 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.DeleteShadowSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">DeleteShadowSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -812,7 +815,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.DeleteShadowSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -822,14 +825,15 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.ErrorResponse">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">ErrorResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ErrorResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>code</strong> (<em>int</em>) – </p></li>
-<li><p><strong>message</strong> (<em>str</em>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -838,7 +842,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotshadow.ErrorResponse.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -848,7 +852,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">code</span></code><a class="headerlink" href="#awsiot.iotshadow.ErrorResponse.code" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -858,7 +862,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">message</span></code><a class="headerlink" href="#awsiot.iotshadow.ErrorResponse.message" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -868,7 +872,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotshadow.ErrorResponse.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -878,13 +882,14 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.GetNamedShadowRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">GetNamedShadowRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>shadow_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -893,7 +898,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -903,7 +908,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">shadow_name</span></code><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -913,7 +918,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -923,12 +928,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.GetNamedShadowSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">GetNamedShadowSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>shadow_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -937,7 +943,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">shadow_name</span></code><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowSubscriptionRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -947,7 +953,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.GetNamedShadowSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -957,12 +963,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.GetShadowRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">GetShadowRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.GetShadowRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -971,7 +978,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotshadow.GetShadowRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -981,7 +988,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.GetShadowRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -991,15 +998,16 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.GetShadowResponse">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">GetShadowResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.GetShadowResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 <li><p><strong>metadata</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowMetadata" title="awsiot.iotshadow.ShadowMetadata"><em>ShadowMetadata</em></a>) – </p></li>
 <li><p><strong>state</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowStateWithDelta" title="awsiot.iotshadow.ShadowStateWithDelta"><em>ShadowStateWithDelta</em></a>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
-<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
+<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1008,7 +1016,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotshadow.GetShadowResponse.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1038,7 +1046,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotshadow.GetShadowResponse.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1048,7 +1056,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">version</span></code><a class="headerlink" href="#awsiot.iotshadow.GetShadowResponse.version" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1058,10 +1066,11 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.GetShadowSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">GetShadowSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.GetShadowSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -1069,7 +1078,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.GetShadowSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1079,12 +1088,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">NamedShadowDeltaUpdatedSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>shadow_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1093,7 +1103,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">shadow_name</span></code><a class="headerlink" href="#awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1103,7 +1113,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1113,12 +1123,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">NamedShadowUpdatedSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>shadow_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1127,7 +1138,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">shadow_name</span></code><a class="headerlink" href="#awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1137,7 +1148,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1147,14 +1158,15 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.ShadowDeltaUpdatedEvent">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">ShadowDeltaUpdatedEvent</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>metadata</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
-<li><p><strong>state</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
-<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+<li><p><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><em>typing.Any</em></a><em>]</em>) – </p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><em>typing.Any</em></a><em>]</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
+<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1163,7 +1175,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">metadata</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent.metadata" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, typing.Any]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1173,7 +1185,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">state</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent.state" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, typing.Any]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1183,7 +1195,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1193,7 +1205,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">version</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent.version" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1203,10 +1215,11 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">ShadowDeltaUpdatedSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -1214,7 +1227,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1224,12 +1237,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.ShadowMetadata">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">ShadowMetadata</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowMetadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>desired</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
-<li><p><strong>reported</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
+<li><p><strong>desired</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><em>typing.Any</em></a><em>]</em>) – </p></li>
+<li><p><strong>reported</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><em>typing.Any</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1238,7 +1252,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">desired</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowMetadata.desired" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, typing.Any]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1248,7 +1262,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">reported</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowMetadata.reported" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, typing.Any]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1258,12 +1272,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.ShadowState">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">ShadowState</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowState" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>desired</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
-<li><p><strong>reported</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
+<li><p><strong>desired</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><em>typing.Any</em></a><em>]</em>) – </p></li>
+<li><p><strong>reported</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><em>typing.Any</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1272,7 +1287,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">desired</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowState.desired" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, typing.Any]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1282,7 +1297,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">reported</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowState.reported" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, typing.Any]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1292,13 +1307,14 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.ShadowStateWithDelta">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">ShadowStateWithDelta</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowStateWithDelta" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>delta</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
-<li><p><strong>desired</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
-<li><p><strong>reported</strong> (<em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.Any</em><em>]</em>) – </p></li>
+<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><em>typing.Any</em></a><em>]</em>) – </p></li>
+<li><p><strong>desired</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><em>typing.Any</em></a><em>]</em>) – </p></li>
+<li><p><strong>reported</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><em>typing.Any</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1307,7 +1323,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">delta</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowStateWithDelta.delta" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, typing.Any]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1317,7 +1333,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">desired</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowStateWithDelta.desired" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, typing.Any]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1327,7 +1343,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">reported</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowStateWithDelta.reported" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>typing.Dict[str, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, typing.Any]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1337,13 +1353,14 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.ShadowUpdatedEvent">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">ShadowUpdatedEvent</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedEvent" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>current</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedSnapshot" title="awsiot.iotshadow.ShadowUpdatedSnapshot"><em>ShadowUpdatedSnapshot</em></a>) – </p></li>
 <li><p><strong>previous</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedSnapshot" title="awsiot.iotshadow.ShadowUpdatedSnapshot"><em>ShadowUpdatedSnapshot</em></a>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1372,7 +1389,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedEvent.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1382,13 +1399,14 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.ShadowUpdatedSnapshot">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">ShadowUpdatedSnapshot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedSnapshot" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>metadata</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowMetadata" title="awsiot.iotshadow.ShadowMetadata"><em>ShadowMetadata</em></a>) – </p></li>
 <li><p><strong>state</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowState" title="awsiot.iotshadow.ShadowState"><em>ShadowState</em></a>) – </p></li>
-<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1417,7 +1435,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">version</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedSnapshot.version" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1427,10 +1445,11 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.ShadowUpdatedSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">ShadowUpdatedSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -1438,7 +1457,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.ShadowUpdatedSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1448,15 +1467,16 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.UpdateNamedShadowRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">UpdateNamedShadowRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
-<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>shadow_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 <li><p><strong>state</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowState" title="awsiot.iotshadow.ShadowState"><em>ShadowState</em></a>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1465,7 +1485,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1475,7 +1495,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">shadow_name</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1495,7 +1515,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1505,7 +1525,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">version</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowRequest.version" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1515,12 +1535,13 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">UpdateNamedShadowSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>shadow_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>shadow_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1529,7 +1550,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">shadow_name</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest.shadow_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1539,7 +1560,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1549,14 +1570,15 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.UpdateShadowRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">UpdateShadowRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 <li><p><strong>state</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowState" title="awsiot.iotshadow.ShadowState"><em>ShadowState</em></a>) – </p></li>
-<li><p><strong>thing_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+<li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1565,7 +1587,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowRequest.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1585,7 +1607,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1595,7 +1617,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">version</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowRequest.version" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1605,15 +1627,16 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.UpdateShadowResponse">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">UpdateShadowResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client_token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
 <li><p><strong>metadata</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowMetadata" title="awsiot.iotshadow.ShadowMetadata"><em>ShadowMetadata</em></a>) – </p></li>
 <li><p><strong>state</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowState" title="awsiot.iotshadow.ShadowState"><em>ShadowState</em></a>) – </p></li>
-<li><p><strong>timestamp</strong> (<em>datetime.datetime</em>) – </p></li>
-<li><p><strong>version</strong> (<em>int</em>) – </p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – </p></li>
+<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1622,7 +1645,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">client_token</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowResponse.client_token" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1652,7 +1675,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowResponse.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>datetime.datetime</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1662,7 +1685,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">version</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowResponse.version" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1672,10 +1695,11 @@ subscription is acknowledged.</p>
 <dl class="py class">
 <dt id="awsiot.iotshadow.UpdateShadowSubscriptionRequest">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">awsiot.iotshadow.</span></code><code class="sig-name descname"><span class="pre">UpdateShadowSubscriptionRequest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowSubscriptionRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>All attributes are None by default, and may be set by keyword in the constructor.</p>
+<dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
+<p>All attributes are None by default, and may be set by keyword in the constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>thing_name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -1683,7 +1707,7 @@ subscription is acknowledged.</p>
 <code class="sig-name descname"><span class="pre">thing_name</span></code><a class="headerlink" href="#awsiot.iotshadow.UpdateShadowSubscriptionRequest.thing_name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
