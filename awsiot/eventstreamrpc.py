@@ -155,10 +155,10 @@ class MessageAmendment:
 
     def __init__(self, *, headers: Optional[Sequence[Header]] = None, payload: Optional[bytes] = None):
         #: Headers to add
-        self.headers: Optional[Sequence[Header]] = headers
+        self.headers = headers # type: Optional[Sequence[Header]]
 
         #: Binary payload data
-        self.payload: Optional[bytes] = payload
+        self.payload = payload # type: Optional[bytes]
 
     @staticmethod
     def create_static_authtoken_amender(authtoken: str) -> Callable[[], 'MessageAmendment']:

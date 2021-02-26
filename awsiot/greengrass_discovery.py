@@ -126,9 +126,9 @@ class DiscoveryException(Exception):
 
     def __init__(self, message: str, response_code:int):
         #: HTTP response code
-        self.http_response_code: int = response_code
+        self.http_response_code = response_code # type: int
         #: Message
-        self.message: str = message
+        self.message = message # type: str
 
 
 class ConnectivityInfo(awsiot.ModeledClass):
@@ -228,7 +228,7 @@ class DiscoverResponse(awsiot.ModeledClass):
 
     def __init__(self):
         #: List of :class:`GGGroup`
-        self.gg_groups: Optional[List[GGGroup]] = None
+        self.gg_groups = None # type: Optional[List[GGGroup]]
 
     @classmethod
     def from_payload(cls, payload: Dict[str, Any]) -> 'DiscoverResponse':
