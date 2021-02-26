@@ -11,7 +11,6 @@ __all__ = [
 ]
 
 from awscrt import mqtt
-import awscrt.awsiot_mqtt_connection_builder as mqtt_connection_builder
 from concurrent.futures import Future
 import json
 from typing import Any, Callable, Dict, Optional, Tuple, TypeVar
