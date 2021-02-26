@@ -23,7 +23,7 @@ def connect(*,
             ipc_socket: str=None,
             authtoken: str=None,
             lifecycle_handler: Optional[LifecycleHandler]=None,
-            timeout=10.0) -> GreengrassCoreIPCClient:
+            timeout: float=10.0) -> GreengrassCoreIPCClient:
     """
     Creates an IPC client and connects to the GreengrassCoreIPC service.
 

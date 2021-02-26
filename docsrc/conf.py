@@ -33,6 +33,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autodoc.typehints',
     'sphinx.ext.napoleon',
+    'sphinx.ext.intersphinx', # for linking external docs (ex: aws-crt-python)
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -43,12 +44,21 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+# For cross-linking to types from other libraries
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+    'awscrt': ('https://awslabs.github.io/aws-crt-python', None),
+}
 
 # -- Options for HTML output -------------------------------------------------
 
 autoclass_content = "both"
-autodoc_default_flags = ['show-inheritance','members','undoc-members']
-autodoc_member_order = 'bysource'
+#autodoc_default_flags = ['show-inheritance','members','undoc-members']
+autodoc_default_options = {
+    "show-inheritance": True,
+    "members": True,
+    "member-order": "bysource",
+}
 autodoc_typehints = 'description'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
