@@ -27,17 +27,17 @@
                 ["/opt/python/cp37-cp37m/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
                 ["/opt/python/cp37-cp37m/bin/python", "-m", "pip", "install", ".", "--verbose"],
                 ["/opt/python/cp37-cp37m/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
-                ["/opt/python/cp37-cp37m/bin/python", "-m", "unittest", "discover", "--verbose"],
+                ["/opt/python/cp37-cp37m/bin/python", "-m", "unittest", "discover", "--verbose", "--failfast"],
                 ["echo", "------ Python 3.6 ------"],
                 ["/opt/python/cp36-cp36m/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
                 ["/opt/python/cp36-cp36m/bin/python", "-m", "pip", "install", ".", "--verbose"],
                 ["/opt/python/cp36-cp36m/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
-                ["/opt/python/cp36-cp36m/bin/python", "-m", "unittest", "discover", "--verbose"],
+                ["/opt/python/cp36-cp36m/bin/python", "-m", "unittest", "discover", "--verbose", "--failfast"],
                 ["echo", "------ Python 3.5 ------"],
                 ["/opt/python/cp35-cp35m/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
                 ["/opt/python/cp35-cp35m/bin/python", "-m", "pip", "install", ".", "--verbose"],
                 ["/opt/python/cp35-cp35m/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
-                ["/opt/python/cp35-cp35m/bin/python", "-m", "unittest", "discover", "--verbose"]
+                ["/opt/python/cp35-cp35m/bin/python", "-m", "unittest", "discover", "--verbose", "--failfast"]
             ],
             "run_tests": false,
             "_comment": "manylinux has all its own build steps, turn off 'tests' which is where normal build steps are declared. using data to program sucks"
@@ -78,6 +78,6 @@
         ["{python}", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
         ["{python}", "-m", "pip", "install", ".", "--verbose"],
         ["{python}", "-m", "pip", "install", "boto3", "autopep8"],
-        ["{python}", "-m", "unittest", "discover", "--verbose"]
+        ["{python}", "-m", "unittest", "discover", "--verbose", "--failfast"]
     ]
 }

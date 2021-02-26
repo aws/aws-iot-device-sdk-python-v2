@@ -1,5 +1,5 @@
 from awscrt.auth import AwsCredentialsProvider
-from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup
+from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup, LogLevel, init_logging
 from awsiot import mqtt_connection_builder
 import boto3
 import botocore.exceptions
@@ -13,6 +13,8 @@ import warnings
 TIMEOUT = 100.0
 PROXY_HOST = os.environ.get('proxyhost')
 PROXY_PORT = int(os.environ.get('proxyport', '0'))
+
+init_logging(LogLevel.Trace, 'stderr')
 
 
 class Config:
