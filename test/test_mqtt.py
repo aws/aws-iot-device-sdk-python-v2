@@ -1,9 +1,8 @@
 from awscrt.auth import AwsCredentialsProvider
-from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup, LogLevel, init_logging
+from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup
 from awsiot import mqtt_connection_builder
 import boto3
 import botocore.exceptions
-import logging
 import os
 import unittest
 import shutil
@@ -14,8 +13,6 @@ import warnings
 TIMEOUT = 100.0
 PROXY_HOST = os.environ.get('proxyhost')
 PROXY_PORT = int(os.environ.get('proxyport', '0'))
-
-init_logging(LogLevel.Trace, 'stderr')
 
 
 class Config:
@@ -39,7 +36,6 @@ class Config:
         warnings.simplefilter('ignore', ResourceWarning)
 
         try:
-            boto3.set_stream_logger('', logging.DEBUG)
             secrets = boto3.client('secretsmanager')
             response = secrets.get_secret_value(SecretId='unit-test/endpoint')
             endpoint = response['SecretString']
@@ -115,7 +111,9 @@ class MqttBuilderTest(unittest.TestCase):
 
         self._test_connection(connection)
 
+    @unittest.skipIf(os.environ.get('AWS_CONTAINER_CREDENTIALS_RELATIVE_URI'), "ECS credentials provider is currently broken")
     def test_websockets_default(self):
+        """Websocket connection with default credentials provider"""
         config = Config.get()
         elg = EventLoopGroup()
         resolver = DefaultHostResolver(elg)
