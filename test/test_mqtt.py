@@ -3,6 +3,7 @@ from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup, LogL
 from awsiot import mqtt_connection_builder
 import boto3
 import botocore.exceptions
+import logging
 import os
 import unittest
 import shutil
@@ -38,6 +39,7 @@ class Config:
         warnings.simplefilter('ignore', ResourceWarning)
 
         try:
+            boto3.set_stream_logger('', logging.DEBUG)
             secrets = boto3.client('secretsmanager')
             response = secrets.get_secret_value(SecretId='unit-test/endpoint')
             endpoint = response['SecretString']
