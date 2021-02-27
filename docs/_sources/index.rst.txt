@@ -23,6 +23,7 @@ API Reference
    awsiot/eventstreamrpc
    awsiot/greengrasscoreipc
    awsiot/greengrass_discovery
+   awsiot/mqtt_connection_builder
    awsiot/iotidentity
    awsiot/iotjobs
    awsiot/iotshadow
