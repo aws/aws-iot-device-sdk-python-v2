@@ -319,6 +319,7 @@ class MessageData(rpc.Shape):
         return False
 
 
+<!-- TODO delete this file, and have class-structure.py.ftl handle both unions and structures. The files are currently 90% identical -->
 class EchoStreamingMessage(rpc.Shape):
     """
     MessageData is a "tagged union" class.
