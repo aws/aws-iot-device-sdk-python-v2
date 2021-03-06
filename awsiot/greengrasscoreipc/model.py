@@ -35,10 +35,10 @@ class RunWithInfo(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        posix_user:
+        posix_user: 
 
     Attributes:
-        posix_user:
+        posix_user: 
     """
 
     def __init__(self, *,
@@ -83,10 +83,10 @@ class PostComponentUpdateEvent(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        deployment_id:
+        deployment_id: 
 
     Attributes:
-        deployment_id:
+        deployment_id: 
     """
 
     def __init__(self, *,
@@ -131,12 +131,12 @@ class PreComponentUpdateEvent(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        deployment_id:
-        is_ggc_restarting:
+        deployment_id: 
+        is_ggc_restarting: 
 
     Attributes:
-        deployment_id:
-        is_ggc_restarting:
+        deployment_id: 
+        is_ggc_restarting: 
     """
 
     def __init__(self, *,
@@ -222,10 +222,10 @@ class BinaryMessage(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message:
+        message: 
 
     Attributes:
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -270,10 +270,10 @@ class JsonMessage(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message:
+        message: 
 
     Attributes:
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -318,12 +318,12 @@ class ValidateConfigurationUpdateEvent(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        configuration:
-        deployment_id:
+        configuration: 
+        deployment_id: 
 
     Attributes:
-        configuration:
-        deployment_id:
+        configuration: 
+        deployment_id: 
     """
 
     def __init__(self, *,
@@ -374,12 +374,12 @@ class ConfigurationUpdateEvent(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        component_name:
-        key_path:
+        component_name: 
+        key_path: 
 
     Attributes:
-        component_name:
-        key_path:
+        component_name: 
+        key_path: 
     """
 
     def __init__(self, *,
@@ -430,12 +430,12 @@ class MQTTMessage(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        topic_name:
-        payload:
+        topic_name: 
+        payload: 
 
     Attributes:
-        topic_name:
-        payload:
+        topic_name: 
+        payload: 
     """
 
     def __init__(self, *,
@@ -488,12 +488,12 @@ class ComponentUpdatePolicyEvents(rpc.Shape):
     All other attributes will be None.
 
     Keyword Args:
-        pre_update_event:
-        post_update_event:
+        pre_update_event: 
+        post_update_event: 
 
     Attributes:
-        pre_update_event:
-        post_update_event:
+        pre_update_event: 
+        post_update_event: 
     """
 
     def __init__(self, *,
@@ -555,12 +555,12 @@ class SecretValue(rpc.Shape):
     All other attributes will be None.
 
     Keyword Args:
-        secret_string:
-        secret_binary:
+        secret_string: 
+        secret_binary: 
 
     Attributes:
-        secret_string:
-        secret_binary:
+        secret_string: 
+        secret_binary: 
     """
 
     def __init__(self, *,
@@ -611,11 +611,11 @@ class LocalDeployment(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        deployment_id:
+        deployment_id: 
         status: DeploymentStatus enum value
 
     Attributes:
-        deployment_id:
+        deployment_id: 
         status: DeploymentStatus enum value
     """
 
@@ -677,13 +677,13 @@ class ConfigurationValidityReport(rpc.Shape):
 
     Keyword Args:
         status: ConfigurationValidityStatus enum value
-        deployment_id:
-        message:
+        deployment_id: 
+        message: 
 
     Attributes:
         status: ConfigurationValidityStatus enum value
-        deployment_id:
-        message:
+        deployment_id: 
+        message: 
     """
 
     def __init__(self, *,
@@ -742,12 +742,12 @@ class PublishMessage(rpc.Shape):
     All other attributes will be None.
 
     Keyword Args:
-        json_message:
-        binary_message:
+        json_message: 
+        binary_message: 
 
     Attributes:
-        json_message:
-        binary_message:
+        json_message: 
+        binary_message: 
     """
 
     def __init__(self, *,
@@ -798,16 +798,16 @@ class ComponentDetails(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        component_name:
-        version:
+        component_name: 
+        version: 
         state: LifecycleState enum value
-        configuration:
+        configuration: 
 
     Attributes:
-        component_name:
-        version:
+        component_name: 
+        version: 
         state: LifecycleState enum value
-        configuration:
+        configuration: 
     """
 
     def __init__(self, *,
@@ -872,12 +872,12 @@ class SubscriptionResponseMessage(rpc.Shape):
     All other attributes will be None.
 
     Keyword Args:
-        json_message:
-        binary_message:
+        json_message: 
+        binary_message: 
 
     Attributes:
-        json_message:
-        binary_message:
+        json_message: 
+        binary_message: 
     """
 
     def __init__(self, *,
@@ -930,10 +930,10 @@ class ValidateConfigurationUpdateEvents(rpc.Shape):
     All other attributes will be None.
 
     Keyword Args:
-        validate_configuration_update_event:
+        validate_configuration_update_event: 
 
     Attributes:
-        validate_configuration_update_event:
+        validate_configuration_update_event: 
     """
 
     def __init__(self, *,
@@ -980,10 +980,10 @@ class ConfigurationUpdateEvents(rpc.Shape):
     All other attributes will be None.
 
     Keyword Args:
-        configuration_update_event:
+        configuration_update_event: 
 
     Attributes:
-        configuration_update_event:
+        configuration_update_event: 
     """
 
     def __init__(self, *,
@@ -1030,10 +1030,10 @@ class IoTCoreMessage(rpc.Shape):
     All other attributes will be None.
 
     Keyword Args:
-        message:
+        message: 
 
     Attributes:
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -1087,10 +1087,10 @@ class InvalidArtifactsDirectoryPathError(GreengrassCoreIPCError):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message:
+        message: 
 
     Attributes:
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -1138,10 +1138,10 @@ class InvalidRecipeDirectoryPathError(GreengrassCoreIPCError):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message:
+        message: 
 
     Attributes:
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -1189,10 +1189,10 @@ class CreateLocalDeploymentResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        deployment_id:
+        deployment_id: 
 
     Attributes:
-        deployment_id:
+        deployment_id: 
     """
 
     def __init__(self, *,
@@ -1237,22 +1237,22 @@ class CreateLocalDeploymentRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        group_name:
-        root_component_versions_to_add:
-        root_components_to_remove:
-        component_to_configuration:
-        component_to_run_with_info:
-        recipe_directory_path:
-        artifacts_directory_path:
+        group_name: 
+        root_component_versions_to_add: 
+        root_components_to_remove: 
+        component_to_configuration: 
+        component_to_run_with_info: 
+        recipe_directory_path: 
+        artifacts_directory_path: 
 
     Attributes:
-        group_name:
-        root_component_versions_to_add:
-        root_components_to_remove:
-        component_to_configuration:
-        component_to_run_with_info:
-        recipe_directory_path:
-        artifacts_directory_path:
+        group_name: 
+        root_component_versions_to_add: 
+        root_components_to_remove: 
+        component_to_configuration: 
+        component_to_run_with_info: 
+        recipe_directory_path: 
+        artifacts_directory_path: 
     """
 
     def __init__(self, *,
@@ -1334,11 +1334,11 @@ class StopComponentResponse(rpc.Shape):
 
     Keyword Args:
         stop_status: RequestStatus enum value
-        message:
+        message: 
 
     Attributes:
         stop_status: RequestStatus enum value
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -1389,10 +1389,10 @@ class StopComponentRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        component_name:
+        component_name: 
 
     Attributes:
-        component_name:
+        component_name: 
     """
 
     def __init__(self, *,
@@ -1437,10 +1437,10 @@ class ListLocalDeploymentsResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        local_deployments:
+        local_deployments: 
 
     Attributes:
-        local_deployments:
+        local_deployments: 
     """
 
     def __init__(self, *,
@@ -1669,16 +1669,16 @@ class GetSecretValueResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        secret_id:
-        version_id:
-        version_stage:
-        secret_value:
+        secret_id: 
+        version_id: 
+        version_stage: 
+        secret_value: 
 
     Attributes:
-        secret_id:
-        version_id:
-        version_stage:
-        secret_value:
+        secret_id: 
+        version_id: 
+        version_stage: 
+        secret_value: 
     """
 
     def __init__(self, *,
@@ -1741,14 +1741,14 @@ class GetSecretValueRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        secret_id:
-        version_id:
-        version_stage:
+        secret_id: 
+        version_id: 
+        version_stage: 
 
     Attributes:
-        secret_id:
-        version_id:
-        version_stage:
+        secret_id: 
+        version_id: 
+        version_stage: 
     """
 
     def __init__(self, *,
@@ -1805,10 +1805,10 @@ class GetLocalDeploymentStatusResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        deployment:
+        deployment: 
 
     Attributes:
-        deployment:
+        deployment: 
     """
 
     def __init__(self, *,
@@ -1853,10 +1853,10 @@ class GetLocalDeploymentStatusRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        deployment_id:
+        deployment_id: 
 
     Attributes:
-        deployment_id:
+        deployment_id: 
     """
 
     def __init__(self, *,
@@ -1901,10 +1901,10 @@ class ComponentNotFoundError(GreengrassCoreIPCError):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message:
+        message: 
 
     Attributes:
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -1953,11 +1953,11 @@ class RestartComponentResponse(rpc.Shape):
 
     Keyword Args:
         restart_status: RequestStatus enum value
-        message:
+        message: 
 
     Attributes:
         restart_status: RequestStatus enum value
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -2008,10 +2008,10 @@ class RestartComponentRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        component_name:
+        component_name: 
 
     Attributes:
-        component_name:
+        component_name: 
     """
 
     def __init__(self, *,
@@ -2056,10 +2056,10 @@ class InvalidTokenError(GreengrassCoreIPCError):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message:
+        message: 
 
     Attributes:
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -2107,10 +2107,10 @@ class ValidateAuthorizationTokenResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        is_valid:
+        is_valid: 
 
     Attributes:
-        is_valid:
+        is_valid: 
     """
 
     def __init__(self, *,
@@ -2155,10 +2155,10 @@ class ValidateAuthorizationTokenRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        token:
+        token: 
 
     Attributes:
-        token:
+        token: 
     """
 
     def __init__(self, *,
@@ -2203,10 +2203,10 @@ class FailedUpdateConditionCheckError(GreengrassCoreIPCError):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message:
+        message: 
 
     Attributes:
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -2288,14 +2288,14 @@ class UpdateConfigurationRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        key_path:
-        timestamp:
-        value_to_merge:
+        key_path: 
+        timestamp: 
+        value_to_merge: 
 
     Attributes:
-        key_path:
-        timestamp:
-        value_to_merge:
+        key_path: 
+        timestamp: 
+        value_to_merge: 
     """
 
     def __init__(self, *,
@@ -2352,10 +2352,10 @@ class ConflictError(GreengrassCoreIPCError):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message:
+        message: 
 
     Attributes:
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -2403,10 +2403,10 @@ class UpdateThingShadowResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        payload:
+        payload: 
 
     Attributes:
-        payload:
+        payload: 
     """
 
     def __init__(self, *,
@@ -2451,14 +2451,14 @@ class UpdateThingShadowRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        thing_name:
-        shadow_name:
-        payload:
+        thing_name: 
+        shadow_name: 
+        payload: 
 
     Attributes:
-        thing_name:
-        shadow_name:
-        payload:
+        thing_name: 
+        shadow_name: 
+        payload: 
     """
 
     def __init__(self, *,
@@ -2549,10 +2549,10 @@ class SendConfigurationValidityReportRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        configuration_validity_report:
+        configuration_validity_report: 
 
     Attributes:
-        configuration_validity_report:
+        configuration_validity_report: 
     """
 
     def __init__(self, *,
@@ -2597,10 +2597,10 @@ class GetThingShadowResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        payload:
+        payload: 
 
     Attributes:
-        payload:
+        payload: 
     """
 
     def __init__(self, *,
@@ -2645,12 +2645,12 @@ class GetThingShadowRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        thing_name:
-        shadow_name:
+        thing_name: 
+        shadow_name: 
 
     Attributes:
-        thing_name:
-        shadow_name:
+        thing_name: 
+        shadow_name: 
     """
 
     def __init__(self, *,
@@ -2701,16 +2701,16 @@ class CreateDebugPasswordResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        password:
-        username:
-        password_expiration:
-        certificate_signature:
+        password: 
+        username: 
+        password_expiration: 
+        certificate_signature: 
 
     Attributes:
-        password:
-        username:
-        password_expiration:
-        certificate_signature:
+        password: 
+        username: 
+        password_expiration: 
+        certificate_signature: 
     """
 
     def __init__(self, *,
@@ -2807,10 +2807,10 @@ class ListComponentsResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        components:
+        components: 
 
     Attributes:
-        components:
+        components: 
     """
 
     def __init__(self, *,
@@ -2923,12 +2923,12 @@ class PublishToTopicRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        topic:
-        publish_message:
+        topic: 
+        publish_message: 
 
     Attributes:
-        topic:
-        publish_message:
+        topic: 
+        publish_message: 
     """
 
     def __init__(self, *,
@@ -2979,10 +2979,10 @@ class GetComponentDetailsResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        component_details:
+        component_details: 
 
     Attributes:
-        component_details:
+        component_details: 
     """
 
     def __init__(self, *,
@@ -3027,10 +3027,10 @@ class GetComponentDetailsRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        component_name:
+        component_name: 
 
     Attributes:
-        component_name:
+        component_name: 
     """
 
     def __init__(self, *,
@@ -3075,10 +3075,10 @@ class SubscribeToTopicResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        topic_name:
+        topic_name: 
 
     Attributes:
-        topic_name:
+        topic_name: 
     """
 
     def __init__(self, *,
@@ -3123,10 +3123,10 @@ class SubscribeToTopicRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        topic:
+        topic: 
 
     Attributes:
-        topic:
+        topic: 
     """
 
     def __init__(self, *,
@@ -3171,12 +3171,12 @@ class GetConfigurationResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        component_name:
-        value:
+        component_name: 
+        value: 
 
     Attributes:
-        component_name:
-        value:
+        component_name: 
+        value: 
     """
 
     def __init__(self, *,
@@ -3227,12 +3227,12 @@ class GetConfigurationRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        component_name:
-        key_path:
+        component_name: 
+        key_path: 
 
     Attributes:
-        component_name:
-        key_path:
+        component_name: 
+        key_path: 
     """
 
     def __init__(self, *,
@@ -3385,14 +3385,14 @@ class DeferComponentUpdateRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        deployment_id:
-        message:
-        recheck_after_ms:
+        deployment_id: 
+        message: 
+        recheck_after_ms: 
 
     Attributes:
-        deployment_id:
-        message:
-        recheck_after_ms:
+        deployment_id: 
+        message: 
+        recheck_after_ms: 
     """
 
     def __init__(self, *,
@@ -3449,10 +3449,10 @@ class InvalidArgumentsError(GreengrassCoreIPCError):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message:
+        message: 
 
     Attributes:
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -3500,10 +3500,10 @@ class DeleteThingShadowResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        payload:
+        payload: 
 
     Attributes:
-        payload:
+        payload: 
     """
 
     def __init__(self, *,
@@ -3548,12 +3548,12 @@ class DeleteThingShadowRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        thing_name:
-        shadow_name:
+        thing_name: 
+        shadow_name: 
 
     Attributes:
-        thing_name:
-        shadow_name:
+        thing_name: 
+        shadow_name: 
     """
 
     def __init__(self, *,
@@ -3604,14 +3604,14 @@ class ResourceNotFoundError(GreengrassCoreIPCError):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message:
-        resource_type:
-        resource_name:
+        message: 
+        resource_type: 
+        resource_name: 
 
     Attributes:
-        message:
-        resource_type:
-        resource_name:
+        message: 
+        resource_type: 
+        resource_name: 
     """
 
     def __init__(self, *,
@@ -3705,12 +3705,12 @@ class SubscribeToConfigurationUpdateRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        component_name:
-        key_path:
+        component_name: 
+        key_path: 
 
     Attributes:
-        component_name:
-        key_path:
+        component_name: 
+        key_path: 
     """
 
     def __init__(self, *,
@@ -3795,14 +3795,14 @@ class PublishToIoTCoreRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        topic_name:
+        topic_name: 
         qos: QOS enum value
-        payload:
+        payload: 
 
     Attributes:
-        topic_name:
+        topic_name: 
         qos: QOS enum value
-        payload:
+        payload: 
     """
 
     def __init__(self, *,
@@ -3859,10 +3859,10 @@ class UnauthorizedError(GreengrassCoreIPCError):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message:
+        message: 
 
     Attributes:
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -3910,10 +3910,10 @@ class ServiceError(GreengrassCoreIPCError):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message:
+        message: 
 
     Attributes:
-        message:
+        message: 
     """
 
     def __init__(self, *,
@@ -3995,11 +3995,11 @@ class SubscribeToIoTCoreRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        topic_name:
+        topic_name: 
         qos: QOS enum value
 
     Attributes:
-        topic_name:
+        topic_name: 
         qos: QOS enum value
     """
 
