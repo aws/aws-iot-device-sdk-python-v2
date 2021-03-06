@@ -35,14 +35,14 @@ class Customer(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        id: 
-        first_name: 
-        last_name: 
+        id:
+        first_name:
+        last_name:
 
     Attributes:
-        id: 
-        first_name: 
-        last_name: 
+        id:
+        first_name:
+        last_name:
     """
 
     def __init__(self, *,
@@ -110,12 +110,12 @@ class Pair(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        key: 
-        value: 
+        key:
+        value:
 
     Attributes:
-        key: 
-        value: 
+        key:
+        value:
     """
 
     def __init__(self, *,
@@ -166,12 +166,12 @@ class Product(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        name: 
-        price: 
+        name:
+        price:
 
     Attributes:
-        name: 
-        price: 
+        name:
+        price:
     """
 
     def __init__(self, *,
@@ -222,24 +222,24 @@ class MessageData(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        string_message: 
-        boolean_message: 
-        time_message: 
-        document_message: 
+        string_message:
+        boolean_message:
+        time_message:
+        document_message:
         enum_message: FruitEnum enum value
-        blob_message: 
-        string_list_message: 
-        key_value_pair_list: 
+        blob_message:
+        string_list_message:
+        key_value_pair_list:
 
     Attributes:
-        string_message: 
-        boolean_message: 
-        time_message: 
-        document_message: 
+        string_message:
+        boolean_message:
+        time_message:
+        document_message:
         enum_message: FruitEnum enum value
-        blob_message: 
-        string_list_message: 
-        key_value_pair_list: 
+        blob_message:
+        string_list_message:
+        key_value_pair_list:
     """
 
     def __init__(self, *,
@@ -319,7 +319,6 @@ class MessageData(rpc.Shape):
         return False
 
 
-<!-- TODO delete this file, and have class-structure.py.ftl handle both unions and structures. The files are currently 90% identical -->
 class EchoStreamingMessage(rpc.Shape):
     """
     MessageData is a "tagged union" class.
@@ -329,12 +328,12 @@ class EchoStreamingMessage(rpc.Shape):
     All other attributes will be None.
 
     Keyword Args:
-        stream_message: 
-        key_value_pair: 
+        stream_message:
+        key_value_pair:
 
     Attributes:
-        stream_message: 
-        key_value_pair: 
+        stream_message:
+        key_value_pair:
     """
 
     def __init__(self, *,
@@ -385,10 +384,10 @@ class GetAllCustomersResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        customers: 
+        customers:
 
     Attributes:
-        customers: 
+        customers:
     """
 
     def __init__(self, *,
@@ -467,10 +466,10 @@ class EchoMessageResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message: 
+        message:
 
     Attributes:
-        message: 
+        message:
     """
 
     def __init__(self, *,
@@ -515,10 +514,10 @@ class EchoMessageRequest(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message: 
+        message:
 
     Attributes:
-        message: 
+        message:
     """
 
     def __init__(self, *,
@@ -699,12 +698,12 @@ class ServiceError(EchoTestRPCError):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message: 
-        value: 
+        message:
+        value:
 
     Attributes:
-        message: 
-        value: 
+        message:
+        value:
     """
 
     def __init__(self, *,
@@ -758,10 +757,10 @@ class GetAllProductsResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        products: 
+        products:
 
     Attributes:
-        products: 
+        products:
     """
 
     def __init__(self, *,
