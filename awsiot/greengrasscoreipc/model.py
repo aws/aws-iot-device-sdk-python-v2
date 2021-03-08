@@ -180,26 +180,6 @@ class PreComponentUpdateEvent(rpc.Shape):
         return False
 
 
-class DeploymentStatus:
-    """
-    DeploymentStatus enum
-    """
-
-    QUEUED = 'QUEUED'
-    IN_PROGRESS = 'IN_PROGRESS'
-    SUCCEEDED = 'SUCCEEDED'
-    FAILED = 'FAILED'
-
-
-class ConfigurationValidityStatus:
-    """
-    ConfigurationValidityStatus enum
-    """
-
-    ACCEPTED = 'ACCEPTED'
-    REJECTED = 'REJECTED'
-
-
 class LifecycleState:
     """
     LifecycleState enum
@@ -213,6 +193,138 @@ class LifecycleState:
     BROKEN = 'BROKEN'
     STARTING = 'STARTING'
     STOPPING = 'STOPPING'
+
+
+class DeploymentStatus:
+    """
+    DeploymentStatus enum
+    """
+
+    QUEUED = 'QUEUED'
+    IN_PROGRESS = 'IN_PROGRESS'
+    SUCCEEDED = 'SUCCEEDED'
+    FAILED = 'FAILED'
+
+
+class ValidateConfigurationUpdateEvent(rpc.Shape):
+    """
+    ValidateConfigurationUpdateEvent
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        configuration: 
+        deployment_id: 
+
+    Attributes:
+        configuration: 
+        deployment_id: 
+    """
+
+    def __init__(self, *,
+                 configuration: typing.Optional[typing.Dict[str, typing.Any]] = None,
+                 deployment_id: typing.Optional[str] = None):
+        super().__init__()
+        self.configuration = configuration  # type: typing.Optional[typing.Dict[str, typing.Any]]
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
+
+    def _to_payload(self):
+        payload = {}
+        if self.configuration is not None:
+            payload['configuration'] = self.configuration
+        if self.deployment_id is not None:
+            payload['deploymentId'] = self.deployment_id
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'configuration' in payload:
+            new.configuration = payload['configuration']
+        if 'deploymentId' in payload:
+            new.deployment_id = payload['deploymentId']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ValidateConfigurationUpdateEvent'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class ConfigurationValidityStatus:
+    """
+    ConfigurationValidityStatus enum
+    """
+
+    ACCEPTED = 'ACCEPTED'
+    REJECTED = 'REJECTED'
+
+
+class ConfigurationUpdateEvent(rpc.Shape):
+    """
+    ConfigurationUpdateEvent
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name: 
+        key_path: 
+
+    Attributes:
+        component_name: 
+        key_path: 
+    """
+
+    def __init__(self, *,
+                 component_name: typing.Optional[str] = None,
+                 key_path: typing.Optional[typing.List[str]] = None):
+        super().__init__()
+        self.component_name = component_name  # type: typing.Optional[str]
+        self.key_path = key_path  # type: typing.Optional[typing.List[str]]
+
+    def _to_payload(self):
+        payload = {}
+        if self.component_name is not None:
+            payload['componentName'] = self.component_name
+        if self.key_path is not None:
+            payload['keyPath'] = self.key_path
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'componentName' in payload:
+            new.component_name = payload['componentName']
+        if 'keyPath' in payload:
+            new.key_path = payload['keyPath']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ConfigurationUpdateEvent'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
 
 
 class BinaryMessage(rpc.Shape):
@@ -297,118 +409,6 @@ class JsonMessage(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#JsonMessage'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class ValidateConfigurationUpdateEvent(rpc.Shape):
-    """
-    ValidateConfigurationUpdateEvent
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        configuration: 
-        deployment_id: 
-
-    Attributes:
-        configuration: 
-        deployment_id: 
-    """
-
-    def __init__(self, *,
-                 configuration: typing.Optional[typing.Dict[str, typing.Any]] = None,
-                 deployment_id: typing.Optional[str] = None):
-        super().__init__()
-        self.configuration = configuration  # type: typing.Optional[typing.Dict[str, typing.Any]]
-        self.deployment_id = deployment_id  # type: typing.Optional[str]
-
-    def _to_payload(self):
-        payload = {}
-        if self.configuration is not None:
-            payload['configuration'] = self.configuration
-        if self.deployment_id is not None:
-            payload['deploymentId'] = self.deployment_id
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'configuration' in payload:
-            new.configuration = payload['configuration']
-        if 'deploymentId' in payload:
-            new.deployment_id = payload['deploymentId']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#ValidateConfigurationUpdateEvent'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class ConfigurationUpdateEvent(rpc.Shape):
-    """
-    ConfigurationUpdateEvent
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        component_name: 
-        key_path: 
-
-    Attributes:
-        component_name: 
-        key_path: 
-    """
-
-    def __init__(self, *,
-                 component_name: typing.Optional[str] = None,
-                 key_path: typing.Optional[typing.List[str]] = None):
-        super().__init__()
-        self.component_name = component_name  # type: typing.Optional[str]
-        self.key_path = key_path  # type: typing.Optional[typing.List[str]]
-
-    def _to_payload(self):
-        payload = {}
-        if self.component_name is not None:
-            payload['componentName'] = self.component_name
-        if self.key_path is not None:
-            payload['keyPath'] = self.key_path
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'componentName' in payload:
-            new.component_name = payload['componentName']
-        if 'keyPath' in payload:
-            new.key_path = payload['keyPath']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#ConfigurationUpdateEvent'
 
     def __repr__(self):
         attrs = []
@@ -523,260 +523,6 @@ class ComponentUpdatePolicyEvents(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#ComponentUpdatePolicyEvents'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class ReportedLifecycleState:
-    """
-    ReportedLifecycleState enum
-    """
-
-    RUNNING = 'RUNNING'
-    ERRORED = 'ERRORED'
-
-
-class SecretValue(rpc.Shape):
-    """
-    MQTTMessage is a "tagged union" class.
-
-    When sending, only one of the attributes may be set.
-    When receiving, only one of the attributes will be set.
-    All other attributes will be None.
-
-    Keyword Args:
-        secret_string: 
-        secret_binary: 
-
-    Attributes:
-        secret_string: 
-        secret_binary: 
-    """
-
-    def __init__(self, *,
-                 secret_string: typing.Optional[str] = None,
-                 secret_binary: typing.Optional[bytes] = None):
-        super().__init__()
-        self.secret_string = secret_string  # type: typing.Optional[str]
-        self.secret_binary = secret_binary  # type: typing.Optional[bytes]
-
-    def _to_payload(self):
-        payload = {}
-        if self.secret_string is not None:
-            payload['secretString'] = self.secret_string
-        if self.secret_binary is not None:
-            payload['secretBinary'] = base64.b64encode(self.secret_binary).decode()
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'secretString' in payload:
-            new.secret_string = payload['secretString']
-        if 'secretBinary' in payload:
-            new.secret_binary = base64.b64decode(payload['secretBinary'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#SecretValue'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class LocalDeployment(rpc.Shape):
-    """
-    LocalDeployment
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        deployment_id: 
-        status: DeploymentStatus enum value
-
-    Attributes:
-        deployment_id: 
-        status: DeploymentStatus enum value
-    """
-
-    def __init__(self, *,
-                 deployment_id: typing.Optional[str] = None,
-                 status: typing.Optional[str] = None):
-        super().__init__()
-        self.deployment_id = deployment_id  # type: typing.Optional[str]
-        self.status = status  # type: typing.Optional[str]
-
-    def _to_payload(self):
-        payload = {}
-        if self.deployment_id is not None:
-            payload['deploymentId'] = self.deployment_id
-        if self.status is not None:
-            payload['status'] = self.status
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'deploymentId' in payload:
-            new.deployment_id = payload['deploymentId']
-        if 'status' in payload:
-            new.status = payload['status']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#LocalDeployment'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class RequestStatus:
-    """
-    RequestStatus enum
-    """
-
-    SUCCEEDED = 'SUCCEEDED'
-    FAILED = 'FAILED'
-
-
-class ConfigurationValidityReport(rpc.Shape):
-    """
-    ConfigurationValidityReport
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        status: ConfigurationValidityStatus enum value
-        deployment_id: 
-        message: 
-
-    Attributes:
-        status: ConfigurationValidityStatus enum value
-        deployment_id: 
-        message: 
-    """
-
-    def __init__(self, *,
-                 status: typing.Optional[str] = None,
-                 deployment_id: typing.Optional[str] = None,
-                 message: typing.Optional[str] = None):
-        super().__init__()
-        self.status = status  # type: typing.Optional[str]
-        self.deployment_id = deployment_id  # type: typing.Optional[str]
-        self.message = message  # type: typing.Optional[str]
-
-    def _to_payload(self):
-        payload = {}
-        if self.status is not None:
-            payload['status'] = self.status
-        if self.deployment_id is not None:
-            payload['deploymentId'] = self.deployment_id
-        if self.message is not None:
-            payload['message'] = self.message
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'status' in payload:
-            new.status = payload['status']
-        if 'deploymentId' in payload:
-            new.deployment_id = payload['deploymentId']
-        if 'message' in payload:
-            new.message = payload['message']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#ConfigurationValidityReport'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class PublishMessage(rpc.Shape):
-    """
-    ConfigurationValidityReport is a "tagged union" class.
-
-    When sending, only one of the attributes may be set.
-    When receiving, only one of the attributes will be set.
-    All other attributes will be None.
-
-    Keyword Args:
-        json_message: 
-        binary_message: 
-
-    Attributes:
-        json_message: 
-        binary_message: 
-    """
-
-    def __init__(self, *,
-                 json_message: typing.Optional[JsonMessage] = None,
-                 binary_message: typing.Optional[BinaryMessage] = None):
-        super().__init__()
-        self.json_message = json_message  # type: typing.Optional[JsonMessage]
-        self.binary_message = binary_message  # type: typing.Optional[BinaryMessage]
-
-    def _to_payload(self):
-        payload = {}
-        if self.json_message is not None:
-            payload['jsonMessage'] = self.json_message._to_payload()
-        if self.binary_message is not None:
-            payload['binaryMessage'] = self.binary_message._to_payload()
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'jsonMessage' in payload:
-            new.json_message = JsonMessage._from_payload(payload['jsonMessage'])
-        if 'binaryMessage' in payload:
-            new.binary_message = BinaryMessage._from_payload(payload['binaryMessage'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#PublishMessage'
 
     def __repr__(self):
         attrs = []
@@ -921,9 +667,141 @@ class SubscriptionResponseMessage(rpc.Shape):
         return False
 
 
-class ValidateConfigurationUpdateEvents(rpc.Shape):
+class ReportedLifecycleState:
+    """
+    ReportedLifecycleState enum
+    """
+
+    RUNNING = 'RUNNING'
+    ERRORED = 'ERRORED'
+
+
+class SecretValue(rpc.Shape):
     """
     ComponentDetails is a "tagged union" class.
+
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        secret_string: 
+        secret_binary: 
+
+    Attributes:
+        secret_string: 
+        secret_binary: 
+    """
+
+    def __init__(self, *,
+                 secret_string: typing.Optional[str] = None,
+                 secret_binary: typing.Optional[bytes] = None):
+        super().__init__()
+        self.secret_string = secret_string  # type: typing.Optional[str]
+        self.secret_binary = secret_binary  # type: typing.Optional[bytes]
+
+    def _to_payload(self):
+        payload = {}
+        if self.secret_string is not None:
+            payload['secretString'] = self.secret_string
+        if self.secret_binary is not None:
+            payload['secretBinary'] = base64.b64encode(self.secret_binary).decode()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'secretString' in payload:
+            new.secret_string = payload['secretString']
+        if 'secretBinary' in payload:
+            new.secret_binary = base64.b64decode(payload['secretBinary'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SecretValue'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class LocalDeployment(rpc.Shape):
+    """
+    LocalDeployment
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        deployment_id: 
+        status: DeploymentStatus enum value
+
+    Attributes:
+        deployment_id: 
+        status: DeploymentStatus enum value
+    """
+
+    def __init__(self, *,
+                 deployment_id: typing.Optional[str] = None,
+                 status: typing.Optional[str] = None):
+        super().__init__()
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
+        self.status = status  # type: typing.Optional[str]
+
+    def _to_payload(self):
+        payload = {}
+        if self.deployment_id is not None:
+            payload['deploymentId'] = self.deployment_id
+        if self.status is not None:
+            payload['status'] = self.status
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'deploymentId' in payload:
+            new.deployment_id = payload['deploymentId']
+        if 'status' in payload:
+            new.status = payload['status']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#LocalDeployment'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class RequestStatus:
+    """
+    RequestStatus enum
+    """
+
+    SUCCEEDED = 'SUCCEEDED'
+    FAILED = 'FAILED'
+
+
+class ValidateConfigurationUpdateEvents(rpc.Shape):
+    """
+    LocalDeployment is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -971,9 +849,73 @@ class ValidateConfigurationUpdateEvents(rpc.Shape):
         return False
 
 
+class ConfigurationValidityReport(rpc.Shape):
+    """
+    ConfigurationValidityReport
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        status: ConfigurationValidityStatus enum value
+        deployment_id: 
+        message: 
+
+    Attributes:
+        status: ConfigurationValidityStatus enum value
+        deployment_id: 
+        message: 
+    """
+
+    def __init__(self, *,
+                 status: typing.Optional[str] = None,
+                 deployment_id: typing.Optional[str] = None,
+                 message: typing.Optional[str] = None):
+        super().__init__()
+        self.status = status  # type: typing.Optional[str]
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
+        self.message = message  # type: typing.Optional[str]
+
+    def _to_payload(self):
+        payload = {}
+        if self.status is not None:
+            payload['status'] = self.status
+        if self.deployment_id is not None:
+            payload['deploymentId'] = self.deployment_id
+        if self.message is not None:
+            payload['message'] = self.message
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'status' in payload:
+            new.status = payload['status']
+        if 'deploymentId' in payload:
+            new.deployment_id = payload['deploymentId']
+        if 'message' in payload:
+            new.message = payload['message']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ConfigurationValidityReport'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
 class ConfigurationUpdateEvents(rpc.Shape):
     """
-    ComponentDetails is a "tagged union" class.
+    ConfigurationValidityReport is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -1021,9 +963,67 @@ class ConfigurationUpdateEvents(rpc.Shape):
         return False
 
 
+class PublishMessage(rpc.Shape):
+    """
+    ConfigurationValidityReport is a "tagged union" class.
+
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        json_message: 
+        binary_message: 
+
+    Attributes:
+        json_message: 
+        binary_message: 
+    """
+
+    def __init__(self, *,
+                 json_message: typing.Optional[JsonMessage] = None,
+                 binary_message: typing.Optional[BinaryMessage] = None):
+        super().__init__()
+        self.json_message = json_message  # type: typing.Optional[JsonMessage]
+        self.binary_message = binary_message  # type: typing.Optional[BinaryMessage]
+
+    def _to_payload(self):
+        payload = {}
+        if self.json_message is not None:
+            payload['jsonMessage'] = self.json_message._to_payload()
+        if self.binary_message is not None:
+            payload['binaryMessage'] = self.binary_message._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'jsonMessage' in payload:
+            new.json_message = JsonMessage._from_payload(payload['jsonMessage'])
+        if 'binaryMessage' in payload:
+            new.binary_message = BinaryMessage._from_payload(payload['binaryMessage'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#PublishMessage'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
 class IoTCoreMessage(rpc.Shape):
     """
-    ComponentDetails is a "tagged union" class.
+    ConfigurationValidityReport is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -1566,6 +1566,310 @@ class SubscribeToComponentUpdatesRequest(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#SubscribeToComponentUpdatesRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class GetComponentDetailsResponse(rpc.Shape):
+    """
+    GetComponentDetailsResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_details: 
+
+    Attributes:
+        component_details: 
+    """
+
+    def __init__(self, *,
+                 component_details: typing.Optional[ComponentDetails] = None):
+        super().__init__()
+        self.component_details = component_details  # type: typing.Optional[ComponentDetails]
+
+    def _to_payload(self):
+        payload = {}
+        if self.component_details is not None:
+            payload['componentDetails'] = self.component_details._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'componentDetails' in payload:
+            new.component_details = ComponentDetails._from_payload(payload['componentDetails'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#GetComponentDetailsResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class GetComponentDetailsRequest(rpc.Shape):
+    """
+    GetComponentDetailsRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name: 
+
+    Attributes:
+        component_name: 
+    """
+
+    def __init__(self, *,
+                 component_name: typing.Optional[str] = None):
+        super().__init__()
+        self.component_name = component_name  # type: typing.Optional[str]
+
+    def _to_payload(self):
+        payload = {}
+        if self.component_name is not None:
+            payload['componentName'] = self.component_name
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'componentName' in payload:
+            new.component_name = payload['componentName']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#GetComponentDetailsRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class SubscribeToTopicResponse(rpc.Shape):
+    """
+    SubscribeToTopicResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        topic_name: 
+
+    Attributes:
+        topic_name: 
+    """
+
+    def __init__(self, *,
+                 topic_name: typing.Optional[str] = None):
+        super().__init__()
+        self.topic_name = topic_name  # type: typing.Optional[str]
+
+    def _to_payload(self):
+        payload = {}
+        if self.topic_name is not None:
+            payload['topicName'] = self.topic_name
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'topicName' in payload:
+            new.topic_name = payload['topicName']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToTopicResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class SubscribeToTopicRequest(rpc.Shape):
+    """
+    SubscribeToTopicRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        topic: 
+
+    Attributes:
+        topic: 
+    """
+
+    def __init__(self, *,
+                 topic: typing.Optional[str] = None):
+        super().__init__()
+        self.topic = topic  # type: typing.Optional[str]
+
+    def _to_payload(self):
+        payload = {}
+        if self.topic is not None:
+            payload['topic'] = self.topic
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'topic' in payload:
+            new.topic = payload['topic']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToTopicRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class GetConfigurationResponse(rpc.Shape):
+    """
+    GetConfigurationResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name: 
+        value: 
+
+    Attributes:
+        component_name: 
+        value: 
+    """
+
+    def __init__(self, *,
+                 component_name: typing.Optional[str] = None,
+                 value: typing.Optional[typing.Dict[str, typing.Any]] = None):
+        super().__init__()
+        self.component_name = component_name  # type: typing.Optional[str]
+        self.value = value  # type: typing.Optional[typing.Dict[str, typing.Any]]
+
+    def _to_payload(self):
+        payload = {}
+        if self.component_name is not None:
+            payload['componentName'] = self.component_name
+        if self.value is not None:
+            payload['value'] = self.value
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'componentName' in payload:
+            new.component_name = payload['componentName']
+        if 'value' in payload:
+            new.value = payload['value']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#GetConfigurationResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class GetConfigurationRequest(rpc.Shape):
+    """
+    GetConfigurationRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name: 
+        key_path: 
+
+    Attributes:
+        component_name: 
+        key_path: 
+    """
+
+    def __init__(self, *,
+                 component_name: typing.Optional[str] = None,
+                 key_path: typing.Optional[typing.List[str]] = None):
+        super().__init__()
+        self.component_name = component_name  # type: typing.Optional[str]
+        self.key_path = key_path  # type: typing.Optional[typing.List[str]]
+
+    def _to_payload(self):
+        payload = {}
+        if self.component_name is not None:
+            payload['componentName'] = self.component_name
+        if self.key_path is not None:
+            payload['keyPath'] = self.key_path
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'componentName' in payload:
+            new.component_name = payload['componentName']
+        if 'keyPath' in payload:
+            new.key_path = payload['keyPath']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#GetConfigurationRequest'
 
     def __repr__(self):
         attrs = []
@@ -2196,6 +2500,74 @@ class ValidateAuthorizationTokenRequest(rpc.Shape):
         return False
 
 
+class SubscribeToValidateConfigurationUpdatesResponse(rpc.Shape):
+    """
+    SubscribeToValidateConfigurationUpdatesResponse
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def _to_payload(self):
+        payload = {}
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToValidateConfigurationUpdatesResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class SubscribeToValidateConfigurationUpdatesRequest(rpc.Shape):
+    """
+    SubscribeToValidateConfigurationUpdatesRequest
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def _to_payload(self):
+        payload = {}
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToValidateConfigurationUpdatesRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
 class FailedUpdateConditionCheckError(GreengrassCoreIPCError):
     """
     FailedUpdateConditionCheckError
@@ -2233,6 +2605,57 @@ class FailedUpdateConditionCheckError(GreengrassCoreIPCError):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#FailedUpdateConditionCheckError'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class ConflictError(GreengrassCoreIPCError):
+    """
+    ConflictError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message: 
+
+    Attributes:
+        message: 
+    """
+
+    def __init__(self, *,
+                 message: typing.Optional[str] = None):
+        super().__init__()
+        self.message = message  # type: typing.Optional[str]
+
+    def _get_error_type_string(self):
+        return 'client'
+
+    def _to_payload(self):
+        payload = {}
+        if self.message is not None:
+            payload['message'] = self.message
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'message' in payload:
+            new.message = payload['message']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ConflictError'
 
     def __repr__(self):
         attrs = []
@@ -2345,169 +2768,6 @@ class UpdateConfigurationRequest(rpc.Shape):
         return False
 
 
-class ConflictError(GreengrassCoreIPCError):
-    """
-    ConflictError
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        message: 
-
-    Attributes:
-        message: 
-    """
-
-    def __init__(self, *,
-                 message: typing.Optional[str] = None):
-        super().__init__()
-        self.message = message  # type: typing.Optional[str]
-
-    def _get_error_type_string(self):
-        return 'client'
-
-    def _to_payload(self):
-        payload = {}
-        if self.message is not None:
-            payload['message'] = self.message
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'message' in payload:
-            new.message = payload['message']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#ConflictError'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class UpdateThingShadowResponse(rpc.Shape):
-    """
-    UpdateThingShadowResponse
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        payload: 
-
-    Attributes:
-        payload: 
-    """
-
-    def __init__(self, *,
-                 payload: typing.Optional[bytes] = None):
-        super().__init__()
-        self.payload = payload  # type: typing.Optional[bytes]
-
-    def _to_payload(self):
-        payload = {}
-        if self.payload is not None:
-            payload['payload'] = base64.b64encode(self.payload).decode()
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'payload' in payload:
-            new.payload = base64.b64decode(payload['payload'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#UpdateThingShadowResponse'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class UpdateThingShadowRequest(rpc.Shape):
-    """
-    UpdateThingShadowRequest
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        thing_name: 
-        shadow_name: 
-        payload: 
-
-    Attributes:
-        thing_name: 
-        shadow_name: 
-        payload: 
-    """
-
-    def __init__(self, *,
-                 thing_name: typing.Optional[str] = None,
-                 shadow_name: typing.Optional[str] = None,
-                 payload: typing.Optional[bytes] = None):
-        super().__init__()
-        self.thing_name = thing_name  # type: typing.Optional[str]
-        self.shadow_name = shadow_name  # type: typing.Optional[str]
-        self.payload = payload  # type: typing.Optional[bytes]
-
-    def _to_payload(self):
-        payload = {}
-        if self.thing_name is not None:
-            payload['thingName'] = self.thing_name
-        if self.shadow_name is not None:
-            payload['shadowName'] = self.shadow_name
-        if self.payload is not None:
-            payload['payload'] = base64.b64encode(self.payload).decode()
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'thingName' in payload:
-            new.thing_name = payload['thingName']
-        if 'shadowName' in payload:
-            new.shadow_name = payload['shadowName']
-        if 'payload' in payload:
-            new.payload = base64.b64decode(payload['payload'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#UpdateThingShadowRequest'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
 class SendConfigurationValidityReportResponse(rpc.Shape):
     """
     SendConfigurationValidityReportResponse
@@ -2590,40 +2850,43 @@ class SendConfigurationValidityReportRequest(rpc.Shape):
         return False
 
 
-class GetThingShadowResponse(rpc.Shape):
+class InvalidArgumentsError(GreengrassCoreIPCError):
     """
-    GetThingShadowResponse
+    InvalidArgumentsError
 
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        payload: 
+        message: 
 
     Attributes:
-        payload: 
+        message: 
     """
 
     def __init__(self, *,
-                 payload: typing.Optional[bytes] = None):
+                 message: typing.Optional[str] = None):
         super().__init__()
-        self.payload = payload  # type: typing.Optional[bytes]
+        self.message = message  # type: typing.Optional[str]
+
+    def _get_error_type_string(self):
+        return 'client'
 
     def _to_payload(self):
         payload = {}
-        if self.payload is not None:
-            payload['payload'] = base64.b64encode(self.payload).decode()
+        if self.message is not None:
+            payload['message'] = self.message
         return payload
 
     @classmethod
     def _from_payload(cls, payload):
         new = cls()
-        if 'payload' in payload:
-            new.payload = base64.b64decode(payload['payload'])
+        if 'message' in payload:
+            new.message = payload['message']
         return new
 
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#GetThingShadowResponse'
+        return 'aws.greengrass#InvalidArgumentsError'
 
     def __repr__(self):
         attrs = []
@@ -2638,48 +2901,90 @@ class GetThingShadowResponse(rpc.Shape):
         return False
 
 
-class GetThingShadowRequest(rpc.Shape):
+class DeferComponentUpdateResponse(rpc.Shape):
     """
-    GetThingShadowRequest
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        thing_name: 
-        shadow_name: 
-
-    Attributes:
-        thing_name: 
-        shadow_name: 
+    DeferComponentUpdateResponse
     """
 
-    def __init__(self, *,
-                 thing_name: typing.Optional[str] = None,
-                 shadow_name: typing.Optional[str] = None):
+    def __init__(self):
         super().__init__()
-        self.thing_name = thing_name  # type: typing.Optional[str]
-        self.shadow_name = shadow_name  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.thing_name is not None:
-            payload['thingName'] = self.thing_name
-        if self.shadow_name is not None:
-            payload['shadowName'] = self.shadow_name
         return payload
 
     @classmethod
     def _from_payload(cls, payload):
         new = cls()
-        if 'thingName' in payload:
-            new.thing_name = payload['thingName']
-        if 'shadowName' in payload:
-            new.shadow_name = payload['shadowName']
         return new
 
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#GetThingShadowRequest'
+        return 'aws.greengrass#DeferComponentUpdateResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class DeferComponentUpdateRequest(rpc.Shape):
+    """
+    DeferComponentUpdateRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        deployment_id: 
+        message: 
+        recheck_after_ms: 
+
+    Attributes:
+        deployment_id: 
+        message: 
+        recheck_after_ms: 
+    """
+
+    def __init__(self, *,
+                 deployment_id: typing.Optional[str] = None,
+                 message: typing.Optional[str] = None,
+                 recheck_after_ms: typing.Optional[int] = None):
+        super().__init__()
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
+        self.message = message  # type: typing.Optional[str]
+        self.recheck_after_ms = recheck_after_ms  # type: typing.Optional[int]
+
+    def _to_payload(self):
+        payload = {}
+        if self.deployment_id is not None:
+            payload['deploymentId'] = self.deployment_id
+        if self.message is not None:
+            payload['message'] = self.message
+        if self.recheck_after_ms is not None:
+            payload['recheckAfterMs'] = self.recheck_after_ms
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'deploymentId' in payload:
+            new.deployment_id = payload['deploymentId']
+        if 'message' in payload:
+            new.message = payload['message']
+        if 'recheckAfterMs' in payload:
+            new.recheck_after_ms = int(payload['recheckAfterMs'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#DeferComponentUpdateRequest'
 
     def __repr__(self):
         attrs = []
@@ -2704,25 +3009,21 @@ class CreateDebugPasswordResponse(rpc.Shape):
         password: 
         username: 
         password_expiration: 
-        certificate_signature: 
 
     Attributes:
         password: 
         username: 
         password_expiration: 
-        certificate_signature: 
     """
 
     def __init__(self, *,
                  password: typing.Optional[str] = None,
                  username: typing.Optional[str] = None,
-                 password_expiration: typing.Optional[datetime.datetime] = None,
-                 certificate_signature: typing.Optional[str] = None):
+                 password_expiration: typing.Optional[datetime.datetime] = None):
         super().__init__()
         self.password = password  # type: typing.Optional[str]
         self.username = username  # type: typing.Optional[str]
         self.password_expiration = password_expiration  # type: typing.Optional[datetime.datetime]
-        self.certificate_signature = certificate_signature  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
@@ -2732,8 +3033,6 @@ class CreateDebugPasswordResponse(rpc.Shape):
             payload['username'] = self.username
         if self.password_expiration is not None:
             payload['passwordExpiration'] = self.password_expiration.timestamp()
-        if self.certificate_signature is not None:
-            payload['certificateSignature'] = self.certificate_signature
         return payload
 
     @classmethod
@@ -2745,8 +3044,6 @@ class CreateDebugPasswordResponse(rpc.Shape):
             new.username = payload['username']
         if 'passwordExpiration' in payload:
             new.password_expiration = datetime.datetime.fromtimestamp(payload['passwordExpiration'], datetime.timezone.utc)
-        if 'certificateSignature' in payload:
-            new.certificate_signature = payload['certificateSignature']
         return new
 
     @classmethod
@@ -2868,721 +3165,6 @@ class ListComponentsRequest(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#ListComponentsRequest'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class PublishToTopicResponse(rpc.Shape):
-    """
-    PublishToTopicResponse
-    """
-
-    def __init__(self):
-        super().__init__()
-
-    def _to_payload(self):
-        payload = {}
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#PublishToTopicResponse'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class PublishToTopicRequest(rpc.Shape):
-    """
-    PublishToTopicRequest
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        topic: 
-        publish_message: 
-
-    Attributes:
-        topic: 
-        publish_message: 
-    """
-
-    def __init__(self, *,
-                 topic: typing.Optional[str] = None,
-                 publish_message: typing.Optional[PublishMessage] = None):
-        super().__init__()
-        self.topic = topic  # type: typing.Optional[str]
-        self.publish_message = publish_message  # type: typing.Optional[PublishMessage]
-
-    def _to_payload(self):
-        payload = {}
-        if self.topic is not None:
-            payload['topic'] = self.topic
-        if self.publish_message is not None:
-            payload['publishMessage'] = self.publish_message._to_payload()
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'topic' in payload:
-            new.topic = payload['topic']
-        if 'publishMessage' in payload:
-            new.publish_message = PublishMessage._from_payload(payload['publishMessage'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#PublishToTopicRequest'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class GetComponentDetailsResponse(rpc.Shape):
-    """
-    GetComponentDetailsResponse
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        component_details: 
-
-    Attributes:
-        component_details: 
-    """
-
-    def __init__(self, *,
-                 component_details: typing.Optional[ComponentDetails] = None):
-        super().__init__()
-        self.component_details = component_details  # type: typing.Optional[ComponentDetails]
-
-    def _to_payload(self):
-        payload = {}
-        if self.component_details is not None:
-            payload['componentDetails'] = self.component_details._to_payload()
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'componentDetails' in payload:
-            new.component_details = ComponentDetails._from_payload(payload['componentDetails'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#GetComponentDetailsResponse'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class GetComponentDetailsRequest(rpc.Shape):
-    """
-    GetComponentDetailsRequest
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        component_name: 
-
-    Attributes:
-        component_name: 
-    """
-
-    def __init__(self, *,
-                 component_name: typing.Optional[str] = None):
-        super().__init__()
-        self.component_name = component_name  # type: typing.Optional[str]
-
-    def _to_payload(self):
-        payload = {}
-        if self.component_name is not None:
-            payload['componentName'] = self.component_name
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'componentName' in payload:
-            new.component_name = payload['componentName']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#GetComponentDetailsRequest'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class SubscribeToTopicResponse(rpc.Shape):
-    """
-    SubscribeToTopicResponse
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        topic_name: 
-
-    Attributes:
-        topic_name: 
-    """
-
-    def __init__(self, *,
-                 topic_name: typing.Optional[str] = None):
-        super().__init__()
-        self.topic_name = topic_name  # type: typing.Optional[str]
-
-    def _to_payload(self):
-        payload = {}
-        if self.topic_name is not None:
-            payload['topicName'] = self.topic_name
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'topicName' in payload:
-            new.topic_name = payload['topicName']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#SubscribeToTopicResponse'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class SubscribeToTopicRequest(rpc.Shape):
-    """
-    SubscribeToTopicRequest
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        topic: 
-
-    Attributes:
-        topic: 
-    """
-
-    def __init__(self, *,
-                 topic: typing.Optional[str] = None):
-        super().__init__()
-        self.topic = topic  # type: typing.Optional[str]
-
-    def _to_payload(self):
-        payload = {}
-        if self.topic is not None:
-            payload['topic'] = self.topic
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'topic' in payload:
-            new.topic = payload['topic']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#SubscribeToTopicRequest'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class GetConfigurationResponse(rpc.Shape):
-    """
-    GetConfigurationResponse
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        component_name: 
-        value: 
-
-    Attributes:
-        component_name: 
-        value: 
-    """
-
-    def __init__(self, *,
-                 component_name: typing.Optional[str] = None,
-                 value: typing.Optional[typing.Dict[str, typing.Any]] = None):
-        super().__init__()
-        self.component_name = component_name  # type: typing.Optional[str]
-        self.value = value  # type: typing.Optional[typing.Dict[str, typing.Any]]
-
-    def _to_payload(self):
-        payload = {}
-        if self.component_name is not None:
-            payload['componentName'] = self.component_name
-        if self.value is not None:
-            payload['value'] = self.value
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'componentName' in payload:
-            new.component_name = payload['componentName']
-        if 'value' in payload:
-            new.value = payload['value']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#GetConfigurationResponse'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class GetConfigurationRequest(rpc.Shape):
-    """
-    GetConfigurationRequest
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        component_name: 
-        key_path: 
-
-    Attributes:
-        component_name: 
-        key_path: 
-    """
-
-    def __init__(self, *,
-                 component_name: typing.Optional[str] = None,
-                 key_path: typing.Optional[typing.List[str]] = None):
-        super().__init__()
-        self.component_name = component_name  # type: typing.Optional[str]
-        self.key_path = key_path  # type: typing.Optional[typing.List[str]]
-
-    def _to_payload(self):
-        payload = {}
-        if self.component_name is not None:
-            payload['componentName'] = self.component_name
-        if self.key_path is not None:
-            payload['keyPath'] = self.key_path
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'componentName' in payload:
-            new.component_name = payload['componentName']
-        if 'keyPath' in payload:
-            new.key_path = payload['keyPath']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#GetConfigurationRequest'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class SubscribeToValidateConfigurationUpdatesResponse(rpc.Shape):
-    """
-    SubscribeToValidateConfigurationUpdatesResponse
-    """
-
-    def __init__(self):
-        super().__init__()
-
-    def _to_payload(self):
-        payload = {}
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#SubscribeToValidateConfigurationUpdatesResponse'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class SubscribeToValidateConfigurationUpdatesRequest(rpc.Shape):
-    """
-    SubscribeToValidateConfigurationUpdatesRequest
-    """
-
-    def __init__(self):
-        super().__init__()
-
-    def _to_payload(self):
-        payload = {}
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#SubscribeToValidateConfigurationUpdatesRequest'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class DeferComponentUpdateResponse(rpc.Shape):
-    """
-    DeferComponentUpdateResponse
-    """
-
-    def __init__(self):
-        super().__init__()
-
-    def _to_payload(self):
-        payload = {}
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#DeferComponentUpdateResponse'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class DeferComponentUpdateRequest(rpc.Shape):
-    """
-    DeferComponentUpdateRequest
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        deployment_id: 
-        message: 
-        recheck_after_ms: 
-
-    Attributes:
-        deployment_id: 
-        message: 
-        recheck_after_ms: 
-    """
-
-    def __init__(self, *,
-                 deployment_id: typing.Optional[str] = None,
-                 message: typing.Optional[str] = None,
-                 recheck_after_ms: typing.Optional[int] = None):
-        super().__init__()
-        self.deployment_id = deployment_id  # type: typing.Optional[str]
-        self.message = message  # type: typing.Optional[str]
-        self.recheck_after_ms = recheck_after_ms  # type: typing.Optional[int]
-
-    def _to_payload(self):
-        payload = {}
-        if self.deployment_id is not None:
-            payload['deploymentId'] = self.deployment_id
-        if self.message is not None:
-            payload['message'] = self.message
-        if self.recheck_after_ms is not None:
-            payload['recheckAfterMs'] = self.recheck_after_ms
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'deploymentId' in payload:
-            new.deployment_id = payload['deploymentId']
-        if 'message' in payload:
-            new.message = payload['message']
-        if 'recheckAfterMs' in payload:
-            new.recheck_after_ms = int(payload['recheckAfterMs'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#DeferComponentUpdateRequest'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class InvalidArgumentsError(GreengrassCoreIPCError):
-    """
-    InvalidArgumentsError
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        message: 
-
-    Attributes:
-        message: 
-    """
-
-    def __init__(self, *,
-                 message: typing.Optional[str] = None):
-        super().__init__()
-        self.message = message  # type: typing.Optional[str]
-
-    def _get_error_type_string(self):
-        return 'client'
-
-    def _to_payload(self):
-        payload = {}
-        if self.message is not None:
-            payload['message'] = self.message
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'message' in payload:
-            new.message = payload['message']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#InvalidArgumentsError'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class DeleteThingShadowResponse(rpc.Shape):
-    """
-    DeleteThingShadowResponse
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        payload: 
-
-    Attributes:
-        payload: 
-    """
-
-    def __init__(self, *,
-                 payload: typing.Optional[bytes] = None):
-        super().__init__()
-        self.payload = payload  # type: typing.Optional[bytes]
-
-    def _to_payload(self):
-        payload = {}
-        if self.payload is not None:
-            payload['payload'] = base64.b64encode(self.payload).decode()
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'payload' in payload:
-            new.payload = base64.b64decode(payload['payload'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#DeleteThingShadowResponse'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class DeleteThingShadowRequest(rpc.Shape):
-    """
-    DeleteThingShadowRequest
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        thing_name: 
-        shadow_name: 
-
-    Attributes:
-        thing_name: 
-        shadow_name: 
-    """
-
-    def __init__(self, *,
-                 thing_name: typing.Optional[str] = None,
-                 shadow_name: typing.Optional[str] = None):
-        super().__init__()
-        self.thing_name = thing_name  # type: typing.Optional[str]
-        self.shadow_name = shadow_name  # type: typing.Optional[str]
-
-    def _to_payload(self):
-        payload = {}
-        if self.thing_name is not None:
-            payload['thingName'] = self.thing_name
-        if self.shadow_name is not None:
-            payload['shadowName'] = self.shadow_name
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'thingName' in payload:
-            new.thing_name = payload['thingName']
-        if 'shadowName' in payload:
-            new.shadow_name = payload['shadowName']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#DeleteThingShadowRequest'
 
     def __repr__(self):
         attrs = []
@@ -3852,6 +3434,96 @@ class PublishToIoTCoreRequest(rpc.Shape):
         return False
 
 
+class PublishToTopicResponse(rpc.Shape):
+    """
+    PublishToTopicResponse
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def _to_payload(self):
+        payload = {}
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#PublishToTopicResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class PublishToTopicRequest(rpc.Shape):
+    """
+    PublishToTopicRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        topic: 
+        publish_message: 
+
+    Attributes:
+        topic: 
+        publish_message: 
+    """
+
+    def __init__(self, *,
+                 topic: typing.Optional[str] = None,
+                 publish_message: typing.Optional[PublishMessage] = None):
+        super().__init__()
+        self.topic = topic  # type: typing.Optional[str]
+        self.publish_message = publish_message  # type: typing.Optional[PublishMessage]
+
+    def _to_payload(self):
+        payload = {}
+        if self.topic is not None:
+            payload['topic'] = self.topic
+        if self.publish_message is not None:
+            payload['publishMessage'] = self.publish_message._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'topic' in payload:
+            new.topic = payload['topic']
+        if 'publishMessage' in payload:
+            new.publish_message = PublishMessage._from_payload(payload['publishMessage'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#PublishToTopicRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
 class UnauthorizedError(GreengrassCoreIPCError):
     """
     UnauthorizedError
@@ -4048,14 +3720,14 @@ SHAPE_INDEX = rpc.ShapeIndex([
     RunWithInfo,
     PostComponentUpdateEvent,
     PreComponentUpdateEvent,
-    BinaryMessage,
-    JsonMessage,
     ValidateConfigurationUpdateEvent,
     ConfigurationUpdateEvent,
+    BinaryMessage,
+    JsonMessage,
     MQTTMessage,
+    ComponentDetails,
     LocalDeployment,
     ConfigurationValidityReport,
-    ComponentDetails,
     InvalidArtifactsDirectoryPathError,
     InvalidRecipeDirectoryPathError,
     CreateLocalDeploymentResponse,
@@ -4066,6 +3738,12 @@ SHAPE_INDEX = rpc.ShapeIndex([
     ListLocalDeploymentsRequest,
     SubscribeToComponentUpdatesResponse,
     SubscribeToComponentUpdatesRequest,
+    GetComponentDetailsResponse,
+    GetComponentDetailsRequest,
+    SubscribeToTopicResponse,
+    SubscribeToTopicRequest,
+    GetConfigurationResponse,
+    GetConfigurationRequest,
     UpdateStateResponse,
     UpdateStateRequest,
     GetSecretValueResponse,
@@ -4078,40 +3756,28 @@ SHAPE_INDEX = rpc.ShapeIndex([
     InvalidTokenError,
     ValidateAuthorizationTokenResponse,
     ValidateAuthorizationTokenRequest,
+    SubscribeToValidateConfigurationUpdatesResponse,
+    SubscribeToValidateConfigurationUpdatesRequest,
     FailedUpdateConditionCheckError,
+    ConflictError,
     UpdateConfigurationResponse,
     UpdateConfigurationRequest,
-    ConflictError,
-    UpdateThingShadowResponse,
-    UpdateThingShadowRequest,
     SendConfigurationValidityReportResponse,
     SendConfigurationValidityReportRequest,
-    GetThingShadowResponse,
-    GetThingShadowRequest,
+    InvalidArgumentsError,
+    DeferComponentUpdateResponse,
+    DeferComponentUpdateRequest,
     CreateDebugPasswordResponse,
     CreateDebugPasswordRequest,
     ListComponentsResponse,
     ListComponentsRequest,
-    PublishToTopicResponse,
-    PublishToTopicRequest,
-    GetComponentDetailsResponse,
-    GetComponentDetailsRequest,
-    SubscribeToTopicResponse,
-    SubscribeToTopicRequest,
-    GetConfigurationResponse,
-    GetConfigurationRequest,
-    SubscribeToValidateConfigurationUpdatesResponse,
-    SubscribeToValidateConfigurationUpdatesRequest,
-    DeferComponentUpdateResponse,
-    DeferComponentUpdateRequest,
-    InvalidArgumentsError,
-    DeleteThingShadowResponse,
-    DeleteThingShadowRequest,
     ResourceNotFoundError,
     SubscribeToConfigurationUpdateResponse,
     SubscribeToConfigurationUpdateRequest,
     PublishToIoTCoreResponse,
     PublishToIoTCoreRequest,
+    PublishToTopicResponse,
+    PublishToTopicRequest,
     UnauthorizedError,
     ServiceError,
     SubscribeToIoTCoreResponse,
@@ -4139,6 +3805,28 @@ class _SubscribeToIoTCoreOperation(rpc.ClientOperation):
     @classmethod
     def _response_stream_type(cls):
         return IoTCoreMessage
+
+
+class _PublishToTopicOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#PublishToTopic'
+
+    @classmethod
+    def _request_type(cls):
+        return PublishToTopicRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return PublishToTopicResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
 
 
 class _PublishToIoTCoreOperation(rpc.ClientOperation):
@@ -4185,160 +3873,6 @@ class _SubscribeToConfigurationUpdateOperation(rpc.ClientOperation):
         return ConfigurationUpdateEvents
 
 
-class _DeleteThingShadowOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#DeleteThingShadow'
-
-    @classmethod
-    def _request_type(cls):
-        return DeleteThingShadowRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return DeleteThingShadowResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _DeferComponentUpdateOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#DeferComponentUpdate'
-
-    @classmethod
-    def _request_type(cls):
-        return DeferComponentUpdateRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return DeferComponentUpdateResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _SubscribeToValidateConfigurationUpdatesOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#SubscribeToValidateConfigurationUpdates'
-
-    @classmethod
-    def _request_type(cls):
-        return SubscribeToValidateConfigurationUpdatesRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return SubscribeToValidateConfigurationUpdatesResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return ValidateConfigurationUpdateEvents
-
-
-class _GetConfigurationOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#GetConfiguration'
-
-    @classmethod
-    def _request_type(cls):
-        return GetConfigurationRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return GetConfigurationResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _SubscribeToTopicOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#SubscribeToTopic'
-
-    @classmethod
-    def _request_type(cls):
-        return SubscribeToTopicRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return SubscribeToTopicResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return SubscriptionResponseMessage
-
-
-class _GetComponentDetailsOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#GetComponentDetails'
-
-    @classmethod
-    def _request_type(cls):
-        return GetComponentDetailsRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return GetComponentDetailsResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _PublishToTopicOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#PublishToTopic'
-
-    @classmethod
-    def _request_type(cls):
-        return PublishToTopicRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return PublishToTopicResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
 class _ListComponentsOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
@@ -4383,14 +3917,14 @@ class _CreateDebugPasswordOperation(rpc.ClientOperation):
         return None
 
 
-class _GetThingShadowOperation(rpc.ClientOperation):
+class _DeferComponentUpdateOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#GetThingShadow'
+        return 'aws.greengrass#DeferComponentUpdate'
 
     @classmethod
     def _request_type(cls):
-        return GetThingShadowRequest
+        return DeferComponentUpdateRequest
 
     @classmethod
     def _request_stream_type(cls):
@@ -4398,7 +3932,7 @@ class _GetThingShadowOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_type(cls):
-        return GetThingShadowResponse
+        return DeferComponentUpdateResponse
 
     @classmethod
     def _response_stream_type(cls):
@@ -4427,28 +3961,6 @@ class _SendConfigurationValidityReportOperation(rpc.ClientOperation):
         return None
 
 
-class _UpdateThingShadowOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#UpdateThingShadow'
-
-    @classmethod
-    def _request_type(cls):
-        return UpdateThingShadowRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return UpdateThingShadowResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
 class _UpdateConfigurationOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
@@ -4469,6 +3981,28 @@ class _UpdateConfigurationOperation(rpc.ClientOperation):
     @classmethod
     def _response_stream_type(cls):
         return None
+
+
+class _SubscribeToValidateConfigurationUpdatesOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToValidateConfigurationUpdates'
+
+    @classmethod
+    def _request_type(cls):
+        return SubscribeToValidateConfigurationUpdatesRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return SubscribeToValidateConfigurationUpdatesResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return ValidateConfigurationUpdateEvents
 
 
 class _ValidateAuthorizationTokenOperation(rpc.ClientOperation):
@@ -4575,6 +4109,72 @@ class _UpdateStateOperation(rpc.ClientOperation):
     @classmethod
     def _response_type(cls):
         return UpdateStateResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _GetConfigurationOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#GetConfiguration'
+
+    @classmethod
+    def _request_type(cls):
+        return GetConfigurationRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return GetConfigurationResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _SubscribeToTopicOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToTopic'
+
+    @classmethod
+    def _request_type(cls):
+        return SubscribeToTopicRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return SubscribeToTopicResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return SubscriptionResponseMessage
+
+
+class _GetComponentDetailsOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#GetComponentDetails'
+
+    @classmethod
+    def _request_type(cls):
+        return GetComponentDetailsRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return GetComponentDetailsResponse
 
     @classmethod
     def _response_stream_type(cls):

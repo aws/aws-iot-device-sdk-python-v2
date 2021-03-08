@@ -71,6 +71,40 @@ class SubscribeToIoTCoreOperation(model._SubscribeToIoTCoreOperation):
         return super().close()
 
 
+class PublishToTopicOperation(model._PublishToTopicOperation):
+    """
+    PublishToTopicOperation
+
+    Create with GreengrassCoreIPCClient.new_publish_to_topic()
+    """
+
+    def activate(self, request: model.PublishToTopicRequest) -> concurrent.futures.Future:
+        """
+        Activate this operation by sending the initial PublishToTopicRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self) -> concurrent.futures.Future:
+        """
+        Returns a Future which completes with a result of PublishToTopicResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self) -> concurrent.futures.Future:
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
 class PublishToIoTCoreOperation(model._PublishToIoTCoreOperation):
     """
     PublishToIoTCoreOperation
@@ -168,302 +202,6 @@ class SubscribeToConfigurationUpdateOperation(model._SubscribeToConfigurationUpd
         return super().close()
 
 
-class DeleteThingShadowOperation(model._DeleteThingShadowOperation):
-    """
-    DeleteThingShadowOperation
-
-    Create with GreengrassCoreIPCClient.new_delete_thing_shadow()
-    """
-
-    def activate(self, request: model.DeleteThingShadowRequest) -> concurrent.futures.Future:
-        """
-        Activate this operation by sending the initial DeleteThingShadowRequest message.
-
-        Returns a Future which completes with a result of None if the
-        request is successfully written to the wire, or an exception if
-        the request fails to send.
-        """
-        return self._activate(request)
-
-    def get_response(self) -> concurrent.futures.Future:
-        """
-        Returns a Future which completes with a result of DeleteThingShadowResponse,
-        when the initial response is received, or an exception.
-        """
-        return self._get_response()
-
-    def close(self) -> concurrent.futures.Future:
-        """
-        Close the operation, whether or not it has completed.
-
-        Returns a Future which completes with a result of None
-        when the operation has closed.
-        """
-        return super().close()
-
-
-class DeferComponentUpdateOperation(model._DeferComponentUpdateOperation):
-    """
-    DeferComponentUpdateOperation
-
-    Create with GreengrassCoreIPCClient.new_defer_component_update()
-    """
-
-    def activate(self, request: model.DeferComponentUpdateRequest) -> concurrent.futures.Future:
-        """
-        Activate this operation by sending the initial DeferComponentUpdateRequest message.
-
-        Returns a Future which completes with a result of None if the
-        request is successfully written to the wire, or an exception if
-        the request fails to send.
-        """
-        return self._activate(request)
-
-    def get_response(self) -> concurrent.futures.Future:
-        """
-        Returns a Future which completes with a result of DeferComponentUpdateResponse,
-        when the initial response is received, or an exception.
-        """
-        return self._get_response()
-
-    def close(self) -> concurrent.futures.Future:
-        """
-        Close the operation, whether or not it has completed.
-
-        Returns a Future which completes with a result of None
-        when the operation has closed.
-        """
-        return super().close()
-
-
-class SubscribeToValidateConfigurationUpdatesStreamHandler(rpc.StreamResponseHandler):
-    """
-    Event handler for SubscribeToValidateConfigurationUpdatesOperation
-
-    Inherit from this class and override methods to handle
-    stream events during a SubscribeToValidateConfigurationUpdatesOperation.
-    """
-
-    def on_stream_event(self, event: model.ValidateConfigurationUpdateEvents) -> None:
-        """
-        Invoked when a ValidateConfigurationUpdateEvents is received.
-        """
-        pass
-
-    def on_stream_error(self, error: Exception) -> bool:
-        """
-        Invoked when an error occurs on the operation stream.
-
-        Return True if operation should close as a result of this error,
-        """
-        return True
-
-    def on_stream_closed(self) -> None:
-        """
-        Invoked when the stream for this operation is closed.
-        """
-        pass
-
-
-class SubscribeToValidateConfigurationUpdatesOperation(model._SubscribeToValidateConfigurationUpdatesOperation):
-    """
-    SubscribeToValidateConfigurationUpdatesOperation
-
-    Create with GreengrassCoreIPCClient.new_subscribe_to_validate_configuration_updates()
-    """
-
-    def activate(self, request: model.SubscribeToValidateConfigurationUpdatesRequest) -> concurrent.futures.Future:
-        """
-        Activate this operation by sending the initial SubscribeToValidateConfigurationUpdatesRequest message.
-
-        Returns a Future which completes with a result of None if the
-        request is successfully written to the wire, or an exception if
-        the request fails to send.
-        """
-        return self._activate(request)
-
-    def get_response(self) -> concurrent.futures.Future:
-        """
-        Returns a Future which completes with a result of SubscribeToValidateConfigurationUpdatesResponse,
-        when the initial response is received, or an exception.
-        """
-        return self._get_response()
-
-    def close(self) -> concurrent.futures.Future:
-        """
-        Close the operation, whether or not it has completed.
-
-        Returns a Future which completes with a result of None
-        when the operation has closed.
-        """
-        return super().close()
-
-
-class GetConfigurationOperation(model._GetConfigurationOperation):
-    """
-    GetConfigurationOperation
-
-    Create with GreengrassCoreIPCClient.new_get_configuration()
-    """
-
-    def activate(self, request: model.GetConfigurationRequest) -> concurrent.futures.Future:
-        """
-        Activate this operation by sending the initial GetConfigurationRequest message.
-
-        Returns a Future which completes with a result of None if the
-        request is successfully written to the wire, or an exception if
-        the request fails to send.
-        """
-        return self._activate(request)
-
-    def get_response(self) -> concurrent.futures.Future:
-        """
-        Returns a Future which completes with a result of GetConfigurationResponse,
-        when the initial response is received, or an exception.
-        """
-        return self._get_response()
-
-    def close(self) -> concurrent.futures.Future:
-        """
-        Close the operation, whether or not it has completed.
-
-        Returns a Future which completes with a result of None
-        when the operation has closed.
-        """
-        return super().close()
-
-
-class SubscribeToTopicStreamHandler(rpc.StreamResponseHandler):
-    """
-    Event handler for SubscribeToTopicOperation
-
-    Inherit from this class and override methods to handle
-    stream events during a SubscribeToTopicOperation.
-    """
-
-    def on_stream_event(self, event: model.SubscriptionResponseMessage) -> None:
-        """
-        Invoked when a SubscriptionResponseMessage is received.
-        """
-        pass
-
-    def on_stream_error(self, error: Exception) -> bool:
-        """
-        Invoked when an error occurs on the operation stream.
-
-        Return True if operation should close as a result of this error,
-        """
-        return True
-
-    def on_stream_closed(self) -> None:
-        """
-        Invoked when the stream for this operation is closed.
-        """
-        pass
-
-
-class SubscribeToTopicOperation(model._SubscribeToTopicOperation):
-    """
-    SubscribeToTopicOperation
-
-    Create with GreengrassCoreIPCClient.new_subscribe_to_topic()
-    """
-
-    def activate(self, request: model.SubscribeToTopicRequest) -> concurrent.futures.Future:
-        """
-        Activate this operation by sending the initial SubscribeToTopicRequest message.
-
-        Returns a Future which completes with a result of None if the
-        request is successfully written to the wire, or an exception if
-        the request fails to send.
-        """
-        return self._activate(request)
-
-    def get_response(self) -> concurrent.futures.Future:
-        """
-        Returns a Future which completes with a result of SubscribeToTopicResponse,
-        when the initial response is received, or an exception.
-        """
-        return self._get_response()
-
-    def close(self) -> concurrent.futures.Future:
-        """
-        Close the operation, whether or not it has completed.
-
-        Returns a Future which completes with a result of None
-        when the operation has closed.
-        """
-        return super().close()
-
-
-class GetComponentDetailsOperation(model._GetComponentDetailsOperation):
-    """
-    GetComponentDetailsOperation
-
-    Create with GreengrassCoreIPCClient.new_get_component_details()
-    """
-
-    def activate(self, request: model.GetComponentDetailsRequest) -> concurrent.futures.Future:
-        """
-        Activate this operation by sending the initial GetComponentDetailsRequest message.
-
-        Returns a Future which completes with a result of None if the
-        request is successfully written to the wire, or an exception if
-        the request fails to send.
-        """
-        return self._activate(request)
-
-    def get_response(self) -> concurrent.futures.Future:
-        """
-        Returns a Future which completes with a result of GetComponentDetailsResponse,
-        when the initial response is received, or an exception.
-        """
-        return self._get_response()
-
-    def close(self) -> concurrent.futures.Future:
-        """
-        Close the operation, whether or not it has completed.
-
-        Returns a Future which completes with a result of None
-        when the operation has closed.
-        """
-        return super().close()
-
-
-class PublishToTopicOperation(model._PublishToTopicOperation):
-    """
-    PublishToTopicOperation
-
-    Create with GreengrassCoreIPCClient.new_publish_to_topic()
-    """
-
-    def activate(self, request: model.PublishToTopicRequest) -> concurrent.futures.Future:
-        """
-        Activate this operation by sending the initial PublishToTopicRequest message.
-
-        Returns a Future which completes with a result of None if the
-        request is successfully written to the wire, or an exception if
-        the request fails to send.
-        """
-        return self._activate(request)
-
-    def get_response(self) -> concurrent.futures.Future:
-        """
-        Returns a Future which completes with a result of PublishToTopicResponse,
-        when the initial response is received, or an exception.
-        """
-        return self._get_response()
-
-    def close(self) -> concurrent.futures.Future:
-        """
-        Close the operation, whether or not it has completed.
-
-        Returns a Future which completes with a result of None
-        when the operation has closed.
-        """
-        return super().close()
-
-
 class ListComponentsOperation(model._ListComponentsOperation):
     """
     ListComponentsOperation
@@ -532,16 +270,16 @@ class CreateDebugPasswordOperation(model._CreateDebugPasswordOperation):
         return super().close()
 
 
-class GetThingShadowOperation(model._GetThingShadowOperation):
+class DeferComponentUpdateOperation(model._DeferComponentUpdateOperation):
     """
-    GetThingShadowOperation
+    DeferComponentUpdateOperation
 
-    Create with GreengrassCoreIPCClient.new_get_thing_shadow()
+    Create with GreengrassCoreIPCClient.new_defer_component_update()
     """
 
-    def activate(self, request: model.GetThingShadowRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.DeferComponentUpdateRequest) -> concurrent.futures.Future:
         """
-        Activate this operation by sending the initial GetThingShadowRequest message.
+        Activate this operation by sending the initial DeferComponentUpdateRequest message.
 
         Returns a Future which completes with a result of None if the
         request is successfully written to the wire, or an exception if
@@ -551,7 +289,7 @@ class GetThingShadowOperation(model._GetThingShadowOperation):
 
     def get_response(self) -> concurrent.futures.Future:
         """
-        Returns a Future which completes with a result of GetThingShadowResponse,
+        Returns a Future which completes with a result of DeferComponentUpdateResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
@@ -600,40 +338,6 @@ class SendConfigurationValidityReportOperation(model._SendConfigurationValidityR
         return super().close()
 
 
-class UpdateThingShadowOperation(model._UpdateThingShadowOperation):
-    """
-    UpdateThingShadowOperation
-
-    Create with GreengrassCoreIPCClient.new_update_thing_shadow()
-    """
-
-    def activate(self, request: model.UpdateThingShadowRequest) -> concurrent.futures.Future:
-        """
-        Activate this operation by sending the initial UpdateThingShadowRequest message.
-
-        Returns a Future which completes with a result of None if the
-        request is successfully written to the wire, or an exception if
-        the request fails to send.
-        """
-        return self._activate(request)
-
-    def get_response(self) -> concurrent.futures.Future:
-        """
-        Returns a Future which completes with a result of UpdateThingShadowResponse,
-        when the initial response is received, or an exception.
-        """
-        return self._get_response()
-
-    def close(self) -> concurrent.futures.Future:
-        """
-        Close the operation, whether or not it has completed.
-
-        Returns a Future which completes with a result of None
-        when the operation has closed.
-        """
-        return super().close()
-
-
 class UpdateConfigurationOperation(model._UpdateConfigurationOperation):
     """
     UpdateConfigurationOperation
@@ -654,6 +358,69 @@ class UpdateConfigurationOperation(model._UpdateConfigurationOperation):
     def get_response(self) -> concurrent.futures.Future:
         """
         Returns a Future which completes with a result of UpdateConfigurationResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self) -> concurrent.futures.Future:
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
+class SubscribeToValidateConfigurationUpdatesStreamHandler(rpc.StreamResponseHandler):
+    """
+    Event handler for SubscribeToValidateConfigurationUpdatesOperation
+
+    Inherit from this class and override methods to handle
+    stream events during a SubscribeToValidateConfigurationUpdatesOperation.
+    """
+
+    def on_stream_event(self, event: model.ValidateConfigurationUpdateEvents) -> None:
+        """
+        Invoked when a ValidateConfigurationUpdateEvents is received.
+        """
+        pass
+
+    def on_stream_error(self, error: Exception) -> bool:
+        """
+        Invoked when an error occurs on the operation stream.
+
+        Return True if operation should close as a result of this error,
+        """
+        return True
+
+    def on_stream_closed(self) -> None:
+        """
+        Invoked when the stream for this operation is closed.
+        """
+        pass
+
+
+class SubscribeToValidateConfigurationUpdatesOperation(model._SubscribeToValidateConfigurationUpdatesOperation):
+    """
+    SubscribeToValidateConfigurationUpdatesOperation
+
+    Create with GreengrassCoreIPCClient.new_subscribe_to_validate_configuration_updates()
+    """
+
+    def activate(self, request: model.SubscribeToValidateConfigurationUpdatesRequest) -> concurrent.futures.Future:
+        """
+        Activate this operation by sending the initial SubscribeToValidateConfigurationUpdatesRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self) -> concurrent.futures.Future:
+        """
+        Returns a Future which completes with a result of SubscribeToValidateConfigurationUpdatesResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
@@ -824,6 +591,137 @@ class UpdateStateOperation(model._UpdateStateOperation):
     def get_response(self) -> concurrent.futures.Future:
         """
         Returns a Future which completes with a result of UpdateStateResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self) -> concurrent.futures.Future:
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
+class GetConfigurationOperation(model._GetConfigurationOperation):
+    """
+    GetConfigurationOperation
+
+    Create with GreengrassCoreIPCClient.new_get_configuration()
+    """
+
+    def activate(self, request: model.GetConfigurationRequest) -> concurrent.futures.Future:
+        """
+        Activate this operation by sending the initial GetConfigurationRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self) -> concurrent.futures.Future:
+        """
+        Returns a Future which completes with a result of GetConfigurationResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self) -> concurrent.futures.Future:
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
+class SubscribeToTopicStreamHandler(rpc.StreamResponseHandler):
+    """
+    Event handler for SubscribeToTopicOperation
+
+    Inherit from this class and override methods to handle
+    stream events during a SubscribeToTopicOperation.
+    """
+
+    def on_stream_event(self, event: model.SubscriptionResponseMessage) -> None:
+        """
+        Invoked when a SubscriptionResponseMessage is received.
+        """
+        pass
+
+    def on_stream_error(self, error: Exception) -> bool:
+        """
+        Invoked when an error occurs on the operation stream.
+
+        Return True if operation should close as a result of this error,
+        """
+        return True
+
+    def on_stream_closed(self) -> None:
+        """
+        Invoked when the stream for this operation is closed.
+        """
+        pass
+
+
+class SubscribeToTopicOperation(model._SubscribeToTopicOperation):
+    """
+    SubscribeToTopicOperation
+
+    Create with GreengrassCoreIPCClient.new_subscribe_to_topic()
+    """
+
+    def activate(self, request: model.SubscribeToTopicRequest) -> concurrent.futures.Future:
+        """
+        Activate this operation by sending the initial SubscribeToTopicRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self) -> concurrent.futures.Future:
+        """
+        Returns a Future which completes with a result of SubscribeToTopicResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self) -> concurrent.futures.Future:
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
+class GetComponentDetailsOperation(model._GetComponentDetailsOperation):
+    """
+    GetComponentDetailsOperation
+
+    Create with GreengrassCoreIPCClient.new_get_component_details()
+    """
+
+    def activate(self, request: model.GetComponentDetailsRequest) -> concurrent.futures.Future:
+        """
+        Activate this operation by sending the initial GetComponentDetailsRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self) -> concurrent.futures.Future:
+        """
+        Returns a Future which completes with a result of GetComponentDetailsResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
@@ -1028,6 +926,16 @@ class GreengrassCoreIPCClient(rpc.Client):
         """
         return self._new_operation(SubscribeToIoTCoreOperation, stream_handler)
 
+    def new_publish_to_topic(self) -> PublishToTopicOperation:
+        """
+        Create a new PublishToTopicOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+        """
+        return self._new_operation(PublishToTopicOperation)
+
     def new_publish_to_iot_core(self) -> PublishToIoTCoreOperation:
         """
         Create a new PublishToIoTCoreOperation.
@@ -1052,84 +960,6 @@ class GreengrassCoreIPCClient(rpc.Client):
         """
         return self._new_operation(SubscribeToConfigurationUpdateOperation, stream_handler)
 
-    def new_delete_thing_shadow(self) -> DeleteThingShadowOperation:
-        """
-        Create a new DeleteThingShadowOperation.
-
-        This operation will not send or receive any data until activate()
-        is called. Call activate() when you're ready for callbacks and
-        events to fire.
-        """
-        return self._new_operation(DeleteThingShadowOperation)
-
-    def new_defer_component_update(self) -> DeferComponentUpdateOperation:
-        """
-        Create a new DeferComponentUpdateOperation.
-
-        This operation will not send or receive any data until activate()
-        is called. Call activate() when you're ready for callbacks and
-        events to fire.
-        """
-        return self._new_operation(DeferComponentUpdateOperation)
-
-    def new_subscribe_to_validate_configuration_updates(self, stream_handler: SubscribeToValidateConfigurationUpdatesStreamHandler) -> SubscribeToValidateConfigurationUpdatesOperation:
-        """
-        Create a new SubscribeToValidateConfigurationUpdatesOperation.
-
-        This operation will not send or receive any data until activate()
-        is called. Call activate() when you're ready for callbacks and
-        events to fire.
-
-        Args:
-            stream_handler: Methods on this object will be called as
-                stream events happen on this operation.
-        """
-        return self._new_operation(SubscribeToValidateConfigurationUpdatesOperation, stream_handler)
-
-    def new_get_configuration(self) -> GetConfigurationOperation:
-        """
-        Create a new GetConfigurationOperation.
-
-        This operation will not send or receive any data until activate()
-        is called. Call activate() when you're ready for callbacks and
-        events to fire.
-        """
-        return self._new_operation(GetConfigurationOperation)
-
-    def new_subscribe_to_topic(self, stream_handler: SubscribeToTopicStreamHandler) -> SubscribeToTopicOperation:
-        """
-        Create a new SubscribeToTopicOperation.
-
-        This operation will not send or receive any data until activate()
-        is called. Call activate() when you're ready for callbacks and
-        events to fire.
-
-        Args:
-            stream_handler: Methods on this object will be called as
-                stream events happen on this operation.
-        """
-        return self._new_operation(SubscribeToTopicOperation, stream_handler)
-
-    def new_get_component_details(self) -> GetComponentDetailsOperation:
-        """
-        Create a new GetComponentDetailsOperation.
-
-        This operation will not send or receive any data until activate()
-        is called. Call activate() when you're ready for callbacks and
-        events to fire.
-        """
-        return self._new_operation(GetComponentDetailsOperation)
-
-    def new_publish_to_topic(self) -> PublishToTopicOperation:
-        """
-        Create a new PublishToTopicOperation.
-
-        This operation will not send or receive any data until activate()
-        is called. Call activate() when you're ready for callbacks and
-        events to fire.
-        """
-        return self._new_operation(PublishToTopicOperation)
-
     def new_list_components(self) -> ListComponentsOperation:
         """
         Create a new ListComponentsOperation.
@@ -1150,15 +980,15 @@ class GreengrassCoreIPCClient(rpc.Client):
         """
         return self._new_operation(CreateDebugPasswordOperation)
 
-    def new_get_thing_shadow(self) -> GetThingShadowOperation:
+    def new_defer_component_update(self) -> DeferComponentUpdateOperation:
         """
-        Create a new GetThingShadowOperation.
+        Create a new DeferComponentUpdateOperation.
 
         This operation will not send or receive any data until activate()
         is called. Call activate() when you're ready for callbacks and
         events to fire.
         """
-        return self._new_operation(GetThingShadowOperation)
+        return self._new_operation(DeferComponentUpdateOperation)
 
     def new_send_configuration_validity_report(self) -> SendConfigurationValidityReportOperation:
         """
@@ -1170,16 +1000,6 @@ class GreengrassCoreIPCClient(rpc.Client):
         """
         return self._new_operation(SendConfigurationValidityReportOperation)
 
-    def new_update_thing_shadow(self) -> UpdateThingShadowOperation:
-        """
-        Create a new UpdateThingShadowOperation.
-
-        This operation will not send or receive any data until activate()
-        is called. Call activate() when you're ready for callbacks and
-        events to fire.
-        """
-        return self._new_operation(UpdateThingShadowOperation)
-
     def new_update_configuration(self) -> UpdateConfigurationOperation:
         """
         Create a new UpdateConfigurationOperation.
@@ -1189,6 +1009,20 @@ class GreengrassCoreIPCClient(rpc.Client):
         events to fire.
         """
         return self._new_operation(UpdateConfigurationOperation)
+
+    def new_subscribe_to_validate_configuration_updates(self, stream_handler: SubscribeToValidateConfigurationUpdatesStreamHandler) -> SubscribeToValidateConfigurationUpdatesOperation:
+        """
+        Create a new SubscribeToValidateConfigurationUpdatesOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+
+        Args:
+            stream_handler: Methods on this object will be called as
+                stream events happen on this operation.
+        """
+        return self._new_operation(SubscribeToValidateConfigurationUpdatesOperation, stream_handler)
 
     def new_validate_authorization_token(self) -> ValidateAuthorizationTokenOperation:
         """
@@ -1239,6 +1073,40 @@ class GreengrassCoreIPCClient(rpc.Client):
         events to fire.
         """
         return self._new_operation(UpdateStateOperation)
+
+    def new_get_configuration(self) -> GetConfigurationOperation:
+        """
+        Create a new GetConfigurationOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+        """
+        return self._new_operation(GetConfigurationOperation)
+
+    def new_subscribe_to_topic(self, stream_handler: SubscribeToTopicStreamHandler) -> SubscribeToTopicOperation:
+        """
+        Create a new SubscribeToTopicOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+
+        Args:
+            stream_handler: Methods on this object will be called as
+                stream events happen on this operation.
+        """
+        return self._new_operation(SubscribeToTopicOperation, stream_handler)
+
+    def new_get_component_details(self) -> GetComponentDetailsOperation:
+        """
+        Create a new GetComponentDetailsOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+        """
+        return self._new_operation(GetComponentDetailsOperation)
 
     def new_subscribe_to_component_updates(self, stream_handler: SubscribeToComponentUpdatesStreamHandler) -> SubscribeToComponentUpdatesOperation:
         """
