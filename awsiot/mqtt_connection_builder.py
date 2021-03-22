@@ -63,6 +63,12 @@ Optional Keyword Arguments:
         the connection is invalid and attempts to reconnect.
         Default is 3000ms (3 seconds). This duration must be shorter than `keep_alive_secs`.
 
+    **protocol_operation_timeout_ms** (`int`): Milliseconds to wait for the response to the operation
+        requires response by protocol. Set to zero to disable timeout. Otherwise,
+        the operation will fail if no response is received within this amount of time after
+        the packet is written to the socket
+        It applied to PUBLISH (QoS>0) and UNSUBSCRIBE now.
+
     **will** (:class:`awscrt.mqtt.Will`): Will to send with CONNECT packet. The will is
         published by the server when its connection to the client is unexpectedly lost.
 
@@ -180,6 +186,7 @@ def _builder(
         reconnect_max_timeout_secs=kwargs.get('reconnect_max_timeout_secs', 60),
         keep_alive_secs=kwargs.get('keep_alive_secs', 1200),
         ping_timeout_ms=kwargs.get('ping_timeout_ms', 3000),
+        protocol_operation_timeout_ms=kwargs.get('protocol_operation_timeout_ms', 0),
         will=kwargs.get('will'),
         username=username,
         password=kwargs.get('password'),
