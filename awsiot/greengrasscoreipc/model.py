@@ -3009,21 +3009,29 @@ class CreateDebugPasswordResponse(rpc.Shape):
         password: 
         username: 
         password_expiration: 
+        certificate_sha256_hash: 
+        certificate_sha1_hash: 
 
     Attributes:
         password: 
         username: 
         password_expiration: 
+        certificate_sha256_hash: 
+        certificate_sha1_hash: 
     """
 
     def __init__(self, *,
                  password: typing.Optional[str] = None,
                  username: typing.Optional[str] = None,
-                 password_expiration: typing.Optional[datetime.datetime] = None):
+                 password_expiration: typing.Optional[datetime.datetime] = None,
+                 certificate_sha256_hash: typing.Optional[str] = None,
+                 certificate_sha1_hash: typing.Optional[str] = None):
         super().__init__()
         self.password = password  # type: typing.Optional[str]
         self.username = username  # type: typing.Optional[str]
         self.password_expiration = password_expiration  # type: typing.Optional[datetime.datetime]
+        self.certificate_sha256_hash = certificate_sha256_hash  # type: typing.Optional[str]
+        self.certificate_sha1_hash = certificate_sha1_hash  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
@@ -3033,6 +3041,10 @@ class CreateDebugPasswordResponse(rpc.Shape):
             payload['username'] = self.username
         if self.password_expiration is not None:
             payload['passwordExpiration'] = self.password_expiration.timestamp()
+        if self.certificate_sha256_hash is not None:
+            payload['certificateSHA256Hash'] = self.certificate_sha256_hash
+        if self.certificate_sha1_hash is not None:
+            payload['certificateSHA1Hash'] = self.certificate_sha1_hash
         return payload
 
     @classmethod
@@ -3044,6 +3056,10 @@ class CreateDebugPasswordResponse(rpc.Shape):
             new.username = payload['username']
         if 'passwordExpiration' in payload:
             new.password_expiration = datetime.datetime.fromtimestamp(payload['passwordExpiration'], datetime.timezone.utc)
+        if 'certificateSHA256Hash' in payload:
+            new.certificate_sha256_hash = payload['certificateSHA256Hash']
+        if 'certificateSHA1Hash' in payload:
+            new.certificate_sha1_hash = payload['certificateSHA1Hash']
         return new
 
     @classmethod
