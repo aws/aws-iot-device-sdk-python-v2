@@ -72,7 +72,7 @@
     "downstream": [],
     "_comment": "doing everything in 'test' step so that manylinux can turn off tests and do its stuff in the 'post_build_step'. using data to program really sucks",
     "build": [
-        ["{python}", "-c", "print('ignore this fake build step')"]
+        ["sudo apt update -y && sudo apt dist-upgrade -y"]
     ],
     "test": [
         ["{python}", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
