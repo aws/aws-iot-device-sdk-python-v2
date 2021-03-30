@@ -1,5 +1,5 @@
 from awscrt.auth import AwsCredentialsProvider
-from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup,init_logging, LogLevel
+from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup
 from awsiot import mqtt_connection_builder
 import boto3
 import botocore.exceptions
@@ -70,7 +70,6 @@ class MqttBuilderTest(unittest.TestCase):
         connection.disconnect().result(TIMEOUT)
 
     def test_mtls_from_bytes(self):
-        init_logging(LogLevel.Trace, 'stderr')
         config = Config.get()
         elg = EventLoopGroup()
         resolver = DefaultHostResolver(elg)
