@@ -115,7 +115,7 @@ def _get_metrics_str():
         try:
             import pkg_resources
             try:
-                version = pkg_resources.get_distribution("awscrt").version
+                version = pkg_resources.get_distribution("awsiotsdk").version
                 _metrics_str = "?SDK=PythonV2&Version={}".format(version)
             except pkg_resources.DistributionNotFound:
                 _metrics_str = "?SDK=PythonV2&Version=dev"
