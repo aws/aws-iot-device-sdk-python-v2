@@ -47,7 +47,7 @@ class DiscoveryClient:
         
         #: Temporary fix for connection with china endpoint
         if region == 'cn-north-1':
-            self._gg_server_name += '.cn' 
+            self._gg_server_name = 'greengrass.ats.iot.{}.amazonaws.com.cn'.format(region)
 
         self._tls_connection_options = tls_context.new_connection_options()
         self._tls_connection_options.set_server_name(self._gg_server_name)
