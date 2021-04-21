@@ -126,7 +126,6 @@ if __name__ == '__main__':
         else:
             mqtt_connection = mqtt_connection_builder.mtls_from_path(
                 endpoint=args.endpoint,
-                port=args.port,
                 cert_filepath=args.cert,
                 pri_key_filepath=args.key,
                 client_bootstrap=client_bootstrap,
