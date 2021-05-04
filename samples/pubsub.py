@@ -110,31 +110,18 @@ if __name__ == '__main__':
             keep_alive_secs=6)
 
     else:
-        if args.port:
-            mqtt_connection = mqtt_connection_builder.mtls_from_path(
-                endpoint=args.endpoint,
-                port=args.port,
-                cert_filepath=args.cert,
-                pri_key_filepath=args.key,
-                client_bootstrap=client_bootstrap,
-                ca_filepath=args.root_ca,
-                on_connection_interrupted=on_connection_interrupted,
-                on_connection_resumed=on_connection_resumed,
-                client_id=args.client_id,
-                clean_session=False,
-                keep_alive_secs=6)
-        else:
-            mqtt_connection = mqtt_connection_builder.mtls_from_path(
-                endpoint=args.endpoint,
-                cert_filepath=args.cert,
-                pri_key_filepath=args.key,
-                client_bootstrap=client_bootstrap,
-                ca_filepath=args.root_ca,
-                on_connection_interrupted=on_connection_interrupted,
-                on_connection_resumed=on_connection_resumed,
-                client_id=args.client_id,
-                clean_session=False,
-                keep_alive_secs=6)
+        mqtt_connection = mqtt_connection_builder.mtls_from_path(
+            endpoint=args.endpoint,
+            port=args.port,
+            cert_filepath=args.cert,
+            pri_key_filepath=args.key,
+            client_bootstrap=client_bootstrap,
+            ca_filepath=args.root_ca,
+            on_connection_interrupted=on_connection_interrupted,
+            on_connection_resumed=on_connection_resumed,
+            client_id=args.client_id,
+            clean_session=False,
+            keep_alive_secs=6)
 
     print("Connecting to {} with client ID '{}'...".format(
         args.endpoint, args.client_id))

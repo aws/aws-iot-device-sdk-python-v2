@@ -141,16 +141,18 @@ def _builder(
         tls_ctx_options.override_default_trust_store_from_path(ca_dirpath, ca_filepath)
 
     if use_websockets:
-        port = 443
+        default_port = 443
         if awscrt.io.is_alpn_available():
             tls_ctx_options.alpn_list = ['http/1.1']
     else:
         port = 8883
         if awscrt.io.is_alpn_available():
-            port = 443
+            default_port = 443
             tls_ctx_options.alpn_list = ['x-amzn-mqtt-ca']
 
-    port = kwargs.get('port', port)
+    port = kwargs.get('port', default_port)
+    if not isinstance(port, int): 
+        port = default_port
 
     socket_options = awscrt.io.SocketOptions()
     socket_options.connect_timeout_ms = kwargs.get('tcp_connect_timeout_ms', 5000)
