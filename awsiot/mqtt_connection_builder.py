@@ -106,20 +106,6 @@ def _check_required_kwargs(**kwargs):
             raise TypeError("Builder needs keyword-only argument '{}'".format(required))
 
 
-def _get(kwargs, name, default=None):
-    """
-    Returns kwargs['name'] if it exists and is not None.
-    Otherwise returns default.
-
-    This function exists so users can pass some_arg=None to get its default
-    value, instead of literally passing None.
-    """
-    val = kwargs.get(name)
-    if val is None:
-        val = default
-    return val
-
-
 _metrics_str = None
 
 
@@ -146,65 +132,64 @@ def _builder(
         websocket_proxy_options=None,
         **kwargs):
 
-    ca_bytes = _get(kwargs, 'ca_bytes')
-    ca_filepath = _get(kwargs, 'ca_filepath')
-    ca_dirpath = _get(kwargs, 'ca_dirpath')
+    ca_bytes = kwargs.get('ca_bytes')
+    ca_filepath = kwargs.get('ca_filepath')
+    ca_dirpath = kwargs.get('ca_dirpath')
     if ca_bytes:
         tls_ctx_options.override_default_trust_store(ca_bytes)
     elif ca_filepath or ca_dirpath:
         tls_ctx_options.override_default_trust_store_from_path(ca_dirpath, ca_filepath)
 
     if use_websockets:
-        default_port = 443
+        port = 443
         if awscrt.io.is_alpn_available():
             tls_ctx_options.alpn_list = ['http/1.1']
     else:
-        default_port = 8883
+        port = 8883
         if awscrt.io.is_alpn_available():
-            default_port = 443
+            port = 443
             tls_ctx_options.alpn_list = ['x-amzn-mqtt-ca']
 
-    port = _get(kwargs, 'port', default_port)
+    port = kwargs.get('port', port)
 
     socket_options = awscrt.io.SocketOptions()
-    socket_options.connect_timeout_ms = _get(kwargs, 'tcp_connect_timeout_ms', 5000)
+    socket_options.connect_timeout_ms = kwargs.get('tcp_connect_timeout_ms', 5000)
     # These have been inconsistent between keepalive/keep_alive. Resolve both for now to ease transition.
-    socket_options.keep_alive = \
-        _get(kwargs, 'tcp_keep_alive', _get(kwargs, 'tcp_keepalive', False))
+    socket_options.keep_alive = kwargs.get('tcp_keep_alive', kwargs.get('tcp_keepalive', False))
+    socket_options.keep_alive_timeout_secs = kwargs.get(
+        'tcp_keep_alive_timeout_secs', kwargs.get(
+            'tcp_keepalive_timeout_secs', 0))
+    socket_options.keep_alive_interval_secs = kwargs.get(
+        'tcp_keep_alive_interval_secs', kwargs.get(
+            'tcp_keepalive_interval_secs', 0))
+    socket_options.keep_alive_max_probes = kwargs.get(
+        'tcp_keep_alive_max_probes', kwargs.get(
+            'tcp_keepalive_max_probes', 0))
 
-    socket_options.keep_alive_timeout_secs = \
-        _get(kwargs, 'tcp_keep_alive_timeout_secs', _get(kwargs, 'tcp_keepalive_timeout_secs', 0))
-
-    socket_options.keep_alive_interval_secs = \
-        _get(kwargs, 'tcp_keep_alive_interval_secs', _get(kwargs, 'tcp_keepalive_interval_secs', 0))
-
-    socket_options.keep_alive_max_probes = \
-        _get(kwargs, 'tcp_keep_alive_max_probes', _get(kwargs, 'tcp_keepalive_max_probes', 0))
-
-    username = _get(kwargs, 'username', '')
-    if _get(kwargs, 'enable_metrics_collection', True):
+    username = kwargs.get('username', '')
+    if kwargs.get('enable_metrics_collection', True):
         username += _get_metrics_str()
 
-    client_bootstrap = _get(kwargs, 'client_bootstrap')
+    client_bootstrap = kwargs.get('client_bootstrap')
     tls_ctx = awscrt.io.ClientTlsContext(tls_ctx_options)
     mqtt_client = awscrt.mqtt.Client(client_bootstrap, tls_ctx)
 
     return awscrt.mqtt.Connection(
         client=mqtt_client,
-        on_connection_interrupted=_get(kwargs, 'on_connection_interrupted'),
-        on_connection_resumed=_get(kwargs, 'on_connection_resumed'),
-        client_id=_get(kwargs, 'client_id'),
-        host_name=_get(kwargs, 'endpoint'),
+        on_connection_interrupted=kwargs.get('on_connection_interrupted'),
+        on_connection_resumed=kwargs.get('on_connection_resumed'),
+        client_id=kwargs.get('client_id'),
+        host_name=kwargs.get('endpoint'),
         port=port,
-        clean_session=_get(kwargs, 'clean_session', False),
-        reconnect_min_timeout_secs=_get(kwargs, 'reconnect_min_timeout_secs', 5),
-        reconnect_max_timeout_secs=_get(kwargs, 'reconnect_max_timeout_secs', 60),
-        keep_alive_secs=_get(kwargs, 'keep_alive_secs', 1200),
-        ping_timeout_ms=_get(kwargs, 'ping_timeout_ms', 3000),
-        protocol_operation_timeout_ms=_get(kwargs, 'protocol_operation_timeout_ms', 0),
-        will=_get(kwargs, 'will'),
+        clean_session=kwargs.get('clean_session', False),
+        reconnect_min_timeout_secs=kwargs.get('reconnect_min_timeout_secs', 5),
+        reconnect_max_timeout_secs=kwargs.get('reconnect_max_timeout_secs', 60),
+        keep_alive_secs=kwargs.get('keep_alive_secs', 1200),
+        ping_timeout_ms=kwargs.get('ping_timeout_ms', 3000),
+        protocol_operation_timeout_ms=kwargs.get('protocol_operation_timeout_ms', 0),
+        will=kwargs.get('will'),
         username=username,
-        password=_get(kwargs, 'password'),
+        password=kwargs.get('password'),
         socket_options=socket_options,
         use_websockets=use_websockets,
         websocket_handshake_transform=websocket_handshake_transform,
