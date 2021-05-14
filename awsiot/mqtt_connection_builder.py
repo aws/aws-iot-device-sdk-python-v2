@@ -11,7 +11,7 @@ Required Keyword Arguments:
     **client_id** (`str`): ID to place in CONNECT packet. Must be unique across all devices/clients.
             If an ID is already in use, the other client will be disconnected.
 
-Optional Keyword Arguments, omit, or set `None` to get defaults:
+Optional Keyword Arguments (omit, or set `None` to get default value):
 
     **on_connection_interrupted** (`Callable`): Callback invoked whenever the MQTT connection is lost.
         The MQTT client will automatically attempt to reconnect.
