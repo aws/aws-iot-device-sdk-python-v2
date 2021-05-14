@@ -19,7 +19,7 @@ def _load_readme():
 
 
 def _load_version():
-    init_path = os.path.join(PROJECT_DIR, 'awscrt', '__init__.py')
+    init_path = os.path.join(PROJECT_DIR, 'awscrt', 'awsiot/__init__.py')
     with open(init_path) as fp:
         return VERSION_RE.match(fp.read()).group(1)
 
