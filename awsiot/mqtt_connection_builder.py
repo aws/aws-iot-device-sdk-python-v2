@@ -90,6 +90,8 @@ Optional Keyword Arguments:
 
     **enable_metrics_collection** (`bool`): Whether to send the SDK version number in the CONNECT packet.
         Default is True.
+
+    **http_proxy_options** (:class: 'awscrt.http.HttpProxyOptions'): http proxy options to use
 """
 
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -129,7 +131,6 @@ def _builder(
         tls_ctx_options,
         use_websockets=False,
         websocket_handshake_transform=None,
-        websocket_proxy_options=None,
         **kwargs):
 
     ca_bytes = kwargs.get('ca_bytes')
@@ -174,6 +175,7 @@ def _builder(
     tls_ctx = awscrt.io.ClientTlsContext(tls_ctx_options)
     mqtt_client = awscrt.mqtt.Client(client_bootstrap, tls_ctx)
 
+    proxy_options = kwargs.get('http_proxy_options', kwargs.get('websocket_proxy_options', None))
     return awscrt.mqtt.Connection(
         client=mqtt_client,
         on_connection_interrupted=kwargs.get('on_connection_interrupted'),
@@ -193,7 +195,7 @@ def _builder(
         socket_options=socket_options,
         use_websockets=use_websockets,
         websocket_handshake_transform=websocket_handshake_transform,
-        websocket_proxy_options=websocket_proxy_options,
+        proxy_options=proxy_options,
     )
 
 
