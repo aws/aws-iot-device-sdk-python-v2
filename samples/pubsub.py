@@ -18,6 +18,7 @@ from uuid import uuid4
 parser = argparse.ArgumentParser(description="Send and receive messages through and MQTT connection.")
 parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpoint, not including a port. " +
                                                       "Ex: \"abcd123456wxyz-ats.iot.us-east-1.amazonaws.com\"")
+parser.add_argument('--port', type=int, help="Specify port. AWS IoT supports 443 and 8883.")
 parser.add_argument('--cert', help="File path to your client certificate, in PEM format.")
 parser.add_argument('--key', help="File path to your private key, in PEM format.")
 parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. " +
@@ -110,6 +111,7 @@ if __name__ == '__main__':
     else:
         mqtt_connection = mqtt_connection_builder.mtls_from_path(
             endpoint=args.endpoint,
+            port=args.port,
             cert_filepath=args.cert,
             pri_key_filepath=args.key,
             client_bootstrap=client_bootstrap,
