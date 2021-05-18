@@ -133,6 +133,7 @@ Otherwise, default port is 8883.</p>
 <dt><strong>enable_metrics_collection</strong> (<cite>bool</cite>): Whether to send the SDK version number in the CONNECT packet.</dt><dd><p>Default is True.</p>
 </dd>
 </dl>
+<p><strong>http_proxy_options</strong> (:class: ‘awscrt.http.HttpProxyOptions’): HTTP proxy options to use</p>
 </div></blockquote>
 <dl class="py function">
 <dt class="sig sig-object py" id="awsiot.mqtt_connection_builder.mtls_from_path">
@@ -186,7 +187,9 @@ described at the top of this doc, as well as…</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>region</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – AWS region to use when signing.</p></li>
 <li><p><strong>credentials_provider</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/auth.html#awscrt.auth.AwsCredentialsProvider" title="(in awscrt)"><em>awscrt.auth.AwsCredentialsProvider</em></a>) – Source of AWS credentials to use when signing.</p></li>
-<li><p><strong>websocket_proxy_options</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/http.html#awscrt.http.HttpProxyOptions" title="(in awscrt)"><em>awscrt.http.HttpProxyOptions</em></a>) – If specified, a proxy is used when connecting.</p></li>
+<li><p><strong>websocket_proxy_options</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/http.html#awscrt.http.HttpProxyOptions" title="(in awscrt)"><em>awscrt.http.HttpProxyOptions</em></a>) – Deprecated,
+for proxy settings use <cite>http_proxy_options</cite> (described in
+<a class="reference internal" href="#module-awsiot.mqtt_connection_builder" title="awsiot.mqtt_connection_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span> <span class="pre">arguments</span></code></a>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -219,7 +222,9 @@ Contains HTTP request to be transformed. Function must call
 </ul>
 </div></blockquote>
 </p></li>
-<li><p><strong>websocket_proxy_options</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/http.html#awscrt.http.HttpProxyOptions" title="(in awscrt)"><em>awscrt.http.HttpProxyOptions</em></a>) – If specified, a proxy is used when connecting.</p></li>
+<li><p><strong>websocket_proxy_options</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/http.html#awscrt.http.HttpProxyOptions" title="(in awscrt)"><em>awscrt.http.HttpProxyOptions</em></a>) – Deprecated,
+for proxy settings use <cite>http_proxy_options</cite> (described in
+<a class="reference internal" href="#module-awsiot.mqtt_connection_builder" title="awsiot.mqtt_connection_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span> <span class="pre">arguments</span></code></a>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>

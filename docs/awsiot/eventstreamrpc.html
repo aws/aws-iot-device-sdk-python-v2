@@ -196,13 +196,13 @@ or False if the connection should continute.</p>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="awsiot.eventstreamrpc.MessageAmendment.headers">
-<span class="sig-name descname"><span class="pre">headers</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/eventstream.html#awscrt.eventstream.Header" title="(in awscrt)"><span class="pre">awscrt.eventstream.Header</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#awsiot.eventstreamrpc.MessageAmendment.headers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">headers</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.MessageAmendment.headers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Headers to add</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="awsiot.eventstreamrpc.MessageAmendment.payload">
-<span class="sig-name descname"><span class="pre">payload</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#awsiot.eventstreamrpc.MessageAmendment.payload" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">payload</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.MessageAmendment.payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Binary payload data</p>
 </dd></dl>
 
@@ -221,7 +221,7 @@ is called multiple times over the life of the application.</p>
 <cite>connect_message_amender</cite> init arg.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Callable[[], <a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment">awsiot.eventstreamrpc.MessageAmendment</a>]</p>
+<dd class="field-odd"><p>Callable[<a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment">awsiot.eventstreamrpc.MessageAmendment</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -250,7 +250,7 @@ If None is provided, the default options are used.</p></li>
 <li><p><strong>tls_connection_options</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.TlsConnectionOptions" title="(in awscrt)"><em>awscrt.io.TlsConnectionOptions</em></a><em>]</em>) – Optional TLS connection options.
 If None is provided, then the connection will be attempted over
 plain-text.</p></li>
-<li><p><strong>connect_message_amender</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment"><em>awsiot.eventstreamrpc.MessageAmendment</em></a><em>]</em><em>]</em>) – Optional callable that should return a
+<li><p><strong>connect_message_amender</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment"><em>awsiot.eventstreamrpc.MessageAmendment</em></a><em>]</em><em>]</em>) – Optional callable that should return a
 <a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment"><code class="xref py py-class docutils literal notranslate"><span class="pre">MessageAmendment</span></code></a> for the
 <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/eventstream.html#awscrt.eventstream.rpc.MessageType.CONNECT" title="(in awscrt)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">CONNECT</span></code></a> message.
 This callable will be invoked whenever a network connection is

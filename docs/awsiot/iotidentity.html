@@ -68,17 +68,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrRequest" title="awsiot.iotidentity.CreateCertificateFromCsrRequest"><em>awsiot.iotidentity.CreateCertificateFromCsrRequest</em></a>) – <cite>CreateCertificateFromCsrRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>request</strong> – <cite>CreateCertificateFromCsrRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A Future whose result will be None if the
 request is successfully published. The Future’s result will be an
 exception if the request cannot be published.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>concurrent.futures._base.Future</p>
 </dd>
 </dl>
 </dd></dl>
@@ -90,17 +87,14 @@ exception if the request cannot be published.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateRequest" title="awsiot.iotidentity.CreateKeysAndCertificateRequest"><em>awsiot.iotidentity.CreateKeysAndCertificateRequest</em></a>) – <cite>CreateKeysAndCertificateRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>request</strong> – <cite>CreateKeysAndCertificateRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A Future whose result will be None if the
 request is successfully published. The Future’s result will be an
 exception if the request cannot be published.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>concurrent.futures._base.Future</p>
 </dd>
 </dl>
 </dd></dl>
@@ -112,17 +106,14 @@ exception if the request cannot be published.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.RegisterThingRequest" title="awsiot.iotidentity.RegisterThingRequest"><em>awsiot.iotidentity.RegisterThingRequest</em></a>) – <cite>RegisterThingRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>request</strong> – <cite>RegisterThingRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> – The Quality of Service guarantee of this message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A Future whose result will be None if the
 request is successfully published. The Future’s result will be an
 exception if the request cannot be published.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>concurrent.futures._base.Future</p>
 </dd>
 </dl>
 </dd></dl>
@@ -134,9 +125,9 @@ exception if the request cannot be published.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest" title="awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest"><em>awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest</em></a>) – <cite>CreateCertificateFromCsrSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrResponse" title="awsiot.iotidentity.CreateCertificateFromCsrResponse"><em>awsiot.iotidentity.CreateCertificateFromCsrResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>request</strong> – <cite>CreateCertificateFromCsrSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>CreateCertificateFromCsrResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -149,9 +140,6 @@ value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
 receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -162,9 +150,9 @@ subscription is acknowledged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest" title="awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest"><em>awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest</em></a>) – <cite>CreateCertificateFromCsrSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>request</strong> – <cite>CreateCertificateFromCsrSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -177,9 +165,6 @@ value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
 receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -190,9 +175,9 @@ subscription is acknowledged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest" title="awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest"><em>awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest</em></a>) – <cite>CreateKeysAndCertificateSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateResponse" title="awsiot.iotidentity.CreateKeysAndCertificateResponse"><em>awsiot.iotidentity.CreateKeysAndCertificateResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>request</strong> – <cite>CreateKeysAndCertificateSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>CreateKeysAndCertificateResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -205,9 +190,6 @@ value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
 receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -218,9 +200,9 @@ subscription is acknowledged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest" title="awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest"><em>awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest</em></a>) – <cite>CreateKeysAndCertificateSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>request</strong> – <cite>CreateKeysAndCertificateSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -233,9 +215,6 @@ value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
 receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -246,9 +225,9 @@ subscription is acknowledged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.RegisterThingSubscriptionRequest" title="awsiot.iotidentity.RegisterThingSubscriptionRequest"><em>awsiot.iotidentity.RegisterThingSubscriptionRequest</em></a>) – <cite>RegisterThingSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.RegisterThingResponse" title="awsiot.iotidentity.RegisterThingResponse"><em>awsiot.iotidentity.RegisterThingResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>request</strong> – <cite>RegisterThingSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>RegisterThingResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -261,9 +240,6 @@ value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
 receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -274,9 +250,9 @@ subscription is acknowledged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.RegisterThingSubscriptionRequest" title="awsiot.iotidentity.RegisterThingSubscriptionRequest"><em>awsiot.iotidentity.RegisterThingSubscriptionRequest</em></a>) – <cite>RegisterThingSubscriptionRequest</cite> instance.</p></li>
-<li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>request</strong> – <cite>RegisterThingSubscriptionRequest</cite> instance.</p></li>
+<li><p><strong>qos</strong> – The Quality of Service guarantee of this message</p></li>
+<li><p><strong>callback</strong> – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -288,9 +264,6 @@ the subscription, or an exception if the subscription fails. The second
 value is a topic which may be passed to <cite>unsubscribe()</cite> to stop
 receiving messages. Note that messages may arrive before the
 subscription is acknowledged.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
