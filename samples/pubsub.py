@@ -99,7 +99,7 @@ if __name__ == '__main__':
             client_bootstrap=client_bootstrap,
             region=args.signing_region,
             credentials_provider=credentials_provider,
-            websocket_proxy_options=proxy_options,
+            http_proxy_options=proxy_options,
             ca_filepath=args.root_ca,
             on_connection_interrupted=on_connection_interrupted,
             on_connection_resumed=on_connection_resumed,

@@ -91,7 +91,7 @@ Optional Keyword Arguments:
     **enable_metrics_collection** (`bool`): Whether to send the SDK version number in the CONNECT packet.
         Default is True.
 
-    **http_proxy_options** (:class: 'awscrt.http.HttpProxyOptions'): http proxy options to use
+    **http_proxy_options** (:class: 'awscrt.http.HttpProxyOptions'): HTTP proxy options to use
 """
 
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -252,7 +252,10 @@ def websockets_with_default_aws_signing(
 
         credentials_provider (awscrt.auth.AwsCredentialsProvider): Source of AWS credentials to use when signing.
 
-        websocket_proxy_options (awscrt.http.HttpProxyOptions): If specified, a proxy is used when connecting.
+        websocket_proxy_options (awscrt.http.HttpProxyOptions): Deprecated,
+            for proxy settings use `http_proxy_options` (described in
+            :mod:`common arguments<awsiot.mqtt_connection_builder>`)
+
     """
     _check_required_kwargs(**kwargs)
 
@@ -300,7 +303,9 @@ def websockets_with_custom_handshake(
 
                 *   `**kwargs` (dict): Forward-compatibility kwargs.
 
-        websocket_proxy_options (awscrt.http.HttpProxyOptions): If specified, a proxy is used when connecting.
+        websocket_proxy_options (awscrt.http.HttpProxyOptions):  Deprecated,
+            for proxy settings use `http_proxy_options` (described in
+            :mod:`common arguments<awsiot.mqtt_connection_builder>`)
     """
     _check_required_kwargs(**kwargs)
     tls_ctx_options = awscrt.io.TlsContextOptions()
