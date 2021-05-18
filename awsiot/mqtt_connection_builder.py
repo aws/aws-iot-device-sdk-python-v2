@@ -90,6 +90,8 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
     **enable_metrics_collection** (`bool`): Whether to send the SDK version number in the CONNECT packet.
         Default is True.
+
+    **http_proxy_options** (:class: 'awscrt.http.HttpProxyOptions'): HTTP proxy options to use
 """
 
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -143,7 +145,6 @@ def _builder(
         tls_ctx_options,
         use_websockets=False,
         websocket_handshake_transform=None,
-        websocket_proxy_options=None,
         **kwargs):
 
     ca_bytes = _get(kwargs, 'ca_bytes')
@@ -188,6 +189,7 @@ def _builder(
     tls_ctx = awscrt.io.ClientTlsContext(tls_ctx_options)
     mqtt_client = awscrt.mqtt.Client(client_bootstrap, tls_ctx)
 
+    proxy_options = kwargs.get('http_proxy_options', kwargs.get('websocket_proxy_options', None))
     return awscrt.mqtt.Connection(
         client=mqtt_client,
         on_connection_interrupted=_get(kwargs, 'on_connection_interrupted'),
@@ -207,7 +209,7 @@ def _builder(
         socket_options=socket_options,
         use_websockets=use_websockets,
         websocket_handshake_transform=websocket_handshake_transform,
-        websocket_proxy_options=websocket_proxy_options,
+        proxy_options=proxy_options,
     )
 
 
@@ -264,7 +266,10 @@ def websockets_with_default_aws_signing(
 
         credentials_provider (awscrt.auth.AwsCredentialsProvider): Source of AWS credentials to use when signing.
 
-        websocket_proxy_options (awscrt.http.HttpProxyOptions): If specified, a proxy is used when connecting.
+        websocket_proxy_options (awscrt.http.HttpProxyOptions): Deprecated,
+            for proxy settings use `http_proxy_options` (described in
+            :mod:`common arguments<awsiot.mqtt_connection_builder>`)
+
     """
     _check_required_kwargs(**kwargs)
 
@@ -312,7 +317,9 @@ def websockets_with_custom_handshake(
 
                 *   `**kwargs` (dict): Forward-compatibility kwargs.
 
-        websocket_proxy_options (awscrt.http.HttpProxyOptions): If specified, a proxy is used when connecting.
+        websocket_proxy_options (awscrt.http.HttpProxyOptions):  Deprecated,
+            for proxy settings use `http_proxy_options` (described in
+            :mod:`common arguments<awsiot.mqtt_connection_builder>`)
     """
     _check_required_kwargs(**kwargs)
     tls_ctx_options = awscrt.io.TlsContextOptions()
