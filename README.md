@@ -1,4 +1,7 @@
 # AWS IoT Device SDK v2 for Python
+
+[![Version](https://img.shields.io/pypi/v/awsiotsdk.svg?style=flat)](https://pypi.org/project/awsiotsdk/)
+
 This document provides information about the AWS IoT Device SDK v2 for Python.
 
 If you have any issues or feature requests, please file an issue or pull request.
@@ -27,7 +30,7 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 ## Installation
 
 ### Minimum Requirements
-*   Python 3.5+
+*   Python 3.6+
 
 ### Install from PyPI
 ```
@@ -42,12 +45,15 @@ python3 -m pip install ./aws-iot-device-sdk-python-v2
 
 ### Installation Issues
 
-`awsiotsdk` depends on [awscrt](https://github.com/awslabs/aws-crt-python), which makes use of C extensions. Precompiled wheels are downloaded when installing on major platforms (Mac, Windows, Linux, Raspbian. If wheels are unavailable for your platform, your machine must compile some C libraries. If you encounter issues, install the following and try again:
+`awsiotsdk` depends on [awscrt](https://github.com/awslabs/aws-crt-python), which makes use of C extensions. Precompiled wheels are downloaded when installing on major platforms (Mac, Windows, Linux, Raspberry Pi OS). If wheels are unavailable for your platform, your machine must compile some C libraries. If you encounter issues, be sure the following are installed and try again:
+
+* CMake 3.1+
+* Python headers and libs
 
 ```
 sudo apt-get update
 sudo apt-get install cmake
-sudo apt-get install libssl-dev
+sudo apt-get install python3-dev
 ```
 
 ## Mac-Only TLS Behavior

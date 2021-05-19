@@ -15,6 +15,8 @@ from concurrent.futures import Future
 import json
 from typing import Any, Callable, Dict, Optional, Tuple, TypeVar
 
+__version__ = '1.0.0-dev'
+
 T = TypeVar('T')
 
 PayloadObj = Dict[str, Any]
@@ -30,7 +32,7 @@ class MqttServiceClient:
     """
 
     def __init__(self, mqtt_connection: mqtt.Connection):
-        self._mqtt_connection = mqtt_connection # type: mqtt.Connection
+        self._mqtt_connection = mqtt_connection  # type: mqtt.Connection
 
     @property
     def mqtt_connection(self) -> mqtt.Connection:
@@ -50,7 +52,7 @@ class MqttServiceClient:
             `Future` whose result will be `None` when the server
             has acknowledged the unsubscribe.
         """
-        future = Future() # type: Future
+        future = Future()  # type: Future
         try:
             def on_unsuback(unsuback_future):
                 if unsuback_future.exception():
@@ -80,7 +82,7 @@ class MqttServiceClient:
         server has acknowledged the message, or an exception if the
         publish fails.
         """
-        future = Future() # type: Future
+        future = Future()  # type: Future
         try:
             def on_puback(puback_future):
                 if puback_future.exception():
@@ -135,7 +137,7 @@ class MqttServiceClient:
         Note that messages may arrive before the subscription is acknowledged.
         """
 
-        future = Future() # type: Future
+        future = Future()  # type: Future
         try:
             def on_suback(suback_future):
                 try:

@@ -18,6 +18,7 @@ from uuid import uuid4
 parser = argparse.ArgumentParser(description="Send and receive messages through and MQTT connection.")
 parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpoint, not including a port. " +
                                                       "Ex: \"abcd123456wxyz-ats.iot.us-east-1.amazonaws.com\"")
+parser.add_argument('--port', type=int, help="Specify port. AWS IoT supports 443 and 8883.")
 parser.add_argument('--cert', help="File path to your client certificate, in PEM format.")
 parser.add_argument('--key', help="File path to your private key, in PEM format.")
 parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. " +
@@ -31,12 +32,11 @@ parser.add_argument('--count', default=10, type=int, help="Number of messages to
                                                           "Specify 0 to run forever.")
 parser.add_argument('--use-websocket', default=False, action='store_true',
     help="To use a websocket instead of raw mqtt. If you " +
-    "specify this option you must specify a region for signing, you can also enable proxy mode.")
+    "specify this option you must specify a region for signing.")
 parser.add_argument('--signing-region', default='us-east-1', help="If you specify --use-web-socket, this " +
     "is the region that will be used for computing the Sigv4 signature")
-parser.add_argument('--proxy-host', help="Hostname for proxy to connect to. Note: if you use this feature, " +
-    "you will likely need to set --root-ca to the ca for your proxy.")
-parser.add_argument('--proxy-port', type=int, default=8080, help="Port for proxy to connect to.")
+parser.add_argument('--proxy-host', help="Hostname of proxy to connect to.")
+parser.add_argument('--proxy-port', type=int, default=8080, help="Port of proxy to connect to.")
 parser.add_argument('--verbosity', choices=[x.name for x in io.LogLevel], default=io.LogLevel.NoLogs.name,
     help='Logging level')
 
@@ -89,18 +89,18 @@ if __name__ == '__main__':
     host_resolver = io.DefaultHostResolver(event_loop_group)
     client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
 
-    if args.use_websocket == True:
-        proxy_options = None
-        if (args.proxy_host):
-            proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
+    proxy_options = None
+    if (args.proxy_host):
+        proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
 
+    if args.use_websocket == True:
         credentials_provider = auth.AwsCredentialsProvider.new_default_chain(client_bootstrap)
         mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
             endpoint=args.endpoint,
             client_bootstrap=client_bootstrap,
             region=args.signing_region,
             credentials_provider=credentials_provider,
-            websocket_proxy_options=proxy_options,
+            http_proxy_options=proxy_options,
             ca_filepath=args.root_ca,
             on_connection_interrupted=on_connection_interrupted,
             on_connection_resumed=on_connection_resumed,
@@ -111,6 +111,7 @@ if __name__ == '__main__':
     else:
         mqtt_connection = mqtt_connection_builder.mtls_from_path(
             endpoint=args.endpoint,
+            port=args.port,
             cert_filepath=args.cert,
             pri_key_filepath=args.key,
             client_bootstrap=client_bootstrap,
@@ -119,7 +120,8 @@ if __name__ == '__main__':
             on_connection_resumed=on_connection_resumed,
             client_id=args.client_id,
             clean_session=False,
-            keep_alive_secs=6)
+            keep_alive_secs=6,
+            http_proxy_options=proxy_options)
 
     print("Connecting to {} with client ID '{}'...".format(
         args.endpoint, args.client_id))

@@ -46,12 +46,11 @@ parser.add_argument('--thing-name', required=True, help="The name assigned to yo
 parser.add_argument('--job-time', default=5, type=float, help="Emulate working on job by sleeping this many seconds.")
 parser.add_argument('--use-websocket', default=False, action='store_true',
     help="To use a websocket instead of raw mqtt. If you " +
-    "specify this option you must specify a region for signing, you can also enable proxy mode.")
+    "specify this option you must specify a region for signing.")
 parser.add_argument('--signing-region', default='us-east-1', help="If you specify --use-web-socket, this " +
     "is the region that will be used for computing the Sigv4 signature")
-parser.add_argument('--proxy-host', help="Hostname for proxy to connect to. Note: if you use this feature, " +
-    "you will likely need to set --root-ca to the ca for your proxy.")
-parser.add_argument('--proxy-port', type=int, default=8080, help="Port for proxy to connect to.")
+parser.add_argument('--proxy-host', help="Hostname of proxy to connect to.")
+parser.add_argument('--proxy-port', type=int, default=8080, help="Port of proxy to connect to.")
 parser.add_argument('--verbosity', choices=[x.name for x in io.LogLevel], default=io.LogLevel.NoLogs.name,
     help='Logging level')
 
@@ -230,18 +229,18 @@ if __name__ == '__main__':
     host_resolver = io.DefaultHostResolver(event_loop_group)
     client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
 
-    if args.use_websocket == True:
-        proxy_options = None
-        if (args.proxy_host):
-            proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
+    proxy_options = None
+    if (args.proxy_host):
+        proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
 
+    if args.use_websocket == True:
         credentials_provider = auth.AwsCredentialsProvider.new_default_chain(client_bootstrap)
         mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
             endpoint=args.endpoint,
             client_bootstrap=client_bootstrap,
             region=args.signing_region,
             credentials_provider=credentials_provider,
-            websocket_proxy_options=proxy_options,
+            http_proxy_options=proxy_options,
             ca_filepath=args.root_ca,
             client_id=args.client_id,
             clean_session=False,
@@ -256,7 +255,8 @@ if __name__ == '__main__':
             ca_filepath=args.root_ca,
             client_id=args.client_id,
             clean_session=False,
-            keep_alive_secs=6)
+            keep_alive_secs=6,
+            http_proxy_options=proxy_options)
 
     print("Connecting to {} with client ID '{}'...".format(
         args.endpoint, args.client_id))

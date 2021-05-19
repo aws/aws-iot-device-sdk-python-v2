@@ -11,7 +11,7 @@ Required Keyword Arguments:
     **client_id** (`str`): ID to place in CONNECT packet. Must be unique across all devices/clients.
             If an ID is already in use, the other client will be disconnected.
 
-Optional Keyword Arguments:
+Optional Keyword Arguments (omit, or set `None` to get default value):
 
     **on_connection_interrupted** (`Callable`): Callback invoked whenever the MQTT connection is lost.
         The MQTT client will automatically attempt to reconnect.
@@ -63,6 +63,12 @@ Optional Keyword Arguments:
         the connection is invalid and attempts to reconnect.
         Default is 3000ms (3 seconds). This duration must be shorter than `keep_alive_secs`.
 
+    **protocol_operation_timeout_ms** (`int`): Milliseconds to wait for the response to the operation
+        requires response by protocol. Set to zero to disable timeout. Otherwise,
+        the operation will fail if no response is received within this amount of time after
+        the packet is written to the socket
+        It applied to PUBLISH (QoS>0) and UNSUBSCRIBE now.
+
     **will** (:class:`awscrt.mqtt.Will`): Will to send with CONNECT packet. The will is
         published by the server when its connection to the client is unexpectedly lost.
 
@@ -84,6 +90,8 @@ Optional Keyword Arguments:
 
     **enable_metrics_collection** (`bool`): Whether to send the SDK version number in the CONNECT packet.
         Default is True.
+
+    **http_proxy_options** (:class: 'awscrt.http.HttpProxyOptions'): HTTP proxy options to use
 """
 
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -100,6 +108,20 @@ def _check_required_kwargs(**kwargs):
             raise TypeError("Builder needs keyword-only argument '{}'".format(required))
 
 
+def _get(kwargs, name, default=None):
+    """
+    Returns kwargs['name'] if it exists and is not None.
+    Otherwise returns default.
+
+    This function exists so users can pass some_arg=None to get its default
+    value, instead of literally passing None.
+    """
+    val = kwargs.get(name)
+    if val is None:
+        val = default
+    return val
+
+
 _metrics_str = None
 
 
@@ -109,7 +131,7 @@ def _get_metrics_str():
         try:
             import pkg_resources
             try:
-                version = pkg_resources.get_distribution("awscrt").version
+                version = pkg_resources.get_distribution("awsiotsdk").version
                 _metrics_str = "?SDK=PythonV2&Version={}".format(version)
             except pkg_resources.DistributionNotFound:
                 _metrics_str = "?SDK=PythonV2&Version=dev"
@@ -123,70 +145,71 @@ def _builder(
         tls_ctx_options,
         use_websockets=False,
         websocket_handshake_transform=None,
-        websocket_proxy_options=None,
         **kwargs):
 
-    ca_bytes = kwargs.get('ca_bytes')
-    ca_filepath = kwargs.get('ca_filepath')
-    ca_dirpath = kwargs.get('ca_dirpath')
+    ca_bytes = _get(kwargs, 'ca_bytes')
+    ca_filepath = _get(kwargs, 'ca_filepath')
+    ca_dirpath = _get(kwargs, 'ca_dirpath')
     if ca_bytes:
         tls_ctx_options.override_default_trust_store(ca_bytes)
     elif ca_filepath or ca_dirpath:
         tls_ctx_options.override_default_trust_store_from_path(ca_dirpath, ca_filepath)
 
-    if use_websockets:
-        port = 443
-        if awscrt.io.is_alpn_available():
-            tls_ctx_options.alpn_list = ['http/1.1']
-    else:
-        port = 8883
-        if awscrt.io.is_alpn_available():
+    port = _get(kwargs, 'port')
+    if port is None:
+        # prefer 443, even for direct MQTT connections, since it's less likely to be blocked by firewalls
+        if use_websockets or awscrt.io.is_alpn_available():
             port = 443
-            tls_ctx_options.alpn_list = ['x-amzn-mqtt-ca']
+        else:
+            port = 8883
 
-    port = kwargs.get('port', port)
+    if port == 443 and awscrt.io.is_alpn_available():
+        tls_ctx_options.alpn_list = ['http/1.1'] if use_websockets else ['x-amzn-mqtt-ca']
 
     socket_options = awscrt.io.SocketOptions()
-    socket_options.connect_timeout_ms = kwargs.get('tcp_connect_timeout_ms', 5000)
+    socket_options.connect_timeout_ms = _get(kwargs, 'tcp_connect_timeout_ms', 5000)
     # These have been inconsistent between keepalive/keep_alive. Resolve both for now to ease transition.
-    socket_options.keep_alive = kwargs.get('tcp_keep_alive', kwargs.get('tcp_keepalive', False))
-    socket_options.keep_alive_timeout_secs = kwargs.get(
-        'tcp_keep_alive_timeout_secs', kwargs.get(
-            'tcp_keepalive_timeout_secs', 0))
-    socket_options.keep_alive_interval_secs = kwargs.get(
-        'tcp_keep_alive_interval_secs', kwargs.get(
-            'tcp_keepalive_interval_secs', 0))
-    socket_options.keep_alive_max_probes = kwargs.get(
-        'tcp_keep_alive_max_probes', kwargs.get(
-            'tcp_keepalive_max_probes', 0))
+    socket_options.keep_alive = \
+        _get(kwargs, 'tcp_keep_alive', _get(kwargs, 'tcp_keepalive', False))
 
-    username = kwargs.get('username', '')
-    if kwargs.get('enable_metrics_collection', True):
+    socket_options.keep_alive_timeout_secs = \
+        _get(kwargs, 'tcp_keep_alive_timeout_secs', _get(kwargs, 'tcp_keepalive_timeout_secs', 0))
+
+    socket_options.keep_alive_interval_secs = \
+        _get(kwargs, 'tcp_keep_alive_interval_secs', _get(kwargs, 'tcp_keepalive_interval_secs', 0))
+
+    socket_options.keep_alive_max_probes = \
+        _get(kwargs, 'tcp_keep_alive_max_probes', _get(kwargs, 'tcp_keepalive_max_probes', 0))
+
+    username = _get(kwargs, 'username', '')
+    if _get(kwargs, 'enable_metrics_collection', True):
         username += _get_metrics_str()
 
-    client_bootstrap = kwargs.get('client_bootstrap')
+    client_bootstrap = _get(kwargs, 'client_bootstrap')
     tls_ctx = awscrt.io.ClientTlsContext(tls_ctx_options)
     mqtt_client = awscrt.mqtt.Client(client_bootstrap, tls_ctx)
 
+    proxy_options = kwargs.get('http_proxy_options', kwargs.get('websocket_proxy_options', None))
     return awscrt.mqtt.Connection(
         client=mqtt_client,
-        on_connection_interrupted=kwargs.get('on_connection_interrupted'),
-        on_connection_resumed=kwargs.get('on_connection_resumed'),
-        client_id=kwargs.get('client_id'),
-        host_name=kwargs.get('endpoint'),
+        on_connection_interrupted=_get(kwargs, 'on_connection_interrupted'),
+        on_connection_resumed=_get(kwargs, 'on_connection_resumed'),
+        client_id=_get(kwargs, 'client_id'),
+        host_name=_get(kwargs, 'endpoint'),
         port=port,
-        clean_session=kwargs.get('clean_session', False),
-        reconnect_min_timeout_secs=kwargs.get('reconnect_min_timeout_secs', 5),
-        reconnect_max_timeout_secs=kwargs.get('reconnect_max_timeout_secs', 60),
-        keep_alive_secs=kwargs.get('keep_alive_secs', 1200),
-        ping_timeout_ms=kwargs.get('ping_timeout_ms', 3000),
-        will=kwargs.get('will'),
+        clean_session=_get(kwargs, 'clean_session', False),
+        reconnect_min_timeout_secs=_get(kwargs, 'reconnect_min_timeout_secs', 5),
+        reconnect_max_timeout_secs=_get(kwargs, 'reconnect_max_timeout_secs', 60),
+        keep_alive_secs=_get(kwargs, 'keep_alive_secs', 1200),
+        ping_timeout_ms=_get(kwargs, 'ping_timeout_ms', 3000),
+        protocol_operation_timeout_ms=_get(kwargs, 'protocol_operation_timeout_ms', 0),
+        will=_get(kwargs, 'will'),
         username=username,
-        password=kwargs.get('password'),
+        password=_get(kwargs, 'password'),
         socket_options=socket_options,
         use_websockets=use_websockets,
         websocket_handshake_transform=websocket_handshake_transform,
-        websocket_proxy_options=websocket_proxy_options,
+        proxy_options=proxy_options,
     )
 
 
@@ -243,7 +266,10 @@ def websockets_with_default_aws_signing(
 
         credentials_provider (awscrt.auth.AwsCredentialsProvider): Source of AWS credentials to use when signing.
 
-        websocket_proxy_options (awscrt.http.HttpProxyOptions): If specified, a proxy is used when connecting.
+        websocket_proxy_options (awscrt.http.HttpProxyOptions): Deprecated,
+            for proxy settings use `http_proxy_options` (described in
+            :mod:`common arguments<awsiot.mqtt_connection_builder>`)
+
     """
     _check_required_kwargs(**kwargs)
 
@@ -291,7 +317,9 @@ def websockets_with_custom_handshake(
 
                 *   `**kwargs` (dict): Forward-compatibility kwargs.
 
-        websocket_proxy_options (awscrt.http.HttpProxyOptions): If specified, a proxy is used when connecting.
+        websocket_proxy_options (awscrt.http.HttpProxyOptions):  Deprecated,
+            for proxy settings use `http_proxy_options` (described in
+            :mod:`common arguments<awsiot.mqtt_connection_builder>`)
     """
     _check_required_kwargs(**kwargs)
     tls_ctx_options = awscrt.io.TlsContextOptions()

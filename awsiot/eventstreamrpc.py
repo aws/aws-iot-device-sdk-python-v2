@@ -611,8 +611,8 @@ class ClientOperation(Operation):
         self._closed_future.set_running_or_notify_cancel()  # prevent cancel
         self._initial_response_future = Future()
         self._initial_response_future.set_running_or_notify_cancel()  # prevent cancel
-        self._protocol_handler = _ProtocolContinuationHandler(self)
-        self._continuation = connection._new_stream(self._protocol_handler)
+        protocol_handler = _ProtocolContinuationHandler(self)
+        self._continuation = connection._new_stream(protocol_handler)
 
     def _activate(self, request: Shape) -> Future:
         headers = [Header.from_string(CONTENT_TYPE_HEADER,
@@ -805,6 +805,9 @@ class _ProtocolContinuationHandler(protocol.ClientContinuationHandler):
 
     def on_continuation_closed(self, *args, **kwargs):
         self.operation._on_continuation_closed(*args, **kwargs)
+        # break circular reference between: ClientOperation, _ProtocolContinuationHandler, ClientContinuation
+        # so that garbage collector can clean them up
+        self.operation = None
 
 
 class Client:
