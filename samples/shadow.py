@@ -245,7 +245,7 @@ if __name__ == '__main__':
             http_proxy_options=proxy_options,
             ca_filepath=args.root_ca,
             client_id=args.client_id,
-            clean_session=False,
+            clean_session=True,
             keep_alive_secs=6)
 
     else:
@@ -256,7 +256,7 @@ if __name__ == '__main__':
             client_bootstrap=client_bootstrap,
             ca_filepath=args.root_ca,
             client_id=args.client_id,
-            clean_session=False,
+            clean_session=True,
             keep_alive_secs=6,
             http_proxy_options=proxy_options)
 
@@ -279,15 +279,6 @@ if __name__ == '__main__':
         # Subscribe to necessary topics.
         # Note that is **is** important to wait for "accepted/rejected" subscriptions
         # to succeed before publishing the corresponding "request".
-        print("Subscribing to Delta events...")
-        delta_subscribed_future, _ = shadow_client.subscribe_to_shadow_delta_updated_events(
-            request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(thing_name=args.thing_name),
-            qos=mqtt.QoS.AT_LEAST_ONCE,
-            callback=on_shadow_delta_updated)
-
-        # Wait for subscription to succeed
-        delta_subscribed_future.result()
-
         print("Subscribing to Update responses...")
         update_accepted_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_accepted(
             request=iotshadow.UpdateShadowSubscriptionRequest(thing_name=args.thing_name),
@@ -317,6 +308,15 @@ if __name__ == '__main__':
         # Wait for subscriptions to succeed
         get_accepted_subscribed_future.result()
         get_rejected_subscribed_future.result()
+
+        print("Subscribing to Delta events...")
+        delta_subscribed_future, _ = shadow_client.subscribe_to_shadow_delta_updated_events(
+            request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(thing_name=args.thing_name),
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_shadow_delta_updated)
+
+        # Wait for subscription to succeed
+        delta_subscribed_future.result()
 
         # The rest of the sample runs asyncronously.
 
