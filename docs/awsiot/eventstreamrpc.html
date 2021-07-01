@@ -1,0 +1,463 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>awsiot.eventstreamrpc &#8212; AWS IoT Device SDK v2 for Python  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="awsiot.greengrasscoreipc" href="greengrasscoreipc.html" />
+    <link rel="prev" title="awsiot" href="awsiot.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="greengrasscoreipc.html" title="awsiot.greengrasscoreipc"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="awsiot.html" title="awsiot"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">AWS IoT Device SDK v2 for Python  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">awsiot.eventstreamrpc</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-awsiot.eventstreamrpc">
+<span id="awsiot-eventstreamrpc"></span><h1>awsiot.eventstreamrpc<a class="headerlink" href="#module-awsiot.eventstreamrpc" title="Permalink to this headline">¶</a></h1>
+<p>Classes for building a service that uses the event-stream RPC protocol.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.ConnectionClosedError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">ConnectionClosedError</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.ConnectionClosedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></p>
+<p>Connection is closed</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.StreamClosedError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">StreamClosedError</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.StreamClosedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></p>
+<p>Stream is closed</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.EventStreamError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">EventStreamError</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.EventStreamError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></p>
+<p>For connection-level errors.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.EventStreamOperationError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">EventStreamOperationError</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.EventStreamOperationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></p>
+<p>Base for all errors that come across the wire.</p>
+<p>These are not necessarily modeled shapes.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.AccessDeniedError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">AccessDeniedError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.AccessDeniedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#awsiot.eventstreamrpc.EventStreamOperationError" title="awsiot.eventstreamrpc.EventStreamOperationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.eventstreamrpc.EventStreamOperationError</span></code></a></p>
+<p>Access Denied</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.UnmappedDataError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">UnmappedDataError</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.UnmappedDataError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></p>
+<p>Received data that does not map to a known model type.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.SerializeError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">SerializeError</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.SerializeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></p>
+<p>Error serializing data to send.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.DeserializeError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">DeserializeError</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.DeserializeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></p>
+<p>Error deserializing received data.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.LifecycleHandler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">LifecycleHandler</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.LifecycleHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for handling connection events.</p>
+<p>Inherit from this class and override methods to handle connection events.
+All callbacks for this connection will be invoked on the same thread.
+If the connection attempt fails, no callbacks will be invoked.
+If the connection attempt succeeds, <a class="reference internal" href="#awsiot.eventstreamrpc.LifecycleHandler.on_connect" title="awsiot.eventstreamrpc.LifecycleHandler.on_connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on_connect()</span></code></a> will be the first callback
+invoked and <a class="reference internal" href="#awsiot.eventstreamrpc.LifecycleHandler.on_disconnect" title="awsiot.eventstreamrpc.LifecycleHandler.on_disconnect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on_disconnect()</span></code></a> will always be the last.</p>
+<p>Note that an open network connection MUST be closed via <a class="reference internal" href="#awsiot.eventstreamrpc.Connection.close" title="awsiot.eventstreamrpc.Connection.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Connection.close()</span></code></a>
+to avoid leaking resources.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.LifecycleHandler.on_connect">
+<span class="sig-name descname"><span class="pre">on_connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.LifecycleHandler.on_connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoked when the connection has been fully established.</p>
+<p>This will always be the first callback invoked on the handler.
+This will not be invoked if the connection attempt failed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.LifecycleHandler.on_disconnect">
+<span class="sig-name descname"><span class="pre">on_disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reason</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.LifecycleHandler.on_disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoked when an open connection has disconnected.</p>
+<p>This will always be the last callback invoked on the handler.
+This will not be invoked if the connection attempt failed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>reason</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><em>Exception</em></a><em>]</em>) – Reason will be <cite>None</cite> if the user initiated the shutdown,
+otherwise the reason will be an Exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.LifecycleHandler.on_error">
+<span class="sig-name descname"><span class="pre">on_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.LifecycleHandler.on_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoked when a connection-level error occurs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reason</strong> – An Exception explaining the error</p></li>
+<li><p><strong>error</strong> (<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><em>Exception</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the connection should be terminated as a result of the error,
+or False if the connection should continute.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.LifecycleHandler.on_ping">
+<span class="sig-name descname"><span class="pre">on_ping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">headers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.LifecycleHandler.on_ping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoked when a ping is received.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>headers</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/eventstream.html#awscrt.eventstream.Header" title="(in awscrt)"><em>awscrt.eventstream.Header</em></a><em>]</em>) – </p></li>
+<li><p><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><em>bytes</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.MessageAmendment">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">MessageAmendment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.MessageAmendment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Data to add to an event-stream message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>headers</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/eventstream.html#awscrt.eventstream.Header" title="(in awscrt)"><em>awscrt.eventstream.Header</em></a><em>]</em><em>]</em>) – Headers to add (optional)</p></li>
+<li><p><strong>payload</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><em>bytes</em></a><em>]</em>) – Binary payload data (optional)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.MessageAmendment.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/eventstream.html#awscrt.eventstream.Header" title="(in awscrt)"><span class="pre">awscrt.eventstream.Header</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#awsiot.eventstreamrpc.MessageAmendment.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Headers to add</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.MessageAmendment.payload">
+<span class="sig-name descname"><span class="pre">payload</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#awsiot.eventstreamrpc.MessageAmendment.payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binary payload data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.MessageAmendment.create_static_authtoken_amender">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">create_static_authtoken_amender</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">authtoken</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.MessageAmendment.create_static_authtoken_amender" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create function that amends payload: <cite>b’{“authToken”: “…”}’</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>authtoken</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – value of “authToken” in the payload.
+The same value is always used, even if the amender
+is called multiple times over the life of the application.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The result is appropriate for passing to the <a class="reference internal" href="#awsiot.eventstreamrpc.Connection" title="awsiot.eventstreamrpc.Connection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code></a>’s
+<cite>connect_message_amender</cite> init arg.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Callable[[], <a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment">awsiot.eventstreamrpc.MessageAmendment</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.Connection">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">Connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bootstrap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socket_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tls_connection_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_message_amender</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.Connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A client connection to event-stream RPC service.</p>
+<p>connect() must be called to open the network connection before interacting
+with the service.</p>
+<p>Note that close() MUST be called to end an open network connection.
+Failure to do so will result in leaked resources.</p>
+<p>Reconnect is possible by calling connect() again after the connection
+has finished closing/disconnecting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>host_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Remote host name.</p></li>
+<li><p><strong>port</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Remote port.</p></li>
+<li><p><strong>bootstrap</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.ClientBootstrap" title="(in awscrt)"><em>awscrt.io.ClientBootstrap</em></a>) – ClientBootstrap to use when initiating socket connection.</p></li>
+<li><p><strong>socket_options</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.SocketOptions" title="(in awscrt)"><em>awscrt.io.SocketOptions</em></a><em>]</em>) – Optional socket options.
+If None is provided, the default options are used.</p></li>
+<li><p><strong>tls_connection_options</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.TlsConnectionOptions" title="(in awscrt)"><em>awscrt.io.TlsConnectionOptions</em></a><em>]</em>) – Optional TLS connection options.
+If None is provided, then the connection will be attempted over
+plain-text.</p></li>
+<li><p><strong>connect_message_amender</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment"><em>awsiot.eventstreamrpc.MessageAmendment</em></a><em>]</em><em>]</em>) – Optional callable that should return a
+<a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment"><code class="xref py py-class docutils literal notranslate"><span class="pre">MessageAmendment</span></code></a> for the
+<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/eventstream.html#awscrt.eventstream.rpc.MessageType.CONNECT" title="(in awscrt)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">CONNECT</span></code></a> message.
+This callable will be invoked whenever a network connection is
+being established.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.Connection.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lifecycle_handler</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.Connection.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asynchronously open a network connection.</p>
+<p>Note that close() MUST be called to end a network connection
+that is open (or in the process of connecting).
+Failure to do so will result in leaked resources.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lifecycle_handler</strong> (<a class="reference internal" href="#awsiot.eventstreamrpc.LifecycleHandler" title="awsiot.eventstreamrpc.LifecycleHandler"><em>awsiot.eventstreamrpc.LifecycleHandler</em></a>) – Handler for events over the course of this
+network connection. See <a class="reference internal" href="#awsiot.eventstreamrpc.LifecycleHandler" title="awsiot.eventstreamrpc.LifecycleHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">LifecycleHandler</span></code></a> for more info.
+Handler methods will only be invoked if the connect attempt
+succeeds.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Future which completes when the connection succeeds or fails.
+If successful, the Future will contain None.
+Otherwise it will contain an exception explaining the reason
+for failure.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>concurrent.futures._base.Future</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.Connection.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.Connection.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the connection.</p>
+<p>Shutdown is asynchronous. This call has no effect if the connection
+is already closed or closing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>reason</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><em>Exception</em></a><em>]</em>) – If set, the connection will
+close with this error as the reason (unless
+it was already closing for another reason).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The future which will complete
+when the shutdown process is done. The future will have an
+exception if shutdown was caused by an error, or a result
+of None if the shutdown was clean and user-initiated.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>concurrent.futures._base.Future</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.Shape">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">Shape</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.Shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for shapes serialized by a service</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.ErrorShape">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">ErrorShape</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.ErrorShape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#awsiot.eventstreamrpc.Shape" title="awsiot.eventstreamrpc.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.eventstreamrpc.Shape</span></code></a>, <a class="reference internal" href="#awsiot.eventstreamrpc.EventStreamOperationError" title="awsiot.eventstreamrpc.EventStreamOperationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.eventstreamrpc.EventStreamOperationError</span></code></a></p>
+<p>Base class for all error shapes serialized by a service</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.ShapeIndex">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">ShapeIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape_types</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.ShapeIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Catalog of all shapes serialized by this service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>shape_types</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.9)"><em>type</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.ShapeIndex.find_shape_type">
+<span class="sig-name descname"><span class="pre">find_shape_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.ShapeIndex.find_shape_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns Shape type with given model_name, or None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.9)">type</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.StreamResponseHandler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">StreamResponseHandler</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.StreamResponseHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for all operation stream handlers.</p>
+<p>For operations with a streaming response (0+ messages that may arrive
+after the initial response).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.Operation">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">Operation</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.Operation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for an operation.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.ClientOperation">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">ClientOperation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.ClientOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#awsiot.eventstreamrpc.Operation" title="awsiot.eventstreamrpc.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.eventstreamrpc.Operation</span></code></a></p>
+<p>Base class for a client operation.</p>
+<p>Nearly all functions are private/protected. Child classes should
+rewrite public API to properly document the types they deal with.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream_handler</strong> (<a class="reference internal" href="#awsiot.eventstreamrpc.StreamResponseHandler" title="awsiot.eventstreamrpc.StreamResponseHandler"><em>awsiot.eventstreamrpc.StreamResponseHandler</em></a>) – </p></li>
+<li><p><strong>shape_index</strong> (<a class="reference internal" href="#awsiot.eventstreamrpc.ShapeIndex" title="awsiot.eventstreamrpc.ShapeIndex"><em>awsiot.eventstreamrpc.ShapeIndex</em></a>) – </p></li>
+<li><p><strong>connection</strong> (<a class="reference internal" href="#awsiot.eventstreamrpc.Connection" title="awsiot.eventstreamrpc.Connection"><em>awsiot.eventstreamrpc.Connection</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.Client">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.eventstreamrpc.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape_index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.Client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for a service client.</p>
+<p>Child class should add public API functions for each operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connection</strong> (<a class="reference internal" href="#awsiot.eventstreamrpc.Connection" title="awsiot.eventstreamrpc.Connection"><em>awsiot.eventstreamrpc.Connection</em></a>) – </p></li>
+<li><p><strong>shape_index</strong> (<a class="reference internal" href="#awsiot.eventstreamrpc.ShapeIndex" title="awsiot.eventstreamrpc.ShapeIndex"><em>awsiot.eventstreamrpc.ShapeIndex</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="awsiot.html"
+                        title="previous chapter">awsiot</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="greengrasscoreipc.html"
+                        title="next chapter">awsiot.greengrasscoreipc</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/awsiot/eventstreamrpc.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="greengrasscoreipc.html" title="awsiot.greengrasscoreipc"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="awsiot.html" title="awsiot"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">AWS IoT Device SDK v2 for Python  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">awsiot.eventstreamrpc</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Amazon Web Services, Inc.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+    </div>
+  </body>
+</html>

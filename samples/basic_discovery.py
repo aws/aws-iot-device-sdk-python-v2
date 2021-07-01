@@ -44,7 +44,6 @@ if args.root_ca_path:
 tls_context = io.ClientTlsContext(tls_options)
 
 socket_options = io.SocketOptions()
-socket_options.connect_timeout_ms = 3000
 
 print('Performing greengrass discovery...')
 discovery_client = DiscoveryClient(client_bootstrap, socket_options, tls_context, args.region)
@@ -99,7 +98,7 @@ mqtt_connection = try_iot_endpoints()
 
 if args.mode == 'both' or args.mode == 'subscribe':
 
-    def on_publish(topic, payload, **kwargs):
+    def on_publish(topic, payload, dup, qos, retain, **kwargs):
         print('Publish received on topic {}'.format(topic))
         print(payload)
 

@@ -1,0 +1,296 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>awsiot.mqtt_connection_builder &#8212; AWS IoT Device SDK v2 for Python  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="awsiot.iotidentity" href="iotidentity.html" />
+    <link rel="prev" title="awsiot.greengrass_discovery" href="greengrass_discovery.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="iotidentity.html" title="awsiot.iotidentity"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="greengrass_discovery.html" title="awsiot.greengrass_discovery"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">AWS IoT Device SDK v2 for Python  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">awsiot.mqtt_connection_builder</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-awsiot.mqtt_connection_builder">
+<span id="awsiot-mqtt-connection-builder"></span><h1>awsiot.mqtt_connection_builder<a class="headerlink" href="#module-awsiot.mqtt_connection_builder" title="Permalink to this headline">¶</a></h1>
+<p>Builder functions to create a <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Connection</span></code></a>, configured for use with AWS IoT Core.
+The following keyword arguments are common to all builder functions:</p>
+<p>Required Keyword Arguments:</p>
+<blockquote>
+<div><p><strong>endpoint</strong> (<cite>str</cite>): Host name of AWS IoT server.</p>
+<p><strong>client_bootstrap</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.ClientBootstrap" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.io.ClientBootstrap</span></code></a>): Client bootstrap used to establish connection.</p>
+<dl class="simple">
+<dt><strong>client_id</strong> (<cite>str</cite>): ID to place in CONNECT packet. Must be unique across all devices/clients.</dt><dd><p>If an ID is already in use, the other client will be disconnected.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Optional Keyword Arguments (omit, or set <cite>None</cite> to get default value):</p>
+<blockquote>
+<div><dl>
+<dt><strong>on_connection_interrupted</strong> (<cite>Callable</cite>): Callback invoked whenever the MQTT connection is lost.</dt><dd><p>The MQTT client will automatically attempt to reconnect.
+The function should take the following arguments return nothing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>connection</cite> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Connection</span></code></a>): This MQTT Connection.</p></li>
+<li><p><cite>error</cite> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/exceptions.html#awscrt.exceptions.AwsCrtError" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.exceptions.AwsCrtError</span></code></a>): Exception which caused connection loss.</p></li>
+<li><p><cite>**kwargs</cite> (dict): Forward-compatibility kwargs.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt><strong>on_connection_resumed</strong> (<cite>Callable</cite>): Callback invoked whenever the MQTT connection</dt><dd><p>is automatically resumed. Function should take the following arguments and return nothing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>connection</cite> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Connection</span></code></a>): This MQTT Connection</p></li>
+<li><p><cite>return_code</cite> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.ConnectReturnCode" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.ConnectReturnCode</span></code></a>): Connect return
+code received from the server.</p></li>
+<li><p><cite>session_present</cite> (bool): True if resuming existing session. False if new session.
+Note that the server has forgotten all previous subscriptions if this is False.
+Subscriptions can be re-established via resubscribe_existing_topics().</p></li>
+<li><p><cite>**kwargs</cite> (dict): Forward-compatibility kwargs.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt><strong>clean_session</strong> (<cite>bool</cite>): Whether or not to start a clean session with each reconnect.</dt><dd><p>If True, the server will forget all subscriptions with each reconnect.
+Set False to request that the server resume an existing session
+or start a new session that may be resumed after a connection loss.
+The <cite>session_present</cite> bool in the connection callback informs
+whether an existing session was successfully resumed.
+If an existing session is resumed, the server remembers previous subscriptions
+and sends mesages (with QoS1 or higher) that were published while the client was offline.</p>
+</dd>
+<dt><strong>reconnect_min_timeout_secs</strong> (<cite>int</cite>): Minimum time to wait between reconnect attempts.</dt><dd><p>Must be &lt;= <cite>reconnect_max_timeout_secs</cite>.
+Wait starts at min and doubles with each attempt until max is reached.</p>
+</dd>
+<dt><strong>reconnect_max_timeout_secs</strong> (<cite>int</cite>): Maximum time to wait between reconnect attempts.</dt><dd><p>Must be &gt;= <cite>reconnect_min_timeout_secs</cite>.
+Wait starts at min and doubles with each attempt until max is reached.</p>
+</dd>
+<dt><strong>keep_alive_secs</strong> (<cite>int</cite>): The keep alive value, in seconds, to send in CONNECT packet.</dt><dd><p>A PING will automatically be sent at this interval.
+The server will assume the connection is lost if no PING is received after 1.5X this value.
+Default is 1200sec (20 minutes). This duration must be longer than ping_timeout_ms.</p>
+</dd>
+<dt><strong>ping_timeout_ms</strong> (<cite>int</cite>): Milliseconds to wait for ping response before client assumes</dt><dd><p>the connection is invalid and attempts to reconnect.
+Default is 3000ms (3 seconds). This duration must be shorter than <cite>keep_alive_secs</cite>.</p>
+</dd>
+<dt><strong>protocol_operation_timeout_ms</strong> (<cite>int</cite>): Milliseconds to wait for the response to the operation</dt><dd><p>requires response by protocol. Set to zero to disable timeout. Otherwise,
+the operation will fail if no response is received within this amount of time after
+the packet is written to the socket
+It applied to PUBLISH (QoS&gt;0) and UNSUBSCRIBE now.</p>
+</dd>
+<dt><strong>will</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Will" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Will</span></code></a>): Will to send with CONNECT packet. The will is</dt><dd><p>published by the server when its connection to the client is unexpectedly lost.</p>
+</dd>
+</dl>
+<p><strong>username</strong> (<cite>str</cite>): Username to connect with.</p>
+<p><strong>password</strong> (<cite>str</cite>): Password to connect with.</p>
+<dl class="simple">
+<dt><strong>port</strong> (<cite>int</cite>): Override default server port.</dt><dd><p>Default port is 443 if system supports ALPN or websockets are being used.
+Otherwise, default port is 8883.</p>
+</dd>
+</dl>
+<p><strong>tcp_connect_timeout_ms</strong> (<cite>int</cite>): Milliseconds to wait for TCP connect response. Default is 5000ms (5 seconds).</p>
+<p><strong>ca_filepath</strong> (<cite>str</cite>): Override default trust store with CA certificates from this PEM formatted file.</p>
+<p><strong>ca_dirpath</strong> (<cite>str</cite>): Override default trust store with CA certificates loaded from this directory (Unix only).</p>
+<p><strong>ca_bytes</strong> (<cite>bytes</cite>): Override default trust store with CA certificates from these PEM formatted bytes.</p>
+<dl class="simple">
+<dt><strong>enable_metrics_collection</strong> (<cite>bool</cite>): Whether to send the SDK version number in the CONNECT packet.</dt><dd><p>Default is True.</p>
+</dd>
+</dl>
+<p><strong>http_proxy_options</strong> (:class: ‘awscrt.http.HttpProxyOptions’): HTTP proxy options to use</p>
+</div></blockquote>
+<dl class="py function">
+<dt class="sig sig-object py" id="awsiot.mqtt_connection_builder.mtls_from_path">
+<span class="sig-prename descclassname"><span class="pre">awsiot.mqtt_connection_builder.</span></span><span class="sig-name descname"><span class="pre">mtls_from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cert_filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pri_key_filepath</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.mqtt_connection_builder.mtls_from_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>This builder creates an <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Connection</span></code></a>, configured for an mTLS MQTT connection to AWS IoT.
+TLS arguments are passed as filepaths.</p>
+<p>This function takes all <a class="reference internal" href="#module-awsiot.mqtt_connection_builder" title="awsiot.mqtt_connection_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span> <span class="pre">arguments</span></code></a>
+described at the top of this doc, as well as…</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cert_filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path to certificate file.</p></li>
+<li><p><strong>pri_key_filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path to private key file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)">awscrt.mqtt.Connection</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="awsiot.mqtt_connection_builder.mtls_from_bytes">
+<span class="sig-prename descclassname"><span class="pre">awsiot.mqtt_connection_builder.</span></span><span class="sig-name descname"><span class="pre">mtls_from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cert_bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pri_key_bytes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.mqtt_connection_builder.mtls_from_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This builder creates an <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Connection</span></code></a>, configured for an mTLS MQTT connection to AWS IoT.
+TLS arguments are passed as in-memory bytes.</p>
+<p>This function takes all <a class="reference internal" href="#module-awsiot.mqtt_connection_builder" title="awsiot.mqtt_connection_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span> <span class="pre">arguments</span></code></a>
+described at the top of this doc, as well as…</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cert_bytes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><em>bytes</em></a>) – Certificate file bytes.</p></li>
+<li><p><strong>pri_key_bytes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><em>bytes</em></a>) – Private key bytes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)">awscrt.mqtt.Connection</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="awsiot.mqtt_connection_builder.websockets_with_default_aws_signing">
+<span class="sig-prename descclassname"><span class="pre">awsiot.mqtt_connection_builder.</span></span><span class="sig-name descname"><span class="pre">websockets_with_default_aws_signing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credentials_provider</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">websocket_proxy_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.mqtt_connection_builder.websockets_with_default_aws_signing" title="Permalink to this definition">¶</a></dt>
+<dd><p>This builder creates an <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Connection</span></code></a>, configured for an MQTT connection over websockets to AWS IoT.
+The websocket handshake is signed using credentials from the credentials_provider.</p>
+<p>This function takes all <a class="reference internal" href="#module-awsiot.mqtt_connection_builder" title="awsiot.mqtt_connection_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span> <span class="pre">arguments</span></code></a>
+described at the top of this doc, as well as…</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – AWS region to use when signing.</p></li>
+<li><p><strong>credentials_provider</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/auth.html#awscrt.auth.AwsCredentialsProvider" title="(in awscrt)"><em>awscrt.auth.AwsCredentialsProvider</em></a>) – Source of AWS credentials to use when signing.</p></li>
+<li><p><strong>websocket_proxy_options</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/http.html#awscrt.http.HttpProxyOptions" title="(in awscrt)"><em>awscrt.http.HttpProxyOptions</em></a>) – Deprecated,
+for proxy settings use <cite>http_proxy_options</cite> (described in
+<a class="reference internal" href="#module-awsiot.mqtt_connection_builder" title="awsiot.mqtt_connection_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span> <span class="pre">arguments</span></code></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)">awscrt.mqtt.Connection</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="awsiot.mqtt_connection_builder.websockets_with_custom_handshake">
+<span class="sig-prename descclassname"><span class="pre">awsiot.mqtt_connection_builder.</span></span><span class="sig-name descname"><span class="pre">websockets_with_custom_handshake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">websocket_handshake_transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">websocket_proxy_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.mqtt_connection_builder.websockets_with_custom_handshake" title="Permalink to this definition">¶</a></dt>
+<dd><p>This builder creates an <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Connection</span></code></a>, configured for an MQTT connection over websockets,
+with a custom function to transform the websocket handshake request before it is sent to the server.</p>
+<p>This function takes all <a class="reference internal" href="#module-awsiot.mqtt_connection_builder" title="awsiot.mqtt_connection_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span> <span class="pre">arguments</span></code></a>
+described at the top of this doc, as well as…</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>websocket_handshake_transform</strong> (<em>Callable</em>) – <p>Function to transform websocket handshake request.
+If provided, function is called each time a websocket connection is attempted.
+The function may modify the HTTP request before it is sent to the server.
+See <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.WebsocketHandshakeTransformArgs" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.WebsocketHandshakeTransformArgs</span></code></a> for more info.
+Function should take the following arguments and return nothing:</p>
+<blockquote>
+<div><ul>
+<li><p><cite>transform_args</cite> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.WebsocketHandshakeTransformArgs" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.WebsocketHandshakeTransformArgs</span></code></a>):
+Contains HTTP request to be transformed. Function must call
+<cite>transform_args.done()</cite> when complete.</p></li>
+<li><p><cite>**kwargs</cite> (dict): Forward-compatibility kwargs.</p></li>
+</ul>
+</div></blockquote>
+</p></li>
+<li><p><strong>websocket_proxy_options</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/http.html#awscrt.http.HttpProxyOptions" title="(in awscrt)"><em>awscrt.http.HttpProxyOptions</em></a>) – Deprecated,
+for proxy settings use <cite>http_proxy_options</cite> (described in
+<a class="reference internal" href="#module-awsiot.mqtt_connection_builder" title="awsiot.mqtt_connection_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span> <span class="pre">arguments</span></code></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)">awscrt.mqtt.Connection</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="greengrass_discovery.html"
+                        title="previous chapter">awsiot.greengrass_discovery</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="iotidentity.html"
+                        title="next chapter">awsiot.iotidentity</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/awsiot/mqtt_connection_builder.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="iotidentity.html" title="awsiot.iotidentity"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="greengrass_discovery.html" title="awsiot.greengrass_discovery"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">AWS IoT Device SDK v2 for Python  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">awsiot.mqtt_connection_builder</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Amazon Web Services, Inc.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+    </div>
+  </body>
+</html>

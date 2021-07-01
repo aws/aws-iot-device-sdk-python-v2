@@ -6,11 +6,35 @@ from awscrt.io import ClientBootstrap, ClientTlsContext, is_alpn_available, Sock
 import awsiot
 from concurrent.futures import Future
 import json
+from typing import Any, Dict, List, Optional
 
-class DiscoveryClient(object):
-    __slots__ = ['_bootstrap', '_tls_context', '_socket_options', '_region', '_tls_connection_options', '_gg_server_name', 'gg_url', 'port']
 
-    def __init__(self, bootstrap, socket_options, tls_context, region):
+class DiscoveryClient:
+    """
+    Client which performs Greengrass discovery.
+
+    Args:
+        bootstrap: Client bootstrap
+        socket_options: Socket options
+        tls_context: Client TLS context
+        region: AWS region
+    """
+    __slots__ = [
+        '_bootstrap',
+        '_tls_context',
+        '_socket_options',
+        '_region',
+        '_tls_connection_options',
+        '_gg_server_name',
+        'gg_url',
+        'port']
+
+    def __init__(
+            self,
+            bootstrap: ClientBootstrap,
+            socket_options: SocketOptions,
+            tls_context: ClientTlsContext,
+            region: str):
         assert isinstance(bootstrap, ClientBootstrap)
         assert isinstance(socket_options, SocketOptions)
         assert isinstance(tls_context, ClientTlsContext)
@@ -28,7 +52,16 @@ class DiscoveryClient(object):
             self._tls_connection_options.set_alpn_list(['x-amzn-http-ca'])
             self.port = 443
 
-    def discover(self, thing_name):
+    def discover(self, thing_name: str) -> Future:
+        """
+        Perform discovery.
+
+        This is an asynchronous operation.
+
+        Returns:
+            Future a Future which will contain a result of :class:`DiscoverResponse`
+            on success, or an exception on failure.
+        """
 
         discovery = dict(
             future=Future(),
@@ -45,7 +78,10 @@ class DiscoveryClient(object):
                     discover_res = DiscoverResponse.from_payload(json.loads(payload_str))
                     discovery['future'].set_result(discover_res)
                 else:
-                    discovery['future'].set_exception(DiscoveryException('Error during discover call: response_code={}'.format(response_code), response_code))
+                    discovery['future'].set_exception(
+                        DiscoveryException(
+                            'Error during discover call: response_code={}'.format(response_code),
+                            response_code))
 
             except Exception as e:
                 discovery['future'].set_exception(e)
@@ -63,7 +99,7 @@ class DiscoveryClient(object):
                 http_stream = connection.request(
                     request=request,
                     on_body=on_incoming_body)
-               
+
                 http_stream.activate()
                 http_stream.completion_future.add_done_callback(on_request_complete)
 
@@ -74,31 +110,45 @@ class DiscoveryClient(object):
             host_name=self._gg_server_name,
             port=self.port,
             socket_options=self._socket_options,
-            tls_connection_options = self._tls_connection_options,
-            bootstrap = self._bootstrap)
+            tls_connection_options=self._tls_connection_options,
+            bootstrap=self._bootstrap)
 
         connect_future.add_done_callback(on_connection_completed)
 
         return discovery['future']
 
+
 class DiscoveryException(Exception):
+    """
+    Discovery response was an error.
+    """
     _slots_ = ['http_response_code', 'message']
 
-    def __init__(self, message, response_code):
-        self.http_response_code = response_code
-        self.message = message
+    def __init__(self, message: str, response_code:int):
+        #: HTTP response code
+        self.http_response_code = response_code # type: int
+        #: Message
+        self.message = message # type: str
 
 
 class ConnectivityInfo(awsiot.ModeledClass):
-    __slots__ = ['id', 'host_address', 'metadata', 'port']
+    """
+    Connectivity info
+    """
 
-    def ___init___(self):
-        for slot in self.__slots__:
-            setattr(self, slot, None)
+    __slots__ = ['id', 'host_address', 'metadata', 'port']
+    def __init__(self):
+        #: ID
+        self.id = None
+        #: Port address
+        self.host_address = None
+        #: Metadata
+        self.metadata = None
+        #: Port
+        self.port = None
 
     @classmethod
-    def from_payload(cls, payload):
-        # type: (typing.Dict[str, typing.Any]) -> ConnectivityInfo
+    def from_payload(cls, payload: Dict[str, Any]) -> 'ConnectivityInfo':
         new = cls()
         val = payload.get('Id')
         if val is not None:
@@ -114,16 +164,21 @@ class ConnectivityInfo(awsiot.ModeledClass):
             new.metadata = val
         return new
 
+
 class GGCore(awsiot.ModeledClass):
+    """
+    Greengrass Core
+    """
     __slots__ = ['thing_arn', 'connectivity']
 
-    def ___init___(self):
-        for slot in self.__slots__:
-            setattr(self, slot, None)
+    def __init__(self):
+        #: Thing ARN
+        self.thing_arn = None
+        #: List of :class:`ConnectivityInfo`
+        self.connectivity = None
 
     @classmethod
-    def from_payload(cls, payload):
-        # type: (typing.Dict[str, typing.Any]) -> GGCore
+    def from_payload(cls, payload: Dict[str, Any]) -> 'GGCore':
         new = cls()
         val = payload.get('thingArn')
         if val is not None:
@@ -134,16 +189,23 @@ class GGCore(awsiot.ModeledClass):
 
         return new
 
+
 class GGGroup(awsiot.ModeledClass):
+    """
+    Greengrass group
+    """
     __slots__ = ['gg_group_id', 'cores', 'certificate_authorities']
 
-    def ___init___(self):
-       for slot in self.__slots__:
-           setattr(self, slot, None)
+    def __init__(self):
+        #: Greengrass group ID
+        self.gg_group_id = None
+        #: List of :class:`GGCore`
+        self.cores = None
+        #: List of strings
+        self.certificate_authorities = None
 
     @classmethod
-    def from_payload(cls, payload):
-        # type: (typing.Dict[str, typing.Any]) -> GGGroup
+    def from_payload(cls, payload: Dict[str, Any]) -> 'GGGroup':
         new = cls()
         val = payload.get('GGGroupId')
         if val is not None:
@@ -157,16 +219,19 @@ class GGGroup(awsiot.ModeledClass):
 
         return new
 
+
 class DiscoverResponse(awsiot.ModeledClass):
+    """
+    Discovery response
+    """
     __slots__ = ['gg_groups']
 
-    def ___init___(self):
-        for slot in self.__slots__:
-            setattr(self, slot, None)
+    def __init__(self):
+        #: List of :class:`GGGroup`
+        self.gg_groups = None # type: Optional[List[GGGroup]]
 
     @classmethod
-    def from_payload(cls, payload):
-        # type: (typing.Dict[str, typing.Any]) -> DiscoverResponse
+    def from_payload(cls, payload: Dict[str, Any]) -> 'DiscoverResponse':
         new = cls()
         val = payload.get('GGGroups')
         if val is not None:

@@ -1,4 +1,10 @@
-# Samples
+# Sample apps for the AWS IoT Device SDK v2 for Python
+
+* [pubsub](#pubsub)
+* [shadow](#shadow)
+* [fleet provisioning](#fleet-provisioning)
+* [basic discovery](#basic-discovery)
+* [IPC with AWS IoT Greengrass to publish to AWS IoT Core](#ipc-with-aws-iot-greengrass-to-publish-to-aws-iot-core)
 
 ## Pubsub
 
@@ -344,7 +350,7 @@ To run the provisioning sample, you'll need a certificate and key set with suffi
 created ahead of time and placed on your device, but for this sample, we will just create them on the fly. You can also
 use any certificate set you've already created if it has sufficient IoT permissions and in doing so, you can skip the step
 that calls `create-provisioning-claim`.
- 
+
 We've included a script in the utils folder that creates certificate and key files from the response of calling
 `create-provisioning-claim`. These dynamically sourced certificates are only valid for five minutes. When running the command, 
 you'll need to substitute the name of the template you previously created, and on Windows, replace the paths with something appropriate.
@@ -401,6 +407,7 @@ aws iot create-provisioning-claim \
 
 Finally, supply the certificate signing request while invoking the provisioning sample. As with the previous workflow, if
 using a permanent certificate set, replace the paths specified in the `--cert` and `--key` arguments:
+
 ``` sh
 python fleetprovisioning.py \
         --endpoint [your endpoint]-ats.iot.[region].amazonaws.com \
