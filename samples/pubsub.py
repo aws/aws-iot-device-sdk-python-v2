@@ -9,6 +9,8 @@ import threading
 import time
 from uuid import uuid4
 
+import json
+
 # This sample uses the Message Broker for AWS IoT to send and receive messages
 # through an MQTT connection. On startup, the device connects to the server,
 # subscribes to a topic, and begins publishing messages to that topic.
@@ -25,10 +27,10 @@ parser.add_argument('--root-ca', help="File path to root certificate authority, 
                                       "Necessary if MQTT server uses a certificate that's not already in " +
                                       "your trust store.")
 parser.add_argument('--client-id', default="test-" + str(uuid4()), help="Client ID for MQTT connection.")
-parser.add_argument('--topic', default="test/topic", help="Topic to subscribe to, and publish messages to.")
-parser.add_argument('--message', default="Hello World!", help="Message to publish. " +
+parser.add_argument('--topic', default="sdk/test/Python", help="Topic to subscribe to, and publish messages to.")
+parser.add_argument('--message', default="Hello World! from EC2", help="Message to publish. " +
                                                               "Specify empty string to publish nothing.")
-parser.add_argument('--count', default=10, type=int, help="Number of messages to publish/receive before exiting. " +
+parser.add_argument('--count', default=0, type=int, help="Number of messages to publish/receive before exiting. " +
                                                           "Specify 0 to run forever.")
 parser.add_argument('--use-websocket', default=False, action='store_true',
     help="To use a websocket instead of raw mqtt. If you " +
@@ -153,11 +155,16 @@ if __name__ == '__main__':
 
         publish_count = 1
         while (publish_count <= args.count) or (args.count == 0):
-            message = "{} [{}]".format(args.message, publish_count)
-            print("Publishing message to topic '{}': {}".format(args.topic, message))
+            #message = "{} [{}]".format(args.message, publish_count)
+            message = "message 12"
+            messageJson = json.dumps(message)
+
+            print("Publishing message to topic '{}':{}".format(args.topic, message))
             mqtt_connection.publish(
                 topic=args.topic,
-                payload=message,
+                #payload=message,
+                #payload=messageJson,
+                payload='just a string',
                 qos=mqtt.QoS.AT_LEAST_ONCE)
             time.sleep(1)
             publish_count += 1
