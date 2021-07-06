@@ -156,10 +156,10 @@ if __name__ == '__main__':
         while (publish_count <= args.count) or (args.count == 0):
             message = "{} [{}]".format(args.message, publish_count)
             print("Publishing message to topic '{}': {}".format(args.topic, message))
-            messageJson = json.dumps(message)
+            message_json = json.dumps(message)
             mqtt_connection.publish(
                 topic=args.topic,
-                payload=messageJson,
+                payload=message_json,
                 qos=mqtt.QoS.AT_LEAST_ONCE)
             time.sleep(1)
             publish_count += 1
