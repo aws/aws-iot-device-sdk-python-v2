@@ -21,7 +21,7 @@ Source: `samples/pubsub.py`
 
 Run the sample like this:
 ``` sh
-python pubsub.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file>
+python3 pubsub.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file>
 ```
 
 Your Thing's
@@ -92,7 +92,7 @@ Source: `samples/shadow.py`
 
 Run the sample like this:
 ``` sh
-python shadow.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
+python3 shadow.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
 ```
 
 Your Thing's
@@ -178,7 +178,7 @@ Source: `samples/jobs.py`
 
 Run the sample like this:
 ``` sh
-python jobs.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
+python3 jobs.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
 ```
 
 Your Thing's
@@ -250,12 +250,12 @@ Source: `samples/fleetprovisioning.py`
 
 Run the sample using createKeysAndCertificate:
 ``` sh
-python fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters>
+python3 fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters>
 ```
 
 Run the sample using createCertificateFromCsr:
 ``` sh
-python fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters> --csr <csr file>
+python3 fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters> --csr <csr file>
 ```
 
 Your Thing's
@@ -359,7 +359,7 @@ you'll need to substitute the name of the template you previously created, and o
 ``` sh
 aws iot create-provisioning-claim \
         --template-name [TemplateName] \
-        | python ../utils/parse_cert_set_result.py \
+        | python3 ../utils/parse_cert_set_result.py \
         --path /tmp \
         --filename provision
 ```
@@ -369,7 +369,7 @@ to perform the actual provisioning. If you are not using the temporary provision
 and `--key` appropriately:
 
 ``` sh
-python fleetprovisioning.py \
+python3 fleetprovisioning.py \
         --endpoint [your endpoint]-ats.iot.[region].amazonaws.com \
         --root-ca [pathToRootCA] \
         --cert /tmp/provision.cert.pem \
@@ -400,7 +400,7 @@ be skipped if you're using a certificate set capable of provisioning the device:
 ``` sh
 aws iot create-provisioning-claim \
         --template-name [TemplateName] \
-        | python ../utils/parse_cert_set_result.py \
+        | python3 ../utils/parse_cert_set_result.py \
         --path /tmp \
         --filename provision
 ```
@@ -409,7 +409,7 @@ Finally, supply the certificate signing request while invoking the provisioning 
 using a permanent certificate set, replace the paths specified in the `--cert` and `--key` arguments:
 
 ``` sh
-python fleetprovisioning.py \
+python3 fleetprovisioning.py \
         --endpoint [your endpoint]-ats.iot.[region].amazonaws.com \
         --root-ca [pathToRootCA] \
         --cert /tmp/provision.cert.pem \
