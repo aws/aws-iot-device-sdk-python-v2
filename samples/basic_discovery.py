@@ -81,7 +81,7 @@ def try_iot_endpoints():
                         on_connection_resumed=on_connection_resumed,
                         client_id=args.thing_name,
                         clean_session=False,
-                        keep_alive_secs=6)
+                        keep_alive_secs=30)
 
                     connect_future = mqtt_connection.connect()
                     connect_future.result()
