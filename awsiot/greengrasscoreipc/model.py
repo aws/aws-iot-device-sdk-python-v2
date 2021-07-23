@@ -28,6 +28,62 @@ class GreengrassCoreIPCError(rpc.ErrorShape):
         return self._get_error_type_string() == 'client'
 
 
+class SystemResourceLimits(rpc.Shape):
+    """
+    SystemResourceLimits
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        memory: 
+        cpus: 
+
+    Attributes:
+        memory: 
+        cpus: 
+    """
+
+    def __init__(self, *,
+                 memory: typing.Optional[int] = None,
+                 cpus: typing.Optional[float] = None):
+        super().__init__()
+        self.memory = memory  # type: typing.Optional[int]
+        self.cpus = cpus  # type: typing.Optional[float]
+
+    def _to_payload(self):
+        payload = {}
+        if self.memory is not None:
+            payload['memory'] = self.memory
+        if self.cpus is not None:
+            payload['cpus'] = self.cpus
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'memory' in payload:
+            new.memory = int(payload['memory'])
+        if 'cpus' in payload:
+            new.cpus = float(payload['cpus'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SystemResourceLimits'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
 class RunWithInfo(rpc.Shape):
     """
     RunWithInfo
@@ -36,20 +92,26 @@ class RunWithInfo(rpc.Shape):
 
     Keyword Args:
         posix_user: 
+        system_resource_limits: 
 
     Attributes:
         posix_user: 
+        system_resource_limits: 
     """
 
     def __init__(self, *,
-                 posix_user: typing.Optional[str] = None):
+                 posix_user: typing.Optional[str] = None,
+                 system_resource_limits: typing.Optional[SystemResourceLimits] = None):
         super().__init__()
         self.posix_user = posix_user  # type: typing.Optional[str]
+        self.system_resource_limits = system_resource_limits  # type: typing.Optional[SystemResourceLimits]
 
     def _to_payload(self):
         payload = {}
         if self.posix_user is not None:
             payload['posixUser'] = self.posix_user
+        if self.system_resource_limits is not None:
+            payload['systemResourceLimits'] = self.system_resource_limits._to_payload()
         return payload
 
     @classmethod
@@ -57,6 +119,8 @@ class RunWithInfo(rpc.Shape):
         new = cls()
         if 'posixUser' in payload:
             new.posix_user = payload['posixUser']
+        if 'systemResourceLimits' in payload:
+            new.system_resource_limits = SystemResourceLimits._from_payload(payload['systemResourceLimits'])
         return new
 
     @classmethod
@@ -1277,11 +1341,11 @@ class CreateLocalDeploymentRequest(rpc.Shape):
         if self.group_name is not None:
             payload['groupName'] = self.group_name
         if self.root_component_versions_to_add is not None:
-            payload['rootComponentVersionsToAdd'] = self.root_component_versions_to_add
+            payload['rootComponentVersionsToAdd'] = {k: v for k, v in self.root_component_versions_to_add.items()}
         if self.root_components_to_remove is not None:
             payload['rootComponentsToRemove'] = self.root_components_to_remove
         if self.component_to_configuration is not None:
-            payload['componentToConfiguration'] = self.component_to_configuration
+            payload['componentToConfiguration'] = {k: v for k, v in self.component_to_configuration.items()}
         if self.component_to_run_with_info is not None:
             payload['componentToRunWithInfo'] = {k: v._to_payload() for k, v in self.component_to_run_with_info.items()}
         if self.recipe_directory_path is not None:
@@ -1312,6 +1376,88 @@ class CreateLocalDeploymentRequest(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#CreateLocalDeploymentRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class PauseComponentResponse(rpc.Shape):
+    """
+    PauseComponentResponse
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def _to_payload(self):
+        payload = {}
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#PauseComponentResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class PauseComponentRequest(rpc.Shape):
+    """
+    PauseComponentRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name: 
+
+    Attributes:
+        component_name: 
+    """
+
+    def __init__(self, *,
+                 component_name: typing.Optional[str] = None):
+        super().__init__()
+        self.component_name = component_name  # type: typing.Optional[str]
+
+    def _to_payload(self):
+        payload = {}
+        if self.component_name is not None:
+            payload['componentName'] = self.component_name
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'componentName' in payload:
+            new.component_name = payload['componentName']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#PauseComponentRequest'
 
     def __repr__(self):
         attrs = []
@@ -3733,73 +3879,6 @@ class DeleteThingShadowRequest(rpc.Shape):
         return False
 
 
-class ResourceNotFoundError(GreengrassCoreIPCError):
-    """
-    ResourceNotFoundError
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        message: 
-        resource_type: 
-        resource_name: 
-
-    Attributes:
-        message: 
-        resource_type: 
-        resource_name: 
-    """
-
-    def __init__(self, *,
-                 message: typing.Optional[str] = None,
-                 resource_type: typing.Optional[str] = None,
-                 resource_name: typing.Optional[str] = None):
-        super().__init__()
-        self.message = message  # type: typing.Optional[str]
-        self.resource_type = resource_type  # type: typing.Optional[str]
-        self.resource_name = resource_name  # type: typing.Optional[str]
-
-    def _get_error_type_string(self):
-        return 'client'
-
-    def _to_payload(self):
-        payload = {}
-        if self.message is not None:
-            payload['message'] = self.message
-        if self.resource_type is not None:
-            payload['resourceType'] = self.resource_type
-        if self.resource_name is not None:
-            payload['resourceName'] = self.resource_name
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'message' in payload:
-            new.message = payload['message']
-        if 'resourceType' in payload:
-            new.resource_type = payload['resourceType']
-        if 'resourceName' in payload:
-            new.resource_name = payload['resourceName']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#ResourceNotFoundError'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
 class SubscribeToConfigurationUpdateResponse(rpc.Shape):
     """
     SubscribeToConfigurationUpdateResponse
@@ -3974,6 +4053,155 @@ class PublishToIoTCoreRequest(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#PublishToIoTCoreRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class ResourceNotFoundError(GreengrassCoreIPCError):
+    """
+    ResourceNotFoundError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message: 
+        resource_type: 
+        resource_name: 
+
+    Attributes:
+        message: 
+        resource_type: 
+        resource_name: 
+    """
+
+    def __init__(self, *,
+                 message: typing.Optional[str] = None,
+                 resource_type: typing.Optional[str] = None,
+                 resource_name: typing.Optional[str] = None):
+        super().__init__()
+        self.message = message  # type: typing.Optional[str]
+        self.resource_type = resource_type  # type: typing.Optional[str]
+        self.resource_name = resource_name  # type: typing.Optional[str]
+
+    def _get_error_type_string(self):
+        return 'client'
+
+    def _to_payload(self):
+        payload = {}
+        if self.message is not None:
+            payload['message'] = self.message
+        if self.resource_type is not None:
+            payload['resourceType'] = self.resource_type
+        if self.resource_name is not None:
+            payload['resourceName'] = self.resource_name
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'message' in payload:
+            new.message = payload['message']
+        if 'resourceType' in payload:
+            new.resource_type = payload['resourceType']
+        if 'resourceName' in payload:
+            new.resource_name = payload['resourceName']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ResourceNotFoundError'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class ResumeComponentResponse(rpc.Shape):
+    """
+    ResumeComponentResponse
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def _to_payload(self):
+        payload = {}
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ResumeComponentResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class ResumeComponentRequest(rpc.Shape):
+    """
+    ResumeComponentRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name: 
+
+    Attributes:
+        component_name: 
+    """
+
+    def __init__(self, *,
+                 component_name: typing.Optional[str] = None):
+        super().__init__()
+        self.component_name = component_name  # type: typing.Optional[str]
+
+    def _to_payload(self):
+        payload = {}
+        if self.component_name is not None:
+            payload['componentName'] = self.component_name
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'componentName' in payload:
+            new.component_name = payload['componentName']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ResumeComponentRequest'
 
     def __repr__(self):
         attrs = []
@@ -4181,6 +4409,7 @@ class SubscribeToIoTCoreRequest(rpc.Shape):
 
 
 SHAPE_INDEX = rpc.ShapeIndex([
+    SystemResourceLimits,
     RunWithInfo,
     PostComponentUpdateEvent,
     PreComponentUpdateEvent,
@@ -4196,6 +4425,8 @@ SHAPE_INDEX = rpc.ShapeIndex([
     InvalidRecipeDirectoryPathError,
     CreateLocalDeploymentResponse,
     CreateLocalDeploymentRequest,
+    PauseComponentResponse,
+    PauseComponentRequest,
     StopComponentResponse,
     StopComponentRequest,
     ListLocalDeploymentsResponse,
@@ -4245,11 +4476,13 @@ SHAPE_INDEX = rpc.ShapeIndex([
     InvalidArgumentsError,
     DeleteThingShadowResponse,
     DeleteThingShadowRequest,
-    ResourceNotFoundError,
     SubscribeToConfigurationUpdateResponse,
     SubscribeToConfigurationUpdateRequest,
     PublishToIoTCoreResponse,
     PublishToIoTCoreRequest,
+    ResourceNotFoundError,
+    ResumeComponentResponse,
+    ResumeComponentRequest,
     UnauthorizedError,
     ServiceError,
     SubscribeToIoTCoreResponse,
@@ -4277,6 +4510,28 @@ class _SubscribeToIoTCoreOperation(rpc.ClientOperation):
     @classmethod
     def _response_stream_type(cls):
         return IoTCoreMessage
+
+
+class _ResumeComponentOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ResumeComponent'
+
+    @classmethod
+    def _request_type(cls):
+        return ResumeComponentRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return ResumeComponentResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
 
 
 class _PublishToIoTCoreOperation(rpc.ClientOperation):
@@ -4801,6 +5056,28 @@ class _StopComponentOperation(rpc.ClientOperation):
     @classmethod
     def _response_type(cls):
         return StopComponentResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _PauseComponentOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#PauseComponent'
+
+    @classmethod
+    def _request_type(cls):
+        return PauseComponentRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return PauseComponentResponse
 
     @classmethod
     def _response_stream_type(cls):
