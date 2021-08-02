@@ -71,6 +71,40 @@ class SubscribeToIoTCoreOperation(model._SubscribeToIoTCoreOperation):
         return super().close()
 
 
+class ResumeComponentOperation(model._ResumeComponentOperation):
+    """
+    ResumeComponentOperation
+
+    Create with GreengrassCoreIPCClient.new_resume_component()
+    """
+
+    def activate(self, request: model.ResumeComponentRequest) -> concurrent.futures.Future:
+        """
+        Activate this operation by sending the initial ResumeComponentRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self) -> concurrent.futures.Future:
+        """
+        Returns a Future which completes with a result of ResumeComponentResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self) -> concurrent.futures.Future:
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
 class PublishToIoTCoreOperation(model._PublishToIoTCoreOperation):
     """
     PublishToIoTCoreOperation
@@ -1003,6 +1037,40 @@ class StopComponentOperation(model._StopComponentOperation):
         return super().close()
 
 
+class PauseComponentOperation(model._PauseComponentOperation):
+    """
+    PauseComponentOperation
+
+    Create with GreengrassCoreIPCClient.new_pause_component()
+    """
+
+    def activate(self, request: model.PauseComponentRequest) -> concurrent.futures.Future:
+        """
+        Activate this operation by sending the initial PauseComponentRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self) -> concurrent.futures.Future:
+        """
+        Returns a Future which completes with a result of PauseComponentResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self) -> concurrent.futures.Future:
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
 class CreateLocalDeploymentOperation(model._CreateLocalDeploymentOperation):
     """
     CreateLocalDeploymentOperation
@@ -1061,6 +1129,16 @@ class GreengrassCoreIPCClient(rpc.Client):
                 stream events happen on this operation.
         """
         return self._new_operation(SubscribeToIoTCoreOperation, stream_handler)
+
+    def new_resume_component(self) -> ResumeComponentOperation:
+        """
+        Create a new ResumeComponentOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+        """
+        return self._new_operation(ResumeComponentOperation)
 
     def new_publish_to_iot_core(self) -> PublishToIoTCoreOperation:
         """
@@ -1317,6 +1395,16 @@ class GreengrassCoreIPCClient(rpc.Client):
         events to fire.
         """
         return self._new_operation(StopComponentOperation)
+
+    def new_pause_component(self) -> PauseComponentOperation:
+        """
+        Create a new PauseComponentOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+        """
+        return self._new_operation(PauseComponentOperation)
 
     def new_create_local_deployment(self) -> CreateLocalDeploymentOperation:
         """
