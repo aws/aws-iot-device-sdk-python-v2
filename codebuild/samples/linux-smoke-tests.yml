@@ -1,0 +1,15 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - add-apt-repository ppa:ubuntu-toolchain-r/test
+      - apt-get update -y
+      - apt-get install python3 -y
+  build:
+    commands:
+      - echo Build started on `date`
+      - $CODEBUILD_SRC_DIR/codebuild/samples/setup-linux.sh
+      - $CODEBUILD_SRC_DIR/codebuild/samples/pubsub-linux.sh
+  post_build:
+    commands:
+      - echo Build completed on `date`
