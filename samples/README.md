@@ -3,8 +3,7 @@
 * [pubsub](#pubsub)
 * [shadow](#shadow)
 * [fleet provisioning](#fleet-provisioning)
-* [basic discovery](#basic-discovery)
-* [IPC with AWS IoT Greengrass to publish to AWS IoT Core](#ipc-with-aws-iot-greengrass-to-publish-to-aws-iot-core)
+* [Greengrass Discovery](#greengrass-discovery)
 
 ## Pubsub
 
