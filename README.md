@@ -26,6 +26,8 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 * [Samples](samples)
 * [Getting Help](#Getting-Help)
 * [Giving Feedback and Contributions](#Giving-Feedback-and-Contributions)
+* [More Resources](#More-Resources)
+
 
 ## Installation
 
@@ -56,6 +58,7 @@ sudo apt-get install cmake
 sudo apt-get install python3-dev
 ```
 
+
 ## Mac-Only TLS Behavior
 
 Please note that on Mac, once a private key is used with a certificate, that certificate-key pair is imported into the Mac Keychain.  All subsequent uses of that certificate will use the stored private key and ignore anything passed in programmatically.  Beginning in v1.3.2, when a stored private key from the Keychain is used, the following will be logged at the "info" log level:
@@ -63,6 +66,7 @@ Please note that on Mac, once a private key is used with a certificate, that cer
 ```
 static: certificate has an existing certificate-key pair that was previously imported into the Keychain.  Using key from Keychain instead of the one provided.
 ```
+
 
 ## Samples
 
@@ -88,10 +92,24 @@ is provided by code that been generated from a model of the service.
 
 We need your help in making this SDK great. Please participate in the community and contribute to this effort by submitting issues, participating in discussion forums and submitting pull requests through the following channels.
 
-*   [Contributions Guidelines](CONTRIBUTING.md)
+*   [Contributions Guidelines](/CONTRIBUTING.md)
 *   Articulate your feature request or upvote existing ones on our [Issues](https://github.com/aws/aws-iot-device-sdk-python-v2/issues?q=is%3Aissue+is%3Aopen+label%3Afeature-request) page.
 *   Submit [Issues](https://github.com/aws/aws-iot-device-sdk-python-v2/issues)
 
-# License
+
+## More Resources
+
+*   [AWS IoT Core Documentation](https://docs.aws.amazon.com/iot/)
+*   [Developer Guide](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html) ([source](https://github.com/awsdocs/aws-iot-docs))
+*   [Issues](https://github.com/aws/aws-iot-device-sdk-python-v2/issues)
+*   [Dev Blog](https://aws.amazon.com/blogs/?awsf.blog-master-iot=category-internet-of-things%23amazon-freertos%7Ccategory-internet-of-things%23aws-greengrass%7Ccategory-internet-of-things%23aws-iot-analytics%7Ccategory-internet-of-things%23aws-iot-button%7Ccategory-internet-of-things%23aws-iot-device-defender%7Ccategory-internet-of-things%23aws-iot-device-management%7Ccategory-internet-of-things%23aws-iot-platform)
+
+Integration with AWS IoT Services such as
+[Device Shadow](https://docs.aws.amazon.com/iot/latest/developerguide/iot-device-shadows.html)
+and [Jobs](https://docs.aws.amazon.com/iot/latest/developerguide/iot-jobs.html)
+is provided by code that been generated from a model of the service.
+
+
+## License
 
 This library is licensed under the Apache 2.0 License.
