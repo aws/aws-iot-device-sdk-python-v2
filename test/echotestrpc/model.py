@@ -230,6 +230,7 @@ class MessageData(rpc.Shape):
         blob_message: 
         string_list_message: 
         key_value_pair_list: 
+        string_to_value: 
 
     Attributes:
         string_message: 
@@ -240,6 +241,7 @@ class MessageData(rpc.Shape):
         blob_message: 
         string_list_message: 
         key_value_pair_list: 
+        string_to_value: 
     """
 
     def __init__(self, *,
@@ -250,7 +252,8 @@ class MessageData(rpc.Shape):
                  enum_message: typing.Optional[str] = None,
                  blob_message: typing.Optional[bytes] = None,
                  string_list_message: typing.Optional[typing.List[str]] = None,
-                 key_value_pair_list: typing.Optional[typing.List[Pair]] = None):
+                 key_value_pair_list: typing.Optional[typing.List[Pair]] = None,
+                 string_to_value: typing.Optional[typing.Dict[str, Product]] = None):
         super().__init__()
         self.string_message = string_message  # type: typing.Optional[str]
         self.boolean_message = boolean_message  # type: typing.Optional[bool]
@@ -260,6 +263,7 @@ class MessageData(rpc.Shape):
         self.blob_message = blob_message  # type: typing.Optional[bytes]
         self.string_list_message = string_list_message  # type: typing.Optional[typing.List[str]]
         self.key_value_pair_list = key_value_pair_list  # type: typing.Optional[typing.List[Pair]]
+        self.string_to_value = string_to_value  # type: typing.Optional[typing.Dict[str, Product]]
 
     def _to_payload(self):
         payload = {}
@@ -279,6 +283,8 @@ class MessageData(rpc.Shape):
             payload['stringListMessage'] = self.string_list_message
         if self.key_value_pair_list is not None:
             payload['keyValuePairList'] = [i._to_payload() for i in self.key_value_pair_list]
+        if self.string_to_value is not None:
+            payload['stringToValue'] = {k: v._to_payload() for k, v in self.string_to_value.items()}
         return payload
 
     @classmethod
@@ -300,6 +306,8 @@ class MessageData(rpc.Shape):
             new.string_list_message = payload['stringListMessage']
         if 'keyValuePairList' in payload:
             new.key_value_pair_list = [Pair._from_payload(i) for i in payload['keyValuePairList']]
+        if 'stringToValue' in payload:
+            new.string_to_value = {k: Product._from_payload(v) for k,v in payload['stringToValue'].items()}
         return new
 
     @classmethod

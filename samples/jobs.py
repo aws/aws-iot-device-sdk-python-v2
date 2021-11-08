@@ -244,7 +244,7 @@ if __name__ == '__main__':
             ca_filepath=args.root_ca,
             client_id=args.client_id,
             clean_session=False,
-            keep_alive_secs=6)
+            keep_alive_secs=30)
 
     else:
         mqtt_connection = mqtt_connection_builder.mtls_from_path(
@@ -255,7 +255,7 @@ if __name__ == '__main__':
             ca_filepath=args.root_ca,
             client_id=args.client_id,
             clean_session=False,
-            keep_alive_secs=6,
+            keep_alive_secs=30,
             http_proxy_options=proxy_options)
 
     print("Connecting to {} with client ID '{}'...".format(
