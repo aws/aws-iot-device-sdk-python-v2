@@ -115,12 +115,11 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed 
+            to `unsubscribe()` to stop receiving messages. Note that messages 
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -149,12 +148,11 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed 
+            to `unsubscribe()` to stop receiving messages. Note that messages 
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -183,12 +181,11 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed 
+            to `unsubscribe()` to stop receiving messages. Note that messages 
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -215,12 +212,11 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed 
+            to `unsubscribe()` to stop receiving messages. Note that messages 
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -247,12 +243,11 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed 
+            to `unsubscribe()` to stop receiving messages. Note that messages 
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -279,12 +274,11 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed 
+            to `unsubscribe()` to stop receiving messages. Note that messages 
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -311,12 +305,11 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed 
+            to `unsubscribe()` to stop receiving messages. Note that messages 
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -343,12 +336,11 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed 
+            to `unsubscribe()` to stop receiving messages. Note that messages 
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -375,12 +367,11 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed 
+            to `unsubscribe()` to stop receiving messages. Note that messages 
+            may arrive before the subscription is acknowledged.
         """
         if not request.job_id:
             raise ValueError("request.job_id is required")
@@ -409,12 +400,11 @@ class IotJobsClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed 
+            to `unsubscribe()` to stop receiving messages. Note that messages 
+            may arrive before the subscription is acknowledged.
         """
         if not request.job_id:
             raise ValueError("request.job_id is required")
