@@ -922,7 +922,7 @@ class JobExecutionsChangedEvent(awsiot.ModeledClass):
 class JobExecutionsChangedSubscriptionRequest(awsiot.ModeledClass):
     """
 
-    Data needed to subscribe to JobExecutionsChanged responses.
+    Data needed to subscribe to JobExecutionsChanged events.
 
     All attributes are None by default, and may be set by keyword in the constructor.
 
@@ -983,7 +983,7 @@ class NextJobExecutionChangedEvent(awsiot.ModeledClass):
 class NextJobExecutionChangedSubscriptionRequest(awsiot.ModeledClass):
     """
 
-    Data needed to subscribe to NextJobExecutionChanged responses.
+    Data needed to subscribe to NextJobExecutionChanged events.
 
     All attributes are None by default, and may be set by keyword in the constructor.
 
