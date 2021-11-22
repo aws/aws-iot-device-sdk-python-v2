@@ -1327,15 +1327,7 @@ class JobStatus:
     """
     """
 
-    IN_PROGRESS = 'IN_PROGRESS'
-    """
-    """
-
-    REJECTED = 'REJECTED'
-    """
-    """
-
-    SUCCEEDED = 'SUCCEEDED'
+    FAILED = 'FAILED'
     """
     """
 
@@ -1343,7 +1335,19 @@ class JobStatus:
     """
     """
 
+    IN_PROGRESS = 'IN_PROGRESS'
+    """
+    """
+
+    SUCCEEDED = 'SUCCEEDED'
+    """
+    """
+
     TIMED_OUT = 'TIMED_OUT'
+    """
+    """
+
+    REJECTED = 'REJECTED'
     """
     """
 
@@ -1353,6 +1357,8 @@ class JobStatus:
 
 class RejectedErrorCode:
     """
+
+    A value indicating the kind of error encountered while processing an AWS IoT Jobs request
 
     """
 
