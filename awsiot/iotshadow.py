@@ -1191,16 +1191,17 @@ class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
         version (int): The current version of the document for the device's shadow.
     """
 
-    __slots__ = ['metadata', 'state', 'timestamp', 'version']
+    __slots__ = ['metadata', 'state', 'timestamp', 'version', 'client_token']
 
     def __init__(self, *args, **kwargs):
         self.metadata = kwargs.get('metadata')
         self.state = kwargs.get('state')
         self.timestamp = kwargs.get('timestamp')
         self.version = kwargs.get('version')
+        self.client_token = kwargs.get('client_token')
 
         # for backwards compatibility, read any arguments that used to be accepted by position
-        for key, val in zip(['metadata', 'state', 'timestamp', 'version'], args):
+        for key, val in zip(['metadata', 'state', 'timestamp', 'version', 'client_token'], args):
             setattr(self, key, val)
 
     @classmethod
@@ -1219,6 +1220,9 @@ class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
         val = payload.get('version')
         if val is not None:
             new.version = val
+        val = payload.get('client_token')
+        if val is not None:
+            new.client_token = val
         return new
 
 class ShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
