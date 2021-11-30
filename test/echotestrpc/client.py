@@ -8,40 +8,6 @@ import awsiot.eventstreamrpc as rpc
 import concurrent.futures
 
 
-class GetAllProductsOperation(model._GetAllProductsOperation):
-    """
-    GetAllProductsOperation
-
-    Create with EchoTestRPCClient.new_get_all_products()
-    """
-
-    def activate(self, request: model.GetAllProductsRequest) -> concurrent.futures.Future:
-        """
-        Activate this operation by sending the initial GetAllProductsRequest message.
-
-        Returns a Future which completes with a result of None if the
-        request is successfully written to the wire, or an exception if
-        the request fails to send.
-        """
-        return self._activate(request)
-
-    def get_response(self) -> concurrent.futures.Future:
-        """
-        Returns a Future which completes with a result of GetAllProductsResponse,
-        when the initial response is received, or an exception.
-        """
-        return self._get_response()
-
-    def close(self) -> concurrent.futures.Future:
-        """
-        Close the operation, whether or not it has completed.
-
-        Returns a Future which completes with a result of None
-        when the operation has closed.
-        """
-        return super().close()
-
-
 class CauseServiceErrorOperation(model._CauseServiceErrorOperation):
     """
     CauseServiceErrorOperation
@@ -151,6 +117,40 @@ class CauseStreamServiceToErrorOperation(model._CauseStreamServiceToErrorOperati
         return super().close()
 
 
+class EchoMessageOperation(model._EchoMessageOperation):
+    """
+    EchoMessageOperation
+
+    Create with EchoTestRPCClient.new_echo_message()
+    """
+
+    def activate(self, request: model.EchoMessageRequest) -> concurrent.futures.Future:
+        """
+        Activate this operation by sending the initial EchoMessageRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self) -> concurrent.futures.Future:
+        """
+        Returns a Future which completes with a result of EchoMessageResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self) -> concurrent.futures.Future:
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
 class EchoStreamMessagesStreamHandler(rpc.StreamResponseHandler):
     """
     Event handler for EchoStreamMessagesOperation
@@ -226,40 +226,6 @@ class EchoStreamMessagesOperation(model._EchoStreamMessagesOperation):
         return super().close()
 
 
-class EchoMessageOperation(model._EchoMessageOperation):
-    """
-    EchoMessageOperation
-
-    Create with EchoTestRPCClient.new_echo_message()
-    """
-
-    def activate(self, request: model.EchoMessageRequest) -> concurrent.futures.Future:
-        """
-        Activate this operation by sending the initial EchoMessageRequest message.
-
-        Returns a Future which completes with a result of None if the
-        request is successfully written to the wire, or an exception if
-        the request fails to send.
-        """
-        return self._activate(request)
-
-    def get_response(self) -> concurrent.futures.Future:
-        """
-        Returns a Future which completes with a result of EchoMessageResponse,
-        when the initial response is received, or an exception.
-        """
-        return self._get_response()
-
-    def close(self) -> concurrent.futures.Future:
-        """
-        Close the operation, whether or not it has completed.
-
-        Returns a Future which completes with a result of None
-        when the operation has closed.
-        """
-        return super().close()
-
-
 class GetAllCustomersOperation(model._GetAllCustomersOperation):
     """
     GetAllCustomersOperation
@@ -294,6 +260,40 @@ class GetAllCustomersOperation(model._GetAllCustomersOperation):
         return super().close()
 
 
+class GetAllProductsOperation(model._GetAllProductsOperation):
+    """
+    GetAllProductsOperation
+
+    Create with EchoTestRPCClient.new_get_all_products()
+    """
+
+    def activate(self, request: model.GetAllProductsRequest) -> concurrent.futures.Future:
+        """
+        Activate this operation by sending the initial GetAllProductsRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self) -> concurrent.futures.Future:
+        """
+        Returns a Future which completes with a result of GetAllProductsResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self) -> concurrent.futures.Future:
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
 class EchoTestRPCClient(rpc.Client):
     """
     Client for the EchoTestRPC service.
@@ -304,16 +304,6 @@ class EchoTestRPCClient(rpc.Client):
 
     def __init__(self, connection: rpc.Connection):
         super().__init__(connection, model.SHAPE_INDEX)
-
-    def new_get_all_products(self) -> GetAllProductsOperation:
-        """
-        Create a new GetAllProductsOperation.
-
-        This operation will not send or receive any data until activate()
-        is called. Call activate() when you're ready for callbacks and
-        events to fire.
-        """
-        return self._new_operation(GetAllProductsOperation)
 
     def new_cause_service_error(self) -> CauseServiceErrorOperation:
         """
@@ -339,6 +329,16 @@ class EchoTestRPCClient(rpc.Client):
         """
         return self._new_operation(CauseStreamServiceToErrorOperation, stream_handler)
 
+    def new_echo_message(self) -> EchoMessageOperation:
+        """
+        Create a new EchoMessageOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+        """
+        return self._new_operation(EchoMessageOperation)
+
     def new_echo_stream_messages(self, stream_handler: EchoStreamMessagesStreamHandler) -> EchoStreamMessagesOperation:
         """
         Create a new EchoStreamMessagesOperation.
@@ -353,16 +353,6 @@ class EchoTestRPCClient(rpc.Client):
         """
         return self._new_operation(EchoStreamMessagesOperation, stream_handler)
 
-    def new_echo_message(self) -> EchoMessageOperation:
-        """
-        Create a new EchoMessageOperation.
-
-        This operation will not send or receive any data until activate()
-        is called. Call activate() when you're ready for callbacks and
-        events to fire.
-        """
-        return self._new_operation(EchoMessageOperation)
-
     def new_get_all_customers(self) -> GetAllCustomersOperation:
         """
         Create a new GetAllCustomersOperation.
@@ -372,3 +362,13 @@ class EchoTestRPCClient(rpc.Client):
         events to fire.
         """
         return self._new_operation(GetAllCustomersOperation)
+
+    def new_get_all_products(self) -> GetAllProductsOperation:
+        """
+        Create a new GetAllProductsOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+        """
+        return self._new_operation(GetAllProductsOperation)
