@@ -9,10 +9,20 @@ import datetime
 import typing
 
 class IotShadowClient(awsiot.MqttServiceClient):
+    """
+
+    The AWS IoT Device Shadow service adds shadows to AWS IoT thing objects. Shadows are a simple data store for device properties and state.  Shadows can make a device’s state available to apps and other services whether the device is connected to AWS IoT or not.
+
+    AWS Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html
+
+    """
 
     def publish_delete_named_shadow(self, request, qos):
         # type: (DeleteNamedShadowRequest, int) -> concurrent.futures.Future
         """
+
+        Deletes a named shadow for an AWS IoT thing.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic
 
         Args:
@@ -37,6 +47,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def publish_delete_shadow(self, request, qos):
         # type: (DeleteShadowRequest, int) -> concurrent.futures.Future
         """
+
+        Deletes the (classic) shadow for an AWS IoT thing.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic
 
         Args:
@@ -59,6 +72,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def publish_get_named_shadow(self, request, qos):
         # type: (GetNamedShadowRequest, int) -> concurrent.futures.Future
         """
+
+        Gets a named shadow for an AWS IoT thing.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic
 
         Args:
@@ -83,6 +99,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def publish_get_shadow(self, request, qos):
         # type: (GetShadowRequest, int) -> concurrent.futures.Future
         """
+
+        Gets the (classic) shadow for an AWS IoT thing.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic
 
         Args:
@@ -105,6 +124,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def publish_update_named_shadow(self, request, qos):
         # type: (UpdateNamedShadowRequest, int) -> concurrent.futures.Future
         """
+
+        Update a named shadow for a device.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic
 
         Args:
@@ -129,6 +151,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def publish_update_shadow(self, request, qos):
         # type: (UpdateShadowRequest, int) -> concurrent.futures.Future
         """
+
+        Update a device's (classic) shadow.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic
 
         Args:
@@ -151,6 +176,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_delete_named_shadow_accepted(self, request, qos, callback):
         # type: (DeleteNamedShadowSubscriptionRequest, int, typing.Callable[[DeleteShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribes to the accepted topic for the DeleteNamedShadow operation.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-accepted-pub-sub-topic
 
         Args:
@@ -161,12 +189,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -185,6 +212,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_delete_named_shadow_rejected(self, request, qos, callback):
         # type: (DeleteNamedShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribes to the rejected topic for the DeleteNamedShadow operation.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-rejected-pub-sub-topic
 
         Args:
@@ -195,12 +225,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -219,6 +248,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_delete_shadow_accepted(self, request, qos, callback):
         # type: (DeleteShadowSubscriptionRequest, int, typing.Callable[[DeleteShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribes to the accepted topic for the DeleteShadow operation
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-accepted-pub-sub-topic
 
         Args:
@@ -229,12 +261,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -251,6 +282,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_delete_shadow_rejected(self, request, qos, callback):
         # type: (DeleteShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribes to the rejected topic for the DeleteShadow operation
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-rejected-pub-sub-topic
 
         Args:
@@ -261,12 +295,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -283,6 +316,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_get_named_shadow_accepted(self, request, qos, callback):
         # type: (GetNamedShadowSubscriptionRequest, int, typing.Callable[[GetShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribes to the accepted topic for the GetNamedShadow operation.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-accepted-pub-sub-topic
 
         Args:
@@ -293,12 +329,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -317,6 +352,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_get_named_shadow_rejected(self, request, qos, callback):
         # type: (GetNamedShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribes to the rejected topic for the GetNamedShadow operation.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-rejected-pub-sub-topic
 
         Args:
@@ -327,12 +365,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -351,6 +388,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_get_shadow_accepted(self, request, qos, callback):
         # type: (GetShadowSubscriptionRequest, int, typing.Callable[[GetShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribes to the accepted topic for the GetShadow operation.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-accepted-pub-sub-topic
 
         Args:
@@ -361,12 +401,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -383,6 +422,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_get_shadow_rejected(self, request, qos, callback):
         # type: (GetShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribes to the rejected topic for the GetShadow operation.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-rejected-pub-sub-topic
 
         Args:
@@ -393,12 +435,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -415,6 +456,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_named_shadow_delta_updated_events(self, request, qos, callback):
         # type: (NamedShadowDeltaUpdatedSubscriptionRequest, int, typing.Callable[[ShadowDeltaUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribe to NamedShadowDelta events for a named shadow of an AWS IoT thing.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic
 
         Args:
@@ -425,12 +469,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -449,6 +492,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_named_shadow_updated_events(self, request, qos, callback):
         # type: (NamedShadowUpdatedSubscriptionRequest, int, typing.Callable[[ShadowUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribe to ShadowUpdated events for a named shadow of an AWS IoT thing.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic
 
         Args:
@@ -459,12 +505,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
@@ -483,6 +528,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_shadow_delta_updated_events(self, request, qos, callback):
         # type: (ShadowDeltaUpdatedSubscriptionRequest, int, typing.Callable[[ShadowDeltaUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribe to ShadowDelta events for the (classic) shadow of an AWS IoT thing.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic
 
         Args:
@@ -493,12 +541,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -515,6 +562,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_shadow_updated_events(self, request, qos, callback):
         # type: (ShadowUpdatedSubscriptionRequest, int, typing.Callable[[ShadowUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribe to ShadowUpdated events for the (classic) shadow of an AWS IoT thing.
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic
 
         Args:
@@ -525,12 +575,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -547,6 +596,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_update_named_shadow_accepted(self, request, qos, callback):
         # type: (UpdateNamedShadowSubscriptionRequest, int, typing.Callable[[UpdateShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribes to the accepted topic for the UpdateNamedShadow operation
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-accepted-pub-sub-topic
 
         Args:
@@ -557,12 +609,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -581,6 +632,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_update_named_shadow_rejected(self, request, qos, callback):
         # type: (UpdateNamedShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribes to the rejected topic for the UpdateNamedShadow operation
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-rejected-pub-sub-topic
 
         Args:
@@ -591,12 +645,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -615,6 +668,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_update_shadow_accepted(self, request, qos, callback):
         # type: (UpdateShadowSubscriptionRequest, int, typing.Callable[[UpdateShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribes to the accepted topic for the UpdateShadow operation
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-accepted-pub-sub-topic
 
         Args:
@@ -625,12 +681,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -647,6 +702,9 @@ class IotShadowClient(awsiot.MqttServiceClient):
     def subscribe_to_update_shadow_rejected(self, request, qos, callback):
         # type: (UpdateShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
+
+        Subscribes to the rejected topic for the UpdateShadow operation
+
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-rejected-pub-sub-topic
 
         Args:
@@ -657,12 +715,11 @@ class IotShadowClient(awsiot.MqttServiceClient):
                 The callback is not expected to return anything.
 
         Returns:
-            Tuple with two values. The first is a Future
-            which will contain a result of `None` when the server has acknowledged
-            the subscription, or an exception if the subscription fails. The second
-            value is a topic which may be passed to `unsubscribe()` to stop
-            receiving messages. Note that messages may arrive before the
-            subscription is acknowledged.
+            Tuple with two values. The first is a `Future` whose result will be the
+            `awscrt.mqtt.QoS` granted by the server, or an exception if the
+            subscription fails. The second value is a topic which may be passed
+            to `unsubscribe()` to stop receiving messages. Note that messages
+            may arrive before the subscription is acknowledged.
         """
         if not request.thing_name:
             raise ValueError("request.thing_name is required")
@@ -678,17 +735,20 @@ class IotShadowClient(awsiot.MqttServiceClient):
 
 class DeleteNamedShadowRequest(awsiot.ModeledClass):
     """
+
+    Data needed to make a DeleteNamedShadow request.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        client_token (str)
-        shadow_name (str)
-        thing_name (str)
+        client_token (str): Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.
+        shadow_name (str): Name of the shadow to delete.
+        thing_name (str): AWS IoT thing to delete a named shadow from.
 
     Attributes:
-        client_token (str)
-        shadow_name (str)
-        thing_name (str)
+        client_token (str): Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.
+        shadow_name (str): Name of the shadow to delete.
+        thing_name (str): AWS IoT thing to delete a named shadow from.
     """
 
     __slots__ = ['client_token', 'shadow_name', 'thing_name']
@@ -711,15 +771,18 @@ class DeleteNamedShadowRequest(awsiot.ModeledClass):
 
 class DeleteNamedShadowSubscriptionRequest(awsiot.ModeledClass):
     """
+
+    Data needed to subscribe to DeleteNamedShadow responses for an AWS IoT thing.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        shadow_name (str)
-        thing_name (str)
+        shadow_name (str): Name of the shadow to subscribe to DeleteNamedShadow operations for.
+        thing_name (str): AWS IoT thing to subscribe to DeleteNamedShadow operations for.
 
     Attributes:
-        shadow_name (str)
-        thing_name (str)
+        shadow_name (str): Name of the shadow to subscribe to DeleteNamedShadow operations for.
+        thing_name (str): AWS IoT thing to subscribe to DeleteNamedShadow operations for.
     """
 
     __slots__ = ['shadow_name', 'thing_name']
@@ -734,15 +797,18 @@ class DeleteNamedShadowSubscriptionRequest(awsiot.ModeledClass):
 
 class DeleteShadowRequest(awsiot.ModeledClass):
     """
+
+    Data needed to make a DeleteShadow request.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        client_token (str)
-        thing_name (str)
+        client_token (str): Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.
+        thing_name (str): AWS IoT thing to delete the (classic) shadow of.
 
     Attributes:
-        client_token (str)
-        thing_name (str)
+        client_token (str): Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.
+        thing_name (str): AWS IoT thing to delete the (classic) shadow of.
     """
 
     __slots__ = ['client_token', 'thing_name']
@@ -764,17 +830,20 @@ class DeleteShadowRequest(awsiot.ModeledClass):
 
 class DeleteShadowResponse(awsiot.ModeledClass):
     """
+
+    Response payload to a DeleteShadow request.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        client_token (str)
-        timestamp (datetime.datetime)
-        version (int)
+        client_token (str): A client token used to correlate requests and responses.
+        timestamp (datetime.datetime): The time the response was generated by AWS IoT.
+        version (int): The current version of the document for the device's shadow.
 
     Attributes:
-        client_token (str)
-        timestamp (datetime.datetime)
-        version (int)
+        client_token (str): A client token used to correlate requests and responses.
+        timestamp (datetime.datetime): The time the response was generated by AWS IoT.
+        version (int): The current version of the document for the device's shadow.
     """
 
     __slots__ = ['client_token', 'timestamp', 'version']
@@ -805,13 +874,16 @@ class DeleteShadowResponse(awsiot.ModeledClass):
 
 class DeleteShadowSubscriptionRequest(awsiot.ModeledClass):
     """
+
+    Data needed to subscribe to DeleteShadow responses for an AWS IoT thing.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        thing_name (str)
+        thing_name (str): AWS IoT thing to subscribe to DeleteShadow operations for.
 
     Attributes:
-        thing_name (str)
+        thing_name (str): AWS IoT thing to subscribe to DeleteShadow operations for.
     """
 
     __slots__ = ['thing_name']
@@ -825,19 +897,22 @@ class DeleteShadowSubscriptionRequest(awsiot.ModeledClass):
 
 class ErrorResponse(awsiot.ModeledClass):
     """
+
+    Response document containing details about a failed request.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        client_token (str)
-        code (int)
-        message (str)
-        timestamp (datetime.datetime)
+        client_token (str): Opaque request-response correlation data.  Present only if a client token was used in the request.
+        code (int): An HTTP response code that indicates the type of error.
+        message (str): A text message that provides additional information.
+        timestamp (datetime.datetime): The date and time the response was generated by AWS IoT. This property is not present in all error response documents.
 
     Attributes:
-        client_token (str)
-        code (int)
-        message (str)
-        timestamp (datetime.datetime)
+        client_token (str): Opaque request-response correlation data.  Present only if a client token was used in the request.
+        code (int): An HTTP response code that indicates the type of error.
+        message (str): A text message that provides additional information.
+        timestamp (datetime.datetime): The date and time the response was generated by AWS IoT. This property is not present in all error response documents.
     """
 
     __slots__ = ['client_token', 'code', 'message', 'timestamp']
@@ -872,17 +947,20 @@ class ErrorResponse(awsiot.ModeledClass):
 
 class GetNamedShadowRequest(awsiot.ModeledClass):
     """
+
+    Data needed to make a GetNamedShadow request.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        client_token (str)
-        shadow_name (str)
-        thing_name (str)
+        client_token (str): Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.
+        shadow_name (str): Name of the shadow to get.
+        thing_name (str): AWS IoT thing to get the named shadow for.
 
     Attributes:
-        client_token (str)
-        shadow_name (str)
-        thing_name (str)
+        client_token (str): Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.
+        shadow_name (str): Name of the shadow to get.
+        thing_name (str): AWS IoT thing to get the named shadow for.
     """
 
     __slots__ = ['client_token', 'shadow_name', 'thing_name']
@@ -905,15 +983,18 @@ class GetNamedShadowRequest(awsiot.ModeledClass):
 
 class GetNamedShadowSubscriptionRequest(awsiot.ModeledClass):
     """
+
+    Data needed to subscribe to GetNamedShadow responses.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        shadow_name (str)
-        thing_name (str)
+        shadow_name (str): Name of the shadow to subscribe to GetNamedShadow responses for.
+        thing_name (str): AWS IoT thing subscribe to GetNamedShadow responses for.
 
     Attributes:
-        shadow_name (str)
-        thing_name (str)
+        shadow_name (str): Name of the shadow to subscribe to GetNamedShadow responses for.
+        thing_name (str): AWS IoT thing subscribe to GetNamedShadow responses for.
     """
 
     __slots__ = ['shadow_name', 'thing_name']
@@ -928,15 +1009,18 @@ class GetNamedShadowSubscriptionRequest(awsiot.ModeledClass):
 
 class GetShadowRequest(awsiot.ModeledClass):
     """
+
+    Data needed to make a GetShadow request.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        client_token (str)
-        thing_name (str)
+        client_token (str): Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.
+        thing_name (str): AWS IoT thing to get the (classic) shadow for.
 
     Attributes:
-        client_token (str)
-        thing_name (str)
+        client_token (str): Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.
+        thing_name (str): AWS IoT thing to get the (classic) shadow for.
     """
 
     __slots__ = ['client_token', 'thing_name']
@@ -958,21 +1042,24 @@ class GetShadowRequest(awsiot.ModeledClass):
 
 class GetShadowResponse(awsiot.ModeledClass):
     """
+
+    Response payload to a GetShadow request.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        client_token (str)
-        metadata (ShadowMetadata)
-        state (ShadowStateWithDelta)
-        timestamp (datetime.datetime)
-        version (int)
+        client_token (str): An opaque token used to correlate requests and responses.
+        metadata (ShadowMetadata): Contains the timestamps for each attribute in the desired and reported sections of the state.
+        state (ShadowStateWithDelta): The (classic) shadow state of the AWS IoT thing.
+        timestamp (datetime.datetime): The time the response was generated by AWS IoT.
+        version (int): The current version of the document for the device's shadow shared in AWS IoT. It is increased by one over the previous version of the document.
 
     Attributes:
-        client_token (str)
-        metadata (ShadowMetadata)
-        state (ShadowStateWithDelta)
-        timestamp (datetime.datetime)
-        version (int)
+        client_token (str): An opaque token used to correlate requests and responses.
+        metadata (ShadowMetadata): Contains the timestamps for each attribute in the desired and reported sections of the state.
+        state (ShadowStateWithDelta): The (classic) shadow state of the AWS IoT thing.
+        timestamp (datetime.datetime): The time the response was generated by AWS IoT.
+        version (int): The current version of the document for the device's shadow shared in AWS IoT. It is increased by one over the previous version of the document.
     """
 
     __slots__ = ['client_token', 'metadata', 'state', 'timestamp', 'version']
@@ -1011,13 +1098,16 @@ class GetShadowResponse(awsiot.ModeledClass):
 
 class GetShadowSubscriptionRequest(awsiot.ModeledClass):
     """
+
+    Data needed to subscribe to GetShadow responses.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        thing_name (str)
+        thing_name (str): AWS IoT thing subscribe to GetShadow responses for.
 
     Attributes:
-        thing_name (str)
+        thing_name (str): AWS IoT thing subscribe to GetShadow responses for.
     """
 
     __slots__ = ['thing_name']
@@ -1031,15 +1121,18 @@ class GetShadowSubscriptionRequest(awsiot.ModeledClass):
 
 class NamedShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
     """
+
+    Data needed to subscribe to a device's NamedShadowDelta events.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        shadow_name (str)
-        thing_name (str)
+        shadow_name (str): Name of the shadow to get ShadowDelta events for.
+        thing_name (str): Name of the AWS IoT thing to get NamedShadowDelta events for.
 
     Attributes:
-        shadow_name (str)
-        thing_name (str)
+        shadow_name (str): Name of the shadow to get ShadowDelta events for.
+        thing_name (str): Name of the AWS IoT thing to get NamedShadowDelta events for.
     """
 
     __slots__ = ['shadow_name', 'thing_name']
@@ -1054,15 +1147,18 @@ class NamedShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
 
 class NamedShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
     """
+
+    Data needed to subscribe to a device's NamedShadowUpdated events.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        shadow_name (str)
-        thing_name (str)
+        shadow_name (str): Name of the shadow to get NamedShadowUpdated events for.
+        thing_name (str): Name of the AWS IoT thing to get NamedShadowUpdated events for.
 
     Attributes:
-        shadow_name (str)
-        thing_name (str)
+        shadow_name (str): Name of the shadow to get NamedShadowUpdated events for.
+        thing_name (str): Name of the AWS IoT thing to get NamedShadowUpdated events for.
     """
 
     __slots__ = ['shadow_name', 'thing_name']
@@ -1077,19 +1173,22 @@ class NamedShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
 
 class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
     """
+
+    An event generated when a shadow document was updated by a request to AWS IoT.  The event payload contains only the changes requested.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        metadata (typing.Dict[str, typing.Any])
-        state (typing.Dict[str, typing.Any])
-        timestamp (datetime.datetime)
-        version (int)
+        metadata (typing.Dict[str, typing.Any]): Timestamps for the shadow properties that were updated.
+        state (typing.Dict[str, typing.Any]): Shadow properties that were updated.
+        timestamp (datetime.datetime): The time the event was generated by AWS IoT.
+        version (int): The current version of the document for the device's shadow.
 
     Attributes:
-        metadata (typing.Dict[str, typing.Any])
-        state (typing.Dict[str, typing.Any])
-        timestamp (datetime.datetime)
-        version (int)
+        metadata (typing.Dict[str, typing.Any]): Timestamps for the shadow properties that were updated.
+        state (typing.Dict[str, typing.Any]): Shadow properties that were updated.
+        timestamp (datetime.datetime): The time the event was generated by AWS IoT.
+        version (int): The current version of the document for the device's shadow.
     """
 
     __slots__ = ['metadata', 'state', 'timestamp', 'version']
@@ -1124,13 +1223,16 @@ class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
 
 class ShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
     """
+
+    Data needed to subscribe to a device's ShadowDelta events.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        thing_name (str)
+        thing_name (str): Name of the AWS IoT thing to get ShadowDelta events for.
 
     Attributes:
-        thing_name (str)
+        thing_name (str): Name of the AWS IoT thing to get ShadowDelta events for.
     """
 
     __slots__ = ['thing_name']
@@ -1144,15 +1246,18 @@ class ShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
 
 class ShadowMetadata(awsiot.ModeledClass):
     """
+
+    Contains the last-updated timestamps for each attribute in the desired and reported sections of the shadow state.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        desired (typing.Dict[str, typing.Any])
-        reported (typing.Dict[str, typing.Any])
+        desired (typing.Dict[str, typing.Any]): Contains the timestamps for each attribute in the desired section of a shadow's state.
+        reported (typing.Dict[str, typing.Any]): Contains the timestamps for each attribute in the reported section of a shadow's state.
 
     Attributes:
-        desired (typing.Dict[str, typing.Any])
-        reported (typing.Dict[str, typing.Any])
+        desired (typing.Dict[str, typing.Any]): Contains the timestamps for each attribute in the desired section of a shadow's state.
+        reported (typing.Dict[str, typing.Any]): Contains the timestamps for each attribute in the reported section of a shadow's state.
     """
 
     __slots__ = ['desired', 'reported']
@@ -1179,15 +1284,18 @@ class ShadowMetadata(awsiot.ModeledClass):
 
 class ShadowState(awsiot.ModeledClass):
     """
+
+    (Potentially partial) state of an AWS IoT thing's shadow.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        desired (typing.Dict[str, typing.Any])
-        reported (typing.Dict[str, typing.Any])
+        desired (typing.Dict[str, typing.Any]): The desired shadow state (from external services and devices).
+        reported (typing.Dict[str, typing.Any]): The (last) reported shadow state from the device.
 
     Attributes:
-        desired (typing.Dict[str, typing.Any])
-        reported (typing.Dict[str, typing.Any])
+        desired (typing.Dict[str, typing.Any]): The desired shadow state (from external services and devices).
+        reported (typing.Dict[str, typing.Any]): The (last) reported shadow state from the device.
     """
 
     __slots__ = ['desired', 'reported']
@@ -1223,17 +1331,20 @@ class ShadowState(awsiot.ModeledClass):
 
 class ShadowStateWithDelta(awsiot.ModeledClass):
     """
+
+    (Potentially partial) state of an AWS IoT thing's shadow.  Includes the delta between the reported and desired states.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        delta (typing.Dict[str, typing.Any])
-        desired (typing.Dict[str, typing.Any])
-        reported (typing.Dict[str, typing.Any])
+        delta (typing.Dict[str, typing.Any]): The delta between the reported and desired states.
+        desired (typing.Dict[str, typing.Any]): The desired shadow state (from external services and devices).
+        reported (typing.Dict[str, typing.Any]): The (last) reported shadow state from the device.
 
     Attributes:
-        delta (typing.Dict[str, typing.Any])
-        desired (typing.Dict[str, typing.Any])
-        reported (typing.Dict[str, typing.Any])
+        delta (typing.Dict[str, typing.Any]): The delta between the reported and desired states.
+        desired (typing.Dict[str, typing.Any]): The desired shadow state (from external services and devices).
+        reported (typing.Dict[str, typing.Any]): The (last) reported shadow state from the device.
     """
 
     __slots__ = ['delta', 'desired', 'reported']
@@ -1264,17 +1375,20 @@ class ShadowStateWithDelta(awsiot.ModeledClass):
 
 class ShadowUpdatedEvent(awsiot.ModeledClass):
     """
+
+    A description of the before and after states of a device shadow.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        current (ShadowUpdatedSnapshot)
-        previous (ShadowUpdatedSnapshot)
-        timestamp (datetime.datetime)
+        current (ShadowUpdatedSnapshot): Contains the state of the object after the update.
+        previous (ShadowUpdatedSnapshot): Contains the state of the object before the update.
+        timestamp (datetime.datetime): The time the event was generated by AWS IoT.
 
     Attributes:
-        current (ShadowUpdatedSnapshot)
-        previous (ShadowUpdatedSnapshot)
-        timestamp (datetime.datetime)
+        current (ShadowUpdatedSnapshot): Contains the state of the object after the update.
+        previous (ShadowUpdatedSnapshot): Contains the state of the object before the update.
+        timestamp (datetime.datetime): The time the event was generated by AWS IoT.
     """
 
     __slots__ = ['current', 'previous', 'timestamp']
@@ -1305,17 +1419,20 @@ class ShadowUpdatedEvent(awsiot.ModeledClass):
 
 class ShadowUpdatedSnapshot(awsiot.ModeledClass):
     """
+
+    Complete state of the (classic) shadow of an AWS IoT Thing.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        metadata (ShadowMetadata)
-        state (ShadowState)
-        version (int)
+        metadata (ShadowMetadata): Contains the timestamps for each attribute in the desired and reported sections of the state.
+        state (ShadowState): Current shadow state.
+        version (int): The current version of the document for the device's shadow.
 
     Attributes:
-        metadata (ShadowMetadata)
-        state (ShadowState)
-        version (int)
+        metadata (ShadowMetadata): Contains the timestamps for each attribute in the desired and reported sections of the state.
+        state (ShadowState): Current shadow state.
+        version (int): The current version of the document for the device's shadow.
     """
 
     __slots__ = ['metadata', 'state', 'version']
@@ -1346,13 +1463,16 @@ class ShadowUpdatedSnapshot(awsiot.ModeledClass):
 
 class ShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
     """
+
+    Data needed to subscribe to a device's ShadowUpdated events.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        thing_name (str)
+        thing_name (str): Name of the AWS IoT thing to get ShadowUpdated events for.
 
     Attributes:
-        thing_name (str)
+        thing_name (str): Name of the AWS IoT thing to get ShadowUpdated events for.
     """
 
     __slots__ = ['thing_name']
@@ -1366,21 +1486,24 @@ class ShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
 
 class UpdateNamedShadowRequest(awsiot.ModeledClass):
     """
+
+    Data needed to make an UpdateNamedShadow request.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        client_token (str)
-        shadow_name (str)
-        state (ShadowState)
-        thing_name (str)
-        version (int)
+        client_token (str): Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.
+        shadow_name (str): Name of the shadow to update.
+        state (ShadowState): Requested changes to shadow state.  Updates affect only the fields specified.
+        thing_name (str): Aws IoT thing to update a named shadow of.
+        version (int): (Optional) The Device Shadow service applies the update only if the specified version matches the latest version.
 
     Attributes:
-        client_token (str)
-        shadow_name (str)
-        state (ShadowState)
-        thing_name (str)
-        version (int)
+        client_token (str): Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.
+        shadow_name (str): Name of the shadow to update.
+        state (ShadowState): Requested changes to shadow state.  Updates affect only the fields specified.
+        thing_name (str): Aws IoT thing to update a named shadow of.
+        version (int): (Optional) The Device Shadow service applies the update only if the specified version matches the latest version.
     """
 
     __slots__ = ['client_token', 'shadow_name', 'state', 'thing_name', 'version']
@@ -1409,15 +1532,18 @@ class UpdateNamedShadowRequest(awsiot.ModeledClass):
 
 class UpdateNamedShadowSubscriptionRequest(awsiot.ModeledClass):
     """
+
+    Data needed to subscribe to UpdateNamedShadow responses.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        shadow_name (str)
-        thing_name (str)
+        shadow_name (str): Name of the shadow to listen to UpdateNamedShadow responses for.
+        thing_name (str): Name of the AWS IoT thing to listen to UpdateNamedShadow responses for.
 
     Attributes:
-        shadow_name (str)
-        thing_name (str)
+        shadow_name (str): Name of the shadow to listen to UpdateNamedShadow responses for.
+        thing_name (str): Name of the AWS IoT thing to listen to UpdateNamedShadow responses for.
     """
 
     __slots__ = ['shadow_name', 'thing_name']
@@ -1432,19 +1558,22 @@ class UpdateNamedShadowSubscriptionRequest(awsiot.ModeledClass):
 
 class UpdateShadowRequest(awsiot.ModeledClass):
     """
+
+    Data needed to make an UpdateShadow request.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        client_token (str)
-        state (ShadowState)
-        thing_name (str)
-        version (int)
+        client_token (str): Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.
+        state (ShadowState): Requested changes to the shadow state.  Updates affect only the fields specified.
+        thing_name (str): Aws IoT thing to update the (classic) shadow of.
+        version (int): (Optional) The Device Shadow service processes the update only if the specified version matches the latest version.
 
     Attributes:
-        client_token (str)
-        state (ShadowState)
-        thing_name (str)
-        version (int)
+        client_token (str): Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.
+        state (ShadowState): Requested changes to the shadow state.  Updates affect only the fields specified.
+        thing_name (str): Aws IoT thing to update the (classic) shadow of.
+        version (int): (Optional) The Device Shadow service processes the update only if the specified version matches the latest version.
     """
 
     __slots__ = ['client_token', 'state', 'thing_name', 'version']
@@ -1472,21 +1601,24 @@ class UpdateShadowRequest(awsiot.ModeledClass):
 
 class UpdateShadowResponse(awsiot.ModeledClass):
     """
+
+    Response payload to an UpdateShadow request.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        client_token (str)
-        metadata (ShadowMetadata)
-        state (ShadowState)
-        timestamp (datetime.datetime)
-        version (int)
+        client_token (str): An opaque token used to correlate requests and responses.  Present only if a client token was used in the request.
+        metadata (ShadowMetadata): Contains the timestamps for each attribute in the desired and reported sections so that you can determine when the state was updated.
+        state (ShadowState): Updated device shadow state.
+        timestamp (datetime.datetime): The time the response was generated by AWS IoT.
+        version (int): The current version of the document for the device's shadow shared in AWS IoT. It is increased by one over the previous version of the document.
 
     Attributes:
-        client_token (str)
-        metadata (ShadowMetadata)
-        state (ShadowState)
-        timestamp (datetime.datetime)
-        version (int)
+        client_token (str): An opaque token used to correlate requests and responses.  Present only if a client token was used in the request.
+        metadata (ShadowMetadata): Contains the timestamps for each attribute in the desired and reported sections so that you can determine when the state was updated.
+        state (ShadowState): Updated device shadow state.
+        timestamp (datetime.datetime): The time the response was generated by AWS IoT.
+        version (int): The current version of the document for the device's shadow shared in AWS IoT. It is increased by one over the previous version of the document.
     """
 
     __slots__ = ['client_token', 'metadata', 'state', 'timestamp', 'version']
@@ -1525,13 +1657,16 @@ class UpdateShadowResponse(awsiot.ModeledClass):
 
 class UpdateShadowSubscriptionRequest(awsiot.ModeledClass):
     """
+
+    Data needed to subscribe to UpdateShadow responses.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        thing_name (str)
+        thing_name (str): Name of the AWS IoT thing to listen to UpdateShadow responses for.
 
     Attributes:
-        thing_name (str)
+        thing_name (str): Name of the AWS IoT thing to listen to UpdateShadow responses for.
     """
 
     __slots__ = ['thing_name']
