@@ -84,48 +84,48 @@ class SystemResourceLimits(rpc.Shape):
         return False
 
 
-class RunWithInfo(rpc.Shape):
+class ValidateConfigurationUpdateEvent(rpc.Shape):
     """
-    RunWithInfo
+    ValidateConfigurationUpdateEvent
 
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        posix_user: 
-        system_resource_limits: 
+        configuration: 
+        deployment_id: 
 
     Attributes:
-        posix_user: 
-        system_resource_limits: 
+        configuration: 
+        deployment_id: 
     """
 
     def __init__(self, *,
-                 posix_user: typing.Optional[str] = None,
-                 system_resource_limits: typing.Optional[SystemResourceLimits] = None):
+                 configuration: typing.Optional[typing.Dict[str, typing.Any]] = None,
+                 deployment_id: typing.Optional[str] = None):
         super().__init__()
-        self.posix_user = posix_user  # type: typing.Optional[str]
-        self.system_resource_limits = system_resource_limits  # type: typing.Optional[SystemResourceLimits]
+        self.configuration = configuration  # type: typing.Optional[typing.Dict[str, typing.Any]]
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.posix_user is not None:
-            payload['posixUser'] = self.posix_user
-        if self.system_resource_limits is not None:
-            payload['systemResourceLimits'] = self.system_resource_limits._to_payload()
+        if self.configuration is not None:
+            payload['configuration'] = self.configuration
+        if self.deployment_id is not None:
+            payload['deploymentId'] = self.deployment_id
         return payload
 
     @classmethod
     def _from_payload(cls, payload):
         new = cls()
-        if 'posixUser' in payload:
-            new.posix_user = payload['posixUser']
-        if 'systemResourceLimits' in payload:
-            new.system_resource_limits = SystemResourceLimits._from_payload(payload['systemResourceLimits'])
+        if 'configuration' in payload:
+            new.configuration = payload['configuration']
+        if 'deploymentId' in payload:
+            new.deployment_id = payload['deploymentId']
         return new
 
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#RunWithInfo'
+        return 'aws.greengrass#ValidateConfigurationUpdateEvent'
 
     def __repr__(self):
         attrs = []
@@ -140,40 +140,56 @@ class RunWithInfo(rpc.Shape):
         return False
 
 
-class PostComponentUpdateEvent(rpc.Shape):
+class RunWithInfo(rpc.Shape):
     """
-    PostComponentUpdateEvent
+    RunWithInfo
 
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        deployment_id: 
+        posix_user: 
+        windows_user: 
+        system_resource_limits: 
 
     Attributes:
-        deployment_id: 
+        posix_user: 
+        windows_user: 
+        system_resource_limits: 
     """
 
     def __init__(self, *,
-                 deployment_id: typing.Optional[str] = None):
+                 posix_user: typing.Optional[str] = None,
+                 windows_user: typing.Optional[str] = None,
+                 system_resource_limits: typing.Optional[SystemResourceLimits] = None):
         super().__init__()
-        self.deployment_id = deployment_id  # type: typing.Optional[str]
+        self.posix_user = posix_user  # type: typing.Optional[str]
+        self.windows_user = windows_user  # type: typing.Optional[str]
+        self.system_resource_limits = system_resource_limits  # type: typing.Optional[SystemResourceLimits]
 
     def _to_payload(self):
         payload = {}
-        if self.deployment_id is not None:
-            payload['deploymentId'] = self.deployment_id
+        if self.posix_user is not None:
+            payload['posixUser'] = self.posix_user
+        if self.windows_user is not None:
+            payload['windowsUser'] = self.windows_user
+        if self.system_resource_limits is not None:
+            payload['systemResourceLimits'] = self.system_resource_limits._to_payload()
         return payload
 
     @classmethod
     def _from_payload(cls, payload):
         new = cls()
-        if 'deploymentId' in payload:
-            new.deployment_id = payload['deploymentId']
+        if 'posixUser' in payload:
+            new.posix_user = payload['posixUser']
+        if 'windowsUser' in payload:
+            new.windows_user = payload['windowsUser']
+        if 'systemResourceLimits' in payload:
+            new.system_resource_limits = SystemResourceLimits._from_payload(payload['systemResourceLimits'])
         return new
 
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#PostComponentUpdateEvent'
+        return 'aws.greengrass#RunWithInfo'
 
     def __repr__(self):
         attrs = []
@@ -244,163 +260,26 @@ class PreComponentUpdateEvent(rpc.Shape):
         return False
 
 
-class DeploymentStatus:
+class PostComponentUpdateEvent(rpc.Shape):
     """
-    DeploymentStatus enum
-    """
-
-    QUEUED = 'QUEUED'
-    IN_PROGRESS = 'IN_PROGRESS'
-    SUCCEEDED = 'SUCCEEDED'
-    FAILED = 'FAILED'
-
-
-class ConfigurationValidityStatus:
-    """
-    ConfigurationValidityStatus enum
-    """
-
-    ACCEPTED = 'ACCEPTED'
-    REJECTED = 'REJECTED'
-
-
-class LifecycleState:
-    """
-    LifecycleState enum
-    """
-
-    RUNNING = 'RUNNING'
-    ERRORED = 'ERRORED'
-    NEW = 'NEW'
-    FINISHED = 'FINISHED'
-    INSTALLED = 'INSTALLED'
-    BROKEN = 'BROKEN'
-    STARTING = 'STARTING'
-    STOPPING = 'STOPPING'
-
-
-class BinaryMessage(rpc.Shape):
-    """
-    BinaryMessage
+    PostComponentUpdateEvent
 
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message: 
-
-    Attributes:
-        message: 
-    """
-
-    def __init__(self, *,
-                 message: typing.Optional[bytes] = None):
-        super().__init__()
-        self.message = message  # type: typing.Optional[bytes]
-
-    def _to_payload(self):
-        payload = {}
-        if self.message is not None:
-            payload['message'] = base64.b64encode(self.message).decode()
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'message' in payload:
-            new.message = base64.b64decode(payload['message'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#BinaryMessage'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class JsonMessage(rpc.Shape):
-    """
-    JsonMessage
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        message: 
-
-    Attributes:
-        message: 
-    """
-
-    def __init__(self, *,
-                 message: typing.Optional[typing.Dict[str, typing.Any]] = None):
-        super().__init__()
-        self.message = message  # type: typing.Optional[typing.Dict[str, typing.Any]]
-
-    def _to_payload(self):
-        payload = {}
-        if self.message is not None:
-            payload['message'] = self.message
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'message' in payload:
-            new.message = payload['message']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#JsonMessage'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class ValidateConfigurationUpdateEvent(rpc.Shape):
-    """
-    ValidateConfigurationUpdateEvent
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        configuration: 
         deployment_id: 
 
     Attributes:
-        configuration: 
         deployment_id: 
     """
 
     def __init__(self, *,
-                 configuration: typing.Optional[typing.Dict[str, typing.Any]] = None,
                  deployment_id: typing.Optional[str] = None):
         super().__init__()
-        self.configuration = configuration  # type: typing.Optional[typing.Dict[str, typing.Any]]
         self.deployment_id = deployment_id  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.configuration is not None:
-            payload['configuration'] = self.configuration
         if self.deployment_id is not None:
             payload['deploymentId'] = self.deployment_id
         return payload
@@ -408,71 +287,13 @@ class ValidateConfigurationUpdateEvent(rpc.Shape):
     @classmethod
     def _from_payload(cls, payload):
         new = cls()
-        if 'configuration' in payload:
-            new.configuration = payload['configuration']
         if 'deploymentId' in payload:
             new.deployment_id = payload['deploymentId']
         return new
 
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#ValidateConfigurationUpdateEvent'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class ConfigurationUpdateEvent(rpc.Shape):
-    """
-    ConfigurationUpdateEvent
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        component_name: 
-        key_path: 
-
-    Attributes:
-        component_name: 
-        key_path: 
-    """
-
-    def __init__(self, *,
-                 component_name: typing.Optional[str] = None,
-                 key_path: typing.Optional[typing.List[str]] = None):
-        super().__init__()
-        self.component_name = component_name  # type: typing.Optional[str]
-        self.key_path = key_path  # type: typing.Optional[typing.List[str]]
-
-    def _to_payload(self):
-        payload = {}
-        if self.component_name is not None:
-            payload['componentName'] = self.component_name
-        if self.key_path is not None:
-            payload['keyPath'] = self.key_path
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'componentName' in payload:
-            new.component_name = payload['componentName']
-        if 'keyPath' in payload:
-            new.key_path = payload['keyPath']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#ConfigurationUpdateEvent'
+        return 'aws.greengrass#PostComponentUpdateEvent'
 
     def __repr__(self):
         attrs = []
@@ -543,50 +364,55 @@ class MQTTMessage(rpc.Shape):
         return False
 
 
-class ComponentUpdatePolicyEvents(rpc.Shape):
+class LifecycleState:
     """
-    MQTTMessage is a "tagged union" class.
+    LifecycleState enum
+    """
 
-    When sending, only one of the attributes may be set.
-    When receiving, only one of the attributes will be set.
-    All other attributes will be None.
+    RUNNING = 'RUNNING'
+    ERRORED = 'ERRORED'
+    NEW = 'NEW'
+    FINISHED = 'FINISHED'
+    INSTALLED = 'INSTALLED'
+    BROKEN = 'BROKEN'
+    STARTING = 'STARTING'
+    STOPPING = 'STOPPING'
+
+
+class JsonMessage(rpc.Shape):
+    """
+    JsonMessage
+
+    All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        pre_update_event: 
-        post_update_event: 
+        message: 
 
     Attributes:
-        pre_update_event: 
-        post_update_event: 
+        message: 
     """
 
     def __init__(self, *,
-                 pre_update_event: typing.Optional[PreComponentUpdateEvent] = None,
-                 post_update_event: typing.Optional[PostComponentUpdateEvent] = None):
+                 message: typing.Optional[typing.Dict[str, typing.Any]] = None):
         super().__init__()
-        self.pre_update_event = pre_update_event  # type: typing.Optional[PreComponentUpdateEvent]
-        self.post_update_event = post_update_event  # type: typing.Optional[PostComponentUpdateEvent]
+        self.message = message  # type: typing.Optional[typing.Dict[str, typing.Any]]
 
     def _to_payload(self):
         payload = {}
-        if self.pre_update_event is not None:
-            payload['preUpdateEvent'] = self.pre_update_event._to_payload()
-        if self.post_update_event is not None:
-            payload['postUpdateEvent'] = self.post_update_event._to_payload()
+        if self.message is not None:
+            payload['message'] = self.message
         return payload
 
     @classmethod
     def _from_payload(cls, payload):
         new = cls()
-        if 'preUpdateEvent' in payload:
-            new.pre_update_event = PreComponentUpdateEvent._from_payload(payload['preUpdateEvent'])
-        if 'postUpdateEvent' in payload:
-            new.post_update_event = PostComponentUpdateEvent._from_payload(payload['postUpdateEvent'])
+        if 'message' in payload:
+            new.message = payload['message']
         return new
 
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#ComponentUpdatePolicyEvents'
+        return 'aws.greengrass#JsonMessage'
 
     def __repr__(self):
         attrs = []
@@ -601,18 +427,241 @@ class ComponentUpdatePolicyEvents(rpc.Shape):
         return False
 
 
-class ReportedLifecycleState:
+class DeploymentStatus:
     """
-    ReportedLifecycleState enum
+    DeploymentStatus enum
     """
 
-    RUNNING = 'RUNNING'
-    ERRORED = 'ERRORED'
+    QUEUED = 'QUEUED'
+    IN_PROGRESS = 'IN_PROGRESS'
+    SUCCEEDED = 'SUCCEEDED'
+    FAILED = 'FAILED'
+
+
+class ConfigurationValidityStatus:
+    """
+    ConfigurationValidityStatus enum
+    """
+
+    ACCEPTED = 'ACCEPTED'
+    REJECTED = 'REJECTED'
+
+
+class ConfigurationUpdateEvent(rpc.Shape):
+    """
+    ConfigurationUpdateEvent
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        component_name: 
+        key_path: 
+
+    Attributes:
+        component_name: 
+        key_path: 
+    """
+
+    def __init__(self, *,
+                 component_name: typing.Optional[str] = None,
+                 key_path: typing.Optional[typing.List[str]] = None):
+        super().__init__()
+        self.component_name = component_name  # type: typing.Optional[str]
+        self.key_path = key_path  # type: typing.Optional[typing.List[str]]
+
+    def _to_payload(self):
+        payload = {}
+        if self.component_name is not None:
+            payload['componentName'] = self.component_name
+        if self.key_path is not None:
+            payload['keyPath'] = self.key_path
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'componentName' in payload:
+            new.component_name = payload['componentName']
+        if 'keyPath' in payload:
+            new.key_path = payload['keyPath']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ConfigurationUpdateEvent'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class BinaryMessage(rpc.Shape):
+    """
+    BinaryMessage
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message: 
+
+    Attributes:
+        message: 
+    """
+
+    def __init__(self, *,
+                 message: typing.Optional[bytes] = None):
+        super().__init__()
+        self.message = message  # type: typing.Optional[bytes]
+
+    def _to_payload(self):
+        payload = {}
+        if self.message is not None:
+            payload['message'] = base64.b64encode(self.message).decode()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'message' in payload:
+            new.message = base64.b64decode(payload['message'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#BinaryMessage'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class ValidateConfigurationUpdateEvents(rpc.Shape):
+    """
+    BinaryMessage is a "tagged union" class.
+
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        validate_configuration_update_event: 
+
+    Attributes:
+        validate_configuration_update_event: 
+    """
+
+    def __init__(self, *,
+                 validate_configuration_update_event: typing.Optional[ValidateConfigurationUpdateEvent] = None):
+        super().__init__()
+        self.validate_configuration_update_event = validate_configuration_update_event  # type: typing.Optional[ValidateConfigurationUpdateEvent]
+
+    def _to_payload(self):
+        payload = {}
+        if self.validate_configuration_update_event is not None:
+            payload['validateConfigurationUpdateEvent'] = self.validate_configuration_update_event._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'validateConfigurationUpdateEvent' in payload:
+            new.validate_configuration_update_event = ValidateConfigurationUpdateEvent._from_payload(payload['validateConfigurationUpdateEvent'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ValidateConfigurationUpdateEvents'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class SubscriptionResponseMessage(rpc.Shape):
+    """
+    BinaryMessage is a "tagged union" class.
+
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        json_message: 
+        binary_message: 
+
+    Attributes:
+        json_message: 
+        binary_message: 
+    """
+
+    def __init__(self, *,
+                 json_message: typing.Optional[JsonMessage] = None,
+                 binary_message: typing.Optional[BinaryMessage] = None):
+        super().__init__()
+        self.json_message = json_message  # type: typing.Optional[JsonMessage]
+        self.binary_message = binary_message  # type: typing.Optional[BinaryMessage]
+
+    def _to_payload(self):
+        payload = {}
+        if self.json_message is not None:
+            payload['jsonMessage'] = self.json_message._to_payload()
+        if self.binary_message is not None:
+            payload['binaryMessage'] = self.binary_message._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'jsonMessage' in payload:
+            new.json_message = JsonMessage._from_payload(payload['jsonMessage'])
+        if 'binaryMessage' in payload:
+            new.binary_message = BinaryMessage._from_payload(payload['binaryMessage'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscriptionResponseMessage'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
 
 
 class SecretValue(rpc.Shape):
     """
-    MQTTMessage is a "tagged union" class.
+    BinaryMessage is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -654,6 +703,91 @@ class SecretValue(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#SecretValue'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class RequestStatus:
+    """
+    RequestStatus enum
+    """
+
+    SUCCEEDED = 'SUCCEEDED'
+    FAILED = 'FAILED'
+
+
+class ReportedLifecycleState:
+    """
+    ReportedLifecycleState enum
+    """
+
+    RUNNING = 'RUNNING'
+    ERRORED = 'ERRORED'
+
+
+class QOS:
+    """
+    QOS enum
+    """
+
+    AT_MOST_ONCE = '0'
+    AT_LEAST_ONCE = '1'
+
+
+class PublishMessage(rpc.Shape):
+    """
+    BinaryMessage is a "tagged union" class.
+
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        json_message: 
+        binary_message: 
+
+    Attributes:
+        json_message: 
+        binary_message: 
+    """
+
+    def __init__(self, *,
+                 json_message: typing.Optional[JsonMessage] = None,
+                 binary_message: typing.Optional[BinaryMessage] = None):
+        super().__init__()
+        self.json_message = json_message  # type: typing.Optional[JsonMessage]
+        self.binary_message = binary_message  # type: typing.Optional[BinaryMessage]
+
+    def _to_payload(self):
+        payload = {}
+        if self.json_message is not None:
+            payload['jsonMessage'] = self.json_message._to_payload()
+        if self.binary_message is not None:
+            payload['binaryMessage'] = self.binary_message._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'jsonMessage' in payload:
+            new.json_message = JsonMessage._from_payload(payload['jsonMessage'])
+        if 'binaryMessage' in payload:
+            new.binary_message = BinaryMessage._from_payload(payload['binaryMessage'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#PublishMessage'
 
     def __repr__(self):
         attrs = []
@@ -724,13 +858,54 @@ class LocalDeployment(rpc.Shape):
         return False
 
 
-class RequestStatus:
+class IoTCoreMessage(rpc.Shape):
     """
-    RequestStatus enum
+    LocalDeployment is a "tagged union" class.
+
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        message: 
+
+    Attributes:
+        message: 
     """
 
-    SUCCEEDED = 'SUCCEEDED'
-    FAILED = 'FAILED'
+    def __init__(self, *,
+                 message: typing.Optional[MQTTMessage] = None):
+        super().__init__()
+        self.message = message  # type: typing.Optional[MQTTMessage]
+
+    def _to_payload(self):
+        payload = {}
+        if self.message is not None:
+            payload['message'] = self.message._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'message' in payload:
+            new.message = MQTTMessage._from_payload(payload['message'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#IoTCoreMessage'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
 
 
 class ConfigurationValidityReport(rpc.Shape):
@@ -797,7 +972,7 @@ class ConfigurationValidityReport(rpc.Shape):
         return False
 
 
-class PublishMessage(rpc.Shape):
+class ConfigurationUpdateEvents(rpc.Shape):
     """
     ConfigurationValidityReport is a "tagged union" class.
 
@@ -806,41 +981,91 @@ class PublishMessage(rpc.Shape):
     All other attributes will be None.
 
     Keyword Args:
-        json_message: 
-        binary_message: 
+        configuration_update_event: 
 
     Attributes:
-        json_message: 
-        binary_message: 
+        configuration_update_event: 
     """
 
     def __init__(self, *,
-                 json_message: typing.Optional[JsonMessage] = None,
-                 binary_message: typing.Optional[BinaryMessage] = None):
+                 configuration_update_event: typing.Optional[ConfigurationUpdateEvent] = None):
         super().__init__()
-        self.json_message = json_message  # type: typing.Optional[JsonMessage]
-        self.binary_message = binary_message  # type: typing.Optional[BinaryMessage]
+        self.configuration_update_event = configuration_update_event  # type: typing.Optional[ConfigurationUpdateEvent]
 
     def _to_payload(self):
         payload = {}
-        if self.json_message is not None:
-            payload['jsonMessage'] = self.json_message._to_payload()
-        if self.binary_message is not None:
-            payload['binaryMessage'] = self.binary_message._to_payload()
+        if self.configuration_update_event is not None:
+            payload['configurationUpdateEvent'] = self.configuration_update_event._to_payload()
         return payload
 
     @classmethod
     def _from_payload(cls, payload):
         new = cls()
-        if 'jsonMessage' in payload:
-            new.json_message = JsonMessage._from_payload(payload['jsonMessage'])
-        if 'binaryMessage' in payload:
-            new.binary_message = BinaryMessage._from_payload(payload['binaryMessage'])
+        if 'configurationUpdateEvent' in payload:
+            new.configuration_update_event = ConfigurationUpdateEvent._from_payload(payload['configurationUpdateEvent'])
         return new
 
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#PublishMessage'
+        return 'aws.greengrass#ConfigurationUpdateEvents'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class ComponentUpdatePolicyEvents(rpc.Shape):
+    """
+    ConfigurationValidityReport is a "tagged union" class.
+
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        pre_update_event: 
+        post_update_event: 
+
+    Attributes:
+        pre_update_event: 
+        post_update_event: 
+    """
+
+    def __init__(self, *,
+                 pre_update_event: typing.Optional[PreComponentUpdateEvent] = None,
+                 post_update_event: typing.Optional[PostComponentUpdateEvent] = None):
+        super().__init__()
+        self.pre_update_event = pre_update_event  # type: typing.Optional[PreComponentUpdateEvent]
+        self.post_update_event = post_update_event  # type: typing.Optional[PostComponentUpdateEvent]
+
+    def _to_payload(self):
+        payload = {}
+        if self.pre_update_event is not None:
+            payload['preUpdateEvent'] = self.pre_update_event._to_payload()
+        if self.post_update_event is not None:
+            payload['postUpdateEvent'] = self.post_update_event._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'preUpdateEvent' in payload:
+            new.pre_update_event = PreComponentUpdateEvent._from_payload(payload['preUpdateEvent'])
+        if 'postUpdateEvent' in payload:
+            new.post_update_event = PostComponentUpdateEvent._from_payload(payload['postUpdateEvent'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ComponentUpdatePolicyEvents'
 
     def __repr__(self):
         attrs = []
@@ -925,223 +1150,6 @@ class ComponentDetails(rpc.Shape):
         if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
-
-
-class SubscriptionResponseMessage(rpc.Shape):
-    """
-    ComponentDetails is a "tagged union" class.
-
-    When sending, only one of the attributes may be set.
-    When receiving, only one of the attributes will be set.
-    All other attributes will be None.
-
-    Keyword Args:
-        json_message: 
-        binary_message: 
-
-    Attributes:
-        json_message: 
-        binary_message: 
-    """
-
-    def __init__(self, *,
-                 json_message: typing.Optional[JsonMessage] = None,
-                 binary_message: typing.Optional[BinaryMessage] = None):
-        super().__init__()
-        self.json_message = json_message  # type: typing.Optional[JsonMessage]
-        self.binary_message = binary_message  # type: typing.Optional[BinaryMessage]
-
-    def _to_payload(self):
-        payload = {}
-        if self.json_message is not None:
-            payload['jsonMessage'] = self.json_message._to_payload()
-        if self.binary_message is not None:
-            payload['binaryMessage'] = self.binary_message._to_payload()
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'jsonMessage' in payload:
-            new.json_message = JsonMessage._from_payload(payload['jsonMessage'])
-        if 'binaryMessage' in payload:
-            new.binary_message = BinaryMessage._from_payload(payload['binaryMessage'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#SubscriptionResponseMessage'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class ValidateConfigurationUpdateEvents(rpc.Shape):
-    """
-    ComponentDetails is a "tagged union" class.
-
-    When sending, only one of the attributes may be set.
-    When receiving, only one of the attributes will be set.
-    All other attributes will be None.
-
-    Keyword Args:
-        validate_configuration_update_event: 
-
-    Attributes:
-        validate_configuration_update_event: 
-    """
-
-    def __init__(self, *,
-                 validate_configuration_update_event: typing.Optional[ValidateConfigurationUpdateEvent] = None):
-        super().__init__()
-        self.validate_configuration_update_event = validate_configuration_update_event  # type: typing.Optional[ValidateConfigurationUpdateEvent]
-
-    def _to_payload(self):
-        payload = {}
-        if self.validate_configuration_update_event is not None:
-            payload['validateConfigurationUpdateEvent'] = self.validate_configuration_update_event._to_payload()
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'validateConfigurationUpdateEvent' in payload:
-            new.validate_configuration_update_event = ValidateConfigurationUpdateEvent._from_payload(payload['validateConfigurationUpdateEvent'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#ValidateConfigurationUpdateEvents'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class ConfigurationUpdateEvents(rpc.Shape):
-    """
-    ComponentDetails is a "tagged union" class.
-
-    When sending, only one of the attributes may be set.
-    When receiving, only one of the attributes will be set.
-    All other attributes will be None.
-
-    Keyword Args:
-        configuration_update_event: 
-
-    Attributes:
-        configuration_update_event: 
-    """
-
-    def __init__(self, *,
-                 configuration_update_event: typing.Optional[ConfigurationUpdateEvent] = None):
-        super().__init__()
-        self.configuration_update_event = configuration_update_event  # type: typing.Optional[ConfigurationUpdateEvent]
-
-    def _to_payload(self):
-        payload = {}
-        if self.configuration_update_event is not None:
-            payload['configurationUpdateEvent'] = self.configuration_update_event._to_payload()
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'configurationUpdateEvent' in payload:
-            new.configuration_update_event = ConfigurationUpdateEvent._from_payload(payload['configurationUpdateEvent'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#ConfigurationUpdateEvents'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class IoTCoreMessage(rpc.Shape):
-    """
-    ComponentDetails is a "tagged union" class.
-
-    When sending, only one of the attributes may be set.
-    When receiving, only one of the attributes will be set.
-    All other attributes will be None.
-
-    Keyword Args:
-        message: 
-
-    Attributes:
-        message: 
-    """
-
-    def __init__(self, *,
-                 message: typing.Optional[MQTTMessage] = None):
-        super().__init__()
-        self.message = message  # type: typing.Optional[MQTTMessage]
-
-    def _to_payload(self):
-        payload = {}
-        if self.message is not None:
-            payload['message'] = self.message._to_payload()
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'message' in payload:
-            new.message = MQTTMessage._from_payload(payload['message'])
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#IoTCoreMessage'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
-class QOS:
-    """
-    QOS enum
-    """
-
-    AT_MOST_ONCE = '0'
-    AT_LEAST_ONCE = '1'
 
 
 class InvalidArtifactsDirectoryPathError(GreengrassCoreIPCError):
@@ -1341,11 +1349,11 @@ class CreateLocalDeploymentRequest(rpc.Shape):
         if self.group_name is not None:
             payload['groupName'] = self.group_name
         if self.root_component_versions_to_add is not None:
-            payload['rootComponentVersionsToAdd'] = {k: v for k, v in self.root_component_versions_to_add.items()}
+            payload['rootComponentVersionsToAdd'] = self.root_component_versions_to_add
         if self.root_components_to_remove is not None:
             payload['rootComponentsToRemove'] = self.root_components_to_remove
         if self.component_to_configuration is not None:
-            payload['componentToConfiguration'] = {k: v for k, v in self.component_to_configuration.items()}
+            payload['componentToConfiguration'] = self.component_to_configuration
         if self.component_to_run_with_info is not None:
             payload['componentToRunWithInfo'] = {k: v._to_payload() for k, v in self.component_to_run_with_info.items()}
         if self.recipe_directory_path is not None:
@@ -4410,14 +4418,14 @@ class SubscribeToIoTCoreRequest(rpc.Shape):
 
 SHAPE_INDEX = rpc.ShapeIndex([
     SystemResourceLimits,
-    RunWithInfo,
-    PostComponentUpdateEvent,
-    PreComponentUpdateEvent,
-    BinaryMessage,
-    JsonMessage,
     ValidateConfigurationUpdateEvent,
-    ConfigurationUpdateEvent,
+    RunWithInfo,
+    PreComponentUpdateEvent,
+    PostComponentUpdateEvent,
     MQTTMessage,
+    JsonMessage,
+    ConfigurationUpdateEvent,
+    BinaryMessage,
     LocalDeployment,
     ConfigurationValidityReport,
     ComponentDetails,
@@ -4490,14 +4498,14 @@ SHAPE_INDEX = rpc.ShapeIndex([
 ])
 
 
-class _SubscribeToIoTCoreOperation(rpc.ClientOperation):
+class _CreateDebugPasswordOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#SubscribeToIoTCore'
+        return 'aws.greengrass#CreateDebugPassword'
 
     @classmethod
     def _request_type(cls):
-        return SubscribeToIoTCoreRequest
+        return CreateDebugPasswordRequest
 
     @classmethod
     def _request_stream_type(cls):
@@ -4505,43 +4513,21 @@ class _SubscribeToIoTCoreOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_type(cls):
-        return SubscribeToIoTCoreResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return IoTCoreMessage
-
-
-class _ResumeComponentOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#ResumeComponent'
-
-    @classmethod
-    def _request_type(cls):
-        return ResumeComponentRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return ResumeComponentResponse
+        return CreateDebugPasswordResponse
 
     @classmethod
     def _response_stream_type(cls):
         return None
 
 
-class _PublishToIoTCoreOperation(rpc.ClientOperation):
+class _CreateLocalDeploymentOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#PublishToIoTCore'
+        return 'aws.greengrass#CreateLocalDeployment'
 
     @classmethod
     def _request_type(cls):
-        return PublishToIoTCoreRequest
+        return CreateLocalDeploymentRequest
 
     @classmethod
     def _request_stream_type(cls):
@@ -4549,51 +4535,7 @@ class _PublishToIoTCoreOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_type(cls):
-        return PublishToIoTCoreResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _SubscribeToConfigurationUpdateOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#SubscribeToConfigurationUpdate'
-
-    @classmethod
-    def _request_type(cls):
-        return SubscribeToConfigurationUpdateRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return SubscribeToConfigurationUpdateResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return ConfigurationUpdateEvents
-
-
-class _DeleteThingShadowOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#DeleteThingShadow'
-
-    @classmethod
-    def _request_type(cls):
-        return DeleteThingShadowRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return DeleteThingShadowResponse
+        return CreateLocalDeploymentResponse
 
     @classmethod
     def _response_stream_type(cls):
@@ -4622,14 +4564,14 @@ class _DeferComponentUpdateOperation(rpc.ClientOperation):
         return None
 
 
-class _SubscribeToValidateConfigurationUpdatesOperation(rpc.ClientOperation):
+class _DeleteThingShadowOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#SubscribeToValidateConfigurationUpdates'
+        return 'aws.greengrass#DeleteThingShadow'
 
     @classmethod
     def _request_type(cls):
-        return SubscribeToValidateConfigurationUpdatesRequest
+        return DeleteThingShadowRequest
 
     @classmethod
     def _request_stream_type(cls):
@@ -4637,55 +4579,11 @@ class _SubscribeToValidateConfigurationUpdatesOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_type(cls):
-        return SubscribeToValidateConfigurationUpdatesResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return ValidateConfigurationUpdateEvents
-
-
-class _GetConfigurationOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#GetConfiguration'
-
-    @classmethod
-    def _request_type(cls):
-        return GetConfigurationRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return GetConfigurationResponse
+        return DeleteThingShadowResponse
 
     @classmethod
     def _response_stream_type(cls):
         return None
-
-
-class _SubscribeToTopicOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#SubscribeToTopic'
-
-    @classmethod
-    def _request_type(cls):
-        return SubscribeToTopicRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return SubscribeToTopicResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return SubscriptionResponseMessage
 
 
 class _GetComponentDetailsOperation(rpc.ClientOperation):
@@ -4710,14 +4608,14 @@ class _GetComponentDetailsOperation(rpc.ClientOperation):
         return None
 
 
-class _PublishToTopicOperation(rpc.ClientOperation):
+class _GetConfigurationOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#PublishToTopic'
+        return 'aws.greengrass#GetConfiguration'
 
     @classmethod
     def _request_type(cls):
-        return PublishToTopicRequest
+        return GetConfigurationRequest
 
     @classmethod
     def _request_stream_type(cls):
@@ -4725,183 +4623,7 @@ class _PublishToTopicOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_type(cls):
-        return PublishToTopicResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _ListComponentsOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#ListComponents'
-
-    @classmethod
-    def _request_type(cls):
-        return ListComponentsRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return ListComponentsResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _CreateDebugPasswordOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#CreateDebugPassword'
-
-    @classmethod
-    def _request_type(cls):
-        return CreateDebugPasswordRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return CreateDebugPasswordResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _GetThingShadowOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#GetThingShadow'
-
-    @classmethod
-    def _request_type(cls):
-        return GetThingShadowRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return GetThingShadowResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _SendConfigurationValidityReportOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#SendConfigurationValidityReport'
-
-    @classmethod
-    def _request_type(cls):
-        return SendConfigurationValidityReportRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return SendConfigurationValidityReportResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _UpdateThingShadowOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#UpdateThingShadow'
-
-    @classmethod
-    def _request_type(cls):
-        return UpdateThingShadowRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return UpdateThingShadowResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _UpdateConfigurationOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#UpdateConfiguration'
-
-    @classmethod
-    def _request_type(cls):
-        return UpdateConfigurationRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return UpdateConfigurationResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _ValidateAuthorizationTokenOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#ValidateAuthorizationToken'
-
-    @classmethod
-    def _request_type(cls):
-        return ValidateAuthorizationTokenRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return ValidateAuthorizationTokenResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
-
-
-class _RestartComponentOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'aws.greengrass#RestartComponent'
-
-    @classmethod
-    def _request_type(cls):
-        return RestartComponentRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return RestartComponentResponse
+        return GetConfigurationResponse
 
     @classmethod
     def _response_stream_type(cls):
@@ -4952,14 +4674,14 @@ class _GetSecretValueOperation(rpc.ClientOperation):
         return None
 
 
-class _UpdateStateOperation(rpc.ClientOperation):
+class _GetThingShadowOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#UpdateState'
+        return 'aws.greengrass#GetThingShadow'
 
     @classmethod
     def _request_type(cls):
-        return UpdateStateRequest
+        return GetThingShadowRequest
 
     @classmethod
     def _request_stream_type(cls):
@@ -4967,7 +4689,51 @@ class _UpdateStateOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_type(cls):
-        return UpdateStateResponse
+        return GetThingShadowResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _ListComponentsOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ListComponents'
+
+    @classmethod
+    def _request_type(cls):
+        return ListComponentsRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return ListComponentsResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _ListLocalDeploymentsOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ListLocalDeployments'
+
+    @classmethod
+    def _request_type(cls):
+        return ListLocalDeploymentsRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return ListLocalDeploymentsResponse
 
     @classmethod
     def _response_stream_type(cls):
@@ -4996,14 +4762,14 @@ class _ListNamedShadowsForThingOperation(rpc.ClientOperation):
         return None
 
 
-class _SubscribeToComponentUpdatesOperation(rpc.ClientOperation):
+class _PauseComponentOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#SubscribeToComponentUpdates'
+        return 'aws.greengrass#PauseComponent'
 
     @classmethod
     def _request_type(cls):
-        return SubscribeToComponentUpdatesRequest
+        return PauseComponentRequest
 
     @classmethod
     def _request_stream_type(cls):
@@ -5011,21 +4777,21 @@ class _SubscribeToComponentUpdatesOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_type(cls):
-        return SubscribeToComponentUpdatesResponse
+        return PauseComponentResponse
 
     @classmethod
     def _response_stream_type(cls):
-        return ComponentUpdatePolicyEvents
+        return None
 
 
-class _ListLocalDeploymentsOperation(rpc.ClientOperation):
+class _PublishToIoTCoreOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#ListLocalDeployments'
+        return 'aws.greengrass#PublishToIoTCore'
 
     @classmethod
     def _request_type(cls):
-        return ListLocalDeploymentsRequest
+        return PublishToIoTCoreRequest
 
     @classmethod
     def _request_stream_type(cls):
@@ -5033,7 +4799,95 @@ class _ListLocalDeploymentsOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_type(cls):
-        return ListLocalDeploymentsResponse
+        return PublishToIoTCoreResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _PublishToTopicOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#PublishToTopic'
+
+    @classmethod
+    def _request_type(cls):
+        return PublishToTopicRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return PublishToTopicResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _RestartComponentOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#RestartComponent'
+
+    @classmethod
+    def _request_type(cls):
+        return RestartComponentRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return RestartComponentResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _ResumeComponentOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ResumeComponent'
+
+    @classmethod
+    def _request_type(cls):
+        return ResumeComponentRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return ResumeComponentResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _SendConfigurationValidityReportOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SendConfigurationValidityReport'
+
+    @classmethod
+    def _request_type(cls):
+        return SendConfigurationValidityReportRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return SendConfigurationValidityReportResponse
 
     @classmethod
     def _response_stream_type(cls):
@@ -5062,14 +4916,14 @@ class _StopComponentOperation(rpc.ClientOperation):
         return None
 
 
-class _PauseComponentOperation(rpc.ClientOperation):
+class _SubscribeToComponentUpdatesOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#PauseComponent'
+        return 'aws.greengrass#SubscribeToComponentUpdates'
 
     @classmethod
     def _request_type(cls):
-        return PauseComponentRequest
+        return SubscribeToComponentUpdatesRequest
 
     @classmethod
     def _request_stream_type(cls):
@@ -5077,21 +4931,131 @@ class _PauseComponentOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_type(cls):
-        return PauseComponentResponse
+        return SubscribeToComponentUpdatesResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return ComponentUpdatePolicyEvents
+
+
+class _SubscribeToConfigurationUpdateOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToConfigurationUpdate'
+
+    @classmethod
+    def _request_type(cls):
+        return SubscribeToConfigurationUpdateRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return SubscribeToConfigurationUpdateResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return ConfigurationUpdateEvents
+
+
+class _SubscribeToIoTCoreOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToIoTCore'
+
+    @classmethod
+    def _request_type(cls):
+        return SubscribeToIoTCoreRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return SubscribeToIoTCoreResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return IoTCoreMessage
+
+
+class _SubscribeToTopicOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToTopic'
+
+    @classmethod
+    def _request_type(cls):
+        return SubscribeToTopicRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return SubscribeToTopicResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return SubscriptionResponseMessage
+
+
+class _SubscribeToValidateConfigurationUpdatesOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToValidateConfigurationUpdates'
+
+    @classmethod
+    def _request_type(cls):
+        return SubscribeToValidateConfigurationUpdatesRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return SubscribeToValidateConfigurationUpdatesResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return ValidateConfigurationUpdateEvents
+
+
+class _UpdateConfigurationOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#UpdateConfiguration'
+
+    @classmethod
+    def _request_type(cls):
+        return UpdateConfigurationRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return UpdateConfigurationResponse
 
     @classmethod
     def _response_stream_type(cls):
         return None
 
 
-class _CreateLocalDeploymentOperation(rpc.ClientOperation):
+class _UpdateStateOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
-        return 'aws.greengrass#CreateLocalDeployment'
+        return 'aws.greengrass#UpdateState'
 
     @classmethod
     def _request_type(cls):
-        return CreateLocalDeploymentRequest
+        return UpdateStateRequest
 
     @classmethod
     def _request_stream_type(cls):
@@ -5099,7 +5063,51 @@ class _CreateLocalDeploymentOperation(rpc.ClientOperation):
 
     @classmethod
     def _response_type(cls):
-        return CreateLocalDeploymentResponse
+        return UpdateStateResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _UpdateThingShadowOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#UpdateThingShadow'
+
+    @classmethod
+    def _request_type(cls):
+        return UpdateThingShadowRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return UpdateThingShadowResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _ValidateAuthorizationTokenOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ValidateAuthorizationToken'
+
+    @classmethod
+    def _request_type(cls):
+        return ValidateAuthorizationTokenRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return ValidateAuthorizationTokenResponse
 
     @classmethod
     def _response_stream_type(cls):
