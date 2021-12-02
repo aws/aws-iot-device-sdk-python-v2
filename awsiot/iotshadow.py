@@ -1194,8 +1194,6 @@ class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
     __slots__ = ['metadata', 'state', 'timestamp', 'version', 'client_token']
 
     def __init__(self, *args, **kwargs):
-        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ TARTIFLETTETEEE")
-        print(kwargs)
         self.metadata = kwargs.get('metadata')
         self.state = kwargs.get('state')
         self.timestamp = kwargs.get('timestamp')
