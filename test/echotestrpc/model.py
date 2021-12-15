@@ -28,56 +28,48 @@ class EchoTestRPCError(rpc.ErrorShape):
         return self._get_error_type_string() == 'client'
 
 
-class Customer(rpc.Shape):
+class Product(rpc.Shape):
     """
-    Customer
+    Product
 
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        id: 
-        first_name: 
-        last_name: 
+        name: 
+        price: 
 
     Attributes:
-        id: 
-        first_name: 
-        last_name: 
+        name: 
+        price: 
     """
 
     def __init__(self, *,
-                 id: typing.Optional[int] = None,
-                 first_name: typing.Optional[str] = None,
-                 last_name: typing.Optional[str] = None):
+                 name: typing.Optional[str] = None,
+                 price: typing.Optional[float] = None):
         super().__init__()
-        self.id = id  # type: typing.Optional[int]
-        self.first_name = first_name  # type: typing.Optional[str]
-        self.last_name = last_name  # type: typing.Optional[str]
+        self.name = name  # type: typing.Optional[str]
+        self.price = price  # type: typing.Optional[float]
 
     def _to_payload(self):
         payload = {}
-        if self.id is not None:
-            payload['id'] = self.id
-        if self.first_name is not None:
-            payload['firstName'] = self.first_name
-        if self.last_name is not None:
-            payload['lastName'] = self.last_name
+        if self.name is not None:
+            payload['name'] = self.name
+        if self.price is not None:
+            payload['price'] = self.price
         return payload
 
     @classmethod
     def _from_payload(cls, payload):
         new = cls()
-        if 'id' in payload:
-            new.id = int(payload['id'])
-        if 'firstName' in payload:
-            new.first_name = payload['firstName']
-        if 'lastName' in payload:
-            new.last_name = payload['lastName']
+        if 'name' in payload:
+            new.name = payload['name']
+        if 'price' in payload:
+            new.price = float(payload['price'])
         return new
 
     @classmethod
     def _model_name(cls):
-        return 'awstest#Customer'
+        return 'awstest#Product'
 
     def __repr__(self):
         attrs = []
@@ -90,17 +82,6 @@ class Customer(rpc.Shape):
         if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
-
-
-class FruitEnum:
-    """
-    FruitEnum enum
-    """
-
-    APPLE = 'apl'
-    ORANGE = 'org'
-    BANANA = 'ban'
-    PINEAPPLE = 'pin'
 
 
 class Pair(rpc.Shape):
@@ -159,48 +140,67 @@ class Pair(rpc.Shape):
         return False
 
 
-class Product(rpc.Shape):
+class FruitEnum:
     """
-    Product
+    FruitEnum enum
+    """
+
+    APPLE = 'apl'
+    ORANGE = 'org'
+    BANANA = 'ban'
+    PINEAPPLE = 'pin'
+
+
+class Customer(rpc.Shape):
+    """
+    Customer
 
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        name: 
-        price: 
+        id: 
+        first_name: 
+        last_name: 
 
     Attributes:
-        name: 
-        price: 
+        id: 
+        first_name: 
+        last_name: 
     """
 
     def __init__(self, *,
-                 name: typing.Optional[str] = None,
-                 price: typing.Optional[float] = None):
+                 id: typing.Optional[int] = None,
+                 first_name: typing.Optional[str] = None,
+                 last_name: typing.Optional[str] = None):
         super().__init__()
-        self.name = name  # type: typing.Optional[str]
-        self.price = price  # type: typing.Optional[float]
+        self.id = id  # type: typing.Optional[int]
+        self.first_name = first_name  # type: typing.Optional[str]
+        self.last_name = last_name  # type: typing.Optional[str]
 
     def _to_payload(self):
         payload = {}
-        if self.name is not None:
-            payload['name'] = self.name
-        if self.price is not None:
-            payload['price'] = self.price
+        if self.id is not None:
+            payload['id'] = self.id
+        if self.first_name is not None:
+            payload['firstName'] = self.first_name
+        if self.last_name is not None:
+            payload['lastName'] = self.last_name
         return payload
 
     @classmethod
     def _from_payload(cls, payload):
         new = cls()
-        if 'name' in payload:
-            new.name = payload['name']
-        if 'price' in payload:
-            new.price = float(payload['price'])
+        if 'id' in payload:
+            new.id = int(payload['id'])
+        if 'firstName' in payload:
+            new.first_name = payload['firstName']
+        if 'lastName' in payload:
+            new.last_name = payload['lastName']
         return new
 
     @classmethod
     def _model_name(cls):
-        return 'awstest#Product'
+        return 'awstest#Customer'
 
     def __repr__(self):
         attrs = []
@@ -841,9 +841,9 @@ class GetAllProductsRequest(rpc.Shape):
 
 
 SHAPE_INDEX = rpc.ShapeIndex([
-    Customer,
-    Pair,
     Product,
+    Pair,
+    Customer,
     MessageData,
     GetAllCustomersResponse,
     GetAllCustomersRequest,
@@ -857,28 +857,6 @@ SHAPE_INDEX = rpc.ShapeIndex([
     GetAllProductsResponse,
     GetAllProductsRequest,
 ])
-
-
-class _GetAllProductsOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'awstest#GetAllProducts'
-
-    @classmethod
-    def _request_type(cls):
-        return GetAllProductsRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return None
-
-    @classmethod
-    def _response_type(cls):
-        return GetAllProductsResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return None
 
 
 class _CauseServiceErrorOperation(rpc.ClientOperation):
@@ -925,28 +903,6 @@ class _CauseStreamServiceToErrorOperation(rpc.ClientOperation):
         return EchoStreamingMessage
 
 
-class _EchoStreamMessagesOperation(rpc.ClientOperation):
-    @classmethod
-    def _model_name(cls):
-        return 'awstest#EchoStreamMessages'
-
-    @classmethod
-    def _request_type(cls):
-        return EchoStreamingRequest
-
-    @classmethod
-    def _request_stream_type(cls):
-        return EchoStreamingMessage
-
-    @classmethod
-    def _response_type(cls):
-        return EchoStreamingResponse
-
-    @classmethod
-    def _response_stream_type(cls):
-        return EchoStreamingMessage
-
-
 class _EchoMessageOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
@@ -969,6 +925,28 @@ class _EchoMessageOperation(rpc.ClientOperation):
         return None
 
 
+class _EchoStreamMessagesOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'awstest#EchoStreamMessages'
+
+    @classmethod
+    def _request_type(cls):
+        return EchoStreamingRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return EchoStreamingMessage
+
+    @classmethod
+    def _response_type(cls):
+        return EchoStreamingResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return EchoStreamingMessage
+
+
 class _GetAllCustomersOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
@@ -985,6 +963,28 @@ class _GetAllCustomersOperation(rpc.ClientOperation):
     @classmethod
     def _response_type(cls):
         return GetAllCustomersResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _GetAllProductsOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'awstest#GetAllProducts'
+
+    @classmethod
+    def _request_type(cls):
+        return GetAllProductsRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return GetAllProductsResponse
 
     @classmethod
     def _response_stream_type(cls):
