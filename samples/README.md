@@ -1,11 +1,13 @@
 # Sample apps for the AWS IoT Device SDK v2 for Python
 
-* [pubsub](#pubsub)
-* [shadow](#shadow)
-* [fleet provisioning](#fleet-provisioning)
+* [PubSub](#pubsub)
+* [PKCS#11 PubSub](#pkcs11-pubsub)
+* [Shadow](#shadow)
+* [Jobs](#jobs)
+* [Fleet Provisioning](#fleet-provisioning)
 * [Greengrass Discovery](#greengrass-discovery)
 
-## Pubsub
+## PubSub
 
 This sample uses the
 [Message Broker](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html)
@@ -66,6 +68,59 @@ and receive.
 }
 </pre>
 </details>
+
+## PKCS#11 PubSub
+
+This sample is similar to the [Pub-Sub](#pubsub),
+but the private key for mutual TLS is stored on a PKCS#11 compatible smart card or Hardware Security Module (HSM)
+
+WARNING: Unix only. Currently, TLS integration with PKCS#11 is only available on Unix devices.
+
+source: `samples/pkcs11_pubsub.py`
+
+To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the PKCS#11 device:
+
+1)  Create an IoT Thing with a certificate and key if you haven't already.
+
+2)  Convert the private key into PKCS#8 format
+    ```sh
+    openssl pkcs8 -topk8 -in <private.pem.key> -out <private.p8.key> -nocrypt
+    ```
+
+3)  Install [SoftHSM2](https://www.opendnssec.org/softhsm/):
+    ```sh
+    sudo apt install softhsm
+    ```
+
+    Check that it's working:
+    ```sh
+    softhsm2-util --show-slots
+    ```
+
+    If this spits out an error message, create a config file:
+    *   Default location: `~/.config/softhsm2/softhsm2.conf`
+    *   This file must specify token dir, default value is:
+        ```
+        directories.tokendir = /usr/local/var/lib/softhsm/tokens/
+        ```
+
+4)  Create token and import private key.
+
+    You can use any values for the labels, PINs, etc
+    ```sh
+    softhsm2-util --init-token --free --label <token-label> --pin <user-pin> --so-pin <so-pin>
+    ```
+
+    Note which slot the token ended up in
+
+    ```sh
+    softhsm2-util --import <private.p8.key> --slot <slot-with-token> --label <key-label> --id <hex-chars> --pin <user-pin>
+    ```
+
+5)  Now you can run the sample:
+    ```sh
+    python3 pkcs11_pubsub.py --endpoint <xxxx-ats.iot.xxxx.amazonaws.com> --root-ca <AmazonRootCA1.pem> --cert <certificate.pem.crt> --pkcs11-lib <libsofthsm2.so> --pin <user-pin> --token-label <token-label> --key-label <key-label>
+
 
 ## Shadow
 
@@ -306,14 +361,14 @@ and receive.
 
 ### Fleet Provisioning Detailed Instructions
 
-#### Aws Resource Setup
+#### AWS Resource Setup
 
 Fleet provisioning requires some additional AWS resources be set up first. This section documents the steps you need to take to
 get the sample up and running. These steps assume you have the AWS CLI installed and the default user/credentials has
 sufficient permission to perform all of the listed operations. These steps are based on provisioning setup steps
 that can be found at [Embedded C SDK Setup](https://docs.aws.amazon.com/freertos/latest/lib-ref/c-sdk/provisioning/provisioning_tests.html#provisioning_system_tests_setup).
 
-First, create the IAM role that will be needed by the fleet provisioning template. Replace `RoleName` with a name of the role you want to create. 
+First, create the IAM role that will be needed by the fleet provisioning template. Replace `RoleName` with a name of the role you want to create.
 ``` sh
 aws iam create-role \
     --role-name [RoleName] \
@@ -325,17 +380,17 @@ aws iam attach-role-policy \
         --role-name [RoleName] \
         --policy-arn arn:aws:iam::aws:policy/service-role/AWSIoTThingsRegistration
 ```
-Finally, create the template resource which will be used for provisioning by the demo application. This needs to be done only 
-once. To create a template, the following AWS CLI command may be used. Replace `TemplateName` with the name of the fleet 
-provisioning template you want to create. Replace `RoleName` with the name of the role you created previously. Replace 
-`TemplateJSON` with the template body as a JSON string (containing escape characters). Replace `account` with your AWS 
-account number. 
+Finally, create the template resource which will be used for provisioning by the demo application. This needs to be done only
+once. To create a template, the following AWS CLI command may be used. Replace `TemplateName` with the name of the fleet
+provisioning template you want to create. Replace `RoleName` with the name of the role you created previously. Replace
+`TemplateJSON` with the template body as a JSON string (containing escape characters). Replace `account` with your AWS
+account number.
 ``` sh
 aws iot create-provisioning-template \
         --template-name [TemplateName] \
         --provisioning-role-arn arn:aws:iam::[account]:role/[RoleName] \
         --template-body "[TemplateJSON]" \
-        --enabled 
+        --enabled
 ```
 The rest of the instructions assume you have used the following for the template body:
 ``` sh
@@ -345,13 +400,13 @@ If you use a different body, you may need to pass in different template paramete
 
 #### Running the sample and provisioning using a certificate-key set from a provisioning claim
 
-To run the provisioning sample, you'll need a certificate and key set with sufficient permissions. Provisioning certificates are normally 
+To run the provisioning sample, you'll need a certificate and key set with sufficient permissions. Provisioning certificates are normally
 created ahead of time and placed on your device, but for this sample, we will just create them on the fly. You can also
 use any certificate set you've already created if it has sufficient IoT permissions and in doing so, you can skip the step
 that calls `create-provisioning-claim`.
 
 We've included a script in the utils folder that creates certificate and key files from the response of calling
-`create-provisioning-claim`. These dynamically sourced certificates are only valid for five minutes. When running the command, 
+`create-provisioning-claim`. These dynamically sourced certificates are only valid for five minutes. When running the command,
 you'll need to substitute the name of the template you previously created, and on Windows, replace the paths with something appropriate.
 
 (Optional) Create a temporary provisioning claim certificate set:
@@ -364,7 +419,7 @@ aws iot create-provisioning-claim \
 ```
 
 The provisioning claim's cert and key set have been written to `/tmp/provision*`. Now you can use these temporary keys
-to perform the actual provisioning. If you are not using the temporary provisioning certificate, replace the paths for `--cert` 
+to perform the actual provisioning. If you are not using the temporary provisioning certificate, replace the paths for `--cert`
 and `--key` appropriately:
 
 ``` sh
@@ -415,7 +470,7 @@ python3 fleetprovisioning.py \
         --key /tmp/provision.private.key \
         --templateName [TemplateName] \
         --templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" \
-        --csr /tmp/deviceCert.csr 
+        --csr /tmp/deviceCert.csr
 ```
 
 ## Greengrass Discovery

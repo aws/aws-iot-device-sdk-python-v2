@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 import argparse
-from awscrt import io, mqtt, auth, http
+from awscrt import io, mqtt
 from awsiot import mqtt_connection_builder
 import sys
 import threading
@@ -10,11 +10,14 @@ import time
 from uuid import uuid4
 import json
 
-# This sample uses the Message Broker for AWS IoT to send and receive messages
-# through an MQTT connection. On startup, the device connects to the server,
-# subscribes to a topic, and begins publishing messages to that topic.
-# The device should receive those same messages back from the message broker,
-# since it is subscribed to that same topic.
+# This sample is similar to `samples/pubsub.py` but the private key
+# for mutual TLS is stored on a PKCS#11 compatible smart card or
+# Hardware Security Module (HSM).
+#
+# See `samples/README.md` for instructions on setting up your PKCS#11 device
+# to run this sample.
+#
+# WARNING: Unix only. Currently, TLS integration with PKCS#11 is only available on Unix devices.
 
 parser = argparse.ArgumentParser(description="Send and receive messages through and MQTT connection.")
 parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpoint, not including a port. " +
