@@ -249,6 +249,61 @@ def mtls_from_bytes(cert_bytes, pri_key_bytes, **kwargs) -> awscrt.mqtt.Connecti
     return _builder(tls_ctx_options, **kwargs)
 
 
+def mtls_with_pkcs11(*,
+                     pkcs11_lib: awscrt.io.Pkcs11Lib,
+                     user_pin: str,
+                     slot_id: int = None,
+                     token_label: str = None,
+                     private_key_label: str = None,
+                     cert_filepath: str = None,
+                     cert_bytes=None,
+                     **kwargs) -> awscrt.mqtt.Connection:
+    """
+    This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT,
+    using a PKCS#11 library for private key operations.
+
+    This function takes all :mod:`common arguments<awsiot.mqtt_connection_builder>`
+    described at the top of this doc, as well as...
+
+    Keyword Args:
+        pkcs11_lib (awscrt.io.Pkcs11Lib): Use this PKCS#11 library
+
+        user_pin (Optional[str]): User PIN, for logging into the PKCS#11 token.
+            Pass `None` to log into a token with a "protected authentication path".
+
+        slot_id (Optional[int]): ID of slot containing PKCS#11 token.
+            If not specified, the token will be chosen based on other criteria (such as token label).
+
+        token_label (Optional[str]): Label of the PKCS#11 token to use.
+            If not specified, the token will be chosen based on other criteria (such as slot ID).
+
+        private_key_label (Optional[str]): Label of private key object on PKCS#11 token.
+            If not specified, the key will be chosen based on other criteria
+            (such as being the only available private key on the token).
+
+        cert_filepath (Optional[str]): Use this X.509 certificate (file on disk).
+            The certificate must be PEM-formatted. The certificate may be
+            specified by other means instead (ex: `cert_file_contents`)
+
+        cert_bytes (Optional[bytes-like object]):
+            Use this X.509 certificate (contents in memory).
+            The certificate must be PEM-formatted. The certificate may be
+            specified by other means instead (ex: `cert_file_path`)
+    """
+    _check_required_kwargs(**kwargs)
+
+    tls_ctx_options = awscrt.io.TlsContextOptions.create_client_with_mtls_pkcs11(
+        pkcs11_lib=pkcs11_lib,
+        user_pin=user_pin,
+        slot_id=slot_id,
+        token_label=token_label,
+        private_key_label=private_key_label,
+        cert_file_path=cert_filepath,
+        cert_file_contents=cert_bytes)
+
+    return _builder(tls_ctx_options, **kwargs)
+
+
 def websockets_with_default_aws_signing(
         region,
         credentials_provider,
