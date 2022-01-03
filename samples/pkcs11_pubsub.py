@@ -24,12 +24,12 @@ parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpo
                                                       "Ex: \"abcd123456wxyz-ats.iot.us-east-1.amazonaws.com\"")
 parser.add_argument('--port', type=int, help="Specify port. AWS IoT supports 443 and 8883. (default: auto)")
 parser.add_argument('--cert', required=True, help="File path to your client certificate, in PEM format.")
-parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. (default: None)")
 parser.add_argument('--pkcs11-lib', required=True, help="Path to PKCS#11 library.")
 parser.add_argument('--pin', required=True, help="User PIN for logging into PKCS#11 token.")
 parser.add_argument('--token-label', help="Label of PKCS#11 token to use. (default: None) ")
 parser.add_argument('--slot-id', help="Slot ID containing PKCS#11 token to use. (default: None)")
 parser.add_argument('--key-label', help="Label of private key on the PKCS#11 token. (default: None)")
+parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. (default: None)")
 parser.add_argument('--client-id', default="test-" + str(uuid4()),
                     help="Client ID for MQTT connection. (default: 'test-*')")
 parser.add_argument('--topic', default="test/topic",
@@ -58,23 +58,6 @@ def on_connection_interrupted(connection, error, **kwargs):
 def on_connection_resumed(connection, return_code, session_present, **kwargs):
     # Callback when an interrupted connection is re-established.
     print("Connection resumed. return_code: {} session_present: {}".format(return_code, session_present))
-
-    if return_code == mqtt.ConnectReturnCode.ACCEPTED and not session_present:
-        print("Session did not persist. Resubscribing to existing topics...")
-        resubscribe_future, _ = connection.resubscribe_existing_topics()
-
-        # Cannot synchronously wait for resubscribe result because we're on the connection's event-loop thread,
-        # evaluate result with a callback instead.
-        resubscribe_future.add_done_callback(on_resubscribe_complete)
-
-
-def on_resubscribe_complete(resubscribe_future):
-    resubscribe_results = resubscribe_future.result()
-    print("Resubscribe results: {}".format(resubscribe_results))
-
-    for topic, qos in resubscribe_results['topics']:
-        if qos is None:
-            sys.exit("Server rejected resubscribe to topic: {}".format(topic))
 
 
 # Callback when the subscribed topic receives a message
@@ -113,7 +96,7 @@ if __name__ == '__main__':
         on_connection_resumed=on_connection_resumed,
         client_id=args.client_id,
         clean_session=False,
-        keep_alive_secs=30,)
+        keep_alive_secs=30)
 
     print("Connecting to {} with client ID '{}'...".format(
         args.endpoint, args.client_id))
