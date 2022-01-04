@@ -75,9 +75,8 @@ if __name__ == '__main__':
     host_resolver = io.DefaultHostResolver(event_loop_group)
     client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
 
-    print(f"Loading PKCS#11 library: {args.pkcs11_lib} ...")
-    pkcs11_lib = io.Pkcs11Lib(file=args.pkcs11_lib,
-                              behavior=io.Pkcs11Lib.InitializeFinalizeBehavior.STRICT)
+    print(f"Loading PKCS#11 library '{args.pkcs11_lib}' ...")
+    pkcs11_lib = io.Pkcs11Lib(file=args.pkcs11_lib)
     print("Loaded!")
 
     # Create MQTT connection
