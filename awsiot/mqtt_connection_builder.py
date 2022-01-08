@@ -265,30 +265,30 @@ def mtls_with_pkcs11(*,
     This function takes all :mod:`common arguments<awsiot.mqtt_connection_builder>`
     described at the top of this doc, as well as...
 
-    Keyword Args:
-        pkcs11_lib (awscrt.io.Pkcs11Lib): Use this PKCS#11 library
+    Args:
+        pkcs11_lib: Use this PKCS#11 library
 
-        user_pin (Optional[str]): User PIN, for logging into the PKCS#11 token.
+        user_pin: User PIN, for logging into the PKCS#11 token.
             Pass `None` to log into a token with a "protected authentication path".
 
-        slot_id (Optional[int]): ID of slot containing PKCS#11 token.
+        slot_id: ID of slot containing PKCS#11 token.
             If not specified, the token will be chosen based on other criteria (such as token label).
 
-        token_label (Optional[str]): Label of the PKCS#11 token to use.
+        token_label: Label of the PKCS#11 token to use.
             If not specified, the token will be chosen based on other criteria (such as slot ID).
 
-        private_key_label (Optional[str]): Label of private key object on PKCS#11 token.
+        private_key_label: Label of private key object on PKCS#11 token.
             If not specified, the key will be chosen based on other criteria
             (such as being the only available private key on the token).
 
-        cert_filepath (Optional[str]): Use this X.509 certificate (file on disk).
+        cert_filepath: Use this X.509 certificate (file on disk).
             The certificate must be PEM-formatted. The certificate may be
-            specified by other means instead (ex: `cert_file_contents`)
+            specified by other means instead (ex: `cert_bytes`)
 
         cert_bytes (Optional[bytes-like object]):
             Use this X.509 certificate (contents in memory).
             The certificate must be PEM-formatted. The certificate may be
-            specified by other means instead (ex: `cert_file_path`)
+            specified by other means instead (ex: `cert_filepath`)
     """
     _check_required_kwargs(**kwargs)
 
