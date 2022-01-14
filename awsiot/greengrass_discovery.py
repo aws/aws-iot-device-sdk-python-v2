@@ -17,7 +17,8 @@ class DiscoveryClient:
         bootstrap: Client bootstrap
         socket_options: Socket options
         tls_context: Client TLS context
-        region: AWS region
+        region: AWS region (not used if gg_server_name is set)
+        gg_server_name: optional full server name
     """
     __slots__ = [
         '_bootstrap',
@@ -34,16 +35,23 @@ class DiscoveryClient:
             bootstrap: ClientBootstrap,
             socket_options: SocketOptions,
             tls_context: ClientTlsContext,
-            region: str):
+            region: str,
+            gg_server_name: str = None):
         assert isinstance(bootstrap, ClientBootstrap)
         assert isinstance(socket_options, SocketOptions)
         assert isinstance(tls_context, ClientTlsContext)
         assert isinstance(region, str)
+        if gg_server_name is not None: 
+            assert isinstance(gg_server_name, str)
 
         self._bootstrap = bootstrap
         self._socket_options = socket_options
         self._region = region
-        self._gg_server_name = 'greengrass-ats.iot.{}.amazonaws.com'.format(region)
+        if gg_server_name is None:
+            self._gg_server_name = 'greengrass-ats.iot.{}.amazonaws.com'.format(region)
+        else:
+            self._gg_server_name = gg_server_name
+
         self._tls_connection_options = tls_context.new_connection_options()
         self._tls_connection_options.set_server_name(self._gg_server_name)
         self.port = 8443
