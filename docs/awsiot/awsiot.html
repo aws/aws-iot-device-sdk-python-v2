@@ -54,8 +54,8 @@
 <span id="awsiot"></span><h1>awsiot<a class="headerlink" href="#module-awsiot" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="awsiot.MqttServiceClient">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.</span></span><span class="sig-name descname"><span class="pre">MqttServiceClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mqtt_connection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.MqttServiceClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.</span></span><span class="sig-name descname"><span class="pre">MqttServiceClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mqtt_connection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.MqttServiceClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class for an AWS MQTT Service Client</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -64,7 +64,7 @@
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="awsiot.MqttServiceClient.mqtt_connection">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">mqtt_connection</span></span><em class="property"><span class="pre">:</span> <span class="pre">awscrt.mqtt.Connection</span></em><a class="headerlink" href="#awsiot.MqttServiceClient.mqtt_connection" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mqtt_connection</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><span class="pre">awscrt.mqtt.Connection</span></a></em><a class="headerlink" href="#awsiot.MqttServiceClient.mqtt_connection" title="Permalink to this definition">¶</a></dt>
 <dd><p>MQTT connection used by this client</p>
 </dd></dl>
 
@@ -74,7 +74,7 @@
 <dd><p>Tell the MQTT server to stop sending messages to this topic.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>topic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Topic to unsubscribe from</p>
+<dd class="field-odd"><p><strong>topic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Topic to unsubscribe from</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><cite>Future</cite> whose result will be <cite>None</cite> when the server
@@ -90,8 +90,8 @@ has acknowledged the unsubscribe.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="awsiot.ModeledClass">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.</span></span><span class="sig-name descname"><span class="pre">ModeledClass</span></span><a class="headerlink" href="#awsiot.ModeledClass" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.</span></span><span class="sig-name descname"><span class="pre">ModeledClass</span></span><a class="headerlink" href="#awsiot.ModeledClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base for input/output classes generated from an AWS service model.</p>
 </dd></dl>
 
@@ -121,7 +121,7 @@ has acknowledged the unsubscribe.</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -151,8 +151,8 @@ has acknowledged the unsubscribe.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Amazon Web Services, Inc.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+        &#169; Copyright 2022, Amazon Web Services, Inc.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
     </div>
   </body>
 </html>

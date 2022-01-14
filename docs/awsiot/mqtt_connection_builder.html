@@ -145,8 +145,8 @@ described at the top of this doc, as well as…</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cert_filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path to certificate file.</p></li>
-<li><p><strong>pri_key_filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path to private key file.</p></li>
+<li><p><strong>cert_filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Path to certificate file.</p></li>
+<li><p><strong>pri_key_filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Path to private key file.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -165,8 +165,42 @@ described at the top of this doc, as well as…</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cert_bytes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><em>bytes</em></a>) – Certificate file bytes.</p></li>
-<li><p><strong>pri_key_bytes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><em>bytes</em></a>) – Private key bytes.</p></li>
+<li><p><strong>cert_bytes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><em>bytes</em></a>) – Certificate file bytes.</p></li>
+<li><p><strong>pri_key_bytes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><em>bytes</em></a>) – Private key bytes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)">awscrt.mqtt.Connection</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="awsiot.mqtt_connection_builder.mtls_with_pkcs11">
+<span class="sig-prename descclassname"><span class="pre">awsiot.mqtt_connection_builder.</span></span><span class="sig-name descname"><span class="pre">mtls_with_pkcs11</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkcs11_lib</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slot_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.mqtt_connection_builder.mtls_with_pkcs11" title="Permalink to this definition">¶</a></dt>
+<dd><p>This builder creates an <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Connection</span></code></a>, configured for an mTLS MQTT connection to AWS IoT,
+using a PKCS#11 library for private key operations.</p>
+<p>This function takes all <a class="reference internal" href="#module-awsiot.mqtt_connection_builder" title="awsiot.mqtt_connection_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span> <span class="pre">arguments</span></code></a>
+described at the top of this doc, as well as…</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pkcs11_lib</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.Pkcs11Lib" title="(in awscrt)"><em>awscrt.io.Pkcs11Lib</em></a>) – Use this PKCS#11 library</p></li>
+<li><p><strong>user_pin</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – User PIN, for logging into the PKCS#11 token.
+Pass <cite>None</cite> to log into a token with a “protected authentication path”.</p></li>
+<li><p><strong>slot_id</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>]</em>) – ID of slot containing PKCS#11 token.
+If not specified, the token will be chosen based on other criteria (such as token label).</p></li>
+<li><p><strong>token_label</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – Label of the PKCS#11 token to use.
+If not specified, the token will be chosen based on other criteria (such as slot ID).</p></li>
+<li><p><strong>private_key_label</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – Label of private key object on PKCS#11 token.
+If not specified, the key will be chosen based on other criteria
+(such as being the only available private key on the token).</p></li>
+<li><p><strong>cert_filepath</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – Use this X.509 certificate (file on disk).
+The certificate must be PEM-formatted. The certificate may be
+specified by other means instead (ex: <cite>cert_bytes</cite>)</p></li>
+<li><p><strong>cert_bytes</strong> (<em>Optional</em><em>[</em><em>bytes-like object</em><em>]</em>) – Use this X.509 certificate (contents in memory).
+The certificate must be PEM-formatted. The certificate may be
+specified by other means instead (ex: <cite>cert_filepath</cite>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -185,7 +219,7 @@ described at the top of this doc, as well as…</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>region</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – AWS region to use when signing.</p></li>
+<li><p><strong>region</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – AWS region to use when signing.</p></li>
 <li><p><strong>credentials_provider</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/auth.html#awscrt.auth.AwsCredentialsProvider" title="(in awscrt)"><em>awscrt.auth.AwsCredentialsProvider</em></a>) – Source of AWS credentials to use when signing.</p></li>
 <li><p><strong>websocket_proxy_options</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/http.html#awscrt.http.HttpProxyOptions" title="(in awscrt)"><em>awscrt.http.HttpProxyOptions</em></a>) – Deprecated,
 for proxy settings use <cite>http_proxy_options</cite> (described in
@@ -259,7 +293,7 @@ for proxy settings use <cite>http_proxy_options</cite> (described in
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -289,8 +323,8 @@ for proxy settings use <cite>http_proxy_options</cite> (described in
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Amazon Web Services, Inc.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+        &#169; Copyright 2022, Amazon Web Services, Inc.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
     </div>
   </body>
 </html>

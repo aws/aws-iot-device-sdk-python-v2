@@ -54,8 +54,8 @@
 <span id="awsiot-greengrass-discovery"></span><h1>awsiot.greengrass_discovery<a class="headerlink" href="#module-awsiot.greengrass_discovery" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="awsiot.greengrass_discovery.DiscoveryClient">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">DiscoveryClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bootstrap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socket_options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tls_context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoveryClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">DiscoveryClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bootstrap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socket_options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tls_context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoveryClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Client which performs Greengrass discovery.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -63,7 +63,7 @@
 <li><p><strong>bootstrap</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.ClientBootstrap" title="(in awscrt)"><em>awscrt.io.ClientBootstrap</em></a>) – Client bootstrap</p></li>
 <li><p><strong>socket_options</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.SocketOptions" title="(in awscrt)"><em>awscrt.io.SocketOptions</em></a>) – Socket options</p></li>
 <li><p><strong>tls_context</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.ClientTlsContext" title="(in awscrt)"><em>awscrt.io.ClientTlsContext</em></a>) – Client TLS context</p></li>
-<li><p><strong>region</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – AWS region</p></li>
+<li><p><strong>region</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – AWS region</p></li>
 </ul>
 </dd>
 </dl>
@@ -78,7 +78,7 @@
 on success, or an exception on failure.</p>
 </dd>
 <dt class="field-even">Parameters</dt>
-<dd class="field-even"><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p>
+<dd class="field-even"><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – </p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>concurrent.futures._base.Future</p>
@@ -90,26 +90,26 @@ on success, or an exception on failure.</p>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="awsiot.greengrass_discovery.DiscoveryException">
-<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">DiscoveryException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoveryException" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">DiscoveryException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoveryException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
 <p>Discovery response was an error.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
-<li><p><strong>response_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – </p></li>
+<li><p><strong>response_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="awsiot.greengrass_discovery.DiscoveryException.http_response_code">
-<span class="sig-name descname"><span class="pre">http_response_code</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></em><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoveryException.http_response_code" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">http_response_code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></em><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoveryException.http_response_code" title="Permalink to this definition">¶</a></dt>
 <dd><p>HTTP response code</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="awsiot.greengrass_discovery.DiscoveryException.message">
-<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoveryException.message" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoveryException.message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Message</p>
 </dd></dl>
 
@@ -117,7 +117,7 @@ on success, or an exception on failure.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="awsiot.greengrass_discovery.ConnectivityInfo">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">ConnectivityInfo</span></span><a class="headerlink" href="#awsiot.greengrass_discovery.ConnectivityInfo" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">ConnectivityInfo</span></span><a class="headerlink" href="#awsiot.greengrass_discovery.ConnectivityInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
 <p>Connectivity info</p>
 <dl class="py attribute">
@@ -148,7 +148,7 @@ on success, or an exception on failure.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="awsiot.greengrass_discovery.GGCore">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">GGCore</span></span><a class="headerlink" href="#awsiot.greengrass_discovery.GGCore" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">GGCore</span></span><a class="headerlink" href="#awsiot.greengrass_discovery.GGCore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
 <p>Greengrass Core</p>
 <dl class="py attribute">
@@ -167,7 +167,7 @@ on success, or an exception on failure.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="awsiot.greengrass_discovery.GGGroup">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">GGGroup</span></span><a class="headerlink" href="#awsiot.greengrass_discovery.GGGroup" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">GGGroup</span></span><a class="headerlink" href="#awsiot.greengrass_discovery.GGGroup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
 <p>Greengrass group</p>
 <dl class="py attribute">
@@ -192,12 +192,12 @@ on success, or an exception on failure.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="awsiot.greengrass_discovery.DiscoverResponse">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">DiscoverResponse</span></span><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoverResponse" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">DiscoverResponse</span></span><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoverResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="awsiot.html#awsiot.ModeledClass" title="awsiot.ModeledClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">awsiot.ModeledClass</span></code></a></p>
 <p>Discovery response</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="awsiot.greengrass_discovery.DiscoverResponse.gg_groups">
-<span class="sig-name descname"><span class="pre">gg_groups</span></span><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoverResponse.gg_groups" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">gg_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#awsiot.greengrass_discovery.GGGroup" title="awsiot.greengrass_discovery.GGGroup"><span class="pre">awsiot.greengrass_discovery.GGGroup</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoverResponse.gg_groups" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of <a class="reference internal" href="#awsiot.greengrass_discovery.GGGroup" title="awsiot.greengrass_discovery.GGGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">GGGroup</span></code></a></p>
 </dd></dl>
 
@@ -229,7 +229,7 @@ on success, or an exception on failure.</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -259,8 +259,8 @@ on success, or an exception on failure.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Amazon Web Services, Inc.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+        &#169; Copyright 2022, Amazon Web Services, Inc.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
     </div>
   </body>
 </html>
