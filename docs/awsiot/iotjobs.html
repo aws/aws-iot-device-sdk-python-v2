@@ -165,7 +165,7 @@ exception if the request cannot be published.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest" title="awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest"><em>awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest</em></a>) – <cite>DescribeJobExecutionSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionResponse" title="awsiot.iotjobs.DescribeJobExecutionResponse"><em>awsiot.iotjobs.DescribeJobExecutionResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionResponse" title="awsiot.iotjobs.DescribeJobExecutionResponse"><em>awsiot.iotjobs.DescribeJobExecutionResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>DescribeJobExecutionResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -178,7 +178,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -193,7 +193,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest" title="awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest"><em>awsiot.iotjobs.DescribeJobExecutionSubscriptionRequest</em></a>) – <cite>DescribeJobExecutionSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>RejectedError</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -206,7 +206,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -221,7 +221,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest" title="awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest"><em>awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest</em></a>) – <cite>GetPendingJobExecutionsSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse" title="awsiot.iotjobs.GetPendingJobExecutionsResponse"><em>awsiot.iotjobs.GetPendingJobExecutionsResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsResponse" title="awsiot.iotjobs.GetPendingJobExecutionsResponse"><em>awsiot.iotjobs.GetPendingJobExecutionsResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>GetPendingJobExecutionsResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -234,7 +234,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -249,7 +249,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest" title="awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest"><em>awsiot.iotjobs.GetPendingJobExecutionsSubscriptionRequest</em></a>) – <cite>GetPendingJobExecutionsSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>RejectedError</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -262,7 +262,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -277,7 +277,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest" title="awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest"><em>awsiot.iotjobs.JobExecutionsChangedSubscriptionRequest</em></a>) – <cite>JobExecutionsChangedSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionsChangedEvent" title="awsiot.iotjobs.JobExecutionsChangedEvent"><em>awsiot.iotjobs.JobExecutionsChangedEvent</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionsChangedEvent" title="awsiot.iotjobs.JobExecutionsChangedEvent"><em>awsiot.iotjobs.JobExecutionsChangedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>JobExecutionsChangedEvent</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -290,7 +290,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -304,7 +304,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest" title="awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest"><em>awsiot.iotjobs.NextJobExecutionChangedSubscriptionRequest</em></a>) – <cite>NextJobExecutionChangedSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.NextJobExecutionChangedEvent" title="awsiot.iotjobs.NextJobExecutionChangedEvent"><em>awsiot.iotjobs.NextJobExecutionChangedEvent</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.NextJobExecutionChangedEvent" title="awsiot.iotjobs.NextJobExecutionChangedEvent"><em>awsiot.iotjobs.NextJobExecutionChangedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>NextJobExecutionChangedEvent</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -317,7 +317,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -332,7 +332,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest" title="awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest"><em>awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest</em></a>) – <cite>StartNextPendingJobExecutionSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.StartNextJobExecutionResponse" title="awsiot.iotjobs.StartNextJobExecutionResponse"><em>awsiot.iotjobs.StartNextJobExecutionResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.StartNextJobExecutionResponse" title="awsiot.iotjobs.StartNextJobExecutionResponse"><em>awsiot.iotjobs.StartNextJobExecutionResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>StartNextJobExecutionResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -345,7 +345,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -360,7 +360,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest" title="awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest"><em>awsiot.iotjobs.StartNextPendingJobExecutionSubscriptionRequest</em></a>) – <cite>StartNextPendingJobExecutionSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>RejectedError</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -373,7 +373,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -388,7 +388,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest" title="awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest"><em>awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest</em></a>) – <cite>UpdateJobExecutionSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionResponse" title="awsiot.iotjobs.UpdateJobExecutionResponse"><em>awsiot.iotjobs.UpdateJobExecutionResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionResponse" title="awsiot.iotjobs.UpdateJobExecutionResponse"><em>awsiot.iotjobs.UpdateJobExecutionResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>UpdateJobExecutionResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -401,7 +401,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -416,7 +416,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest" title="awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest"><em>awsiot.iotjobs.UpdateJobExecutionSubscriptionRequest</em></a>) – <cite>UpdateJobExecutionSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotjobs.RejectedError" title="awsiot.iotjobs.RejectedError"><em>awsiot.iotjobs.RejectedError</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>RejectedError</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -429,7 +429,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -646,8 +646,8 @@ may arrive before the subscription is acknowledged.</p>
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – A client token used to correlate requests and responses.</p></li>
-<li><p><strong>in_progress_jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><em>typing.List</em></a><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary"><em>JobExecutionSummary</em></a><em>]</em>) – A list of JobExecutionSummary objects with status IN_PROGRESS.</p></li>
-<li><p><strong>queued_jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><em>typing.List</em></a><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary"><em>JobExecutionSummary</em></a><em>]</em>) – A list of JobExecutionSummary objects with status QUEUED.</p></li>
+<li><p><strong>in_progress_jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary"><em>JobExecutionSummary</em></a><em>]</em>) – A list of JobExecutionSummary objects with status IN_PROGRESS.</p></li>
+<li><p><strong>queued_jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary"><em>JobExecutionSummary</em></a><em>]</em>) – A list of JobExecutionSummary objects with status QUEUED.</p></li>
 <li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.10)"><em>datetime.datetime</em></a>) – The time when the message was sent.</p></li>
 </ul>
 </dd>
@@ -669,7 +669,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>A list of JobExecutionSummary objects with status IN_PROGRESS.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)">typing.List</a>[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a>[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -680,7 +680,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>A list of JobExecutionSummary objects with status QUEUED.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)">typing.List</a>[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a>[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -732,13 +732,13 @@ may arrive before the subscription is acknowledged.</p>
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>execution_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – A number that identifies a job execution on a device. It can be used later in commands that return or update job execution information.</p></li>
-<li><p><strong>job_document</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>typing.Any</em></a><em>]</em>) – The content of the job document.</p></li>
+<li><p><strong>job_document</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a><em>]</em>) – The content of the job document.</p></li>
 <li><p><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The unique identifier you assigned to this job when it was created.</p></li>
 <li><p><strong>last_updated_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.10)"><em>datetime.datetime</em></a>) – The time when the job execution started.</p></li>
 <li><p><strong>queued_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.10)"><em>datetime.datetime</em></a>) – The time when the job execution was enqueued.</p></li>
 <li><p><strong>started_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.10)"><em>datetime.datetime</em></a>) – The time when the job execution started.</p></li>
 <li><p><strong>status</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The status of the job execution. Can be one of: QUEUED, IN_PROGRESS, FAILED, SUCCEEDED, CANCELED, TIMED_OUT, REJECTED, or REMOVED.</p></li>
-<li><p><strong>status_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – A collection of name-value pairs that describe the status of the job execution.</p></li>
+<li><p><strong>status_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – A collection of name-value pairs that describe the status of the job execution.</p></li>
 <li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the thing that is executing the job.</p></li>
 <li><p><strong>version_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The version of the job execution. Job execution versions are incremented each time they are updated by a device.</p></li>
 </ul>
@@ -761,7 +761,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>The content of the job document.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -827,7 +827,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>A collection of name-value pairs that describe the status of the job execution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -866,7 +866,7 @@ may arrive before the subscription is acknowledged.</p>
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>status</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The status of the job execution. Can be one of: QUEUED, IN_PROGRESS, FAILED, SUCCEEDED, CANCELED, TIMED_OUT, REJECTED, or REMOVED.</p></li>
-<li><p><strong>status_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – A collection of name-value pairs that describe the status of the job execution.</p></li>
+<li><p><strong>status_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – A collection of name-value pairs that describe the status of the job execution.</p></li>
 <li><p><strong>version_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The version of the job execution. Job execution versions are incremented each time they are updated by a device.</p></li>
 </ul>
 </dd>
@@ -888,7 +888,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>A collection of name-value pairs that describe the status of the job execution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1001,7 +1001,7 @@ may arrive before the subscription is acknowledged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><em>typing.List</em></a><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary"><em>JobExecutionSummary</em></a><em>]</em><em>]</em>) – Map from JobStatus to a list of Jobs transitioning to that status.</p></li>
+<li><p><strong>jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a><em>[</em><a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary"><em>JobExecutionSummary</em></a><em>]</em><em>]</em>) – Map from JobStatus to a list of Jobs transitioning to that status.</p></li>
 <li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.10)"><em>datetime.datetime</em></a>) – The time when the message was sent.</p></li>
 </ul>
 </dd>
@@ -1012,7 +1012,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>Map from JobStatus to a list of Jobs transitioning to that status.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)">typing.List</a>[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a>[<a class="reference internal" href="#awsiot.iotjobs.JobExecutionSummary" title="awsiot.iotjobs.JobExecutionSummary">JobExecutionSummary</a>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1250,7 +1250,7 @@ may arrive before the subscription is acknowledged.</p>
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Optional. A client token used to correlate requests and responses. Enter an arbitrary value here and it is reflected in the response.</p></li>
-<li><p><strong>status_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – A collection of name-value pairs that describe the status of the job execution. If not specified, the statusDetails are unchanged.</p></li>
+<li><p><strong>status_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – A collection of name-value pairs that describe the status of the job execution. If not specified, the statusDetails are unchanged.</p></li>
 <li><p><strong>step_timeout_in_minutes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Specifies the amount of time this device has to finish execution of this job.</p></li>
 <li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – IoT Thing the request is relative to.</p></li>
 </ul>
@@ -1273,7 +1273,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>A collection of name-value pairs that describe the status of the job execution. If not specified, the statusDetails are unchanged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1342,7 +1342,7 @@ may arrive before the subscription is acknowledged.</p>
 <li><p><strong>include_job_execution_state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Optional. When included and set to true, the response contains the JobExecutionState field. The default is false.</p></li>
 <li><p><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The unique identifier assigned to this job when it was created.</p></li>
 <li><p><strong>status</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The new status for the job execution (IN_PROGRESS, FAILED, SUCCEEDED, or REJECTED). This must be specified on every update.</p></li>
-<li><p><strong>status_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – A collection of name-value pairs that describe the status of the job execution. If not specified, the statusDetails are unchanged.</p></li>
+<li><p><strong>status_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – A collection of name-value pairs that describe the status of the job execution. If not specified, the statusDetails are unchanged.</p></li>
 <li><p><strong>step_timeout_in_minutes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Specifies the amount of time this device has to finish execution of this job. If the job execution status is not set to a terminal state before this timer expires, or before the timer is reset (by again calling UpdateJobExecution, setting the status to IN_PROGRESS and specifying a new timeout value in this field) the job execution status is set to TIMED_OUT. Setting or resetting this timeout has no effect on the job execution timeout that might have been specified when the job was created (by using CreateJob with the timeoutConfig).</p></li>
 <li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the thing associated with the device.</p></li>
 </ul>
@@ -1431,7 +1431,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>A collection of name-value pairs that describe the status of the job execution. If not specified, the statusDetails are unchanged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1471,7 +1471,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – A client token used to correlate requests and responses.</p></li>
 <li><p><strong>execution_state</strong> (<a class="reference internal" href="#awsiot.iotjobs.JobExecutionState" title="awsiot.iotjobs.JobExecutionState"><em>JobExecutionState</em></a>) – Contains data about the state of a job execution.</p></li>
-<li><p><strong>job_document</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>typing.Any</em></a><em>]</em>) – A UTF-8 encoded JSON document that contains information that your devices need to perform the job.</p></li>
+<li><p><strong>job_document</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a><em>]</em>) – A UTF-8 encoded JSON document that contains information that your devices need to perform the job.</p></li>
 <li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.10)"><em>datetime.datetime</em></a>) – The time when the message was sent.</p></li>
 </ul>
 </dd>
@@ -1504,7 +1504,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>A UTF-8 encoded JSON document that contains information that your devices need to perform the job.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1677,12 +1677,16 @@ may arrive before the subscription is acknowledged.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="iotidentity.html"
-                        title="previous chapter">awsiot.iotidentity</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="iotshadow.html"
-                        title="next chapter">awsiot.iotshadow</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="iotidentity.html"
+                          title="previous chapter">awsiot.iotidentity</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="iotshadow.html"
+                          title="next chapter">awsiot.iotshadow</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -1725,7 +1729,7 @@ may arrive before the subscription is acknowledged.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Amazon Web Services, Inc.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
   </body>
 </html>
