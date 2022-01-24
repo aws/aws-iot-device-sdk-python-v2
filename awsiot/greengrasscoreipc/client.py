@@ -15,7 +15,7 @@ class CreateDebugPasswordOperation(model._CreateDebugPasswordOperation):
     Create with GreengrassCoreIPCClient.new_create_debug_password()
     """
 
-    def activate(self, request: model.CreateDebugPasswordRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.CreateDebugPasswordRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial CreateDebugPasswordRequest message.
 
@@ -25,14 +25,14 @@ class CreateDebugPasswordOperation(model._CreateDebugPasswordOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.CreateDebugPasswordResponse]
         """
         Returns a Future which completes with a result of CreateDebugPasswordResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -49,7 +49,7 @@ class CreateLocalDeploymentOperation(model._CreateLocalDeploymentOperation):
     Create with GreengrassCoreIPCClient.new_create_local_deployment()
     """
 
-    def activate(self, request: model.CreateLocalDeploymentRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.CreateLocalDeploymentRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial CreateLocalDeploymentRequest message.
 
@@ -59,14 +59,14 @@ class CreateLocalDeploymentOperation(model._CreateLocalDeploymentOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.CreateLocalDeploymentResponse]
         """
         Returns a Future which completes with a result of CreateLocalDeploymentResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -83,7 +83,7 @@ class DeferComponentUpdateOperation(model._DeferComponentUpdateOperation):
     Create with GreengrassCoreIPCClient.new_defer_component_update()
     """
 
-    def activate(self, request: model.DeferComponentUpdateRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.DeferComponentUpdateRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial DeferComponentUpdateRequest message.
 
@@ -93,14 +93,14 @@ class DeferComponentUpdateOperation(model._DeferComponentUpdateOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.DeferComponentUpdateResponse]
         """
         Returns a Future which completes with a result of DeferComponentUpdateResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -117,7 +117,7 @@ class DeleteThingShadowOperation(model._DeleteThingShadowOperation):
     Create with GreengrassCoreIPCClient.new_delete_thing_shadow()
     """
 
-    def activate(self, request: model.DeleteThingShadowRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.DeleteThingShadowRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial DeleteThingShadowRequest message.
 
@@ -127,14 +127,14 @@ class DeleteThingShadowOperation(model._DeleteThingShadowOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.DeleteThingShadowResponse]
         """
         Returns a Future which completes with a result of DeleteThingShadowResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -151,7 +151,7 @@ class GetComponentDetailsOperation(model._GetComponentDetailsOperation):
     Create with GreengrassCoreIPCClient.new_get_component_details()
     """
 
-    def activate(self, request: model.GetComponentDetailsRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.GetComponentDetailsRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial GetComponentDetailsRequest message.
 
@@ -161,14 +161,14 @@ class GetComponentDetailsOperation(model._GetComponentDetailsOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.GetComponentDetailsResponse]
         """
         Returns a Future which completes with a result of GetComponentDetailsResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -185,7 +185,7 @@ class GetConfigurationOperation(model._GetConfigurationOperation):
     Create with GreengrassCoreIPCClient.new_get_configuration()
     """
 
-    def activate(self, request: model.GetConfigurationRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.GetConfigurationRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial GetConfigurationRequest message.
 
@@ -195,14 +195,14 @@ class GetConfigurationOperation(model._GetConfigurationOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.GetConfigurationResponse]
         """
         Returns a Future which completes with a result of GetConfigurationResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -219,7 +219,7 @@ class GetLocalDeploymentStatusOperation(model._GetLocalDeploymentStatusOperation
     Create with GreengrassCoreIPCClient.new_get_local_deployment_status()
     """
 
-    def activate(self, request: model.GetLocalDeploymentStatusRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.GetLocalDeploymentStatusRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial GetLocalDeploymentStatusRequest message.
 
@@ -229,14 +229,14 @@ class GetLocalDeploymentStatusOperation(model._GetLocalDeploymentStatusOperation
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.GetLocalDeploymentStatusResponse]
         """
         Returns a Future which completes with a result of GetLocalDeploymentStatusResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -253,7 +253,7 @@ class GetSecretValueOperation(model._GetSecretValueOperation):
     Create with GreengrassCoreIPCClient.new_get_secret_value()
     """
 
-    def activate(self, request: model.GetSecretValueRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.GetSecretValueRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial GetSecretValueRequest message.
 
@@ -263,14 +263,14 @@ class GetSecretValueOperation(model._GetSecretValueOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.GetSecretValueResponse]
         """
         Returns a Future which completes with a result of GetSecretValueResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -287,7 +287,7 @@ class GetThingShadowOperation(model._GetThingShadowOperation):
     Create with GreengrassCoreIPCClient.new_get_thing_shadow()
     """
 
-    def activate(self, request: model.GetThingShadowRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.GetThingShadowRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial GetThingShadowRequest message.
 
@@ -297,14 +297,14 @@ class GetThingShadowOperation(model._GetThingShadowOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.GetThingShadowResponse]
         """
         Returns a Future which completes with a result of GetThingShadowResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -321,7 +321,7 @@ class ListComponentsOperation(model._ListComponentsOperation):
     Create with GreengrassCoreIPCClient.new_list_components()
     """
 
-    def activate(self, request: model.ListComponentsRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.ListComponentsRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial ListComponentsRequest message.
 
@@ -331,14 +331,14 @@ class ListComponentsOperation(model._ListComponentsOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.ListComponentsResponse]
         """
         Returns a Future which completes with a result of ListComponentsResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -355,7 +355,7 @@ class ListLocalDeploymentsOperation(model._ListLocalDeploymentsOperation):
     Create with GreengrassCoreIPCClient.new_list_local_deployments()
     """
 
-    def activate(self, request: model.ListLocalDeploymentsRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.ListLocalDeploymentsRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial ListLocalDeploymentsRequest message.
 
@@ -365,14 +365,14 @@ class ListLocalDeploymentsOperation(model._ListLocalDeploymentsOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.ListLocalDeploymentsResponse]
         """
         Returns a Future which completes with a result of ListLocalDeploymentsResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -389,7 +389,7 @@ class ListNamedShadowsForThingOperation(model._ListNamedShadowsForThingOperation
     Create with GreengrassCoreIPCClient.new_list_named_shadows_for_thing()
     """
 
-    def activate(self, request: model.ListNamedShadowsForThingRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.ListNamedShadowsForThingRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial ListNamedShadowsForThingRequest message.
 
@@ -399,14 +399,14 @@ class ListNamedShadowsForThingOperation(model._ListNamedShadowsForThingOperation
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.ListNamedShadowsForThingResponse]
         """
         Returns a Future which completes with a result of ListNamedShadowsForThingResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -423,7 +423,7 @@ class PauseComponentOperation(model._PauseComponentOperation):
     Create with GreengrassCoreIPCClient.new_pause_component()
     """
 
-    def activate(self, request: model.PauseComponentRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.PauseComponentRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial PauseComponentRequest message.
 
@@ -433,14 +433,14 @@ class PauseComponentOperation(model._PauseComponentOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.PauseComponentResponse]
         """
         Returns a Future which completes with a result of PauseComponentResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -457,7 +457,7 @@ class PublishToIoTCoreOperation(model._PublishToIoTCoreOperation):
     Create with GreengrassCoreIPCClient.new_publish_to_iot_core()
     """
 
-    def activate(self, request: model.PublishToIoTCoreRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.PublishToIoTCoreRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial PublishToIoTCoreRequest message.
 
@@ -467,14 +467,14 @@ class PublishToIoTCoreOperation(model._PublishToIoTCoreOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.PublishToIoTCoreResponse]
         """
         Returns a Future which completes with a result of PublishToIoTCoreResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -491,7 +491,7 @@ class PublishToTopicOperation(model._PublishToTopicOperation):
     Create with GreengrassCoreIPCClient.new_publish_to_topic()
     """
 
-    def activate(self, request: model.PublishToTopicRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.PublishToTopicRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial PublishToTopicRequest message.
 
@@ -501,14 +501,14 @@ class PublishToTopicOperation(model._PublishToTopicOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.PublishToTopicResponse]
         """
         Returns a Future which completes with a result of PublishToTopicResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -525,7 +525,7 @@ class RestartComponentOperation(model._RestartComponentOperation):
     Create with GreengrassCoreIPCClient.new_restart_component()
     """
 
-    def activate(self, request: model.RestartComponentRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.RestartComponentRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial RestartComponentRequest message.
 
@@ -535,14 +535,14 @@ class RestartComponentOperation(model._RestartComponentOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.RestartComponentResponse]
         """
         Returns a Future which completes with a result of RestartComponentResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -559,7 +559,7 @@ class ResumeComponentOperation(model._ResumeComponentOperation):
     Create with GreengrassCoreIPCClient.new_resume_component()
     """
 
-    def activate(self, request: model.ResumeComponentRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.ResumeComponentRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial ResumeComponentRequest message.
 
@@ -569,14 +569,14 @@ class ResumeComponentOperation(model._ResumeComponentOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.ResumeComponentResponse]
         """
         Returns a Future which completes with a result of ResumeComponentResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -593,7 +593,7 @@ class SendConfigurationValidityReportOperation(model._SendConfigurationValidityR
     Create with GreengrassCoreIPCClient.new_send_configuration_validity_report()
     """
 
-    def activate(self, request: model.SendConfigurationValidityReportRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.SendConfigurationValidityReportRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial SendConfigurationValidityReportRequest message.
 
@@ -603,14 +603,14 @@ class SendConfigurationValidityReportOperation(model._SendConfigurationValidityR
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.SendConfigurationValidityReportResponse]
         """
         Returns a Future which completes with a result of SendConfigurationValidityReportResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -627,7 +627,7 @@ class StopComponentOperation(model._StopComponentOperation):
     Create with GreengrassCoreIPCClient.new_stop_component()
     """
 
-    def activate(self, request: model.StopComponentRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.StopComponentRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial StopComponentRequest message.
 
@@ -637,14 +637,14 @@ class StopComponentOperation(model._StopComponentOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.StopComponentResponse]
         """
         Returns a Future which completes with a result of StopComponentResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -690,7 +690,7 @@ class SubscribeToComponentUpdatesOperation(model._SubscribeToComponentUpdatesOpe
     Create with GreengrassCoreIPCClient.new_subscribe_to_component_updates()
     """
 
-    def activate(self, request: model.SubscribeToComponentUpdatesRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.SubscribeToComponentUpdatesRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial SubscribeToComponentUpdatesRequest message.
 
@@ -700,14 +700,14 @@ class SubscribeToComponentUpdatesOperation(model._SubscribeToComponentUpdatesOpe
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.SubscribeToComponentUpdatesResponse]
         """
         Returns a Future which completes with a result of SubscribeToComponentUpdatesResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -753,7 +753,7 @@ class SubscribeToConfigurationUpdateOperation(model._SubscribeToConfigurationUpd
     Create with GreengrassCoreIPCClient.new_subscribe_to_configuration_update()
     """
 
-    def activate(self, request: model.SubscribeToConfigurationUpdateRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.SubscribeToConfigurationUpdateRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial SubscribeToConfigurationUpdateRequest message.
 
@@ -763,14 +763,14 @@ class SubscribeToConfigurationUpdateOperation(model._SubscribeToConfigurationUpd
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.SubscribeToConfigurationUpdateResponse]
         """
         Returns a Future which completes with a result of SubscribeToConfigurationUpdateResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -816,7 +816,7 @@ class SubscribeToIoTCoreOperation(model._SubscribeToIoTCoreOperation):
     Create with GreengrassCoreIPCClient.new_subscribe_to_iot_core()
     """
 
-    def activate(self, request: model.SubscribeToIoTCoreRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.SubscribeToIoTCoreRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial SubscribeToIoTCoreRequest message.
 
@@ -826,14 +826,14 @@ class SubscribeToIoTCoreOperation(model._SubscribeToIoTCoreOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.SubscribeToIoTCoreResponse]
         """
         Returns a Future which completes with a result of SubscribeToIoTCoreResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -879,7 +879,7 @@ class SubscribeToTopicOperation(model._SubscribeToTopicOperation):
     Create with GreengrassCoreIPCClient.new_subscribe_to_topic()
     """
 
-    def activate(self, request: model.SubscribeToTopicRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.SubscribeToTopicRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial SubscribeToTopicRequest message.
 
@@ -889,14 +889,14 @@ class SubscribeToTopicOperation(model._SubscribeToTopicOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.SubscribeToTopicResponse]
         """
         Returns a Future which completes with a result of SubscribeToTopicResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -942,7 +942,7 @@ class SubscribeToValidateConfigurationUpdatesOperation(model._SubscribeToValidat
     Create with GreengrassCoreIPCClient.new_subscribe_to_validate_configuration_updates()
     """
 
-    def activate(self, request: model.SubscribeToValidateConfigurationUpdatesRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.SubscribeToValidateConfigurationUpdatesRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial SubscribeToValidateConfigurationUpdatesRequest message.
 
@@ -952,14 +952,14 @@ class SubscribeToValidateConfigurationUpdatesOperation(model._SubscribeToValidat
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.SubscribeToValidateConfigurationUpdatesResponse]
         """
         Returns a Future which completes with a result of SubscribeToValidateConfigurationUpdatesResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -976,7 +976,7 @@ class UpdateConfigurationOperation(model._UpdateConfigurationOperation):
     Create with GreengrassCoreIPCClient.new_update_configuration()
     """
 
-    def activate(self, request: model.UpdateConfigurationRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.UpdateConfigurationRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial UpdateConfigurationRequest message.
 
@@ -986,14 +986,14 @@ class UpdateConfigurationOperation(model._UpdateConfigurationOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.UpdateConfigurationResponse]
         """
         Returns a Future which completes with a result of UpdateConfigurationResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -1010,7 +1010,7 @@ class UpdateStateOperation(model._UpdateStateOperation):
     Create with GreengrassCoreIPCClient.new_update_state()
     """
 
-    def activate(self, request: model.UpdateStateRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.UpdateStateRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial UpdateStateRequest message.
 
@@ -1020,14 +1020,14 @@ class UpdateStateOperation(model._UpdateStateOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.UpdateStateResponse]
         """
         Returns a Future which completes with a result of UpdateStateResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -1044,7 +1044,7 @@ class UpdateThingShadowOperation(model._UpdateThingShadowOperation):
     Create with GreengrassCoreIPCClient.new_update_thing_shadow()
     """
 
-    def activate(self, request: model.UpdateThingShadowRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.UpdateThingShadowRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial UpdateThingShadowRequest message.
 
@@ -1054,14 +1054,14 @@ class UpdateThingShadowOperation(model._UpdateThingShadowOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.UpdateThingShadowResponse]
         """
         Returns a Future which completes with a result of UpdateThingShadowResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -1078,7 +1078,7 @@ class ValidateAuthorizationTokenOperation(model._ValidateAuthorizationTokenOpera
     Create with GreengrassCoreIPCClient.new_validate_authorization_token()
     """
 
-    def activate(self, request: model.ValidateAuthorizationTokenRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.ValidateAuthorizationTokenRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial ValidateAuthorizationTokenRequest message.
 
@@ -1088,14 +1088,14 @@ class ValidateAuthorizationTokenOperation(model._ValidateAuthorizationTokenOpera
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.ValidateAuthorizationTokenResponse]
         """
         Returns a Future which completes with a result of ValidateAuthorizationTokenResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -1108,6 +1108,8 @@ class ValidateAuthorizationTokenOperation(model._ValidateAuthorizationTokenOpera
 class GreengrassCoreIPCClient(rpc.Client):
     """
     Client for the GreengrassCoreIPC service.
+    There is a new V2 client available for testing in developer preview.
+    See the GreengrassCoreIPCClientV2 class.
 
     Args:
         connection: Connection that this client will use.

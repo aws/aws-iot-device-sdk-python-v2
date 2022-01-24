@@ -54,7 +54,7 @@
 <span id="awsiot-greengrass-discovery"></span><h1>awsiot.greengrass_discovery<a class="headerlink" href="#module-awsiot.greengrass_discovery" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="awsiot.greengrass_discovery.DiscoveryClient">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">DiscoveryClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bootstrap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socket_options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tls_context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoveryClient" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.greengrass_discovery.</span></span><span class="sig-name descname"><span class="pre">DiscoveryClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bootstrap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socket_options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tls_context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gg_server_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.greengrass_discovery.DiscoveryClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Client which performs Greengrass discovery.</p>
 <dl class="field-list simple">
@@ -63,7 +63,8 @@
 <li><p><strong>bootstrap</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.ClientBootstrap" title="(in awscrt)"><em>awscrt.io.ClientBootstrap</em></a>) – Client bootstrap</p></li>
 <li><p><strong>socket_options</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.SocketOptions" title="(in awscrt)"><em>awscrt.io.SocketOptions</em></a>) – Socket options</p></li>
 <li><p><strong>tls_context</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.ClientTlsContext" title="(in awscrt)"><em>awscrt.io.ClientTlsContext</em></a>) – Client TLS context</p></li>
-<li><p><strong>region</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – AWS region</p></li>
+<li><p><strong>region</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – AWS region (not used if gg_server_name is set)</p></li>
+<li><p><strong>gg_server_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional full server name</p></li>
 </ul>
 </dd>
 </dl>
@@ -212,12 +213,16 @@ on success, or an exception on failure.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="greengrasscoreipc.html"
-                        title="previous chapter">awsiot.greengrasscoreipc</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="mqtt_connection_builder.html"
-                        title="next chapter">awsiot.mqtt_connection_builder</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="greengrasscoreipc.html"
+                          title="previous chapter">awsiot.greengrasscoreipc</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="mqtt_connection_builder.html"
+                          title="next chapter">awsiot.mqtt_connection_builder</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -260,7 +265,7 @@ on success, or an exception on failure.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Amazon Web Services, Inc.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
   </body>
 </html>
