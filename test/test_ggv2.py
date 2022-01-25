@@ -44,7 +44,7 @@ class GGV2Test(TestCase):
         resp, op = c.subscribe_to_topic(topic="abc", on_stream_event=on_stream_event)
         assert resp.topic_name == "abc"
 
-        sub_handler = mock_client.new_subscribe_to_topic.call_args.args[0]
+        sub_handler = mock_client.new_subscribe_to_topic.call_args[0][0]
         sub_handler.on_stream_event(SubscriptionResponseMessage(binary_message=BinaryMessage(message="xyz")))
 
         assert subscription_fut.result().binary_message.message == "xyz".encode("utf-8")
@@ -61,7 +61,7 @@ class GGV2Test(TestCase):
         resp, op = c.subscribe_to_topic(topic="abc", stream_handler=handler())
         assert resp.topic_name == "abc"
 
-        sub_handler = mock_client.new_subscribe_to_topic.call_args.args[0]
+        sub_handler = mock_client.new_subscribe_to_topic.call_args[0][0]
         sub_handler.on_stream_event(SubscriptionResponseMessage(binary_message=BinaryMessage(message="xyz")))
 
         assert subscription_fut.result().binary_message.message == "xyz".encode("utf-8")
@@ -76,7 +76,7 @@ class GGV2Test(TestCase):
         resp, op = c.subscribe_to_topic(topic="abc", on_stream_event=on_stream_event)
         assert resp.topic_name == "abc"
 
-        sub_handler = mock_client.new_subscribe_to_topic.call_args.args[0]
+        sub_handler = mock_client.new_subscribe_to_topic.call_args[0][0]
         sub_handler.on_stream_event(SubscriptionResponseMessage(binary_message=BinaryMessage(message="xyz")))
 
         assert subscription_fut.result().binary_message.message == "xyz".encode("utf-8")
