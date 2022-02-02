@@ -1277,9 +1277,11 @@ class ShadowMetadata(awsiot.ModeledClass):
         val = payload.get('desired')
         if val is not None:
             new.desired = val
+
         val = payload.get('reported')
         if val is not None:
             new.reported = val
+
         return new
 
 class ShadowState(awsiot.ModeledClass):
@@ -1327,6 +1329,47 @@ class ShadowState(awsiot.ModeledClass):
             payload['desired'] = self.desired
         if self.reported is not None:
             payload['reported'] = self.reported
+        return payload
+
+class ShadowClearState(awsiot.ModeledClass):
+    """
+
+    (Potentially partial) clear state of an AWS IoT thing's shadow.
+
+    Used to clear all of the desired and/or reported state properties of an AWS IoT thing's shadow.
+    All attributes are None by default and may be set by keyword in the constructor.
+
+    Keyword Args:
+        clear_desired (bool): Whether to clear the desired shadow state (defaults to false)
+        clear_reported (bool): Whether to clear the reported shadow state (defaults to false)
+
+    Attributes:
+        clear_desired (bool): Whether to clear the desired shadow state (defaults to false)
+        clear_reported (bool): Whether to clear the reported shadow state (defaults to false)
+    """
+
+    __slots__ = ['clear_desired', 'clear_reported']
+
+    def __init__(self, *args, **kwargs):
+        self.clear_desired = kwargs.get('clear_desired')
+        self.clear_reported = kwargs.get('clear_reported')
+
+    @classmethod
+    def from_payload(cls, payload):
+        # type: (typing.Dict[str, typing.Any]) -> ShadowState
+        new = cls()
+        # nothing to do here - shouldn't occur
+        return new
+
+    def to_payload(self):
+        # type: () -> typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
+        if self.clear_desired is not None:
+            if self.clear_desired == True:
+                payload['desired'] = None
+        if self.clear_reported is not None:
+            if self.clear_reported == True:
+                payload['reported'] = None
         return payload
 
 class ShadowStateWithDelta(awsiot.ModeledClass):

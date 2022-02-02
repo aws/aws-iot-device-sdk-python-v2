@@ -192,7 +192,10 @@ def on_update_shadow_accepted(response):
                 return
 
         try:
-            print("Finished updating reported shadow value to '{}'.".format(response.state.reported[shadow_property])) # type: ignore
+            if (response.state.reported != None):
+                print("Finished updating reported shadow value to '{}'.".format(response.state.reported[shadow_property])) # type: ignore
+            else:
+                print ("Shadow states cleared.")
             print("Enter desired value: ") # remind user they can input new values
         except:
             exit("Updated shadow is missing the target property.")
@@ -238,14 +241,31 @@ def change_shadow_value(value):
         # any "response" messages received on the /accepted and /rejected topics
         token = str(uuid4())
 
-        request = iotshadow.UpdateShadowRequest(
-            thing_name=thing_name,
-            state=iotshadow.ShadowState(
-                reported={ shadow_property: value },
-                desired={ shadow_property: value },
-            ),
-            client_token=token,
-        )
+        # if the value is "clear_shadow" then send a ShadowClearState to clear the shadow state document
+        if (value == "clear_shadow"):
+            request = iotshadow.UpdateShadowRequest(
+                thing_name=thing_name,
+                state=iotshadow.ShadowClearState(
+                    clear_reported=True,
+                    clear_desired=True
+                ),
+                client_token=token,
+            )
+        # otherwise, send a ShadowState to update the shadow state document
+        else:
+            # if the user types none, then clear the property by setting the value to a None type
+            if (value == "none"):
+                value = None
+
+            request = iotshadow.UpdateShadowRequest(
+                thing_name=thing_name,
+                state=iotshadow.ShadowState(
+                    reported={ shadow_property: value},
+                    desired={ shadow_property: value},
+                ),
+                client_token=token,
+            )
+
         future = shadow_client.publish_update_shadow(request, mqtt.QoS.AT_LEAST_ONCE)
 
         locked_data.request_tokens.add(token)
