@@ -765,8 +765,10 @@ class DeleteNamedShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
+
         return payload
 
 class DeleteNamedShadowSubscriptionRequest(awsiot.ModeledClass):
@@ -824,8 +826,10 @@ class DeleteShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
+
         return payload
 
 class DeleteShadowResponse(awsiot.ModeledClass):
@@ -977,8 +981,10 @@ class GetNamedShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
+
         return payload
 
 class GetNamedShadowSubscriptionRequest(awsiot.ModeledClass):
@@ -1036,8 +1042,10 @@ class GetShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
+
         return payload
 
 class GetShadowResponse(awsiot.ModeledClass):
@@ -1264,7 +1272,13 @@ class ShadowMetadata(awsiot.ModeledClass):
 
     def __init__(self, *args, **kwargs):
         self.desired = kwargs.get('desired')
+        # If uninitialized, set to an empty dictionary so it is possible to set it to None after initialization to clear the property.
+        if (self.desired == None):
+            self.desired = {}
         self.reported = kwargs.get('reported')
+        # If uninitialized, set to an empty dictionary so it is possible to set it to None after initialization to clear the property.
+        if (self.reported == None):
+            self.reported = {}
 
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['desired', 'reported'], args):
@@ -1302,7 +1316,13 @@ class ShadowState(awsiot.ModeledClass):
 
     def __init__(self, *args, **kwargs):
         self.desired = kwargs.get('desired')
+        # If uninitialized, set to an empty dictionary so it is possible to set it to None after initialization to clear the property.
+        if (self.desired == None):
+            self.desired = {}
         self.reported = kwargs.get('reported')
+        # If uninitialized, set to an empty dictionary so it is possible to set it to None after initialization to clear the property.
+        if (self.reported == None):
+            self.reported = {}
 
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['desired', 'reported'], args):
@@ -1323,10 +1343,13 @@ class ShadowState(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-        if self.desired is not None:
+
+        if self.desired is not {}:
             payload['desired'] = self.desired
-        if self.reported is not None:
+
+        if self.reported is not {}:
             payload['reported'] = self.reported
+
         return payload
 
 class ShadowStateWithDelta(awsiot.ModeledClass):
@@ -1352,7 +1375,13 @@ class ShadowStateWithDelta(awsiot.ModeledClass):
     def __init__(self, *args, **kwargs):
         self.delta = kwargs.get('delta')
         self.desired = kwargs.get('desired')
+        # If uninitialized, set to an empty dictionary so it is possible to set it to None after initialization to clear the property.
+        if (self.desired == None):
+            self.desired = {}
         self.reported = kwargs.get('reported')
+        # If uninitialized, set to an empty dictionary so it is possible to set it to None after initialization to clear the property.
+        if (self.reported == None):
+            self.reported = {}
 
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['delta', 'desired', 'reported'], args):
@@ -1522,12 +1551,16 @@ class UpdateNamedShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
+
         if self.state is not None:
             payload['state'] = self.state.to_payload()
+
         if self.version is not None:
             payload['version'] = self.version
+
         return payload
 
 class UpdateNamedShadowSubscriptionRequest(awsiot.ModeledClass):
@@ -1591,12 +1624,16 @@ class UpdateShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
+
         if self.state is not None:
             payload['state'] = self.state.to_payload()
+
         if self.version is not None:
             payload['version'] = self.version
+
         return payload
 
 class UpdateShadowResponse(awsiot.ModeledClass):
