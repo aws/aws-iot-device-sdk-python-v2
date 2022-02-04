@@ -821,6 +821,9 @@ class Client:
         self._connection = connection
         self._shape_index = shape_index
 
+    def close(self) -> Future:
+        return self._connection.close()
+
     def _new_operation(self, operation_type: type, stream_handler: StreamResponseHandler = None):
         return operation_type(stream_handler, self._shape_index, self._connection)
 
