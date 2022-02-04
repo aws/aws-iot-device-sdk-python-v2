@@ -38,6 +38,12 @@ class GreengrassCoreIPCClientV2:
             executor = concurrent.futures.ThreadPoolExecutor()
         self.executor = executor
 
+    def close(self, *, executor_wait=True) -> concurrent.futures.Future:
+        fut = self.client.close()
+        if self.executor is not None:
+            self.executor.shutdown(wait=executor_wait)
+        return fut
+
     def __combine_futures(self, future1: concurrent.futures.Future,
                           future2: concurrent.futures.Future) -> concurrent.futures.Future:
         def callback(*args, **kwargs):
