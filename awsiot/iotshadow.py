@@ -1272,13 +1272,7 @@ class ShadowMetadata(awsiot.ModeledClass):
 
     def __init__(self, *args, **kwargs):
         self.desired = kwargs.get('desired')
-        # If uninitialized, set to an empty dictionary so it is possible to set it to None after initialization to clear the property.
-        if (self.desired == None):
-            self.desired = {}
         self.reported = kwargs.get('reported')
-        # If uninitialized, set to an empty dictionary so it is possible to set it to None after initialization to clear the property.
-        if (self.reported == None):
-            self.reported = {}
 
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['desired', 'reported'], args):
@@ -1309,20 +1303,21 @@ class ShadowState(awsiot.ModeledClass):
 
     Attributes:
         desired (typing.Dict[str, typing.Any]): The desired shadow state (from external services and devices).
+        desired_none_is_valid (bool): Set to true to allow desired to be None, clearing the data if sent.
+
         reported (typing.Dict[str, typing.Any]): The (last) reported shadow state from the device.
+        reported_none_is_valid (bool): Set to true to allow reported to be None, clearing the data if sent.
+
     """
 
-    __slots__ = ['desired', 'reported']
+    __slots__ = ['desired', 'desired_none_is_valid', 'reported', 'reported_none_is_valid']
 
     def __init__(self, *args, **kwargs):
         self.desired = kwargs.get('desired')
-        # If uninitialized, set to an empty dictionary so it is possible to set it to None after initialization to clear the property.
-        if (self.desired == None):
-            self.desired = {}
         self.reported = kwargs.get('reported')
-        # If uninitialized, set to an empty dictionary so it is possible to set it to None after initialization to clear the property.
-        if (self.reported == None):
-            self.reported = {}
+
+        self.desired_none_is_valid = kwargs.get('desired_none_is_valid')
+        self.reported_none_is_valid = kwargs.get('reported_none_is_valid')
 
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['desired', 'reported'], args):
@@ -1344,11 +1339,17 @@ class ShadowState(awsiot.ModeledClass):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
 
-        if self.desired is not {}:
+        if self.desired_none_is_valid is True:
             payload['desired'] = self.desired
+        else:
+            if self.desired is not None:
+                payload['desired'] = self.desired
 
-        if self.reported is not {}:
+        if self.reported_none_is_valid is True:
             payload['reported'] = self.reported
+        else:
+            if self.reported is not None:
+                payload['reported'] = self.reported
 
         return payload
 
@@ -1375,13 +1376,7 @@ class ShadowStateWithDelta(awsiot.ModeledClass):
     def __init__(self, *args, **kwargs):
         self.delta = kwargs.get('delta')
         self.desired = kwargs.get('desired')
-        # If uninitialized, set to an empty dictionary so it is possible to set it to None after initialization to clear the property.
-        if (self.desired == None):
-            self.desired = {}
         self.reported = kwargs.get('reported')
-        # If uninitialized, set to an empty dictionary so it is possible to set it to None after initialization to clear the property.
-        if (self.reported == None):
-            self.reported = {}
 
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['delta', 'desired', 'reported'], args):
