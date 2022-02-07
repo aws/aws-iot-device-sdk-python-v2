@@ -1316,8 +1316,8 @@ class ShadowState(awsiot.ModeledClass):
         self.desired = kwargs.get('desired')
         self.reported = kwargs.get('reported')
 
-        self.desired_none_is_valid = kwargs.get('desired_none_is_valid')
-        self.reported_none_is_valid = kwargs.get('reported_none_is_valid')
+        self.desired_none_is_valid = False
+        self.reported_none_is_valid = False
 
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['desired', 'reported'], args):
