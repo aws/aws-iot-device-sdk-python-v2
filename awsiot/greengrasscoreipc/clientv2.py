@@ -39,6 +39,19 @@ class GreengrassCoreIPCClientV2:
         self.executor = executor
 
     def close(self, *, executor_wait=True) -> concurrent.futures.Future:
+        """
+        Close the underlying connection and shutdown the event executor (if any)
+
+        Args:
+            executor_wait: If true (default), then this method will block until the executor finishes running
+                all tasks and shuts down.
+
+        Returns:
+            The future which will complete
+            when the shutdown process is done. The future will have an
+            exception if shutdown was caused by an error, or a result
+            of None if the shutdown was clean and user-initiated.
+        """
         fut = self.client.close()
         if self.executor is not None:
             self.executor.shutdown(wait=executor_wait)
