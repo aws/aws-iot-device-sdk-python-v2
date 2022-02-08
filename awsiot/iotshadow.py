@@ -1303,10 +1303,10 @@ class ShadowState(awsiot.ModeledClass):
 
     Attributes:
         desired (typing.Dict[str, typing.Any]): The desired shadow state (from external services and devices).
-        desired_none_is_valid (bool): Set to true to allow desired to be None, clearing the data if sent.
+        desired_none_is_valid (bool): Set to true to allow 'desired' to be None, clearing the data if sent.
 
         reported (typing.Dict[str, typing.Any]): The (last) reported shadow state from the device.
-        reported_none_is_valid (bool): Set to true to allow reported to be None, clearing the data if sent.
+        reported_none_is_valid (bool): Set to true to allow 'reported' to be None, clearing the data if sent.
 
     """
 
@@ -1316,8 +1316,8 @@ class ShadowState(awsiot.ModeledClass):
         self.desired = kwargs.get('desired')
         self.reported = kwargs.get('reported')
 
-        self.desired_none_is_valid = False
-        self.reported_none_is_valid = False
+        self.desired_none_is_valid = kwargs.get('desired', False)
+        self.reported_none_is_valid = kwargs.get('reported', False)
 
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['desired', 'reported'], args):
