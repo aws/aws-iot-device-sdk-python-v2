@@ -1303,21 +1303,21 @@ class ShadowState(awsiot.ModeledClass):
 
     Attributes:
         desired (typing.Dict[str, typing.Any]): The desired shadow state (from external services and devices).
-        desired_none_is_valid (bool): Set to true to allow 'desired' to be None, clearing the data if sent.
+        desired_is_nullable (bool): Set to true to allow 'desired' to be None, clearing the data if sent.
 
         reported (typing.Dict[str, typing.Any]): The (last) reported shadow state from the device.
-        reported_none_is_valid (bool): Set to true to allow 'reported' to be None, clearing the data if sent.
+        reported_is_nullable (bool): Set to true to allow 'reported' to be None, clearing the data if sent.
 
     """
 
-    __slots__ = ['desired', 'desired_none_is_valid', 'reported', 'reported_none_is_valid']
+    __slots__ = ['desired', 'desired_is_nullable', 'reported', 'reported_is_nullable']
 
     def __init__(self, *args, **kwargs):
         self.desired = kwargs.get('desired')
         self.reported = kwargs.get('reported')
 
-        self.desired_none_is_valid = kwargs.get('desired', False)
-        self.reported_none_is_valid = kwargs.get('reported', False)
+        self.desired_is_nullable = kwargs.get('desired_is_nullable', False)
+        self.reported_is_nullable = kwargs.get('reported_is_nullable', False)
 
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['desired', 'reported'], args):
@@ -1333,19 +1333,23 @@ class ShadowState(awsiot.ModeledClass):
         val = payload.get('reported')
         if val is not None:
             new.reported = val
+        if new.desired == None:
+            new.desired_is_nullable = True
+        if new.reported == None:
+            new.reported_is_nullable = True
         return new
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
 
-        if self.desired_none_is_valid is True:
+        if self.desired_is_nullable is True:
             payload['desired'] = self.desired
         else:
             if self.desired is not None:
                 payload['desired'] = self.desired
 
-        if self.reported_none_is_valid is True:
+        if self.reported_is_nullable is True:
             payload['reported'] = self.reported
         else:
             if self.reported is not None:

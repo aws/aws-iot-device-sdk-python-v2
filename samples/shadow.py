@@ -248,7 +248,7 @@ def change_shadow_value(value):
         # for both reported and desired to clear the shadow document completely
         # of both.
         if value == "clear_shadow":
-            tmp_state = iotshadow.ShadowState(reported=None, desired=None, reported_none_is_valid=False, desired_none_is_valid=True)
+            tmp_state = iotshadow.ShadowState(reported=None, desired=None, reported_is_nullable=True, desired_is_nullable=True)
             request = iotshadow.UpdateShadowRequest(
                 thing_name=thing_name,
                 state=tmp_state,
