@@ -6,12 +6,14 @@ Required Keyword Arguments:
 
     **endpoint** (`str`): Host name of AWS IoT server.
 
-    **client_bootstrap** (:class:`awscrt.io.ClientBootstrap`): Client bootstrap used to establish connection.
-
     **client_id** (`str`): ID to place in CONNECT packet. Must be unique across all devices/clients.
             If an ID is already in use, the other client will be disconnected.
 
 Optional Keyword Arguments (omit, or set `None` to get default value):
+
+    **client_bootstrap** (:class:`awscrt.io.ClientBootstrap`): Client bootstrap used to establish connection.
+        The ClientBootstrap will default to the static default (Io.ClientBootstrap.get_or_create_static_default)
+        if the argument is omitted or set to 'None'.
 
     **on_connection_interrupted** (`Callable`): Callback invoked whenever the MQTT connection is lost.
         The MQTT client will automatically attempt to reconnect.
@@ -103,7 +105,7 @@ import awscrt.mqtt
 
 
 def _check_required_kwargs(**kwargs):
-    for required in ['client_bootstrap', 'endpoint', 'client_id']:
+    for required in ['endpoint', 'client_id']:
         if not kwargs.get(required):
             raise TypeError("Builder needs keyword-only argument '{}'".format(required))
 
@@ -186,6 +188,11 @@ def _builder(
         username += _get_metrics_str()
 
     client_bootstrap = _get(kwargs, 'client_bootstrap')
+    connection_using_static_defaults = _get(kwargs, 'using_static_defaults')
+    if client_bootstrap is None:
+        client_bootstrap = awscrt.io.ClientBootstrap.get_or_create_static_default()
+        connection_using_static_defaults = True
+
     tls_ctx = awscrt.io.ClientTlsContext(tls_ctx_options)
     mqtt_client = awscrt.mqtt.Client(client_bootstrap, tls_ctx)
 
@@ -210,6 +217,7 @@ def _builder(
         use_websockets=use_websockets,
         websocket_handshake_transform=websocket_handshake_transform,
         proxy_options=proxy_options,
+        using_static_defaults=connection_using_static_defaults,
     )
 
 
