@@ -765,8 +765,10 @@ class DeleteNamedShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
+
         return payload
 
 class DeleteNamedShadowSubscriptionRequest(awsiot.ModeledClass):
@@ -824,8 +826,10 @@ class DeleteShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
+
         return payload
 
 class DeleteShadowResponse(awsiot.ModeledClass):
@@ -977,8 +981,10 @@ class GetNamedShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
+
         return payload
 
 class GetNamedShadowSubscriptionRequest(awsiot.ModeledClass):
@@ -1036,8 +1042,10 @@ class GetShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
+
         return payload
 
 class GetShadowResponse(awsiot.ModeledClass):
@@ -1295,14 +1303,21 @@ class ShadowState(awsiot.ModeledClass):
 
     Attributes:
         desired (typing.Dict[str, typing.Any]): The desired shadow state (from external services and devices).
+        desired_is_nullable (bool): Set to true to allow 'desired' to be None, clearing the data if sent.
+
         reported (typing.Dict[str, typing.Any]): The (last) reported shadow state from the device.
+        reported_is_nullable (bool): Set to true to allow 'reported' to be None, clearing the data if sent.
+
     """
 
-    __slots__ = ['desired', 'reported']
+    __slots__ = ['desired', 'desired_is_nullable', 'reported', 'reported_is_nullable']
 
     def __init__(self, *args, **kwargs):
         self.desired = kwargs.get('desired')
         self.reported = kwargs.get('reported')
+
+        self.desired_is_nullable = kwargs.get('desired_is_nullable', False)
+        self.reported_is_nullable = kwargs.get('reported_is_nullable', False)
 
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['desired', 'reported'], args):
@@ -1318,15 +1333,28 @@ class ShadowState(awsiot.ModeledClass):
         val = payload.get('reported')
         if val is not None:
             new.reported = val
+        if new.desired == None:
+            new.desired_is_nullable = True
+        if new.reported == None:
+            new.reported_is_nullable = True
         return new
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-        if self.desired is not None:
+
+        if self.desired_is_nullable is True:
             payload['desired'] = self.desired
-        if self.reported is not None:
+        else:
+            if self.desired is not None:
+                payload['desired'] = self.desired
+
+        if self.reported_is_nullable is True:
             payload['reported'] = self.reported
+        else:
+            if self.reported is not None:
+                payload['reported'] = self.reported
+
         return payload
 
 class ShadowStateWithDelta(awsiot.ModeledClass):
@@ -1522,12 +1550,16 @@ class UpdateNamedShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
+
         if self.state is not None:
             payload['state'] = self.state.to_payload()
+
         if self.version is not None:
             payload['version'] = self.version
+
         return payload
 
 class UpdateNamedShadowSubscriptionRequest(awsiot.ModeledClass):
@@ -1591,12 +1623,16 @@ class UpdateShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
+
         if self.state is not None:
             payload['state'] = self.state.to_payload()
+
         if self.version is not None:
             payload['version'] = self.version
+
         return payload
 
 class UpdateShadowResponse(awsiot.ModeledClass):
