@@ -2,6 +2,8 @@ import concurrent.futures
 import threading
 from unittest import TestCase
 from unittest.mock import patch
+import io
+import contextlib
 
 from awsiot.greengrasscoreipc.client import SubscribeToTopicStreamHandler
 from awsiot.greengrasscoreipc.model import CreateLocalDeploymentResponse, SubscribeToTopicResponse, \
@@ -83,3 +85,15 @@ class GGV2Test(TestCase):
 
         self.assertEqual("xyz".encode("utf-8"), subscription_fut.result(TIMEOUT).binary_message.message)
         self.assertEqual(threading.get_ident(), thread_id_fut.result(TIMEOUT))
+
+        # Verify we nicely print errors in user-provided handler methods
+        def on_stream_event(r):
+            raise ValueError("Broken!")
+
+        c.subscribe_to_topic(topic="abc", on_stream_event=on_stream_event)
+        sub_handler = mock_client.new_subscribe_to_topic.call_args[0][0]
+        f = io.StringIO()
+        with contextlib.redirect_stderr(f):
+            self.assertRaises(ValueError, lambda: sub_handler.on_stream_event(
+                SubscriptionResponseMessage(binary_message=BinaryMessage(message="xyz"))))
+        self.assertIn("ValueError: Broken!", f.getvalue())
