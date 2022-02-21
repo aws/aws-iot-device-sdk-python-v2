@@ -19,30 +19,22 @@ import json
 #
 # WARNING: Unix only. Currently, TLS integration with PKCS#11 is only available on Unix devices.
 
-parser = argparse.ArgumentParser(description="Send and receive messages through and MQTT connection.")
-parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpoint, not including a port. " +
-                                                      "Ex: \"abcd123456wxyz-ats.iot.us-east-1.amazonaws.com\"")
-parser.add_argument('--port', type=int, help="Specify port. AWS IoT supports 443 and 8883. (default: auto)")
-parser.add_argument('--cert', required=True, help="File path to your client certificate, in PEM format.")
-parser.add_argument('--pkcs11-lib', required=True, help="Path to PKCS#11 library.")
-parser.add_argument('--pin', required=True, help="User PIN for logging into PKCS#11 token.")
-parser.add_argument('--token-label', help="Label of PKCS#11 token to use. (default: None) ")
-parser.add_argument('--slot-id', help="Slot ID containing PKCS#11 token to use. (default: None)")
-parser.add_argument('--key-label', help="Label of private key on the PKCS#11 token. (default: None)")
-parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. (default: None)")
-parser.add_argument('--client-id', default="test-" + str(uuid4()),
-                    help="Client ID for MQTT connection. (default: 'test-*')")
-parser.add_argument('--topic', default="test/topic",
-                    help="Topic to subscribe to, and publish messages to. (default: 'test/topic')")
-parser.add_argument('--message', default="Hello World!",
-                    help="Message to publish. Specify empty string to publish nothing. (default: 'Hello World!')")
-parser.add_argument('--count', default=10, type=int, help="Number of messages to publish/receive before exiting. " +
-                                                          "Specify 0 to run forever. (default: 10)")
-parser.add_argument('--verbosity', choices=[x.name for x in io.LogLevel], default=io.LogLevel.NoLogs.name,
-                    help="Logging level. (default: 'NoLogs')")
-
-# Using globals to simplify sample code
-args = parser.parse_args()
+# Parse arguments
+import command_line_utils;
+cmdUtils = command_line_utils.CommandLineUtils("PKCS#11 PubSub - Send and recieve messages through an MQTT connection.")
+cmdUtils.add_common_mqtt_commands()
+cmdUtils.register_command("port", "<port>", "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).", type=int)
+cmdUtils.register_command("pkcs11_lib", "<path>", "Path to PKCS#11 Library", required=True)
+cmdUtils.register_command("pin", "<str>", "User PIN for logging into PKCS#11 token.", required=True)
+cmdUtils.register_command("token_label", "<str>", "Label of the PKCS#11 token to use (optional).")
+cmdUtils.register_command("slot_id", "<int>", "Slot ID containing the PKCS#11 token to use (optional).")
+cmdUtils.register_command("key_label", "<str>", "Label of private key on the PKCS#11 token (optional).")
+cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
+cmdUtils.register_command("topic", "<str>", "Topic to publish, subscribe to (optional, default='test/topic').", default="test/topic")
+cmdUtils.register_command("message", "<str>", "The message to send in the payload (optional, default='Hello World!').", default="Hello World!")
+cmdUtils.register_command("count", "<int>", "The number of messages to send (optional, default='10').", default=10, type=int)
+cmdUtils.register_command("verbosity", "<Log Level>", "Logging level.", default=io.LogLevel.NoLogs.name, choices=[x.name for x in io.LogLevel])
+args = cmdUtils.get_args()
 
 io.init_logging(getattr(io.LogLevel, args.verbosity), 'stderr')
 
@@ -92,7 +84,7 @@ if __name__ == '__main__':
         endpoint=args.endpoint,
         port=args.port,
         client_bootstrap=client_bootstrap,
-        ca_filepath=args.root_ca,
+        ca_filepath=args.ca_file,
         on_connection_interrupted=on_connection_interrupted,
         on_connection_resumed=on_connection_resumed,
         client_id=args.client_id,

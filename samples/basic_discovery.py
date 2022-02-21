@@ -14,23 +14,19 @@ from awsiot import mqtt_connection_builder
 
 allowed_actions = ['both', 'publish', 'subscribe']
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-r', '--root-ca', action='store', dest='root_ca_path', help='Root CA file path')
-parser.add_argument('-c', '--cert', action='store', required=True, dest='certificate_path', help='Certificate file path')
-parser.add_argument('-k', '--key', action='store', required=True, dest='private_key_path', help='Private key file path')
-parser.add_argument('-n', '--thing-name', action='store', required=True, dest='thing_name', help='Targeted thing name')
-parser.add_argument('-t', '--topic', action='store', dest='topic', default='test/topic', help='Targeted topic')
-parser.add_argument('-m', '--mode', action='store', dest='mode', default='both',
-                    help='Operation modes: %s'%str(allowed_actions))
-parser.add_argument('-M', '--message', action='store', dest='message', default='Hello World!',
-                    help='Message to publish')
-parser.add_argument('--region', action='store', dest='region', default='us-east-1')
-parser.add_argument('--max-pub-ops', action='store', dest='max_pub_ops', default=10)
-parser.add_argument('--print-discover-resp-only', action='store_true', dest='print_discover_resp_only', default=False)
-parser.add_argument('-v', '--verbosity', choices=[x.name for x in LogLevel], default=LogLevel.NoLogs.name,
-                    help='Logging level')
-
-args = parser.parse_args()
+# Parse arguments
+import command_line_utils;
+cmdUtils = command_line_utils.CommandLineUtils("Basic Discovery - Greengrass discovery example.")
+cmdUtils.add_common_mqtt_commands()
+cmdUtils.register_command("topic", "<str>", "Topic to publish, subscribe to (optional, default='test/topic').", default="test/topic")
+cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
+cmdUtils.register_command("mode", "<mode>", "The operation mode (optional, default='both').\nModes:%s"%str(allowed_actions), default='both')
+cmdUtils.register_command("message", "<str>", "The message to send in the payload (optional, default='Hello World!').", default="Hello World!")
+cmdUtils.register_command("region", "<str>", "The region to connect through (optional, default='us-east-1').", default="us-east-1")
+cmdUtils.register_command("max_pub_ops", "<int>", "The maximum number of publish operations (optional, default='10').", default=10, type=int)
+cmdUtils.register_command("print_discover_resp_only", "<bool>", "(optional, default='False').", default=False, type=bool)
+cmdUtils.register_command("verbosity", "<Log Level>", "Logging level.", default=io.LogLevel.NoLogs.name, choices=[x.name for x in io.LogLevel])
+args = cmdUtils.get_args()
 
 io.init_logging(getattr(LogLevel, args.verbosity), 'stderr')
 
@@ -38,9 +34,9 @@ event_loop_group = io.EventLoopGroup(1)
 host_resolver = io.DefaultHostResolver(event_loop_group)
 client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
 
-tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.certificate_path, args.private_key_path)
-if args.root_ca_path:
-    tls_options.override_default_trust_store_from_path(None, args.root_ca_path)
+tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.cert, args.key)
+if args.ca_file:
+    tls_options.override_default_trust_store_from_path(None, args.ca_file)
 tls_context = io.ClientTlsContext(tls_options)
 
 socket_options = io.SocketOptions()
@@ -73,8 +69,8 @@ def try_iot_endpoints():
                     mqtt_connection = mqtt_connection_builder.mtls_from_path(
                         endpoint=connectivity_info.host_address,
                         port=connectivity_info.port,
-                        cert_filepath=args.certificate_path,
-                        pri_key_filepath=args.private_key_path,
+                        cert_filepath=args.cert,
+                        pri_key_filepath=args.key,
                         client_bootstrap=client_bootstrap,
                         ca_bytes=gg_group.certificate_authorities[0].encode('utf-8'),
                         on_connection_interrupted=on_connection_interupted,

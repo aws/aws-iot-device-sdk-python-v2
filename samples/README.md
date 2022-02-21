@@ -22,7 +22,7 @@ Source: `samples/pubsub.py`
 
 Run the sample like this:
 ``` sh
-python3 pubsub.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file>
+python3 pubsub.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file>
 ```
 
 Your Thing's
@@ -119,7 +119,7 @@ To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the 
 
 5)  Now you can run the sample:
     ```sh
-    python3 pkcs11_pubsub.py --endpoint <xxxx-ats.iot.xxxx.amazonaws.com> --root-ca <AmazonRootCA1.pem> --cert <certificate.pem.crt> --pkcs11-lib <libsofthsm2.so> --pin <user-pin> --token-label <token-label> --key-label <key-label>
+    python3 pkcs11_pubsub.py --endpoint <xxxx-ats.iot.xxxx.amazonaws.com> --ca_file <AmazonRootCA1.pem> --cert <certificate.pem.crt> --pkcs11_lib <libsofthsm2.so> --pin <user-pin> --token_label <token-label> --key_label <key-label>
 
 
 ## Shadow
@@ -146,7 +146,7 @@ Source: `samples/shadow.py`
 
 Run the sample like this:
 ``` sh
-python3 shadow.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
+python3 shadow.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --thing-name <name>
 ```
 
 Your Thing's
@@ -232,7 +232,7 @@ Source: `samples/jobs.py`
 
 Run the sample like this:
 ``` sh
-python3 jobs.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
+python3 jobs.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --thing_name <name>
 ```
 
 Your Thing's
@@ -304,12 +304,12 @@ Source: `samples/fleetprovisioning.py`
 
 Run the sample using createKeysAndCertificate:
 ``` sh
-python3 fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters>
+python3 fleetprovisioning.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --template_name <name> --template_parameters <parameters>
 ```
 
 Run the sample using createCertificateFromCsr:
 ``` sh
-python3 fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters> --csr <csr file>
+python3 fleetprovisioning.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --template_name <name> --template_parameters <parameters> --csr <csr file>
 ```
 
 Your Thing's
@@ -425,11 +425,11 @@ and `--key` appropriately:
 ``` sh
 python3 fleetprovisioning.py \
         --endpoint [your endpoint]-ats.iot.[region].amazonaws.com \
-        --root-ca [pathToRootCA] \
+        --ca_file [pathToRootCA] \
         --cert /tmp/provision.cert.pem \
         --key /tmp/provision.private.key \
-        --templateName [TemplateName] \
-        --templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}"
+        --template_name [TemplateName] \
+        --template_parameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}"
 ```
 
 Notice that we provided substitution values for the two parameters in the template body, `DeviceLocation` and `SerialNumber`.
@@ -465,11 +465,11 @@ using a permanent certificate set, replace the paths specified in the `--cert` a
 ``` sh
 python3 fleetprovisioning.py \
         --endpoint [your endpoint]-ats.iot.[region].amazonaws.com \
-        --root-ca [pathToRootCA] \
+        --ca_file [pathToRootCA] \
         --cert /tmp/provision.cert.pem \
         --key /tmp/provision.private.key \
-        --templateName [TemplateName] \
-        --templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" \
+        --template_name [TemplateName] \
+        --template_parameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" \
         --csr /tmp/deviceCert.csr
 ```
 
