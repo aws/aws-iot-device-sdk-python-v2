@@ -18,6 +18,7 @@ allowed_actions = ['both', 'publish', 'subscribe']
 import command_line_utils;
 cmdUtils = command_line_utils.CommandLineUtils("Basic Discovery - Greengrass discovery example.")
 cmdUtils.add_common_mqtt_commands()
+cmdUtils.remove_command("endpoint")
 cmdUtils.register_command("topic", "<str>", "Topic to publish, subscribe to (optional, default='test/topic').", default="test/topic")
 cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
 cmdUtils.register_command("mode", "<mode>", "The operation mode (optional, default='both').\nModes:%s"%str(allowed_actions), default='both')
