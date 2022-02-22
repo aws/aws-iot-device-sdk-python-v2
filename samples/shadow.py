@@ -37,7 +37,7 @@ cmdUtils.add_common_mqtt_commands()
 cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
 cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
 cmdUtils.register_command("shadow_property", "<str>", "The name of the shadow property you want to change (optional, default='color'", default="color")
-cmdUtils.register_command("use_websocket", "", "If specified, uses a websocket over https (optional).", default=False)
+cmdUtils.register_command("use_websocket", "", "If specified, uses a websocket over https (optional).", default=False, action="store_true")
 cmdUtils.register_command("signing_region", "<str>",
     "Used for websocket signer. It should only be specified if websockets are used (optional, default='us-east-1')", default="us-east-1")
 cmdUtils.register_command("proxy_host", "<str>", "Host name of the http proxy to use (optional)")

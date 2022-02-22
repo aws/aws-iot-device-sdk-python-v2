@@ -25,7 +25,7 @@ cmdUtils.register_command("mode", "<mode>", "The operation mode (optional, defau
 cmdUtils.register_command("message", "<str>", "The message to send in the payload (optional, default='Hello World!').", default="Hello World!")
 cmdUtils.register_command("region", "<str>", "The region to connect through (optional, default='us-east-1').", default="us-east-1")
 cmdUtils.register_command("max_pub_ops", "<int>", "The maximum number of publish operations (optional, default='10').", default=10, type=int)
-cmdUtils.register_command("print_discover_resp_only", "<bool>", "(optional, default='False').", default=False, type=bool)
+cmdUtils.register_command("print_discover_resp_only", "", "(optional, default='False').", default=False, type=bool, action="store_true")
 cmdUtils.register_command("verbosity", "<Log Level>", "Logging level.", default=io.LogLevel.NoLogs.name, choices=[x.name for x in io.LogLevel])
 args = cmdUtils.get_args()
 

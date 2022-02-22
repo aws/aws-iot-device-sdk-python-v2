@@ -31,7 +31,7 @@ import command_line_utils;
 cmdUtils = command_line_utils.CommandLineUtils("Fleet Provisioning - Provision device using either the keys or CSR.")
 cmdUtils.add_common_mqtt_commands()
 cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
-cmdUtils.register_command("use_websocket", "", "If specified, uses a websocket over https (optional).", default=False)
+cmdUtils.register_command("use_websocket", "", "If specified, uses a websocket over https (optional).", default=False, action="store_true")
 cmdUtils.register_command("signing_region", "<str>",
     "Used for websocket signer. It should only be specified if websockets are used (optional, default='us-east-1')", default="us-east-1")
 cmdUtils.register_command("proxy_host", "<str>", "Host name of the http proxy to use (optional)")
@@ -40,7 +40,7 @@ cmdUtils.register_command("verbosity", "<Log Level>", "Logging level.", default=
 cmdUtils.register_command("csr", "<path>", "Path to CSR in Pem format (optional).")
 cmdUtils.register_command("template_name", "<str>", "The name of your provisioning template.")
 cmdUtils.register_command("template_parameters", "<json>", "Template parameters json.")
-cmdUtils.update_command("cert", new_help_output="Path to your certificate in PEM format. If this is not set you must specify use_websocket", new_required=False)
+cmdUtils.update_command("cert", new_help_output="Path to your certificate in PEM format. If this is not set you must specify use_websocket")
 args = cmdUtils.get_args()
 
 # Using globals to simplify sample code

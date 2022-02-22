@@ -9,7 +9,7 @@ class CommandLineUtils:
         self.parser = argparse.ArgumentParser(description="Send and receive messages through and MQTT connection.")
         self.commands = {}
 
-    def register_command(self, command_name, example_input, help_output, required=False, type=None, default=None, choices=None):
+    def register_command(self, command_name, example_input, help_output, required=False, type=None, default=None, choices=None, action=None):
         self.commands[command_name] = {
             "name":command_name,
             "example_input":example_input,
@@ -17,7 +17,8 @@ class CommandLineUtils:
             "required": required,
             "type": type,
             "default": default,
-            "choices": choices
+            "choices": choices,
+            "action": action
         }
     
     def remove_command(self, command_name):
@@ -27,12 +28,16 @@ class CommandLineUtils:
     def get_args(self):
         # add all the commands
         for command in self.commands.values():
-            self.parser.add_argument("--" + command["name"], metavar=command["example_input"], help=command["help_output"],
-                required=command["required"], type=command["type"], default=command["default"], choices=command["choices"])
+            if not command["action"] is None:
+                self.parser.add_argument("--" + command["name"], action=command["action"], help=command["help_output"],
+                    required=command["required"], default=command["default"])
+            else:
+                self.parser.add_argument("--" + command["name"], metavar=command["example_input"], help=command["help_output"],
+                    required=command["required"], type=command["type"], default=command["default"], choices=command["choices"])
 
         return self.parser.parse_args()
     
-    def update_command(self, command_name, new_example_input=None, new_help_output=None, new_required=None, new_type=None, new_default=None):
+    def update_command(self, command_name, new_example_input=None, new_help_output=None, new_required=None, new_type=None, new_default=None, new_action=None):
         if command_name in self.commands.keys():
             if new_example_input:
                 self.commands[command_name]["example_input"] = new_example_input
@@ -44,6 +49,8 @@ class CommandLineUtils:
                 self.commands[command_name]["type"] = new_type
             if new_default:
                 self.commands[command_name]["default"] = new_default
+            if new_action:
+                self.commands[command_name]["action"] = new_action
     
     def add_common_mqtt_commands(self):
         self.register_command("endpoint", "<str>", "The endpoint of the mqtt server not including a port.", True, str)
