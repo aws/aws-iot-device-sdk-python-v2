@@ -23,6 +23,8 @@ import json
 import command_line_utils;
 cmdUtils = command_line_utils.CommandLineUtils("PKCS#11 PubSub - Send and recieve messages through an MQTT connection.")
 cmdUtils.add_common_mqtt_commands()
+cmdUtils.add_common_topic_message_commands()
+cmdUtils.add_common_logging_commands()
 cmdUtils.register_command("port", "<port>", "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).", type=int)
 cmdUtils.register_command("pkcs11_lib", "<path>", "Path to PKCS#11 Library", required=True)
 cmdUtils.register_command("pin", "<str>", "User PIN for logging into PKCS#11 token.", required=True)
@@ -30,10 +32,7 @@ cmdUtils.register_command("token_label", "<str>", "Label of the PKCS#11 token to
 cmdUtils.register_command("slot_id", "<int>", "Slot ID containing the PKCS#11 token to use (optional).")
 cmdUtils.register_command("key_label", "<str>", "Label of private key on the PKCS#11 token (optional).")
 cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
-cmdUtils.register_command("topic", "<str>", "Topic to publish, subscribe to (optional, default='test/topic').", default="test/topic")
-cmdUtils.register_command("message", "<str>", "The message to send in the payload (optional, default='Hello World!').", default="Hello World!")
 cmdUtils.register_command("count", "<int>", "The number of messages to send (optional, default='10').", default=10, type=int)
-cmdUtils.register_command("verbosity", "<Log Level>", "Logging level.", default=io.LogLevel.NoLogs.name, choices=[x.name for x in io.LogLevel])
 args = cmdUtils.get_args()
 
 io.init_logging(getattr(io.LogLevel, args.verbosity), 'stderr')

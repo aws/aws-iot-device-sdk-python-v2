@@ -21,17 +21,13 @@ import json
 import command_line_utils;
 cmdUtils = command_line_utils.CommandLineUtils("PubSub - Send and recieve messages through an MQTT connection.")
 cmdUtils.add_common_mqtt_commands()
+cmdUtils.add_common_topic_message_commands()
+cmdUtils.add_common_websocket_commands()
+cmdUtils.add_common_proxy_commands()
+cmdUtils.add_common_logging_commands()
 cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).", type=int)
 cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
-cmdUtils.register_command("topic", "<str>", "Topic to publish, subscribe to (optional, default='test/topic').", default="test/topic")
-cmdUtils.register_command("message", "<str>", "The message to send in the payload (optional, default='Hello World!').", default="Hello World!")
 cmdUtils.register_command("count", "<int>", "The number of messages to send (optional, default='10').", default=10, type=int)
-cmdUtils.register_command("use_websocket", "", "If specified, uses a websocket over https (optional).", default=False, action="store_true")
-cmdUtils.register_command("signing_region", "<str>",
-    "Used for websocket signer. It should only be specified if websockets are used (optional, default='us-east-1')", default="us-east-1")
-cmdUtils.register_command("proxy_host", "<str>", "Host name of the http proxy to use (optional)")
-cmdUtils.register_command("proxy_port", "<int>", "Port of the http proxy to use (optional, default='8080')", type=int, default=8080)
-cmdUtils.register_command("verbosity", "<Log Level>", "Logging level.", default=io.LogLevel.NoLogs.name, choices=[x.name for x in io.LogLevel])
 cmdUtils.update_command("cert", new_help_output="Path to your certificate in PEM format. If this is not set you must specify use_websocket")
 args = cmdUtils.get_args()
 

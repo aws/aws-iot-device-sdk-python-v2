@@ -40,15 +40,12 @@ is_sample_done = threading.Event()
 import command_line_utils;
 cmdUtils = command_line_utils.CommandLineUtils("Jobs - Recieve and execute operations on the device.")
 cmdUtils.add_common_mqtt_commands()
+cmdUtils.add_common_websocket_commands()
+cmdUtils.add_common_proxy_commands()
+cmdUtils.add_common_logging_commands()
 cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
 cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
 cmdUtils.register_command("job_time", "<int>", "Emulate working on a job by sleeping this many seconds (optional, default='5')", default=5)
-cmdUtils.register_command("use_websocket", "", "If specified, uses a websocket over https (optional).", default=False, action="store_true")
-cmdUtils.register_command("signing_region", "<str>",
-    "Used for websocket signer. It should only be specified if websockets are used (optional, default='us-east-1')", default="us-east-1")
-cmdUtils.register_command("proxy_host", "<str>", "Host name of the http proxy to use (optional)")
-cmdUtils.register_command("proxy_port", "<int>", "Port of the http proxy to use (optional, default='8080')", type=int, default=8080)
-cmdUtils.register_command("verbosity", "<Log Level>", "Logging level.", default=io.LogLevel.NoLogs.name, choices=[x.name for x in io.LogLevel])
 args = cmdUtils.get_args()
 
 mqtt_connection = None
