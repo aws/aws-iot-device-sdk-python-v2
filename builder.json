@@ -86,7 +86,7 @@
         ["{python}", "-m", "unittest", "discover", "--verbose"]
     ],
     "build_steps": [
-        "python3 -m pip install ./aws-iot-device-sdk-python-v2"
+        "python3 -m pip install ."
     ],
     "test_steps": [
         "python3 -m pip install boto3",
