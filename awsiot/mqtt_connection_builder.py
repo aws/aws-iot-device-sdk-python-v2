@@ -216,8 +216,7 @@ def _builder(
         socket_options=socket_options,
         use_websockets=use_websockets,
         websocket_handshake_transform=websocket_handshake_transform,
-        proxy_options=proxy_options,
-        using_static_defaults=connection_using_static_defaults,
+        proxy_options=proxy_options
     )
 
 
