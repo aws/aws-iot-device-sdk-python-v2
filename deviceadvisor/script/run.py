@@ -187,12 +187,8 @@ for test_name in DATestConfig['tests']:
             # Start to run the test sample after the status turns into RUNNING
             elif (test_result_responds['status'] == 'RUNNING' and 
             test_result_responds['testResult']['groups'][0]['tests'][0]['status'] == 'RUNNING'):
-                working_dir = os.getcwd()
-                os.chdir(exe_path)
-                result = subprocess.run(['python3', DATestConfig['test_exe_path'][test_name]], timeout = 60*5, shell = True)
-                # mvn compile exec:java -pl deviceadvisor/tests/MQTTConnect -Dexec.mainClass=MQTTConnect.MQTTConnect
-                # mvn exec:java -Dexec.mainClass="com.example.Main" 
-                os.chdir(working_dir)
+                exe_path = os.path.join("deviceadvisor/tests/",DATestConfig['test_exe_path'][test_name])
+                result = subprocess.run(['python3', exe_path], timeout = 60*5, shell = True)
             # If the test finalizing or store the test result
             elif (test_result_responds['status'] != 'RUNNING'):
                 test_result[test_name] = test_result_responds['status']
