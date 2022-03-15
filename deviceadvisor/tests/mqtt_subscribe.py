@@ -26,9 +26,7 @@ if __name__ == '__main__':
     subscribe_future, packet_id = mqtt_connection.subscribe(
         topic=DATestUtils.topic,
         qos=mqtt.QoS.AT_MOST_ONCE)
-
-    subscribe_future.result()
-
+    
     # Disconnect
     disconnect_future = mqtt_connection.disconnect()
     disconnect_future.result()
