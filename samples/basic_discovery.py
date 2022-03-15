@@ -34,10 +34,6 @@ args = parser.parse_args()
 
 io.init_logging(getattr(LogLevel, args.verbosity), 'stderr')
 
-event_loop_group = io.EventLoopGroup(1)
-host_resolver = io.DefaultHostResolver(event_loop_group)
-client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
-
 tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.certificate_path, args.private_key_path)
 if args.root_ca_path:
     tls_options.override_default_trust_store_from_path(None, args.root_ca_path)
@@ -46,7 +42,7 @@ tls_context = io.ClientTlsContext(tls_options)
 socket_options = io.SocketOptions()
 
 print('Performing greengrass discovery...')
-discovery_client = DiscoveryClient(client_bootstrap, socket_options, tls_context, args.region)
+discovery_client = DiscoveryClient(io.ClientBootstrap.get_or_create_static_default(), socket_options, tls_context, args.region)
 resp_future = discovery_client.discover(args.thing_name)
 discover_response = resp_future.result()
 
@@ -75,7 +71,6 @@ def try_iot_endpoints():
                         port=connectivity_info.port,
                         cert_filepath=args.certificate_path,
                         pri_key_filepath=args.private_key_path,
-                        client_bootstrap=client_bootstrap,
                         ca_bytes=gg_group.certificate_authorities[0].encode('utf-8'),
                         on_connection_interrupted=on_connection_interupted,
                         on_connection_resumed=on_connection_resumed,
