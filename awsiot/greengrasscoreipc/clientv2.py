@@ -34,7 +34,7 @@ class GreengrassCoreIPCClientV2:
             import awsiot.greengrasscoreipc
             client = awsiot.greengrasscoreipc.connect()
         self.client = client
-        if executor == True:
+        if executor is True:
             executor = concurrent.futures.ThreadPoolExecutor()
         self.executor = executor
 
@@ -67,9 +67,25 @@ class GreengrassCoreIPCClientV2:
         future1.add_done_callback(callback)
         return future2
 
+    @staticmethod
+    def __handle_error():
+        import sys
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+
+    def __wrap_error(self, func):
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                self.__handle_error()
+                raise e
+        return wrapper
+
     def __create_stream_handler(real_self, operation, on_stream_event, on_stream_error, on_stream_closed):
         stream_handler_type = type(operation + 'Handler', (getattr(client, operation + "StreamHandler"),), {})
         if on_stream_event is not None:
+            on_stream_event = real_self.__wrap_error(on_stream_event)
             def handler(self, event):
                 if real_self.executor is not None:
                     real_self.executor.submit(on_stream_event, event)
@@ -77,10 +93,12 @@ class GreengrassCoreIPCClientV2:
                     on_stream_event(event)
             setattr(stream_handler_type, "on_stream_event", handler)
         if on_stream_error is not None:
+            on_stream_error = real_self.__wrap_error(on_stream_error)
             def handler(self, error):
                 return on_stream_error(error)
             setattr(stream_handler_type, "on_stream_error", handler)
         if on_stream_closed is not None:
+            on_stream_closed = real_self.__wrap_error(on_stream_closed)
             def handler(self):
                 if real_self.executor is not None:
                     real_self.executor.submit(on_stream_closed)
