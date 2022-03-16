@@ -70,11 +70,6 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
 
 
 if __name__ == '__main__':
-    # Spin up resources
-    event_loop_group = io.EventLoopGroup(1)
-    host_resolver = io.DefaultHostResolver(event_loop_group)
-    client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
-
     print(f"Loading PKCS#11 library '{args.pkcs11_lib}' ...")
     pkcs11_lib = io.Pkcs11Lib(
         file=args.pkcs11_lib,
@@ -91,7 +86,6 @@ if __name__ == '__main__':
         cert_filepath=args.cert,
         endpoint=args.endpoint,
         port=args.port,
-        client_bootstrap=client_bootstrap,
         ca_filepath=args.root_ca,
         on_connection_interrupted=on_connection_interrupted,
         on_connection_resumed=on_connection_resumed,
