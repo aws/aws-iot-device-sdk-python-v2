@@ -224,20 +224,14 @@ if __name__ == '__main__':
     thing_name = args.thing_name
     io.init_logging(getattr(io.LogLevel, args.verbosity), 'stderr')
 
-    # Spin up resources
-    event_loop_group = io.EventLoopGroup(1)
-    host_resolver = io.DefaultHostResolver(event_loop_group)
-    client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
-
     proxy_options = None
     if (args.proxy_host):
         proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
 
     if args.use_websocket == True:
-        credentials_provider = auth.AwsCredentialsProvider.new_default_chain(client_bootstrap)
+        credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
         mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
             endpoint=args.endpoint,
-            client_bootstrap=client_bootstrap,
             region=args.signing_region,
             credentials_provider=credentials_provider,
             http_proxy_options=proxy_options,
@@ -251,7 +245,6 @@ if __name__ == '__main__':
             endpoint=args.endpoint,
             cert_filepath=args.cert,
             pri_key_filepath=args.key,
-            client_bootstrap=client_bootstrap,
             ca_filepath=args.root_ca,
             client_id=args.client_id,
             clean_session=False,
