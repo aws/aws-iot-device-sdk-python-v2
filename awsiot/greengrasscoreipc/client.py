@@ -1109,7 +1109,7 @@ class GreengrassCoreIPCClient(rpc.Client):
     """
     Client for the GreengrassCoreIPC service.
     There is a new V2 client available for testing in developer preview.
-    See the GreengrassCoreIPCClientV2 class.
+    See the GreengrassCoreIPCClientV2 class in the clientv2 subpackage.
 
     Args:
         connection: Connection that this client will use.
