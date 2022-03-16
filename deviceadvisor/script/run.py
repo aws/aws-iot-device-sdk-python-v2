@@ -170,29 +170,28 @@ for test_name in DATestConfig['tests']:
         )
         os.environ['DA_ENDPOINT'] = endpoint_response['endpoint']
 
-        while True:
-            # sleep for 1s every loop to avoid TooManyRequestsException
-            sleep(1)
-            test_result_responds = deviceAdvisor.get_suite_run(
-                suiteDefinitionId=DATestConfig['test_suite_ids'][test_name],
-                suiteRunId=test_start_response['suiteRunId']
-            )
-            # If the status is PENDING or the responds does not loaded, the test suite is still loading
-            if (test_result_responds['status'] == 'PENDING' or
-            len(test_result_responds['testResult']['groups']) == 0 or # test group has not been loaded
-            len(test_result_responds['testResult']['groups'][0]['tests']) == 0 or #test case has not been loaded
-            test_result_responds['testResult']['groups'][0]['tests'][0]['status'] == 'PENDING'):
-                continue
-            
-            # Start to run the test sample after the status turns into RUNNING
-            elif (test_result_responds['status'] == 'RUNNING' and 
-            test_result_responds['testResult']['groups'][0]['tests'][0]['status'] == 'RUNNING'):
-                exe_path = os.path.join("deviceadvisor/tests/",DATestConfig['test_exe_path'][test_name])
-                result = subprocess.run('python3 ' + exe_path, timeout = 60*5, shell = True)
-            # If the test finalizing or store the test result
-            elif (test_result_responds['status'] != 'RUNNING'):
-                test_result[test_name] = test_result_responds['status']
-                break
+        # sleep for 1s every loop to avoid TooManyRequestsException
+        sleep(1)
+        test_result_responds = deviceAdvisor.get_suite_run(
+            suiteDefinitionId=DATestConfig['test_suite_ids'][test_name],
+            suiteRunId=test_start_response['suiteRunId']
+        )
+        # If the status is PENDING or the responds does not loaded, the test suite is still loading
+        if (test_result_responds['status'] == 'PENDING' or
+        len(test_result_responds['testResult']['groups']) == 0 or # test group has not been loaded
+        len(test_result_responds['testResult']['groups'][0]['tests']) == 0 or #test case has not been loaded
+        test_result_responds['testResult']['groups'][0]['tests'][0]['status'] == 'PENDING'):
+            continue
+        
+        # Start to run the test sample after the status turns into RUNNING
+        elif (test_result_responds['status'] == 'RUNNING' and 
+        test_result_responds['testResult']['groups'][0]['tests'][0]['status'] == 'RUNNING'):
+            exe_path = os.path.join("deviceadvisor/tests/",DATestConfig['test_exe_path'][test_name])
+            result = subprocess.run('python3 ' + exe_path, timeout = 60*5, shell = True)
+        # If the test finalizing or store the test result
+        elif (test_result_responds['status'] != 'RUNNING'):
+            test_result[test_name] = test_result_responds['status']
+            break
     except Exception as e:
         print("[Device Advisor]Error: Failed to test: "+ test_name + e)
         exit(-1)
