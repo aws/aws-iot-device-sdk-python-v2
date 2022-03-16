@@ -20,6 +20,7 @@ if __name__ == '__main__':
         clean_session = True, 
         ping_timeout_ms = 6000)
 
+
     connect_future = mqtt_connection.connect()
 
     # Future.result() waits until a result is available

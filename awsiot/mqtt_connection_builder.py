@@ -188,10 +188,8 @@ def _builder(
         username += _get_metrics_str()
 
     client_bootstrap = _get(kwargs, 'client_bootstrap')
-    connection_using_static_defaults = _get(kwargs, 'using_static_defaults')
     if client_bootstrap is None:
         client_bootstrap = awscrt.io.ClientBootstrap.get_or_create_static_default()
-        connection_using_static_defaults = True
 
     tls_ctx = awscrt.io.ClientTlsContext(tls_ctx_options)
     mqtt_client = awscrt.mqtt.Client(client_bootstrap, tls_ctx)
