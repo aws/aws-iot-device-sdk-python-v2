@@ -30,8 +30,8 @@ parser.add_argument('--message', default="Hello World!",
                     help="Message to publish. Specify empty string to publish nothing. (default: 'Hello World!')")
 parser.add_argument('--count', default=10, type=int, help="Number of messages to publish/receive before exiting. " +
                                                           "Specify 0 to run forever. (default: 10)")
-parser.add_argument('--verbosity', choices=[x.name for x in io.LogLevel], default=io.LogLevel.NoLogs.name,
-                    help="Logging level. (default: 'NoLogs')")
+parser.add_argument('--verbosity', choices=[x.name for x in io.LogLevel], default=io.LogLevel.Error.name,
+                    help="Logging level. (default: 'Error')")
 
 # Using globals to simplify sample code
 args = parser.parse_args()
