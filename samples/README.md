@@ -2,6 +2,7 @@
 
 * [PubSub](#pubsub)
 * [PKCS#11 PubSub](#pkcs11-pubsub)
+* [Windows Certificate PubSub](#windows-certificate-pubsub)
 * [Shadow](#shadow)
 * [Jobs](#jobs)
 * [Fleet Provisioning](#fleet-provisioning)
@@ -121,6 +122,10 @@ To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the 
     ```sh
     python3 pkcs11_pubsub.py --endpoint <xxxx-ats.iot.xxxx.amazonaws.com> --root-ca <AmazonRootCA1.pem> --cert <certificate.pem.crt> --pkcs11-lib <libsofthsm2.so> --pin <user-pin> --token-label <token-label> --key-label <key-label>
 
+
+## Windows Certificate PubSub
+
+TODO
 
 ## Shadow
 

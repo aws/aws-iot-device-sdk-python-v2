@@ -267,6 +267,8 @@ def mtls_with_pkcs11(*,
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT,
     using a PKCS#11 library for private key operations.
 
+    NOTE: Unix only
+
     This function takes all :mod:`common arguments<awsiot.mqtt_connection_builder>`
     described at the top of this doc, as well as...
 
@@ -305,6 +307,30 @@ def mtls_with_pkcs11(*,
         private_key_label=private_key_label,
         cert_file_path=cert_filepath,
         cert_file_contents=cert_bytes)
+
+    return _builder(tls_ctx_options, **kwargs)
+
+
+def mtls_with_windows_cert_store_path(*,
+                                      cert_store_path: str,
+                                      **kwargs) -> awscrt.mqtt.Connection:
+    """
+    This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT,
+    using a client certificate in a Windows certificate store.
+
+    NOTE: Windows only
+
+    This function takes all :mod:`common arguments<awsiot.mqtt_connection_builder>`
+    described at the top of this doc, as well as...
+
+    Args:
+        cert_store_path: Path to certificate in a Windows certificate store.
+                The path must use backslashes and end with the certificate's thumbprint.
+                Example: ``CurrentUser\\MY\\A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6``
+    """
+    _check_required_kwargs(**kwargs)
+
+    tls_ctx_options = awscrt.io.TlsContextOptions.create_client_with_mtls_windows_cert_store_path(cert_store_path)
 
     return _builder(tls_ctx_options, **kwargs)
 
