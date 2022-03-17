@@ -186,9 +186,8 @@ for test_name in DATestConfig['tests']:
             # Start to run the test sample after the status turns into RUNNING
             elif (test_result_responds['status'] == 'RUNNING' and 
             test_result_responds['testResult']['groups'][0]['tests'][0]['status'] == 'RUNNING'):
-                if not test_started:
-                    exe_path = os.path.join("deviceadvisor/tests/",DATestConfig['test_exe_path'][test_name])
-                    result = subprocess.run('python3 ' + exe_path, timeout = 60*5, shell = True)
+                exe_path = os.path.join("deviceadvisor/tests/",DATestConfig['test_exe_path'][test_name])
+                result = subprocess.run('python3 ' + exe_path, timeout = 60*5, shell = True)
             # If the test finalizing then store the test result
             elif (test_result_responds['status'] != 'RUNNING'):
                 test_result[test_name] = test_result_responds['status']
