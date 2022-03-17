@@ -3,7 +3,6 @@ import uuid
 import json
 import os
 import subprocess
-import platform
 from time import sleep
 
 ##############################################
@@ -170,7 +169,6 @@ for test_name in DATestConfig['tests']:
         )
         os.environ['DA_ENDPOINT'] = endpoint_response['endpoint']
 
-        test_started = False
         while True:
             # sleep for 1s every loop to avoid TooManyRequestsException
             sleep(1)
@@ -191,8 +189,7 @@ for test_name in DATestConfig['tests']:
                 if not test_started:
                     exe_path = os.path.join("deviceadvisor/tests/",DATestConfig['test_exe_path'][test_name])
                     result = subprocess.run('python3 ' + exe_path, timeout = 60*5, shell = True)
-                    # test_started = True
-            # If the test finalizing or store the test result
+            # If the test finalizing then store the test result
             elif (test_result_responds['status'] != 'RUNNING'):
                 test_result[test_name] = test_result_responds['status']
                 break
