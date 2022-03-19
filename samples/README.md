@@ -72,7 +72,7 @@ and receive.
 
 ## PKCS#11 PubSub
 
-This sample is similar to the basic [Pub-Sub](#pubsub),
+This sample is similar to the basic [PubSub](#pubsub),
 but the private key for mutual TLS is stored on a PKCS#11 compatible smart card or Hardware Security Module (HSM)
 
 WARNING: Unix only. Currently, TLS integration with PKCS#11 is only available on Unix devices.
