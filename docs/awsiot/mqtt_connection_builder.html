@@ -57,7 +57,6 @@ The following keyword arguments are common to all builder functions:</p>
 <p>Required Keyword Arguments:</p>
 <blockquote>
 <div><p><strong>endpoint</strong> (<cite>str</cite>): Host name of AWS IoT server.</p>
-<p><strong>client_bootstrap</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.ClientBootstrap" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.io.ClientBootstrap</span></code></a>): Client bootstrap used to establish connection.</p>
 <dl class="simple">
 <dt><strong>client_id</strong> (<cite>str</cite>): ID to place in CONNECT packet. Must be unique across all devices/clients.</dt><dd><p>If an ID is already in use, the other client will be disconnected.</p>
 </dd>
@@ -66,6 +65,9 @@ The following keyword arguments are common to all builder functions:</p>
 <p>Optional Keyword Arguments (omit, or set <cite>None</cite> to get default value):</p>
 <blockquote>
 <div><dl>
+<dt><strong>client_bootstrap</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.ClientBootstrap" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.io.ClientBootstrap</span></code></a>): Client bootstrap used to establish connection.</dt><dd><p>The ClientBootstrap will default to the static default (Io.ClientBootstrap.get_or_create_static_default)
+if the argument is omitted or set to ‘None’.</p>
+</dd>
 <dt><strong>on_connection_interrupted</strong> (<cite>Callable</cite>): Callback invoked whenever the MQTT connection is lost.</dt><dd><p>The MQTT client will automatically attempt to reconnect.
 The function should take the following arguments return nothing:</p>
 <blockquote>
@@ -180,6 +182,7 @@ described at the top of this doc, as well as…</p>
 <span class="sig-prename descclassname"><span class="pre">awsiot.mqtt_connection_builder.</span></span><span class="sig-name descname"><span class="pre">mtls_with_pkcs11</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkcs11_lib</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slot_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.mqtt_connection_builder.mtls_with_pkcs11" title="Permalink to this definition">¶</a></dt>
 <dd><p>This builder creates an <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Connection</span></code></a>, configured for an mTLS MQTT connection to AWS IoT,
 using a PKCS#11 library for private key operations.</p>
+<p>NOTE: Unix only</p>
 <p>This function takes all <a class="reference internal" href="#module-awsiot.mqtt_connection_builder" title="awsiot.mqtt_connection_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span> <span class="pre">arguments</span></code></a>
 described at the top of this doc, as well as…</p>
 <dl class="field-list simple">
@@ -202,6 +205,26 @@ specified by other means instead (ex: <cite>cert_bytes</cite>)</p></li>
 The certificate must be PEM-formatted. The certificate may be
 specified by other means instead (ex: <cite>cert_filepath</cite>)</p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)">awscrt.mqtt.Connection</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="awsiot.mqtt_connection_builder.mtls_with_windows_cert_store_path">
+<span class="sig-prename descclassname"><span class="pre">awsiot.mqtt_connection_builder.</span></span><span class="sig-name descname"><span class="pre">mtls_with_windows_cert_store_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_store_path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.mqtt_connection_builder.mtls_with_windows_cert_store_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>This builder creates an <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Connection</span></code></a>, configured for an mTLS MQTT connection to AWS IoT,
+using a client certificate in a Windows certificate store.</p>
+<p>NOTE: Windows only</p>
+<p>This function takes all <a class="reference internal" href="#module-awsiot.mqtt_connection_builder" title="awsiot.mqtt_connection_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span> <span class="pre">arguments</span></code></a>
+described at the top of this doc, as well as…</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cert_store_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Path to certificate in a Windows certificate store.
+The path must use backslashes and end with the certificate’s thumbprint.
+Example: <code class="docutils literal notranslate"><span class="pre">CurrentUser\MY\A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6</span></code></p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)">awscrt.mqtt.Connection</a></p>
