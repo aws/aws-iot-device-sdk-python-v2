@@ -212,5 +212,4 @@ if failed:
     # if the test failed, we dont clean the Thing so that we can track the error
     exit(-1)
 
-delete_thing_with_certi(thing_name, certificate_id ,certificate_arn )
 exit(0)
