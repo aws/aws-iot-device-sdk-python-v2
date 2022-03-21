@@ -43,86 +43,87 @@ shadowDefault = os.environ['DA_SHADOW_VALUE_DEFAULT']
 # test result
 test_result = {}
 
-##############################################
-# create a test thing 
-thing_name = "DATest_" + str(uuid.uuid4())
-try:
-    # create_thing_response:
-    # {
-    # 'thingName': 'string',
-    # 'thingArn': 'string',
-    # 'thingId': 'string'
-    # }
-    print("[Device Advisor]Info: Started to create thing...")
-    create_thing_response = client.create_thing(
-        thingName=thing_name
-    )
-    os.environ["DA_THING_NAME"] = thing_name
-    
-except Exception as e:
-    print("[Device Advisor]Error: Failed to create thing: " + thing_name)
-    exit(-1)
-
-
-##############################################
-# create certificate and keys used for testing
-try:
-    print("[Device Advisor]Info: Started to create certificate...")
-    # create_cert_response:
-    # {
-    # 'certificateArn': 'string',
-    # 'certificateId': 'string',
-    # 'certificatePem': 'string',
-    # 'keyPair': 
-    #   {
-    #     'PublicKey': 'string',
-    #     'PrivateKey': 'string'
-    #   }
-    # }
-    create_cert_response = client.create_keys_and_certificate(
-        setAsActive=True
-    )
-    # write certificate to file
-    f = open(certificate_path, "w")
-    f.write(create_cert_response['certificatePem'])
-    f.close()
-
-    # write private key to file
-    f = open(key_path, "w")
-    f.write(create_cert_response['keyPair']['PrivateKey'])
-    f.close()
-    
-    # setup environment variable 
-    os.environ["DA_CERTI"] = certificate_path
-    os.environ["DA_KEY"] = key_path
-
-except:
-    client.delete_thing(thingName = thing_name)
-    print("[Device Advisor]Error: Failed to create certificate.")
-    exit(-1)
-
-##############################################
-# attach certification to thing
-try:
-    print("[Device Advisor]Info: Attach certificate to test thing...")
-    # attache the certificate to thing
-    client.attach_thing_principal(
-        thingName = thing_name,
-        principal = create_cert_response['certificateArn']
-    )
-
-    certificate_arn = create_cert_response['certificateArn']
-    certificate_id = create_cert_response['certificateId']
-
-except:
-    delete_thing_with_certi(thing_name, certificate_id ,certificate_arn )
-    print("[Device Advisor]Error: Failed to attach certificate.")
-    exit(-1)
-
 
 ##############################################
 # Run device advisor
 for test_name in DATestConfig['tests']:
+    ##############################################
+    # create a test thing 
+    thing_name = "DATest_" + str(uuid.uuid4())
+    try:
+        # create_thing_response:
+        # {
+        # 'thingName': 'string',
+        # 'thingArn': 'string',
+        # 'thingId': 'string'
+        # }
+        print("[Device Advisor]Info: Started to create thing...")
+        create_thing_response = client.create_thing(
+            thingName=thing_name
+        )
+        os.environ["DA_THING_NAME"] = thing_name
+        
+    except Exception as e:
+        print("[Device Advisor]Error: Failed to create thing: " + thing_name)
+        exit(-1)
+
+
+    ##############################################
+    # create certificate and keys used for testing
+    try:
+        print("[Device Advisor]Info: Started to create certificate...")
+        # create_cert_response:
+        # {
+        # 'certificateArn': 'string',
+        # 'certificateId': 'string',
+        # 'certificatePem': 'string',
+        # 'keyPair': 
+        #   {
+        #     'PublicKey': 'string',
+        #     'PrivateKey': 'string'
+        #   }
+        # }
+        create_cert_response = client.create_keys_and_certificate(
+            setAsActive=True
+        )
+        # write certificate to file
+        f = open(certificate_path, "w")
+        f.write(create_cert_response['certificatePem'])
+        f.close()
+
+        # write private key to file
+        f = open(key_path, "w")
+        f.write(create_cert_response['keyPair']['PrivateKey'])
+        f.close()
+        
+        # setup environment variable 
+        os.environ["DA_CERTI"] = certificate_path
+        os.environ["DA_KEY"] = key_path
+
+    except:
+        client.delete_thing(thingName = thing_name)
+        print("[Device Advisor]Error: Failed to create certificate.")
+        exit(-1)
+
+    ##############################################
+    # attach certification to thing
+    try:
+        print("[Device Advisor]Info: Attach certificate to test thing...")
+        # attache the certificate to thing
+        client.attach_thing_principal(
+            thingName = thing_name,
+            principal = create_cert_response['certificateArn']
+        )
+
+        certificate_arn = create_cert_response['certificateArn']
+        certificate_id = create_cert_response['certificateId']
+
+    except:
+        delete_thing_with_certi(thing_name, certificate_id ,certificate_arn )
+        print("[Device Advisor]Error: Failed to attach certificate.")
+        exit(-1)
+
+
     try:
         ######################################
         # set default shadow, for shadow update, if the
@@ -191,6 +192,8 @@ for test_name in DATestConfig['tests']:
             # If the test finalizing then store the test result
             elif (test_result_responds['status'] != 'RUNNING'):
                 test_result[test_name] = test_result_responds['status']
+                if(test_result[test_name] == "PASS"):
+                    delete_thing_with_certi(thing_name, certificate_id ,certificate_arn )
                 break
     except Exception as e:
         print("[Device Advisor]Error: Failed to test: "+ test_name + e)
