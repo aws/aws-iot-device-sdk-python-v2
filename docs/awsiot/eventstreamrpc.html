@@ -196,13 +196,13 @@ or False if the connection should continute.</p>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="awsiot.eventstreamrpc.MessageAmendment.headers">
-<span class="sig-name descname"><span class="pre">headers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/eventstream.html#awscrt.eventstream.Header" title="(in awscrt)"><span class="pre">awscrt.eventstream.Header</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#awsiot.eventstreamrpc.MessageAmendment.headers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">headers</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.MessageAmendment.headers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Headers to add</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="awsiot.eventstreamrpc.MessageAmendment.payload">
-<span class="sig-name descname"><span class="pre">payload</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#awsiot.eventstreamrpc.MessageAmendment.payload" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">payload</span></span><a class="headerlink" href="#awsiot.eventstreamrpc.MessageAmendment.payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Binary payload data</p>
 </dd></dl>
 
@@ -221,7 +221,7 @@ is called multiple times over the life of the application.</p>
 <cite>connect_message_amender</cite> init arg.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a>[[], <a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment">awsiot.eventstreamrpc.MessageAmendment</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a>[<a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment">awsiot.eventstreamrpc.MessageAmendment</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -250,7 +250,7 @@ If None is provided, the default options are used.</p></li>
 <li><p><strong>tls_connection_options</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.TlsConnectionOptions" title="(in awscrt)"><em>awscrt.io.TlsConnectionOptions</em></a><em>]</em>) – Optional TLS connection options.
 If None is provided, then the connection will be attempted over
 plain-text.</p></li>
-<li><p><strong>connect_message_amender</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><em>]</em><em>, </em><a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment"><em>awsiot.eventstreamrpc.MessageAmendment</em></a><em>]</em><em>]</em>) – Optional callable that should return a
+<li><p><strong>connect_message_amender</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment"><em>awsiot.eventstreamrpc.MessageAmendment</em></a><em>]</em><em>]</em>) – Optional callable that should return a
 <a class="reference internal" href="#awsiot.eventstreamrpc.MessageAmendment" title="awsiot.eventstreamrpc.MessageAmendment"><code class="xref py py-class docutils literal notranslate"><span class="pre">MessageAmendment</span></code></a> for the
 <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/eventstream.html#awscrt.eventstream.rpc.MessageType.CONNECT" title="(in awscrt)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">CONNECT</span></code></a> message.
 This callable will be invoked whenever a network connection is
@@ -398,6 +398,30 @@ rewrite public API to properly document the types they deal with.</p>
 </ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="awsiot.eventstreamrpc.Client.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.eventstreamrpc.Client.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the connection.</p>
+<p>Shutdown is asynchronous. This call has no effect if the connection
+is already closed or closing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>reason</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.10)"><em>Exception</em></a><em>]</em>) – If set, the connection will
+close with this error as the reason (unless
+it was already closing for another reason).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The future which will complete
+when the shutdown process is done. The future will have an
+exception if shutdown was caused by an error, or a result
+of None if the shutdown was clean and user-initiated.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>concurrent.futures._base.Future</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
