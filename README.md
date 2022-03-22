@@ -32,7 +32,7 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 ## Installation
 
 ### Minimum Requirements
-*   Python 3.6+
+* Python 3.6+
   * On Windows, download a Python installer from the official Python website: [Python Website](https://www.python.org/downloads/)
   * On MacOS, install Brew ([Brew install instructions](https://github.com/aws/aws-iot-device-sdk-cpp-v2/blob/main/PREREQUISITES.md#xcode-command-line-tools-using-brew)) and then run `brew install python`.
   * On Linux, install Python using `sudo apt-get install python3` on Ubuntu, `sudo pacman -S python3` for Arch Linux, or `sudo yum install python3` for Linux distros that support `yum`.
