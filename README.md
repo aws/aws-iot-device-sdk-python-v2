@@ -32,7 +32,7 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 ## Installation
 
 ### Minimum Requirements
-*   Python 3.6+
+*   Python 3.6+ ([Python Download](https://www.python.org/downloads/))
 
 ### Install from PyPI
 ```
@@ -50,14 +50,12 @@ python3 -m pip install ./aws-iot-device-sdk-python-v2
 `awsiotsdk` depends on [awscrt](https://github.com/awslabs/aws-crt-python), which makes use of C extensions. Precompiled wheels are downloaded when installing on major platforms (Mac, Windows, Linux, Raspberry Pi OS). If wheels are unavailable for your platform, your machine must compile some C libraries. If you encounter issues, be sure the following are installed and try again:
 
 * CMake 3.1+
+  * Follow the CMake install steps here: [C++ Install Prerequests](https://github.com/aws/aws-iot-device-sdk-cpp-v2/blob/main/PREREQUISITES.md#cmake-31))
+  * You may also need to install GCC, Clang, or MSVC to compile C code. You can find instructions to install a C compiler here: [C++ Install Prerequests](https://github.com/aws/aws-iot-device-sdk-cpp-v2/blob/main/PREREQUISITES.md#cmake-31))
 * Python headers and libs
-
-```
-sudo apt-get update
-sudo apt-get install cmake
-sudo apt-get install python3-dev
-```
-
+  * To install on Linux run `sudo apt-get install python-dev` for Ubuntu, `sudo pacman -S python-dev` for Arch Linux or `sudo yum install python-devel` for Linux distros that support `yum`.
+  * For MacOS, Python headers and libraries should be installed automatically if using `brew`. You can find them in the `include` folder in your Pyhton install directory (For example `Cellar/python3/3.3.0/Frameworks/Python.framework/Versions/3.3/include/python3.3/`).
+  * Python headers and libraries should be automatically installed on Windows as part of running the Windows installation. You can find them in the `include` folder in your Python install directory (For example `C:\Python\include` and `C:\Python\libs`).
 
 ## Mac-Only TLS Behavior
 
