@@ -5,7 +5,7 @@
 * On Windows:
   * Download the Python installer from the official Python website: [Python Website](https://www.python.org/downloads/windows/)
 * On MacOS:
-  * Using `brew` (steps to [install `brew`](#Cmake3.1+onMac)): `brew install python`.
+  * Using `brew` (steps to [install `brew`](##cmake-31-on-mac)): `brew install python`.
   * Download the Python installer from the official Python website: [Python Website](https://www.python.org/downloads/macos/)
 * On Linux:
   * Ubuntu: `sudo apt-get install python3`
