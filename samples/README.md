@@ -7,6 +7,16 @@
 * [Fleet Provisioning](#fleet-provisioning)
 * [Greengrass Discovery](#greengrass-discovery)
 
+## Build instructions
+
+First, install the aws-iot-devices-sdk-python-v2 with following the instructions from [Installation](../README.md#Installation).
+
+Then change into the samples directory to run the Python commands to execute the samples. You can view the commands of a sample like this:
+
+``` sh
+python3 pubsub.py --help
+```
+
 ## PubSub
 
 This sample uses the
@@ -19,11 +29,6 @@ since it is subscribed to that same topic.
 Status updates are continually printed to the console.
 
 Source: `samples/pubsub.py`
-
-Run the sample like this:
-``` sh
-python3 pubsub.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file>
-```
 
 Your Thing's
 [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
@@ -69,14 +74,95 @@ and receive.
 </pre>
 </details>
 
+Run the sample like this:
+``` sh
+python3 pubsub.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file>
+```
+
+## Basic Connect
+
+This sample makes an MQTT connection using a certificate and key file. On startup, the device connects to the server using the certificate and key files, and then disconnects.
+This sample is for reference on connecting via certificate and key files.
+
+Source: `samples/basic_connect.py`
+
+Your Thing's
+[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
+must provide privileges for this sample to connect, subscribe, publish,
+and receive.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
+
+Run the sample like this:
+``` sh
+python3 basic_connect.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file>
+```
+
+## Websocket Connect
+
+This sample makes an MQTT connection via websockets and then disconnects. On startup, the device connects to the server via websockets and then disconnects.
+This sample is for reference on connecting via websockets.
+
+Source: `samples/websocket_connect.py`
+
+Your Thing's
+[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
+must provide privileges for this sample to connect, subscribe, publish,
+and receive.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
+
+Run the sample like this:
+``` sh
+python3 websocket_connect.py --endpoint <endpoint> --ca_file <file> --signing_region <signing region>
+```
+
+Note that using Websockets will attempt to fetch the AWS credentials from your enviornment variables or local files. See the [authorizing direct AWS](https://docs.aws.amazon.com/iot/latest/developerguide/authorizing-direct-aws.html) page for documentation on how to get the AWS credentials, which then you can set to the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS`, and `AWS_SESSION_TOKEN` environment variables.
+
 ## PKCS#11 PubSub
 
-This sample is similar to the [Pub-Sub](#pubsub),
+This sample is similar to the [Basic Connect](#basic-connect),
 but the private key for mutual TLS is stored on a PKCS#11 compatible smart card or Hardware Security Module (HSM)
 
 WARNING: Unix only. Currently, TLS integration with PKCS#11 is only available on Unix devices.
 
-source: `samples/pkcs11_pubsub.py`
+source: `samples/pkcs11_connect.py`
 
 To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the PKCS#11 device:
 
@@ -119,7 +205,7 @@ To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the 
 
 5)  Now you can run the sample:
     ```sh
-    python3 pkcs11_pubsub.py --endpoint <xxxx-ats.iot.xxxx.amazonaws.com> --ca_file <AmazonRootCA1.pem> --cert <certificate.pem.crt> --pkcs11_lib <libsofthsm2.so> --pin <user-pin> --token_label <token-label> --key_label <key-label>
+    python3 pkcs11_connect.py --endpoint <xxxx-ats.iot.xxxx.amazonaws.com> --ca_file <AmazonRootCA1.pem> --cert <certificate.pem.crt> --pkcs11_lib <libsofthsm2.so> --pin <user-pin> --token_label <token-label> --key_label <key-label>
 
 
 ## Shadow

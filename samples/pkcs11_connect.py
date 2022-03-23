@@ -1,0 +1,85 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0.
+
+from awscrt import io
+from awsiot import mqtt_connection_builder
+from uuid import uuid4
+
+# This sample is similar to `samples/basic_connect.py` but the private key
+# for mutual TLS is stored on a PKCS#11 compatible smart card or
+# Hardware Security Module (HSM).
+#
+# See `samples/README.md` for instructions on setting up your PKCS#11 device
+# to run this sample.
+#
+# WARNING: Unix only. Currently, TLS integration with PKCS#11 is only available on Unix devices.
+
+# Parse arguments
+import command_line_utils
+cmdUtils = command_line_utils.CommandLineUtils("PubSub - Send and recieve messages through an MQTT connection.")
+cmdUtils.add_common_mqtt_commands()
+cmdUtils.add_common_proxy_commands()
+cmdUtils.add_common_logging_commands()
+cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
+cmdUtils.register_command("client_id", "<str>",
+                          "Client ID to use for MQTT connection (optional, default='test-*').",
+                          default="test-" + str(uuid4()))
+cmdUtils.register_command("port", "<port>",
+                          "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).",
+                          type=int)
+cmdUtils.register_command("pkcs11_lib", "<path>", "Path to PKCS#11 Library", required=True)
+cmdUtils.register_command("pin", "<str>", "User PIN for logging into PKCS#11 token.", required=True)
+cmdUtils.register_command("token_label", "<str>", "Label of the PKCS#11 token to use (optional).")
+cmdUtils.register_command("slot_id", "<int>", "Slot ID containing the PKCS#11 token to use (optional).", False, int)
+cmdUtils.register_command("key_label", "<str>", "Label of private key on the PKCS#11 token (optional).")
+# Needs to be called so the command utils parse the commands
+cmdUtils.get_args()
+
+# Callback when connection is accidentally lost.
+def on_connection_interrupted(connection, error, **kwargs):
+    print("Connection interrupted. error: {}".format(error))
+
+# Callback when an interrupted connection is re-established.
+def on_connection_resumed(connection, return_code, session_present, **kwargs):
+    print("Connection resumed. return_code: {} session_present: {}".format(return_code, session_present))
+
+
+if __name__ == '__main__':
+    pkcs11_lib_file = cmdUtils.get_command_required("pkcs11_lib")
+    print(f"Loading PKCS#11 library '{pkcs11_lib_file}' ...")
+    pkcs11_lib = io.Pkcs11Lib(
+        file=pkcs11_lib_file,
+        behavior=io.Pkcs11Lib.InitializeFinalizeBehavior.STRICT)
+    print("Loaded!")
+
+    # Create MQTT connection
+    mqtt_connection = mqtt_connection_builder.mtls_with_pkcs11(
+        pkcs11_lib=pkcs11_lib,
+        user_pin=cmdUtils.get_command_required("pin"),
+        slot_id=cmdUtils.get_command("slot_id"),
+        token_label=cmdUtils.get_command("token_label"),
+        private_key_label=cmdUtils.get_command("key_label"),
+        cert_filepath=cmdUtils.get_command_required("cert"),
+        endpoint=cmdUtils.get_command_required(cmdUtils.m_cmd_endpoint),
+        port=cmdUtils.get_command("port"),
+        ca_filepath=cmdUtils.get_command(cmdUtils.m_cmd_ca_file),
+        on_connection_interrupted=on_connection_interrupted,
+        on_connection_resumed=on_connection_resumed,
+        client_id=cmdUtils.get_command_required("client_id"),
+        clean_session=False,
+        keep_alive_secs=30)
+
+    print("Connecting to {} with client ID '{}'...".format(
+        cmdUtils.get_command("endpoint"), cmdUtils.get_command("client_id")))
+
+    connect_future = mqtt_connection.connect()
+
+    # Future.result() waits until a result is available
+    connect_future.result()
+    print("Connected!")
+
+    # Disconnect
+    print("Disconnecting...")
+    disconnect_future = mqtt_connection.disconnect()
+    disconnect_future.result()
+    print("Disconnected!")
