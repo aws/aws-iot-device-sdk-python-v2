@@ -94,7 +94,7 @@ class SamplesTest(unittest.TestCase):
             "--endpoint", config.endpoint,
             "--cert", config.cert_filepath,
             "--key", config.key_filepath,
-            "--client-id", create_client_id(),
+            "--client_id", create_client_id(),
             "--count", "1",
             "--verbosity", "Trace",
         ]
@@ -111,11 +111,11 @@ class SamplesTest(unittest.TestCase):
         args = [
             sys.executable,
             "samples/basic_discovery.py",
-            "--print-discover-resp-only",
+            "--print_discover_resp_only",
             "--region", config.region,
             "--cert", config.cert_filepath,
             "--key", config.key_filepath,
-            "--thing-name", "aws-sdk-crt-unit-test",
+            "--thing_name", "aws-sdk-crt-unit-test",
             "--verbosity", "Trace",
         ]
 
