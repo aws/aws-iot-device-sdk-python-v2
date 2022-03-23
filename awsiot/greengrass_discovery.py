@@ -36,7 +36,7 @@ class DiscoveryClient:
             socket_options: SocketOptions,
             tls_context: ClientTlsContext,
             region: str,
-            gg_server_name = None):
+            gg_server_name: str = None):
         assert isinstance(bootstrap, ClientBootstrap)
         assert isinstance(socket_options, SocketOptions)
         assert isinstance(tls_context, ClientTlsContext)

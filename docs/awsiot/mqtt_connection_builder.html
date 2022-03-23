@@ -176,6 +176,40 @@ described at the top of this doc, as well as…</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="awsiot.mqtt_connection_builder.mtls_with_pkcs11">
+<span class="sig-prename descclassname"><span class="pre">awsiot.mqtt_connection_builder.</span></span><span class="sig-name descname"><span class="pre">mtls_with_pkcs11</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkcs11_lib</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slot_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.mqtt_connection_builder.mtls_with_pkcs11" title="Permalink to this definition">¶</a></dt>
+<dd><p>This builder creates an <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Connection</span></code></a>, configured for an mTLS MQTT connection to AWS IoT,
+using a PKCS#11 library for private key operations.</p>
+<p>This function takes all <a class="reference internal" href="#module-awsiot.mqtt_connection_builder" title="awsiot.mqtt_connection_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">common</span> <span class="pre">arguments</span></code></a>
+described at the top of this doc, as well as…</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pkcs11_lib</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/io.html#awscrt.io.Pkcs11Lib" title="(in awscrt)"><em>awscrt.io.Pkcs11Lib</em></a>) – Use this PKCS#11 library</p></li>
+<li><p><strong>user_pin</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – User PIN, for logging into the PKCS#11 token.
+Pass <cite>None</cite> to log into a token with a “protected authentication path”.</p></li>
+<li><p><strong>slot_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>]</em>) – ID of slot containing PKCS#11 token.
+If not specified, the token will be chosen based on other criteria (such as token label).</p></li>
+<li><p><strong>token_label</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – Label of the PKCS#11 token to use.
+If not specified, the token will be chosen based on other criteria (such as slot ID).</p></li>
+<li><p><strong>private_key_label</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – Label of private key object on PKCS#11 token.
+If not specified, the key will be chosen based on other criteria
+(such as being the only available private key on the token).</p></li>
+<li><p><strong>cert_filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – Use this X.509 certificate (file on disk).
+The certificate must be PEM-formatted. The certificate may be
+specified by other means instead (ex: <cite>cert_bytes</cite>)</p></li>
+<li><p><strong>cert_bytes</strong> (<em>Optional</em><em>[</em><em>bytes-like object</em><em>]</em>) – Use this X.509 certificate (contents in memory).
+The certificate must be PEM-formatted. The certificate may be
+specified by other means instead (ex: <cite>cert_filepath</cite>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)">awscrt.mqtt.Connection</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="awsiot.mqtt_connection_builder.websockets_with_default_aws_signing">
 <span class="sig-prename descclassname"><span class="pre">awsiot.mqtt_connection_builder.</span></span><span class="sig-name descname"><span class="pre">websockets_with_default_aws_signing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credentials_provider</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">websocket_proxy_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.mqtt_connection_builder.websockets_with_default_aws_signing" title="Permalink to this definition">¶</a></dt>
 <dd><p>This builder creates an <a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">awscrt.mqtt.Connection</span></code></a>, configured for an MQTT connection over websockets to AWS IoT.
@@ -242,12 +276,16 @@ for proxy settings use <cite>http_proxy_options</cite> (described in
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="greengrass_discovery.html"
-                        title="previous chapter">awsiot.greengrass_discovery</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="iotidentity.html"
-                        title="next chapter">awsiot.iotidentity</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="greengrass_discovery.html"
+                          title="previous chapter">awsiot.greengrass_discovery</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="iotidentity.html"
+                          title="next chapter">awsiot.iotidentity</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -289,8 +327,8 @@ for proxy settings use <cite>http_proxy_options</cite> (described in
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Amazon Web Services, Inc.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
+        &#169; Copyright 2022, Amazon Web Services, Inc.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
   </body>
 </html>

@@ -142,7 +142,7 @@ exception if the request cannot be published.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest" title="awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest"><em>awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest</em></a>) – <cite>CreateCertificateFromCsrSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrResponse" title="awsiot.iotidentity.CreateCertificateFromCsrResponse"><em>awsiot.iotidentity.CreateCertificateFromCsrResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrResponse" title="awsiot.iotidentity.CreateCertificateFromCsrResponse"><em>awsiot.iotidentity.CreateCertificateFromCsrResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>CreateCertificateFromCsrResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -155,7 +155,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -170,7 +170,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest" title="awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest"><em>awsiot.iotidentity.CreateCertificateFromCsrSubscriptionRequest</em></a>) – <cite>CreateCertificateFromCsrSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -183,7 +183,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -198,7 +198,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest" title="awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest"><em>awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest</em></a>) – <cite>CreateKeysAndCertificateSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateResponse" title="awsiot.iotidentity.CreateKeysAndCertificateResponse"><em>awsiot.iotidentity.CreateKeysAndCertificateResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateResponse" title="awsiot.iotidentity.CreateKeysAndCertificateResponse"><em>awsiot.iotidentity.CreateKeysAndCertificateResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>CreateKeysAndCertificateResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -211,7 +211,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -226,7 +226,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest" title="awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest"><em>awsiot.iotidentity.CreateKeysAndCertificateSubscriptionRequest</em></a>) – <cite>CreateKeysAndCertificateSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -239,7 +239,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -254,7 +254,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.RegisterThingSubscriptionRequest" title="awsiot.iotidentity.RegisterThingSubscriptionRequest"><em>awsiot.iotidentity.RegisterThingSubscriptionRequest</em></a>) – <cite>RegisterThingSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.RegisterThingResponse" title="awsiot.iotidentity.RegisterThingResponse"><em>awsiot.iotidentity.RegisterThingResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.RegisterThingResponse" title="awsiot.iotidentity.RegisterThingResponse"><em>awsiot.iotidentity.RegisterThingResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>RegisterThingResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -267,7 +267,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -282,7 +282,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotidentity.RegisterThingSubscriptionRequest" title="awsiot.iotidentity.RegisterThingSubscriptionRequest"><em>awsiot.iotidentity.RegisterThingSubscriptionRequest</em></a>) – <cite>RegisterThingSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotidentity.ErrorResponse" title="awsiot.iotidentity.ErrorResponse"><em>awsiot.iotidentity.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -295,7 +295,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -522,7 +522,7 @@ may arrive before the subscription is acknowledged.</p>
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>certificate_ownership_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The token to prove ownership of the certificate. The token is generated by AWS IoT when you create a certificate over MQTT.</p></li>
-<li><p><strong>parameters</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – Optional. Key-value pairs from the device that are used by the pre-provisioning hooks to evaluate the registration request.</p></li>
+<li><p><strong>parameters</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – Optional. Key-value pairs from the device that are used by the pre-provisioning hooks to evaluate the registration request.</p></li>
 <li><p><strong>template_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The provisioning template name.</p></li>
 </ul>
 </dd>
@@ -544,7 +544,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>Optional. Key-value pairs from the device that are used by the pre-provisioning hooks to evaluate the registration request.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -571,7 +571,7 @@ may arrive before the subscription is acknowledged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>device_configuration</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – The device configuration defined in the template.</p></li>
+<li><p><strong>device_configuration</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – The device configuration defined in the template.</p></li>
 <li><p><strong>thing_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the IoT thing created during provisioning.</p></li>
 </ul>
 </dd>
@@ -582,7 +582,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>The device configuration defined in the template.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -633,12 +633,16 @@ may arrive before the subscription is acknowledged.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="mqtt_connection_builder.html"
-                        title="previous chapter">awsiot.mqtt_connection_builder</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="iotjobs.html"
-                        title="next chapter">awsiot.iotjobs</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="mqtt_connection_builder.html"
+                          title="previous chapter">awsiot.mqtt_connection_builder</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="iotjobs.html"
+                          title="next chapter">awsiot.iotjobs</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -680,8 +684,8 @@ may arrive before the subscription is acknowledged.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Amazon Web Services, Inc.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
+        &#169; Copyright 2022, Amazon Web Services, Inc.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
   </body>
 </html>

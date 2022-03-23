@@ -207,7 +207,7 @@ exception if the request cannot be published.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest" title="awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest</em></a>) – <cite>DeleteNamedShadowSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.DeleteShadowResponse" title="awsiot.iotshadow.DeleteShadowResponse"><em>awsiot.iotshadow.DeleteShadowResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.DeleteShadowResponse" title="awsiot.iotshadow.DeleteShadowResponse"><em>awsiot.iotshadow.DeleteShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>DeleteShadowResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -220,7 +220,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -235,7 +235,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest" title="awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.DeleteNamedShadowSubscriptionRequest</em></a>) – <cite>DeleteNamedShadowSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -248,7 +248,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -263,7 +263,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteShadowSubscriptionRequest" title="awsiot.iotshadow.DeleteShadowSubscriptionRequest"><em>awsiot.iotshadow.DeleteShadowSubscriptionRequest</em></a>) – <cite>DeleteShadowSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.DeleteShadowResponse" title="awsiot.iotshadow.DeleteShadowResponse"><em>awsiot.iotshadow.DeleteShadowResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.DeleteShadowResponse" title="awsiot.iotshadow.DeleteShadowResponse"><em>awsiot.iotshadow.DeleteShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>DeleteShadowResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -276,7 +276,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -291,7 +291,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.DeleteShadowSubscriptionRequest" title="awsiot.iotshadow.DeleteShadowSubscriptionRequest"><em>awsiot.iotshadow.DeleteShadowSubscriptionRequest</em></a>) – <cite>DeleteShadowSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -304,7 +304,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -319,7 +319,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetNamedShadowSubscriptionRequest" title="awsiot.iotshadow.GetNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.GetNamedShadowSubscriptionRequest</em></a>) – <cite>GetNamedShadowSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.GetShadowResponse" title="awsiot.iotshadow.GetShadowResponse"><em>awsiot.iotshadow.GetShadowResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.GetShadowResponse" title="awsiot.iotshadow.GetShadowResponse"><em>awsiot.iotshadow.GetShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>GetShadowResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -332,7 +332,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -347,7 +347,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetNamedShadowSubscriptionRequest" title="awsiot.iotshadow.GetNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.GetNamedShadowSubscriptionRequest</em></a>) – <cite>GetNamedShadowSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -360,7 +360,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -375,7 +375,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetShadowSubscriptionRequest" title="awsiot.iotshadow.GetShadowSubscriptionRequest"><em>awsiot.iotshadow.GetShadowSubscriptionRequest</em></a>) – <cite>GetShadowSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.GetShadowResponse" title="awsiot.iotshadow.GetShadowResponse"><em>awsiot.iotshadow.GetShadowResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.GetShadowResponse" title="awsiot.iotshadow.GetShadowResponse"><em>awsiot.iotshadow.GetShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>GetShadowResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -388,7 +388,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -403,7 +403,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.GetShadowSubscriptionRequest" title="awsiot.iotshadow.GetShadowSubscriptionRequest"><em>awsiot.iotshadow.GetShadowSubscriptionRequest</em></a>) – <cite>GetShadowSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -416,7 +416,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -431,7 +431,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest" title="awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest"><em>awsiot.iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest</em></a>) – <cite>NamedShadowDeltaUpdatedSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent" title="awsiot.iotshadow.ShadowDeltaUpdatedEvent"><em>awsiot.iotshadow.ShadowDeltaUpdatedEvent</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent" title="awsiot.iotshadow.ShadowDeltaUpdatedEvent"><em>awsiot.iotshadow.ShadowDeltaUpdatedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ShadowDeltaUpdatedEvent</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -444,7 +444,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -459,7 +459,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest" title="awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest"><em>awsiot.iotshadow.NamedShadowUpdatedSubscriptionRequest</em></a>) – <cite>NamedShadowUpdatedSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedEvent" title="awsiot.iotshadow.ShadowUpdatedEvent"><em>awsiot.iotshadow.ShadowUpdatedEvent</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedEvent" title="awsiot.iotshadow.ShadowUpdatedEvent"><em>awsiot.iotshadow.ShadowUpdatedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ShadowUpdatedEvent</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -472,7 +472,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -487,7 +487,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest" title="awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest"><em>awsiot.iotshadow.ShadowDeltaUpdatedSubscriptionRequest</em></a>) – <cite>ShadowDeltaUpdatedSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent" title="awsiot.iotshadow.ShadowDeltaUpdatedEvent"><em>awsiot.iotshadow.ShadowDeltaUpdatedEvent</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowDeltaUpdatedEvent" title="awsiot.iotshadow.ShadowDeltaUpdatedEvent"><em>awsiot.iotshadow.ShadowDeltaUpdatedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ShadowDeltaUpdatedEvent</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -500,7 +500,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -515,7 +515,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedSubscriptionRequest" title="awsiot.iotshadow.ShadowUpdatedSubscriptionRequest"><em>awsiot.iotshadow.ShadowUpdatedSubscriptionRequest</em></a>) – <cite>ShadowUpdatedSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedEvent" title="awsiot.iotshadow.ShadowUpdatedEvent"><em>awsiot.iotshadow.ShadowUpdatedEvent</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ShadowUpdatedEvent" title="awsiot.iotshadow.ShadowUpdatedEvent"><em>awsiot.iotshadow.ShadowUpdatedEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ShadowUpdatedEvent</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -528,7 +528,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -543,7 +543,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest" title="awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest</em></a>) – <cite>UpdateNamedShadowSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.UpdateShadowResponse" title="awsiot.iotshadow.UpdateShadowResponse"><em>awsiot.iotshadow.UpdateShadowResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.UpdateShadowResponse" title="awsiot.iotshadow.UpdateShadowResponse"><em>awsiot.iotshadow.UpdateShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>UpdateShadowResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -556,7 +556,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -571,7 +571,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest" title="awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest"><em>awsiot.iotshadow.UpdateNamedShadowSubscriptionRequest</em></a>) – <cite>UpdateNamedShadowSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -584,7 +584,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -599,7 +599,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateShadowSubscriptionRequest" title="awsiot.iotshadow.UpdateShadowSubscriptionRequest"><em>awsiot.iotshadow.UpdateShadowSubscriptionRequest</em></a>) – <cite>UpdateShadowSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.UpdateShadowResponse" title="awsiot.iotshadow.UpdateShadowResponse"><em>awsiot.iotshadow.UpdateShadowResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.UpdateShadowResponse" title="awsiot.iotshadow.UpdateShadowResponse"><em>awsiot.iotshadow.UpdateShadowResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>UpdateShadowResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -612,7 +612,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -627,7 +627,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> (<a class="reference internal" href="#awsiot.iotshadow.UpdateShadowSubscriptionRequest" title="awsiot.iotshadow.UpdateShadowSubscriptionRequest"><em>awsiot.iotshadow.UpdateShadowSubscriptionRequest</em></a>) – <cite>UpdateShadowSubscriptionRequest</cite> instance.</p></li>
 <li><p><strong>qos</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Quality of Service guarantee of this message</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em>]</em>) – Callback to invoke each time the event is received.
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><em>Callable</em></a><em>[</em><em>[</em><a class="reference internal" href="#awsiot.iotshadow.ErrorResponse" title="awsiot.iotshadow.ErrorResponse"><em>awsiot.iotshadow.ErrorResponse</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – Callback to invoke each time the event is received.
 The callback should take 1 argument of type <cite>ErrorResponse</cite>.
 The callback is not expected to return anything.</p></li>
 </ul>
@@ -640,7 +640,7 @@ to <cite>unsubscribe()</cite> to stop receiving messages. Note that messages
 may arrive before the subscription is acknowledged.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[concurrent.futures._base.Future, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1218,8 +1218,8 @@ may arrive before the subscription is acknowledged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>typing.Any</em></a><em>]</em>) – Timestamps for the shadow properties that were updated.</p></li>
-<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>typing.Any</em></a><em>]</em>) – Shadow properties that were updated.</p></li>
+<li><p><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a><em>]</em>) – Timestamps for the shadow properties that were updated.</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a><em>]</em>) – Shadow properties that were updated.</p></li>
 <li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.10)"><em>datetime.datetime</em></a>) – The time the event was generated by AWS IoT.</p></li>
 <li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The current version of the document for the device’s shadow.</p></li>
 </ul>
@@ -1231,7 +1231,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>Timestamps for the shadow properties that were updated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1242,7 +1242,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>Shadow properties that were updated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1304,8 +1304,8 @@ may arrive before the subscription is acknowledged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>desired</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>typing.Any</em></a><em>]</em>) – Contains the timestamps for each attribute in the desired section of a shadow’s state.</p></li>
-<li><p><strong>reported</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>typing.Any</em></a><em>]</em>) – Contains the timestamps for each attribute in the reported section of a shadow’s state.</p></li>
+<li><p><strong>desired</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a><em>]</em>) – Contains the timestamps for each attribute in the desired section of a shadow’s state.</p></li>
+<li><p><strong>reported</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a><em>]</em>) – Contains the timestamps for each attribute in the reported section of a shadow’s state.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1315,7 +1315,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>Contains the timestamps for each attribute in the desired section of a shadow’s state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1326,7 +1326,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>Contains the timestamps for each attribute in the reported section of a shadow’s state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1342,8 +1342,8 @@ may arrive before the subscription is acknowledged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>desired</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>typing.Any</em></a><em>]</em>) – The desired shadow state (from external services and devices).</p></li>
-<li><p><strong>reported</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>typing.Any</em></a><em>]</em>) – The (last) reported shadow state from the device.</p></li>
+<li><p><strong>desired</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a><em>]</em>) – The desired shadow state (from external services and devices).</p></li>
+<li><p><strong>reported</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a><em>]</em>) – The (last) reported shadow state from the device.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1353,7 +1353,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>The desired shadow state (from external services and devices).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1364,7 +1364,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>The (last) reported shadow state from the device.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1380,9 +1380,9 @@ may arrive before the subscription is acknowledged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>typing.Any</em></a><em>]</em>) – The delta between the reported and desired states.</p></li>
-<li><p><strong>desired</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>typing.Any</em></a><em>]</em>) – The desired shadow state (from external services and devices).</p></li>
-<li><p><strong>reported</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>typing.Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>typing.Any</em></a><em>]</em>) – The (last) reported shadow state from the device.</p></li>
+<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a><em>]</em>) – The delta between the reported and desired states.</p></li>
+<li><p><strong>desired</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a><em>]</em>) – The desired shadow state (from external services and devices).</p></li>
+<li><p><strong>reported</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a><em>]</em>) – The (last) reported shadow state from the device.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1392,7 +1392,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>The delta between the reported and desired states.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1403,7 +1403,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>The desired shadow state (from external services and devices).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1414,7 +1414,7 @@ may arrive before the subscription is acknowledged.</p>
 <dd><p>The (last) reported shadow state from the device.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)">typing.Dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, typing.Any]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1826,9 +1826,11 @@ may arrive before the subscription is acknowledged.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="iotjobs.html"
-                        title="previous chapter">awsiot.iotjobs</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="iotjobs.html"
+                          title="previous chapter">awsiot.iotjobs</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -1867,8 +1869,8 @@ may arrive before the subscription is acknowledged.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Amazon Web Services, Inc.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
+        &#169; Copyright 2022, Amazon Web Services, Inc.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
   </body>
 </html>

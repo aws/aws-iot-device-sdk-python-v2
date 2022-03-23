@@ -50,6 +50,15 @@ class SystemResourceLimits(rpc.Shape):
         self.memory = memory  # type: typing.Optional[int]
         self.cpus = cpus  # type: typing.Optional[float]
 
+    def set_memory(self, memory: int):
+        self.memory = memory
+        return self
+
+    def set_cpus(self, cpus: float):
+        self.cpus = cpus
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.memory is not None:
@@ -105,6 +114,15 @@ class ValidateConfigurationUpdateEvent(rpc.Shape):
         super().__init__()
         self.configuration = configuration  # type: typing.Optional[typing.Dict[str, typing.Any]]
         self.deployment_id = deployment_id  # type: typing.Optional[str]
+
+    def set_configuration(self, configuration: typing.Dict[str, typing.Any]):
+        self.configuration = configuration
+        return self
+
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -166,6 +184,19 @@ class RunWithInfo(rpc.Shape):
         self.windows_user = windows_user  # type: typing.Optional[str]
         self.system_resource_limits = system_resource_limits  # type: typing.Optional[SystemResourceLimits]
 
+    def set_posix_user(self, posix_user: str):
+        self.posix_user = posix_user
+        return self
+
+    def set_windows_user(self, windows_user: str):
+        self.windows_user = windows_user
+        return self
+
+    def set_system_resource_limits(self, system_resource_limits: SystemResourceLimits):
+        self.system_resource_limits = system_resource_limits
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.posix_user is not None:
@@ -226,6 +257,15 @@ class PreComponentUpdateEvent(rpc.Shape):
         self.deployment_id = deployment_id  # type: typing.Optional[str]
         self.is_ggc_restarting = is_ggc_restarting  # type: typing.Optional[bool]
 
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+    def set_is_ggc_restarting(self, is_ggc_restarting: bool):
+        self.is_ggc_restarting = is_ggc_restarting
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.deployment_id is not None:
@@ -278,6 +318,11 @@ class PostComponentUpdateEvent(rpc.Shape):
         super().__init__()
         self.deployment_id = deployment_id  # type: typing.Optional[str]
 
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.deployment_id is not None:
@@ -325,10 +370,23 @@ class MQTTMessage(rpc.Shape):
 
     def __init__(self, *,
                  topic_name: typing.Optional[str] = None,
-                 payload: typing.Optional[bytes] = None):
+                 payload: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
         self.topic_name = topic_name  # type: typing.Optional[str]
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
         self.payload = payload  # type: typing.Optional[bytes]
+
+    def set_topic_name(self, topic_name: str):
+        self.topic_name = topic_name
+        return self
+
+    def set_payload(self, payload: typing.Union[bytes, str]):
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
+        self.payload = payload
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -396,6 +454,11 @@ class JsonMessage(rpc.Shape):
                  message: typing.Optional[typing.Dict[str, typing.Any]] = None):
         super().__init__()
         self.message = message  # type: typing.Optional[typing.Dict[str, typing.Any]]
+
+    def set_message(self, message: typing.Dict[str, typing.Any]):
+        self.message = message
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -469,6 +532,15 @@ class ConfigurationUpdateEvent(rpc.Shape):
         self.component_name = component_name  # type: typing.Optional[str]
         self.key_path = key_path  # type: typing.Optional[typing.List[str]]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+    def set_key_path(self, key_path: typing.List[str]):
+        self.key_path = key_path
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -517,9 +589,18 @@ class BinaryMessage(rpc.Shape):
     """
 
     def __init__(self, *,
-                 message: typing.Optional[bytes] = None):
+                 message: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
+        if message is not None and isinstance(message, str):
+            message = message.encode('utf-8')
         self.message = message  # type: typing.Optional[bytes]
+
+    def set_message(self, message: typing.Union[bytes, str]):
+        if message is not None and isinstance(message, str):
+            message = message.encode('utf-8')
+        self.message = message
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -553,7 +634,7 @@ class BinaryMessage(rpc.Shape):
 
 class ValidateConfigurationUpdateEvents(rpc.Shape):
     """
-    BinaryMessage is a "tagged union" class.
+    ValidateConfigurationUpdateEvents is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -570,6 +651,11 @@ class ValidateConfigurationUpdateEvents(rpc.Shape):
                  validate_configuration_update_event: typing.Optional[ValidateConfigurationUpdateEvent] = None):
         super().__init__()
         self.validate_configuration_update_event = validate_configuration_update_event  # type: typing.Optional[ValidateConfigurationUpdateEvent]
+
+    def set_validate_configuration_update_event(self, validate_configuration_update_event: ValidateConfigurationUpdateEvent):
+        self.validate_configuration_update_event = validate_configuration_update_event
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -603,7 +689,7 @@ class ValidateConfigurationUpdateEvents(rpc.Shape):
 
 class SubscriptionResponseMessage(rpc.Shape):
     """
-    BinaryMessage is a "tagged union" class.
+    SubscriptionResponseMessage is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -624,6 +710,15 @@ class SubscriptionResponseMessage(rpc.Shape):
         super().__init__()
         self.json_message = json_message  # type: typing.Optional[JsonMessage]
         self.binary_message = binary_message  # type: typing.Optional[BinaryMessage]
+
+    def set_json_message(self, json_message: JsonMessage):
+        self.json_message = json_message
+        return self
+
+    def set_binary_message(self, binary_message: BinaryMessage):
+        self.binary_message = binary_message
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -661,7 +756,7 @@ class SubscriptionResponseMessage(rpc.Shape):
 
 class SecretValue(rpc.Shape):
     """
-    BinaryMessage is a "tagged union" class.
+    SecretValue is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -678,10 +773,23 @@ class SecretValue(rpc.Shape):
 
     def __init__(self, *,
                  secret_string: typing.Optional[str] = None,
-                 secret_binary: typing.Optional[bytes] = None):
+                 secret_binary: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
         self.secret_string = secret_string  # type: typing.Optional[str]
+        if secret_binary is not None and isinstance(secret_binary, str):
+            secret_binary = secret_binary.encode('utf-8')
         self.secret_binary = secret_binary  # type: typing.Optional[bytes]
+
+    def set_secret_string(self, secret_string: str):
+        self.secret_string = secret_string
+        return self
+
+    def set_secret_binary(self, secret_binary: typing.Union[bytes, str]):
+        if secret_binary is not None and isinstance(secret_binary, str):
+            secret_binary = secret_binary.encode('utf-8')
+        self.secret_binary = secret_binary
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -746,7 +854,7 @@ class QOS:
 
 class PublishMessage(rpc.Shape):
     """
-    BinaryMessage is a "tagged union" class.
+    PublishMessage is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -767,6 +875,15 @@ class PublishMessage(rpc.Shape):
         super().__init__()
         self.json_message = json_message  # type: typing.Optional[JsonMessage]
         self.binary_message = binary_message  # type: typing.Optional[BinaryMessage]
+
+    def set_json_message(self, json_message: JsonMessage):
+        self.json_message = json_message
+        return self
+
+    def set_binary_message(self, binary_message: BinaryMessage):
+        self.binary_message = binary_message
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -824,6 +941,15 @@ class LocalDeployment(rpc.Shape):
         self.deployment_id = deployment_id  # type: typing.Optional[str]
         self.status = status  # type: typing.Optional[str]
 
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+    def set_status(self, status: str):
+        self.status = status
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.deployment_id is not None:
@@ -860,7 +986,7 @@ class LocalDeployment(rpc.Shape):
 
 class IoTCoreMessage(rpc.Shape):
     """
-    LocalDeployment is a "tagged union" class.
+    IoTCoreMessage is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -877,6 +1003,11 @@ class IoTCoreMessage(rpc.Shape):
                  message: typing.Optional[MQTTMessage] = None):
         super().__init__()
         self.message = message  # type: typing.Optional[MQTTMessage]
+
+    def set_message(self, message: MQTTMessage):
+        self.message = message
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -934,6 +1065,19 @@ class ConfigurationValidityReport(rpc.Shape):
         self.deployment_id = deployment_id  # type: typing.Optional[str]
         self.message = message  # type: typing.Optional[str]
 
+    def set_status(self, status: str):
+        self.status = status
+        return self
+
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.status is not None:
@@ -974,7 +1118,7 @@ class ConfigurationValidityReport(rpc.Shape):
 
 class ConfigurationUpdateEvents(rpc.Shape):
     """
-    ConfigurationValidityReport is a "tagged union" class.
+    ConfigurationUpdateEvents is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -991,6 +1135,11 @@ class ConfigurationUpdateEvents(rpc.Shape):
                  configuration_update_event: typing.Optional[ConfigurationUpdateEvent] = None):
         super().__init__()
         self.configuration_update_event = configuration_update_event  # type: typing.Optional[ConfigurationUpdateEvent]
+
+    def set_configuration_update_event(self, configuration_update_event: ConfigurationUpdateEvent):
+        self.configuration_update_event = configuration_update_event
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -1024,7 +1173,7 @@ class ConfigurationUpdateEvents(rpc.Shape):
 
 class ComponentUpdatePolicyEvents(rpc.Shape):
     """
-    ConfigurationValidityReport is a "tagged union" class.
+    ComponentUpdatePolicyEvents is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -1045,6 +1194,15 @@ class ComponentUpdatePolicyEvents(rpc.Shape):
         super().__init__()
         self.pre_update_event = pre_update_event  # type: typing.Optional[PreComponentUpdateEvent]
         self.post_update_event = post_update_event  # type: typing.Optional[PostComponentUpdateEvent]
+
+    def set_pre_update_event(self, pre_update_event: PreComponentUpdateEvent):
+        self.pre_update_event = pre_update_event
+        return self
+
+    def set_post_update_event(self, post_update_event: PostComponentUpdateEvent):
+        self.post_update_event = post_update_event
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -1110,6 +1268,23 @@ class ComponentDetails(rpc.Shape):
         self.state = state  # type: typing.Optional[str]
         self.configuration = configuration  # type: typing.Optional[typing.Dict[str, typing.Any]]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+    def set_version(self, version: str):
+        self.version = version
+        return self
+
+    def set_state(self, state: str):
+        self.state = state
+        return self
+
+    def set_configuration(self, configuration: typing.Dict[str, typing.Any]):
+        self.configuration = configuration
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -1170,6 +1345,11 @@ class InvalidArtifactsDirectoryPathError(GreengrassCoreIPCError):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _get_error_type_string(self):
         return 'client'
 
@@ -1221,6 +1401,11 @@ class InvalidRecipeDirectoryPathError(GreengrassCoreIPCError):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _get_error_type_string(self):
         return 'client'
 
@@ -1271,6 +1456,11 @@ class CreateLocalDeploymentResponse(rpc.Shape):
                  deployment_id: typing.Optional[str] = None):
         super().__init__()
         self.deployment_id = deployment_id  # type: typing.Optional[str]
+
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -1344,6 +1534,35 @@ class CreateLocalDeploymentRequest(rpc.Shape):
         self.recipe_directory_path = recipe_directory_path  # type: typing.Optional[str]
         self.artifacts_directory_path = artifacts_directory_path  # type: typing.Optional[str]
 
+    def set_group_name(self, group_name: str):
+        self.group_name = group_name
+        return self
+
+    def set_root_component_versions_to_add(self, root_component_versions_to_add: typing.Dict[str, str]):
+        self.root_component_versions_to_add = root_component_versions_to_add
+        return self
+
+    def set_root_components_to_remove(self, root_components_to_remove: typing.List[str]):
+        self.root_components_to_remove = root_components_to_remove
+        return self
+
+    def set_component_to_configuration(self, component_to_configuration: typing.Dict[str, typing.Dict[str, typing.Any]]):
+        self.component_to_configuration = component_to_configuration
+        return self
+
+    def set_component_to_run_with_info(self, component_to_run_with_info: typing.Dict[str, RunWithInfo]):
+        self.component_to_run_with_info = component_to_run_with_info
+        return self
+
+    def set_recipe_directory_path(self, recipe_directory_path: str):
+        self.recipe_directory_path = recipe_directory_path
+        return self
+
+    def set_artifacts_directory_path(self, artifacts_directory_path: str):
+        self.artifacts_directory_path = artifacts_directory_path
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.group_name is not None:
@@ -1406,6 +1625,7 @@ class PauseComponentResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -1449,6 +1669,11 @@ class PauseComponentRequest(rpc.Shape):
                  component_name: typing.Optional[str] = None):
         super().__init__()
         self.component_name = component_name  # type: typing.Optional[str]
+
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -1502,6 +1727,15 @@ class StopComponentResponse(rpc.Shape):
         self.stop_status = stop_status  # type: typing.Optional[str]
         self.message = message  # type: typing.Optional[str]
 
+    def set_stop_status(self, stop_status: str):
+        self.stop_status = stop_status
+        return self
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.stop_status is not None:
@@ -1554,6 +1788,11 @@ class StopComponentRequest(rpc.Shape):
         super().__init__()
         self.component_name = component_name  # type: typing.Optional[str]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -1602,6 +1841,11 @@ class ListLocalDeploymentsResponse(rpc.Shape):
         super().__init__()
         self.local_deployments = local_deployments  # type: typing.Optional[typing.List[LocalDeployment]]
 
+    def set_local_deployments(self, local_deployments: typing.List[LocalDeployment]):
+        self.local_deployments = local_deployments
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.local_deployments is not None:
@@ -1640,6 +1884,7 @@ class ListLocalDeploymentsRequest(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -1674,6 +1919,7 @@ class SubscribeToComponentUpdatesResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -1707,6 +1953,7 @@ class SubscribeToComponentUpdatesRequest(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -1759,6 +2006,19 @@ class ListNamedShadowsForThingResponse(rpc.Shape):
         self.results = results  # type: typing.Optional[typing.List[str]]
         self.timestamp = timestamp  # type: typing.Optional[datetime.datetime]
         self.next_token = next_token  # type: typing.Optional[str]
+
+    def set_results(self, results: typing.List[str]):
+        self.results = results
+        return self
+
+    def set_timestamp(self, timestamp: datetime.datetime):
+        self.timestamp = timestamp
+        return self
+
+    def set_next_token(self, next_token: str):
+        self.next_token = next_token
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -1824,6 +2084,19 @@ class ListNamedShadowsForThingRequest(rpc.Shape):
         self.next_token = next_token  # type: typing.Optional[str]
         self.page_size = page_size  # type: typing.Optional[int]
 
+    def set_thing_name(self, thing_name: str):
+        self.thing_name = thing_name
+        return self
+
+    def set_next_token(self, next_token: str):
+        self.next_token = next_token
+        return self
+
+    def set_page_size(self, page_size: int):
+        self.page_size = page_size
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.thing_name is not None:
@@ -1870,6 +2143,7 @@ class UpdateStateResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -1913,6 +2187,11 @@ class UpdateStateRequest(rpc.Shape):
                  state: typing.Optional[str] = None):
         super().__init__()
         self.state = state  # type: typing.Optional[str]
+
+    def set_state(self, state: str):
+        self.state = state
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -1973,6 +2252,23 @@ class GetSecretValueResponse(rpc.Shape):
         self.version_id = version_id  # type: typing.Optional[str]
         self.version_stage = version_stage  # type: typing.Optional[typing.List[str]]
         self.secret_value = secret_value  # type: typing.Optional[SecretValue]
+
+    def set_secret_id(self, secret_id: str):
+        self.secret_id = secret_id
+        return self
+
+    def set_version_id(self, version_id: str):
+        self.version_id = version_id
+        return self
+
+    def set_version_stage(self, version_stage: typing.List[str]):
+        self.version_stage = version_stage
+        return self
+
+    def set_secret_value(self, secret_value: SecretValue):
+        self.secret_value = secret_value
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2042,6 +2338,19 @@ class GetSecretValueRequest(rpc.Shape):
         self.version_id = version_id  # type: typing.Optional[str]
         self.version_stage = version_stage  # type: typing.Optional[str]
 
+    def set_secret_id(self, secret_id: str):
+        self.secret_id = secret_id
+        return self
+
+    def set_version_id(self, version_id: str):
+        self.version_id = version_id
+        return self
+
+    def set_version_stage(self, version_stage: str):
+        self.version_stage = version_stage
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.secret_id is not None:
@@ -2098,6 +2407,11 @@ class GetLocalDeploymentStatusResponse(rpc.Shape):
         super().__init__()
         self.deployment = deployment  # type: typing.Optional[LocalDeployment]
 
+    def set_deployment(self, deployment: LocalDeployment):
+        self.deployment = deployment
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.deployment is not None:
@@ -2146,6 +2460,11 @@ class GetLocalDeploymentStatusRequest(rpc.Shape):
         super().__init__()
         self.deployment_id = deployment_id  # type: typing.Optional[str]
 
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.deployment_id is not None:
@@ -2193,6 +2512,11 @@ class ComponentNotFoundError(GreengrassCoreIPCError):
                  message: typing.Optional[str] = None):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
 
     def _get_error_type_string(self):
         return 'client'
@@ -2249,6 +2573,15 @@ class RestartComponentResponse(rpc.Shape):
         self.restart_status = restart_status  # type: typing.Optional[str]
         self.message = message  # type: typing.Optional[str]
 
+    def set_restart_status(self, restart_status: str):
+        self.restart_status = restart_status
+        return self
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.restart_status is not None:
@@ -2301,6 +2634,11 @@ class RestartComponentRequest(rpc.Shape):
         super().__init__()
         self.component_name = component_name  # type: typing.Optional[str]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -2348,6 +2686,11 @@ class InvalidTokenError(GreengrassCoreIPCError):
                  message: typing.Optional[str] = None):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
 
     def _get_error_type_string(self):
         return 'server'
@@ -2400,6 +2743,11 @@ class ValidateAuthorizationTokenResponse(rpc.Shape):
         super().__init__()
         self.is_valid = is_valid  # type: typing.Optional[bool]
 
+    def set_is_valid(self, is_valid: bool):
+        self.is_valid = is_valid
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.is_valid is not None:
@@ -2447,6 +2795,11 @@ class ValidateAuthorizationTokenRequest(rpc.Shape):
                  token: typing.Optional[str] = None):
         super().__init__()
         self.token = token  # type: typing.Optional[str]
+
+    def set_token(self, token: str):
+        self.token = token
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2496,6 +2849,11 @@ class FailedUpdateConditionCheckError(GreengrassCoreIPCError):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _get_error_type_string(self):
         return 'client'
 
@@ -2536,6 +2894,7 @@ class UpdateConfigurationResponse(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -2588,6 +2947,19 @@ class UpdateConfigurationRequest(rpc.Shape):
         self.key_path = key_path  # type: typing.Optional[typing.List[str]]
         self.timestamp = timestamp  # type: typing.Optional[datetime.datetime]
         self.value_to_merge = value_to_merge  # type: typing.Optional[typing.Dict[str, typing.Any]]
+
+    def set_key_path(self, key_path: typing.List[str]):
+        self.key_path = key_path
+        return self
+
+    def set_timestamp(self, timestamp: datetime.datetime):
+        self.timestamp = timestamp
+        return self
+
+    def set_value_to_merge(self, value_to_merge: typing.Dict[str, typing.Any]):
+        self.value_to_merge = value_to_merge
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2645,6 +3017,11 @@ class ConflictError(GreengrassCoreIPCError):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _get_error_type_string(self):
         return 'client'
 
@@ -2692,9 +3069,18 @@ class UpdateThingShadowResponse(rpc.Shape):
     """
 
     def __init__(self, *,
-                 payload: typing.Optional[bytes] = None):
+                 payload: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
         self.payload = payload  # type: typing.Optional[bytes]
+
+    def set_payload(self, payload: typing.Union[bytes, str]):
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
+        self.payload = payload
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2746,11 +3132,28 @@ class UpdateThingShadowRequest(rpc.Shape):
     def __init__(self, *,
                  thing_name: typing.Optional[str] = None,
                  shadow_name: typing.Optional[str] = None,
-                 payload: typing.Optional[bytes] = None):
+                 payload: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
         self.thing_name = thing_name  # type: typing.Optional[str]
         self.shadow_name = shadow_name  # type: typing.Optional[str]
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
         self.payload = payload  # type: typing.Optional[bytes]
+
+    def set_thing_name(self, thing_name: str):
+        self.thing_name = thing_name
+        return self
+
+    def set_shadow_name(self, shadow_name: str):
+        self.shadow_name = shadow_name
+        return self
+
+    def set_payload(self, payload: typing.Union[bytes, str]):
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
+        self.payload = payload
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2798,6 +3201,7 @@ class SendConfigurationValidityReportResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -2841,6 +3245,11 @@ class SendConfigurationValidityReportRequest(rpc.Shape):
                  configuration_validity_report: typing.Optional[ConfigurationValidityReport] = None):
         super().__init__()
         self.configuration_validity_report = configuration_validity_report  # type: typing.Optional[ConfigurationValidityReport]
+
+    def set_configuration_validity_report(self, configuration_validity_report: ConfigurationValidityReport):
+        self.configuration_validity_report = configuration_validity_report
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2886,9 +3295,18 @@ class GetThingShadowResponse(rpc.Shape):
     """
 
     def __init__(self, *,
-                 payload: typing.Optional[bytes] = None):
+                 payload: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
         self.payload = payload  # type: typing.Optional[bytes]
+
+    def set_payload(self, payload: typing.Union[bytes, str]):
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
+        self.payload = payload
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2941,6 +3359,15 @@ class GetThingShadowRequest(rpc.Shape):
         super().__init__()
         self.thing_name = thing_name  # type: typing.Optional[str]
         self.shadow_name = shadow_name  # type: typing.Optional[str]
+
+    def set_thing_name(self, thing_name: str):
+        self.thing_name = thing_name
+        return self
+
+    def set_shadow_name(self, shadow_name: str):
+        self.shadow_name = shadow_name
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3010,6 +3437,27 @@ class CreateDebugPasswordResponse(rpc.Shape):
         self.certificate_sha256_hash = certificate_sha256_hash  # type: typing.Optional[str]
         self.certificate_sha1_hash = certificate_sha1_hash  # type: typing.Optional[str]
 
+    def set_password(self, password: str):
+        self.password = password
+        return self
+
+    def set_username(self, username: str):
+        self.username = username
+        return self
+
+    def set_password_expiration(self, password_expiration: datetime.datetime):
+        self.password_expiration = password_expiration
+        return self
+
+    def set_certificate_sha256_hash(self, certificate_sha256_hash: str):
+        self.certificate_sha256_hash = certificate_sha256_hash
+        return self
+
+    def set_certificate_sha1_hash(self, certificate_sha1_hash: str):
+        self.certificate_sha1_hash = certificate_sha1_hash
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.password is not None:
@@ -3064,6 +3512,7 @@ class CreateDebugPasswordRequest(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -3108,6 +3557,11 @@ class ListComponentsResponse(rpc.Shape):
         super().__init__()
         self.components = components  # type: typing.Optional[typing.List[ComponentDetails]]
 
+    def set_components(self, components: typing.List[ComponentDetails]):
+        self.components = components
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.components is not None:
@@ -3146,6 +3600,7 @@ class ListComponentsRequest(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -3179,6 +3634,7 @@ class PublishToTopicResponse(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -3227,6 +3683,15 @@ class PublishToTopicRequest(rpc.Shape):
         super().__init__()
         self.topic = topic  # type: typing.Optional[str]
         self.publish_message = publish_message  # type: typing.Optional[PublishMessage]
+
+    def set_topic(self, topic: str):
+        self.topic = topic
+        return self
+
+    def set_publish_message(self, publish_message: PublishMessage):
+        self.publish_message = publish_message
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3280,6 +3745,11 @@ class GetComponentDetailsResponse(rpc.Shape):
         super().__init__()
         self.component_details = component_details  # type: typing.Optional[ComponentDetails]
 
+    def set_component_details(self, component_details: ComponentDetails):
+        self.component_details = component_details
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_details is not None:
@@ -3327,6 +3797,11 @@ class GetComponentDetailsRequest(rpc.Shape):
                  component_name: typing.Optional[str] = None):
         super().__init__()
         self.component_name = component_name  # type: typing.Optional[str]
+
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3376,6 +3851,11 @@ class SubscribeToTopicResponse(rpc.Shape):
         super().__init__()
         self.topic_name = topic_name  # type: typing.Optional[str]
 
+    def set_topic_name(self, topic_name: str):
+        self.topic_name = topic_name
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.topic_name is not None:
@@ -3423,6 +3903,11 @@ class SubscribeToTopicRequest(rpc.Shape):
                  topic: typing.Optional[str] = None):
         super().__init__()
         self.topic = topic  # type: typing.Optional[str]
+
+    def set_topic(self, topic: str):
+        self.topic = topic
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3475,6 +3960,15 @@ class GetConfigurationResponse(rpc.Shape):
         super().__init__()
         self.component_name = component_name  # type: typing.Optional[str]
         self.value = value  # type: typing.Optional[typing.Dict[str, typing.Any]]
+
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+    def set_value(self, value: typing.Dict[str, typing.Any]):
+        self.value = value
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3532,6 +4026,15 @@ class GetConfigurationRequest(rpc.Shape):
         self.component_name = component_name  # type: typing.Optional[str]
         self.key_path = key_path  # type: typing.Optional[typing.List[str]]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+    def set_key_path(self, key_path: typing.List[str]):
+        self.key_path = key_path
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -3574,6 +4077,7 @@ class SubscribeToValidateConfigurationUpdatesResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -3608,6 +4112,7 @@ class SubscribeToValidateConfigurationUpdatesRequest(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -3641,6 +4146,7 @@ class DeferComponentUpdateResponse(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -3693,6 +4199,19 @@ class DeferComponentUpdateRequest(rpc.Shape):
         self.deployment_id = deployment_id  # type: typing.Optional[str]
         self.message = message  # type: typing.Optional[str]
         self.recheck_after_ms = recheck_after_ms  # type: typing.Optional[int]
+
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+    def set_recheck_after_ms(self, recheck_after_ms: int):
+        self.recheck_after_ms = recheck_after_ms
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3750,6 +4269,11 @@ class InvalidArgumentsError(GreengrassCoreIPCError):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _get_error_type_string(self):
         return 'client'
 
@@ -3797,9 +4321,18 @@ class DeleteThingShadowResponse(rpc.Shape):
     """
 
     def __init__(self, *,
-                 payload: typing.Optional[bytes] = None):
+                 payload: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
         self.payload = payload  # type: typing.Optional[bytes]
+
+    def set_payload(self, payload: typing.Union[bytes, str]):
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
+        self.payload = payload
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3853,6 +4386,15 @@ class DeleteThingShadowRequest(rpc.Shape):
         self.thing_name = thing_name  # type: typing.Optional[str]
         self.shadow_name = shadow_name  # type: typing.Optional[str]
 
+    def set_thing_name(self, thing_name: str):
+        self.thing_name = thing_name
+        return self
+
+    def set_shadow_name(self, shadow_name: str):
+        self.shadow_name = shadow_name
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.thing_name is not None:
@@ -3894,6 +4436,7 @@ class SubscribeToConfigurationUpdateResponse(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -3943,6 +4486,15 @@ class SubscribeToConfigurationUpdateRequest(rpc.Shape):
         self.component_name = component_name  # type: typing.Optional[str]
         self.key_path = key_path  # type: typing.Optional[typing.List[str]]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+    def set_key_path(self, key_path: typing.List[str]):
+        self.key_path = key_path
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -3984,6 +4536,7 @@ class PublishToIoTCoreResponse(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -4031,11 +4584,28 @@ class PublishToIoTCoreRequest(rpc.Shape):
     def __init__(self, *,
                  topic_name: typing.Optional[str] = None,
                  qos: typing.Optional[str] = None,
-                 payload: typing.Optional[bytes] = None):
+                 payload: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
         self.topic_name = topic_name  # type: typing.Optional[str]
         self.qos = qos  # type: typing.Optional[str]
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
         self.payload = payload  # type: typing.Optional[bytes]
+
+    def set_topic_name(self, topic_name: str):
+        self.topic_name = topic_name
+        return self
+
+    def set_qos(self, qos: str):
+        self.qos = qos
+        return self
+
+    def set_payload(self, payload: typing.Union[bytes, str]):
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
+        self.payload = payload
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -4101,6 +4671,19 @@ class ResourceNotFoundError(GreengrassCoreIPCError):
         self.resource_type = resource_type  # type: typing.Optional[str]
         self.resource_name = resource_name  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+    def set_resource_type(self, resource_type: str):
+        self.resource_type = resource_type
+        return self
+
+    def set_resource_name(self, resource_name: str):
+        self.resource_name = resource_name
+        return self
+
+
     def _get_error_type_string(self):
         return 'client'
 
@@ -4150,6 +4733,7 @@ class ResumeComponentResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -4193,6 +4777,11 @@ class ResumeComponentRequest(rpc.Shape):
                  component_name: typing.Optional[str] = None):
         super().__init__()
         self.component_name = component_name  # type: typing.Optional[str]
+
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -4241,6 +4830,11 @@ class UnauthorizedError(GreengrassCoreIPCError):
                  message: typing.Optional[str] = None):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
 
     def _get_error_type_string(self):
         return 'client'
@@ -4293,6 +4887,11 @@ class ServiceError(GreengrassCoreIPCError):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _get_error_type_string(self):
         return 'server'
 
@@ -4333,6 +4932,7 @@ class SubscribeToIoTCoreResponse(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -4381,6 +4981,15 @@ class SubscribeToIoTCoreRequest(rpc.Shape):
         super().__init__()
         self.topic_name = topic_name  # type: typing.Optional[str]
         self.qos = qos  # type: typing.Optional[str]
+
+    def set_topic_name(self, topic_name: str):
+        self.topic_name = topic_name
+        return self
+
+    def set_qos(self, qos: str):
+        self.qos = qos
+        return self
+
 
     def _to_payload(self):
         payload = {}
