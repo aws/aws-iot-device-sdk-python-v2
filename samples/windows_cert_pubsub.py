@@ -4,31 +4,24 @@
 import argparse
 from awscrt import io, mqtt
 from awsiot import mqtt_connection_builder
-import sys
 import threading
 import time
 from uuid import uuid4
-import json
 
-# This sample is similar to `samples/pubsub.py` but the private key
-# for mutual TLS is stored on a PKCS#11 compatible smart card or
-# Hardware Security Module (HSM).
+# This sample is similar to `samples/pubsub.py` but the certificate
+# for mutual TLS is stored in a Windows certificate store.
 #
-# See `samples/README.md` for instructions on setting up your PKCS#11 device
+# See `samples/README.md` for instructions on setting up your PC
 # to run this sample.
 #
-# WARNING: Unix only. Currently, TLS integration with PKCS#11 is only available on Unix devices.
+# WARNING: Windows only.
 
 parser = argparse.ArgumentParser(description="Send and receive messages through and MQTT connection.")
 parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpoint, not including a port. " +
-                                                      "Ex: \"abcd123456wxyz-ats.iot.us-east-1.amazonaws.com\"")
+                                                      "e.g. \"abcd123456wxyz-ats.iot.us-east-1.amazonaws.com\"")
 parser.add_argument('--port', type=int, help="Specify port. AWS IoT supports 443 and 8883. (default: auto)")
-parser.add_argument('--cert', required=True, help="File path to your client certificate, in PEM format.")
-parser.add_argument('--pkcs11-lib', required=True, help="Path to PKCS#11 library.")
-parser.add_argument('--pin', required=True, help="User PIN for logging into PKCS#11 token.")
-parser.add_argument('--token-label', help="Label of PKCS#11 token to use. (default: None) ")
-parser.add_argument('--slot-id', help="Slot ID containing PKCS#11 token to use. (default: None)")
-parser.add_argument('--key-label', help="Label of private key on the PKCS#11 token. (default: None)")
+parser.add_argument('--cert', required=True, help="Path to certificate in Windows certificate store. " +
+                                                  "e.g. \"CurrentUser\\MY\\6ac133ac58f0a88b83e9c794eba156a98da39b4c\"")
 parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. (default: None)")
 parser.add_argument('--client-id', default="test-" + str(uuid4()),
                     help="Client ID for MQTT connection. (default: 'test-*')")
@@ -38,8 +31,8 @@ parser.add_argument('--message', default="Hello World!",
                     help="Message to publish. Specify empty string to publish nothing. (default: 'Hello World!')")
 parser.add_argument('--count', default=10, type=int, help="Number of messages to publish/receive before exiting. " +
                                                           "Specify 0 to run forever. (default: 10)")
-parser.add_argument('--verbosity', choices=[x.name for x in io.LogLevel], default=io.LogLevel.NoLogs.name,
-                    help="Logging level. (default: 'NoLogs')")
+parser.add_argument('--verbosity', choices=[x.name for x in io.LogLevel], default=io.LogLevel.Error.name,
+                    help="Logging level. (default: 'Error')")
 
 # Using globals to simplify sample code
 args = parser.parse_args()
@@ -70,20 +63,9 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
 
 
 if __name__ == '__main__':
-    print(f"Loading PKCS#11 library '{args.pkcs11_lib}' ...")
-    pkcs11_lib = io.Pkcs11Lib(
-        file=args.pkcs11_lib,
-        behavior=io.Pkcs11Lib.InitializeFinalizeBehavior.STRICT)
-    print("Loaded!")
-
     # Create MQTT connection
-    mqtt_connection = mqtt_connection_builder.mtls_with_pkcs11(
-        pkcs11_lib=pkcs11_lib,
-        user_pin=args.pin,
-        slot_id=int(args.slot_id) if args.slot_id else None,
-        token_label=args.token_label,
-        private_key_label=args.key_label,
-        cert_filepath=args.cert,
+    mqtt_connection = mqtt_connection_builder.mtls_with_windows_cert_store_path(
+        cert_store_path=args.cert,
         endpoint=args.endpoint,
         port=args.port,
         ca_filepath=args.root_ca,
@@ -125,10 +107,9 @@ if __name__ == '__main__':
         while (publish_count <= args.count) or (args.count == 0):
             message = "{} [{}]".format(args.message, publish_count)
             print("Publishing message to topic '{}': {}".format(args.topic, message))
-            message_json = json.dumps(message)
             mqtt_connection.publish(
                 topic=args.topic,
-                payload=message_json,
+                payload=message,
                 qos=mqtt.QoS.AT_LEAST_ONCE)
             time.sleep(1)
             publish_count += 1

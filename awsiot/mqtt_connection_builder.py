@@ -6,12 +6,14 @@ Required Keyword Arguments:
 
     **endpoint** (`str`): Host name of AWS IoT server.
 
-    **client_bootstrap** (:class:`awscrt.io.ClientBootstrap`): Client bootstrap used to establish connection.
-
     **client_id** (`str`): ID to place in CONNECT packet. Must be unique across all devices/clients.
             If an ID is already in use, the other client will be disconnected.
 
 Optional Keyword Arguments (omit, or set `None` to get default value):
+
+    **client_bootstrap** (:class:`awscrt.io.ClientBootstrap`): Client bootstrap used to establish connection.
+        The ClientBootstrap will default to the static default (Io.ClientBootstrap.get_or_create_static_default)
+        if the argument is omitted or set to 'None'.
 
     **on_connection_interrupted** (`Callable`): Callback invoked whenever the MQTT connection is lost.
         The MQTT client will automatically attempt to reconnect.
@@ -103,7 +105,7 @@ import awscrt.mqtt
 
 
 def _check_required_kwargs(**kwargs):
-    for required in ['client_bootstrap', 'endpoint', 'client_id']:
+    for required in ['endpoint', 'client_id']:
         if not kwargs.get(required):
             raise TypeError("Builder needs keyword-only argument '{}'".format(required))
 
@@ -186,6 +188,9 @@ def _builder(
         username += _get_metrics_str()
 
     client_bootstrap = _get(kwargs, 'client_bootstrap')
+    if client_bootstrap is None:
+        client_bootstrap = awscrt.io.ClientBootstrap.get_or_create_static_default()
+
     tls_ctx = awscrt.io.ClientTlsContext(tls_ctx_options)
     mqtt_client = awscrt.mqtt.Client(client_bootstrap, tls_ctx)
 
@@ -262,6 +267,8 @@ def mtls_with_pkcs11(*,
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT,
     using a PKCS#11 library for private key operations.
 
+    NOTE: Unix only
+
     This function takes all :mod:`common arguments<awsiot.mqtt_connection_builder>`
     described at the top of this doc, as well as...
 
@@ -300,6 +307,30 @@ def mtls_with_pkcs11(*,
         private_key_label=private_key_label,
         cert_file_path=cert_filepath,
         cert_file_contents=cert_bytes)
+
+    return _builder(tls_ctx_options, **kwargs)
+
+
+def mtls_with_windows_cert_store_path(*,
+                                      cert_store_path: str,
+                                      **kwargs) -> awscrt.mqtt.Connection:
+    """
+    This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT,
+    using a client certificate in a Windows certificate store.
+
+    NOTE: Windows only
+
+    This function takes all :mod:`common arguments<awsiot.mqtt_connection_builder>`
+    described at the top of this doc, as well as...
+
+    Args:
+        cert_store_path: Path to certificate in a Windows certificate store.
+                The path must use backslashes and end with the certificate's thumbprint.
+                Example: ``CurrentUser\\MY\\A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6``
+    """
+    _check_required_kwargs(**kwargs)
+
+    tls_ctx_options = awscrt.io.TlsContextOptions.create_client_with_mtls_windows_cert_store_path(cert_store_path)
 
     return _builder(tls_ctx_options, **kwargs)
 
