@@ -1,8 +1,6 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import http, auth
-from awsiot import mqtt_connection_builder
 from uuid import uuid4
 
 # This sample shows how to create a MQTT connection using websockets.
@@ -33,24 +31,10 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 
 
 if __name__ == '__main__':
-    proxy_options = None
-    if cmdUtils.get_command(cmdUtils.m_cmd_proxy_host) and cmdUtils.get_command(cmdUtils.m_cmd_proxy_port):
-        proxy_options = http.HttpProxyOptions(
-            host_name=cmdUtils.get_command(cmdUtils.m_cmd_proxy_host),
-            port=cmdUtils.get_command(cmdUtils.m_cmd_proxy_port))
-
-    credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
-    mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
-        endpoint=cmdUtils.get_command_required(cmdUtils.m_cmd_endpoint),
-        region=cmdUtils.get_command_required("signing_region"),
-        credentials_provider=credentials_provider,
-        http_proxy_options=proxy_options,
-        ca_filepath=cmdUtils.get_command(cmdUtils.m_cmd_ca_file),
-        on_connection_interrupted=on_connection_interrupted,
-        on_connection_resumed=on_connection_resumed,
-        client_id=cmdUtils.get_command_required("client_id"),
-        clean_session=False,
-        keep_alive_secs=30)
+    # Create a connection using websockets.
+    # Note: The data for the connection is gotten from cmdUtils.
+    # (see build_websocket_mqtt_connection for implementation)
+    mqtt_connection = cmdUtils.build_websocket_mqtt_connection(on_connection_interrupted, on_connection_resumed)
 
     print("Connecting to {} with client ID '{}'...".format(
         cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))

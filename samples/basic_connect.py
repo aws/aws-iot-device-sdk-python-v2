@@ -1,8 +1,6 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import http
-from awsiot import mqtt_connection_builder
 from uuid import uuid4
 
 # This sample shows how to create a MQTT connection using a certificate file and key file.
@@ -36,24 +34,10 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 
 
 if __name__ == '__main__':
-    proxy_options = None
-    if cmdUtils.get_command(cmdUtils.m_cmd_proxy_host) and cmdUtils.get_command(cmdUtils.m_cmd_proxy_port):
-        proxy_options = http.HttpProxyOptions(
-            host_name=cmdUtils.get_command(cmdUtils.m_cmd_proxy_host),
-            port=cmdUtils.get_command(cmdUtils.m_cmd_proxy_port))
-
-    mqtt_connection = mqtt_connection_builder.mtls_from_path(
-        endpoint=cmdUtils.get_command_required(cmdUtils.m_cmd_endpoint),
-        port=cmdUtils.get_command_required("port"),
-        cert_filepath=cmdUtils.get_command_required("cert"),
-        pri_key_filepath=cmdUtils.get_command_required("key"),
-        ca_filepath=cmdUtils.get_command(cmdUtils.m_cmd_ca_file),
-        on_connection_interrupted=on_connection_interrupted,
-        on_connection_resumed=on_connection_resumed,
-        client_id=cmdUtils.get_command_required("client_id"),
-        clean_session=False,
-        keep_alive_secs=30,
-        http_proxy_options=proxy_options)
+    # Create a connection using a certificate and key.
+    # Note: The data for the connection is gotten from cmdUtils.
+    # (see build_direct_mqtt_connection for implementation)
+    mqtt_connection = cmdUtils.build_direct_mqtt_connection(on_connection_interrupted, on_connection_resumed)
 
     print("Connecting to {} with client ID '{}'...".format(
         cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))

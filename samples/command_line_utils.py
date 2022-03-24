@@ -98,6 +98,36 @@ class CommandLineUtils:
             return getattr(self.parsed_commands, command_name)
         return default
 
+    def build_pkcs11_mqtt_connection(self, on_connection_interrupted, on_connection_resumed):
+
+        pkcs11_lib_path = self.get_command_required(self.m_cmd_pkcs11_lib)
+        print(f"Loading PKCS#11 library '{pkcs11_lib_path}' ...")
+        pkcs11_lib = io.Pkcs11Lib(
+            file=pkcs11_lib_path,
+            behavior=io.Pkcs11Lib.InitializeFinalizeBehavior.STRICT)
+        print("Loaded!")
+
+        pkcs11_slot_id = None
+        if (self.get_command(self.m_cmd_pkcs11_slot) != None):
+            pkcs11_slot_id = int(self.get_command(self.m_cmd_pkcs11_slot))
+
+        # Create MQTT connection
+        mqtt_connection = mqtt_connection_builder.mtls_with_pkcs11(
+            pkcs11_lib=pkcs11_lib,
+            user_pin=self.get_command_required(self.m_cmd_pkcs11_pin),
+            slot_id=pkcs11_slot_id,
+            token_label=self.get_command_required(self.m_cmd_pkcs11_token),
+            private_key_label=self.get_command_required(self.m_cmd_pkcs11_key),
+            cert_filepath=self.get_command_required(self.m_cmd_pkcs11_cert),
+            endpoint=self.get_command_required(self.m_cmd_endpoint),
+            port=self.get_command("port"),
+            ca_filepath=self.get_command(self.m_cmd_ca_file),
+            on_connection_interrupted=on_connection_interrupted,
+            on_connection_resumed=on_connection_resumed,
+            client_id=self.get_command_required("client_id"),
+            clean_session=False,
+            keep_alive_secs=30)
+
     def build_websocket_mqtt_connection(self, on_connection_interrupted, on_connection_resumed):
         proxy_options = self.get_proxy_options_for_mqtt_connection()
         credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
@@ -153,7 +183,7 @@ class CommandLineUtils:
     m_cmd_signing_region = "signing_region"
     m_cmd_pkcs11_lib = "pkcs11_lib"
     m_cmd_pkcs11_cert = "cert"
-    m_cmd_pkcs11_pin = "pkcs11_pin"
+    m_cmd_pkcs11_pin = "pin"
     m_cmd_pkcs11_token = "token_label"
     m_cmd_pkcs11_slot = "slot_id"
     m_cmd_pkcs11_key = "key_label"

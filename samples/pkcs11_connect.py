@@ -45,29 +45,10 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 
 
 if __name__ == '__main__':
-    pkcs11_lib_file = cmdUtils.get_command_required("pkcs11_lib")
-    print(f"Loading PKCS#11 library '{pkcs11_lib_file}' ...")
-    pkcs11_lib = io.Pkcs11Lib(
-        file=pkcs11_lib_file,
-        behavior=io.Pkcs11Lib.InitializeFinalizeBehavior.STRICT)
-    print("Loaded!")
-
-    # Create MQTT connection
-    mqtt_connection = mqtt_connection_builder.mtls_with_pkcs11(
-        pkcs11_lib=pkcs11_lib,
-        user_pin=cmdUtils.get_command_required("pin"),
-        slot_id=cmdUtils.get_command("slot_id"),
-        token_label=cmdUtils.get_command("token_label"),
-        private_key_label=cmdUtils.get_command("key_label"),
-        cert_filepath=cmdUtils.get_command_required("cert"),
-        endpoint=cmdUtils.get_command_required(cmdUtils.m_cmd_endpoint),
-        port=cmdUtils.get_command("port"),
-        ca_filepath=cmdUtils.get_command(cmdUtils.m_cmd_ca_file),
-        on_connection_interrupted=on_connection_interrupted,
-        on_connection_resumed=on_connection_resumed,
-        client_id=cmdUtils.get_command_required("client_id"),
-        clean_session=False,
-        keep_alive_secs=30)
+    # Create a connection using websockets.
+    # Note: The data for the connection is gotten from cmdUtils.
+    # (see build_websocket_mqtt_connection for implementation)
+    mqtt_connection = cmdUtils.build_pkcs11_mqtt_connection(on_connection_interrupted, on_connection_resumed)
 
     print("Connecting to {} with client ID '{}'...".format(
         cmdUtils.get_command("endpoint"), cmdUtils.get_command("client_id")))
