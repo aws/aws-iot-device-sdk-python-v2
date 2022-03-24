@@ -8,7 +8,7 @@ from uuid import uuid4
 
 # Parse arguments
 import command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils("PubSub - Send and recieve messages through an MQTT connection.")
+cmdUtils = command_line_utils.CommandLineUtils("Websocket Connect - Make a websocket MQTT connection.")
 cmdUtils.add_common_mqtt_commands()
 cmdUtils.add_common_proxy_commands()
 cmdUtils.add_common_logging_commands()

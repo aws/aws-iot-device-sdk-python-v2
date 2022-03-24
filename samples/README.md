@@ -1,8 +1,10 @@
 # Sample apps for the AWS IoT Device SDK v2 for Python
 
 * [PubSub](#pubsub)
-* [PKCS#11 PubSub](#pkcs11-pubsub)
-* [Windows Certificate PubSub](#windows-certificate-pubsub)
+* [Basic Connect](#basic-connect)
+* [Websocket Connect](#websocket-connect)
+* [PKCS#11 Connect](#pkcs11-connect)
+* [Windows Certificate Connect](#windows-certificate-connect)
 * [Shadow](#shadow)
 * [Jobs](#jobs)
 * [Fleet Provisioning](#fleet-provisioning)
@@ -156,7 +158,7 @@ python3 websocket_connect.py --endpoint <endpoint> --ca_file <file> --signing_re
 
 Note that using Websockets will attempt to fetch the AWS credentials from your enviornment variables or local files. See the [authorizing direct AWS](https://docs.aws.amazon.com/iot/latest/developerguide/authorizing-direct-aws.html) page for documentation on how to get the AWS credentials, which then you can set to the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS`, and `AWS_SESSION_TOKEN` environment variables.
 
-## PKCS#11 PubSub
+## PKCS#11 Connect
 
 This sample is similar to the [Basic Connect](#basic-connect),
 but the private key for mutual TLS is stored on a PKCS#11 compatible smart card or Hardware Security Module (HSM)
@@ -164,6 +166,31 @@ but the private key for mutual TLS is stored on a PKCS#11 compatible smart card 
 WARNING: Unix only. Currently, TLS integration with PKCS#11 is only available on Unix devices.
 
 source: `samples/pkcs11_connect.py`
+
+Your Thing's
+[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
+must provide privileges for this sample to connect, subscribe, publish,
+and receive.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
 
 To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the PKCS#11 device:
 
@@ -209,11 +236,11 @@ To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the 
     python3 pkcs11_connect.py --endpoint <xxxx-ats.iot.xxxx.amazonaws.com> --ca_file <AmazonRootCA1.pem> --cert <certificate.pem.crt> --pkcs11_lib <libsofthsm2.so> --pin <user-pin> --token_label <token-label> --key_label <key-label>
     ```
 
-## Windows Certificate PubSub
+## Windows Certificate Connect
 
 WARNING: Windows only
 
-This sample is similar to the basic [PubSub](#pubsub),
+This sample is similar to the basic [Connect](#basic-connect),
 but your certificate and private key are in a
 [Windows certificate store](https://docs.microsoft.com/en-us/windows-hardware/drivers/install/certificate-stores),
 rather than simply being files on disk.
@@ -227,7 +254,32 @@ If your certificate and private key are in a
 [TPM](https://docs.microsoft.com/en-us/windows/security/information-protection/tpm/trusted-platform-module-overview),,
 you would use them by passing their certificate store path.
 
-source: `samples/windows_cert_pubsub.py`
+source: `samples/windows_cert_connect.py`
+
+Your Thing's
+[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
+must provide privileges for this sample to connect, subscribe, publish,
+and receive.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
 
 To run this sample with a basic certificate from AWS IoT Core:
 
@@ -269,7 +321,7 @@ To run this sample with a basic certificate from AWS IoT Core:
 4) Now you can run the sample:
 
     ```sh
-    python3 windows_cert_pubsub.py --endpoint xxxx-ats.iot.xxxx.amazonaws.com --root-ca AmazonRootCA.pem --cert CurrentUser\My\A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6
+    python3 windows_cert_connect.py --endpoint xxxx-ats.iot.xxxx.amazonaws.com --ca_file AmazonRootCA.pem --cert CurrentUser\My\A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6
     ```
 
 ## Shadow
