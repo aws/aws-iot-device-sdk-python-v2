@@ -8,7 +8,6 @@ import concurrent.futures
 import datetime
 import typing
 
-
 class IotShadowClient(awsiot.MqttServiceClient):
     """
 
@@ -175,9 +174,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload=request.to_payload())
 
     def subscribe_to_delete_named_shadow_accepted(self, request, qos, callback):
-        # type: (DeleteNamedShadowSubscriptionRequest, int,
-        # typing.Callable[[DeleteShadowResponse], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (DeleteNamedShadowSubscriptionRequest, int, typing.Callable[[DeleteShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribes to the accepted topic for the DeleteNamedShadow operation.
@@ -213,9 +210,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=DeleteShadowResponse.from_payload)
 
     def subscribe_to_delete_named_shadow_rejected(self, request, qos, callback):
-        # type: (DeleteNamedShadowSubscriptionRequest, int,
-        # typing.Callable[[ErrorResponse], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (DeleteNamedShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribes to the rejected topic for the DeleteNamedShadow operation.
@@ -251,9 +246,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ErrorResponse.from_payload)
 
     def subscribe_to_delete_shadow_accepted(self, request, qos, callback):
-        # type: (DeleteShadowSubscriptionRequest, int,
-        # typing.Callable[[DeleteShadowResponse], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (DeleteShadowSubscriptionRequest, int, typing.Callable[[DeleteShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribes to the accepted topic for the DeleteShadow operation
@@ -287,9 +280,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=DeleteShadowResponse.from_payload)
 
     def subscribe_to_delete_shadow_rejected(self, request, qos, callback):
-        # type: (DeleteShadowSubscriptionRequest, int,
-        # typing.Callable[[ErrorResponse], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (DeleteShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribes to the rejected topic for the DeleteShadow operation
@@ -323,9 +314,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ErrorResponse.from_payload)
 
     def subscribe_to_get_named_shadow_accepted(self, request, qos, callback):
-        # type: (GetNamedShadowSubscriptionRequest, int,
-        # typing.Callable[[GetShadowResponse], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (GetNamedShadowSubscriptionRequest, int, typing.Callable[[GetShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribes to the accepted topic for the GetNamedShadow operation.
@@ -361,9 +350,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=GetShadowResponse.from_payload)
 
     def subscribe_to_get_named_shadow_rejected(self, request, qos, callback):
-        # type: (GetNamedShadowSubscriptionRequest, int,
-        # typing.Callable[[ErrorResponse], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (GetNamedShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribes to the rejected topic for the GetNamedShadow operation.
@@ -399,9 +386,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ErrorResponse.from_payload)
 
     def subscribe_to_get_shadow_accepted(self, request, qos, callback):
-        # type: (GetShadowSubscriptionRequest, int,
-        # typing.Callable[[GetShadowResponse], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (GetShadowSubscriptionRequest, int, typing.Callable[[GetShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribes to the accepted topic for the GetShadow operation.
@@ -435,9 +420,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=GetShadowResponse.from_payload)
 
     def subscribe_to_get_shadow_rejected(self, request, qos, callback):
-        # type: (GetShadowSubscriptionRequest, int,
-        # typing.Callable[[ErrorResponse], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (GetShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribes to the rejected topic for the GetShadow operation.
@@ -471,9 +454,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ErrorResponse.from_payload)
 
     def subscribe_to_named_shadow_delta_updated_events(self, request, qos, callback):
-        # type: (NamedShadowDeltaUpdatedSubscriptionRequest, int,
-        # typing.Callable[[ShadowDeltaUpdatedEvent], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (NamedShadowDeltaUpdatedSubscriptionRequest, int, typing.Callable[[ShadowDeltaUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribe to NamedShadowDelta events for a named shadow of an AWS IoT thing.
@@ -509,9 +490,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ShadowDeltaUpdatedEvent.from_payload)
 
     def subscribe_to_named_shadow_updated_events(self, request, qos, callback):
-        # type: (NamedShadowUpdatedSubscriptionRequest, int,
-        # typing.Callable[[ShadowUpdatedEvent], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (NamedShadowUpdatedSubscriptionRequest, int, typing.Callable[[ShadowUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribe to ShadowUpdated events for a named shadow of an AWS IoT thing.
@@ -547,9 +526,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ShadowUpdatedEvent.from_payload)
 
     def subscribe_to_shadow_delta_updated_events(self, request, qos, callback):
-        # type: (ShadowDeltaUpdatedSubscriptionRequest, int,
-        # typing.Callable[[ShadowDeltaUpdatedEvent], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (ShadowDeltaUpdatedSubscriptionRequest, int, typing.Callable[[ShadowDeltaUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribe to ShadowDelta events for the (classic) shadow of an AWS IoT thing.
@@ -583,9 +560,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ShadowDeltaUpdatedEvent.from_payload)
 
     def subscribe_to_shadow_updated_events(self, request, qos, callback):
-        # type: (ShadowUpdatedSubscriptionRequest, int,
-        # typing.Callable[[ShadowUpdatedEvent], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (ShadowUpdatedSubscriptionRequest, int, typing.Callable[[ShadowUpdatedEvent], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribe to ShadowUpdated events for the (classic) shadow of an AWS IoT thing.
@@ -619,9 +594,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ShadowUpdatedEvent.from_payload)
 
     def subscribe_to_update_named_shadow_accepted(self, request, qos, callback):
-        # type: (UpdateNamedShadowSubscriptionRequest, int,
-        # typing.Callable[[UpdateShadowResponse], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (UpdateNamedShadowSubscriptionRequest, int, typing.Callable[[UpdateShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribes to the accepted topic for the UpdateNamedShadow operation
@@ -657,9 +630,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=UpdateShadowResponse.from_payload)
 
     def subscribe_to_update_named_shadow_rejected(self, request, qos, callback):
-        # type: (UpdateNamedShadowSubscriptionRequest, int,
-        # typing.Callable[[ErrorResponse], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (UpdateNamedShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribes to the rejected topic for the UpdateNamedShadow operation
@@ -695,9 +666,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=ErrorResponse.from_payload)
 
     def subscribe_to_update_shadow_accepted(self, request, qos, callback):
-        # type: (UpdateShadowSubscriptionRequest, int,
-        # typing.Callable[[UpdateShadowResponse], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (UpdateShadowSubscriptionRequest, int, typing.Callable[[UpdateShadowResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribes to the accepted topic for the UpdateShadow operation
@@ -731,9 +700,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             payload_to_class_fn=UpdateShadowResponse.from_payload)
 
     def subscribe_to_update_shadow_rejected(self, request, qos, callback):
-        # type: (UpdateShadowSubscriptionRequest, int,
-        # typing.Callable[[ErrorResponse], None]) ->
-        # typing.Tuple[concurrent.futures.Future, str]
+        # type: (UpdateShadowSubscriptionRequest, int, typing.Callable[[ErrorResponse], None]) -> typing.Tuple[concurrent.futures.Future, str]
         """
 
         Subscribes to the rejected topic for the UpdateShadow operation
@@ -766,7 +733,6 @@ class IotShadowClient(awsiot.MqttServiceClient):
             callback=callback,
             payload_to_class_fn=ErrorResponse.from_payload)
 
-
 class DeleteNamedShadowRequest(awsiot.ModeledClass):
     """
 
@@ -798,13 +764,12 @@ class DeleteNamedShadowRequest(awsiot.ModeledClass):
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
-        payload = {}  # type: typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
 
         return payload
-
 
 class DeleteNamedShadowSubscriptionRequest(awsiot.ModeledClass):
     """
@@ -831,7 +796,6 @@ class DeleteNamedShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
-
 
 class DeleteShadowRequest(awsiot.ModeledClass):
     """
@@ -861,13 +825,12 @@ class DeleteShadowRequest(awsiot.ModeledClass):
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
-        payload = {}  # type: typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
 
         return payload
-
 
 class DeleteShadowResponse(awsiot.ModeledClass):
     """
@@ -913,7 +876,6 @@ class DeleteShadowResponse(awsiot.ModeledClass):
             new.version = val
         return new
 
-
 class DeleteShadowSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -936,7 +898,6 @@ class DeleteShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
-
 
 class ErrorResponse(awsiot.ModeledClass):
     """
@@ -988,7 +949,6 @@ class ErrorResponse(awsiot.ModeledClass):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
-
 class GetNamedShadowRequest(awsiot.ModeledClass):
     """
 
@@ -1020,13 +980,12 @@ class GetNamedShadowRequest(awsiot.ModeledClass):
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
-        payload = {}  # type: typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
 
         return payload
-
 
 class GetNamedShadowSubscriptionRequest(awsiot.ModeledClass):
     """
@@ -1053,7 +1012,6 @@ class GetNamedShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
-
 
 class GetShadowRequest(awsiot.ModeledClass):
     """
@@ -1083,13 +1041,12 @@ class GetShadowRequest(awsiot.ModeledClass):
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
-        payload = {}  # type: typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
 
         return payload
-
 
 class GetShadowResponse(awsiot.ModeledClass):
     """
@@ -1147,7 +1104,6 @@ class GetShadowResponse(awsiot.ModeledClass):
             new.version = val
         return new
 
-
 class GetShadowSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1170,7 +1126,6 @@ class GetShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
-
 
 class NamedShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
     """
@@ -1198,7 +1153,6 @@ class NamedShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
 
-
 class NamedShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1224,7 +1178,6 @@ class NamedShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
-
 
 class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
     """
@@ -1276,7 +1229,6 @@ class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
             new.version = val
         return new
 
-
 class ShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1299,7 +1251,6 @@ class ShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
-
 
 class ShadowMetadata(awsiot.ModeledClass):
     """
@@ -1338,7 +1289,6 @@ class ShadowMetadata(awsiot.ModeledClass):
         if val is not None:
             new.reported = val
         return new
-
 
 class ShadowState(awsiot.ModeledClass):
     """
@@ -1389,7 +1339,7 @@ class ShadowState(awsiot.ModeledClass):
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
-        payload = {}  # type: typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.desired_is_nullable is True:
             payload['desired'] = self.desired
@@ -1404,7 +1354,6 @@ class ShadowState(awsiot.ModeledClass):
                 payload['reported'] = self.reported
 
         return payload
-
 
 class ShadowStateWithDelta(awsiot.ModeledClass):
     """
@@ -1450,7 +1399,6 @@ class ShadowStateWithDelta(awsiot.ModeledClass):
             new.reported = val
         return new
 
-
 class ShadowUpdatedEvent(awsiot.ModeledClass):
     """
 
@@ -1494,7 +1442,6 @@ class ShadowUpdatedEvent(awsiot.ModeledClass):
         if val is not None:
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
-
 
 class ShadowUpdatedSnapshot(awsiot.ModeledClass):
     """
@@ -1540,7 +1487,6 @@ class ShadowUpdatedSnapshot(awsiot.ModeledClass):
             new.version = val
         return new
 
-
 class ShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1563,7 +1509,6 @@ class ShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
-
 
 class UpdateNamedShadowRequest(awsiot.ModeledClass):
     """
@@ -1602,7 +1547,7 @@ class UpdateNamedShadowRequest(awsiot.ModeledClass):
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
-        payload = {}  # type: typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
@@ -1614,7 +1559,6 @@ class UpdateNamedShadowRequest(awsiot.ModeledClass):
             payload['version'] = self.version
 
         return payload
-
 
 class UpdateNamedShadowSubscriptionRequest(awsiot.ModeledClass):
     """
@@ -1641,7 +1585,6 @@ class UpdateNamedShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
-
 
 class UpdateShadowRequest(awsiot.ModeledClass):
     """
@@ -1677,7 +1620,7 @@ class UpdateShadowRequest(awsiot.ModeledClass):
 
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
-        payload = {}  # type: typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
@@ -1689,7 +1632,6 @@ class UpdateShadowRequest(awsiot.ModeledClass):
             payload['version'] = self.version
 
         return payload
-
 
 class UpdateShadowResponse(awsiot.ModeledClass):
     """
@@ -1747,7 +1689,6 @@ class UpdateShadowResponse(awsiot.ModeledClass):
             new.version = val
         return new
 
-
 class UpdateShadowSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1770,3 +1711,4 @@ class UpdateShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
