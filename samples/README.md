@@ -207,7 +207,7 @@ To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the 
 5)  Now you can run the sample:
     ```sh
     python3 pkcs11_connect.py --endpoint <xxxx-ats.iot.xxxx.amazonaws.com> --ca_file <AmazonRootCA1.pem> --cert <certificate.pem.crt> --pkcs11_lib <libsofthsm2.so> --pin <user-pin> --token_label <token-label> --key_label <key-label>
-
+    ```
 
 ## Windows Certificate PubSub
 

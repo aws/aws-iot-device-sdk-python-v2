@@ -281,7 +281,11 @@ if __name__ == '__main__':
             createcertificatefromcsr_subscribed_rejected_future.result()
 
 
+<<<<<<< HEAD
         registerthing_subscription_request = iotidentity.RegisterThingSubscriptionRequest(template_name=cmdUtils.get_command_required("template_name"))
+=======
+        registerthing_subscription_request = iotidentity.RegisterThingSubscriptionRequest(template_name=args.template_name)
+>>>>>>> 1fb16b82f9635c5ca1c80cd1b773f461bd087a7a
 
         print("Subscribing to RegisterThing Accepted topic...")
         registerthing_subscribed_accepted_future, _ = identity_client.subscribe_to_register_thing_accepted(
@@ -314,9 +318,15 @@ if __name__ == '__main__':
                 raise Exception('CreateKeysAndCertificate API did not succeed')
 
             registerThingRequest = iotidentity.RegisterThingRequest(
+<<<<<<< HEAD
                 template_name=fleet_template_name,
                 certificate_ownership_token=createKeysAndCertificateResponse.certificate_ownership_token,
                 parameters=json.loads(fleet_template_parameters))
+=======
+                template_name=args.template_name,
+                certificate_ownership_token=createKeysAndCertificateResponse.certificate_ownership_token,
+                parameters=json.loads(args.template_parameters))
+>>>>>>> 1fb16b82f9635c5ca1c80cd1b773f461bd087a7a
         else:
             print("Publishing to CreateCertificateFromCsr...")
             csrPath = open(cmdUtils.get_command("csr"), 'r').read()
@@ -331,9 +341,15 @@ if __name__ == '__main__':
                 raise Exception('CreateCertificateFromCsr API did not succeed')
 
             registerThingRequest = iotidentity.RegisterThingRequest(
+<<<<<<< HEAD
                 template_name=fleet_template_name,
                 certificate_ownership_token=createCertificateFromCsrResponse.certificate_ownership_token,
                 parameters=json.loads(fleet_template_parameters))
+=======
+                template_name=args.template_name,
+                certificate_ownership_token=createCertificateFromCsrResponse.certificate_ownership_token,
+                parameters=json.loads(args.template_parameters))
+>>>>>>> 1fb16b82f9635c5ca1c80cd1b773f461bd087a7a
 
         print("Publishing to RegisterThing topic...")
         registerthing_publish_future = identity_client.publish_register_thing(registerThingRequest, mqtt.QoS.AT_LEAST_ONCE)
