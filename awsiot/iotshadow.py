@@ -902,18 +902,15 @@ class DeleteShadowResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> DeleteShadowResponse
         new = cls()
-        if 'clientToken' in payload:
-            new.clientToken = payload['clientToken']
-            new.clientToken_is_nullable = new.clientToken is None
-
-        if 'timestamp' in payload:
-            new.timestamp = payload['timestamp']
-            new.timestamp_is_nullable = new.timestamp is None
-
-        if 'version' in payload:
-            new.version = payload['version']
-            new.version_is_nullable = new.version is None
-
+        val = payload.get('clientToken')
+        if val is not None:
+            new.client_token = val
+        val = payload.get('timestamp')
+        if val is not None:
+            new.timestamp = datetime.datetime.fromtimestamp(val)
+        val = payload.get('version')
+        if val is not None:
+            new.version = val
         return new
 
 
@@ -977,22 +974,18 @@ class ErrorResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> ErrorResponse
         new = cls()
-        if 'clientToken' in payload:
-            new.clientToken = payload['clientToken']
-            new.clientToken_is_nullable = new.clientToken is None
-
-        if 'code' in payload:
-            new.code = payload['code']
-            new.code_is_nullable = new.code is None
-
-        if 'message' in payload:
-            new.message = payload['message']
-            new.message_is_nullable = new.message is None
-
-        if 'timestamp' in payload:
-            new.timestamp = payload['timestamp']
-            new.timestamp_is_nullable = new.timestamp is None
-
+        val = payload.get('clientToken')
+        if val is not None:
+            new.client_token = val
+        val = payload.get('code')
+        if val is not None:
+            new.code = val
+        val = payload.get('message')
+        if val is not None:
+            new.message = val
+        val = payload.get('timestamp')
+        if val is not None:
+            new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
 
@@ -1137,26 +1130,21 @@ class GetShadowResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> GetShadowResponse
         new = cls()
-        if 'clientToken' in payload:
-            new.clientToken = payload['clientToken']
-            new.clientToken_is_nullable = new.clientToken is None
-
-        if 'metadata' in payload:
-            new.metadata = payload['metadata']
-            new.metadata_is_nullable = new.metadata is None
-
-        if 'state' in payload:
-            new.state = payload['state']
-            new.state_is_nullable = new.state is None
-
-        if 'timestamp' in payload:
-            new.timestamp = payload['timestamp']
-            new.timestamp_is_nullable = new.timestamp is None
-
-        if 'version' in payload:
-            new.version = payload['version']
-            new.version_is_nullable = new.version is None
-
+        val = payload.get('clientToken')
+        if val is not None:
+            new.client_token = val
+        val = payload.get('metadata')
+        if val is not None:
+            new.metadata = ShadowMetadata.from_payload(val)
+        val = payload.get('state')
+        if val is not None:
+            new.state = ShadowStateWithDelta.from_payload(val)
+        val = payload.get('timestamp')
+        if val is not None:
+            new.timestamp = datetime.datetime.fromtimestamp(val)
+        val = payload.get('version')
+        if val is not None:
+            new.version = val
         return new
 
 
@@ -1274,22 +1262,18 @@ class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> ShadowDeltaUpdatedEvent
         new = cls()
-        if 'metadata' in payload:
-            new.metadata = payload['metadata']
-            new.metadata_is_nullable = new.metadata is None
-
-        if 'state' in payload:
-            new.state = payload['state']
-            new.state_is_nullable = new.state is None
-
-        if 'timestamp' in payload:
-            new.timestamp = payload['timestamp']
-            new.timestamp_is_nullable = new.timestamp is None
-
-        if 'version' in payload:
-            new.version = payload['version']
-            new.version_is_nullable = new.version is None
-
+        val = payload.get('metadata')
+        if val is not None:
+            new.metadata = val
+        val = payload.get('state')
+        if val is not None:
+            new.state = val
+        val = payload.get('timestamp')
+        if val is not None:
+            new.timestamp = datetime.datetime.fromtimestamp(val)
+        val = payload.get('version')
+        if val is not None:
+            new.version = val
         return new
 
 
@@ -1347,14 +1331,12 @@ class ShadowMetadata(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> ShadowMetadata
         new = cls()
-        if 'desired' in payload:
-            new.desired = payload['desired']
-            new.desired_is_nullable = new.desired is None
-
-        if 'reported' in payload:
-            new.reported = payload['reported']
-            new.reported_is_nullable = new.reported is None
-
+        val = payload.get('desired')
+        if val is not None:
+            new.desired = val
+        val = payload.get('reported')
+        if val is not None:
+            new.reported = val
         return new
 
 
@@ -1457,18 +1439,15 @@ class ShadowStateWithDelta(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> ShadowStateWithDelta
         new = cls()
-        if 'delta' in payload:
-            new.delta = payload['delta']
-            new.delta_is_nullable = new.delta is None
-
-        if 'desired' in payload:
-            new.desired = payload['desired']
-            new.desired_is_nullable = new.desired is None
-
-        if 'reported' in payload:
-            new.reported = payload['reported']
-            new.reported_is_nullable = new.reported is None
-
+        val = payload.get('delta')
+        if val is not None:
+            new.delta = val
+        val = payload.get('desired')
+        if val is not None:
+            new.desired = val
+        val = payload.get('reported')
+        if val is not None:
+            new.reported = val
         return new
 
 
@@ -1505,18 +1484,15 @@ class ShadowUpdatedEvent(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> ShadowUpdatedEvent
         new = cls()
-        if 'current' in payload:
-            new.current = payload['current']
-            new.current_is_nullable = new.current is None
-
-        if 'previous' in payload:
-            new.previous = payload['previous']
-            new.previous_is_nullable = new.previous is None
-
-        if 'timestamp' in payload:
-            new.timestamp = payload['timestamp']
-            new.timestamp_is_nullable = new.timestamp is None
-
+        val = payload.get('current')
+        if val is not None:
+            new.current = ShadowUpdatedSnapshot.from_payload(val)
+        val = payload.get('previous')
+        if val is not None:
+            new.previous = ShadowUpdatedSnapshot.from_payload(val)
+        val = payload.get('timestamp')
+        if val is not None:
+            new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
 
@@ -1553,18 +1529,15 @@ class ShadowUpdatedSnapshot(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> ShadowUpdatedSnapshot
         new = cls()
-        if 'metadata' in payload:
-            new.metadata = payload['metadata']
-            new.metadata_is_nullable = new.metadata is None
-
-        if 'state' in payload:
-            new.state = payload['state']
-            new.state_is_nullable = new.state is None
-
-        if 'version' in payload:
-            new.version = payload['version']
-            new.version_is_nullable = new.version is None
-
+        val = payload.get('metadata')
+        if val is not None:
+            new.metadata = ShadowMetadata.from_payload(val)
+        val = payload.get('state')
+        if val is not None:
+            new.state = ShadowState.from_payload(val)
+        val = payload.get('version')
+        if val is not None:
+            new.version = val
         return new
 
 
@@ -1757,26 +1730,21 @@ class UpdateShadowResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> UpdateShadowResponse
         new = cls()
-        if 'clientToken' in payload:
-            new.clientToken = payload['clientToken']
-            new.clientToken_is_nullable = new.clientToken is None
-
-        if 'metadata' in payload:
-            new.metadata = payload['metadata']
-            new.metadata_is_nullable = new.metadata is None
-
-        if 'state' in payload:
-            new.state = payload['state']
-            new.state_is_nullable = new.state is None
-
-        if 'timestamp' in payload:
-            new.timestamp = payload['timestamp']
-            new.timestamp_is_nullable = new.timestamp is None
-
-        if 'version' in payload:
-            new.version = payload['version']
-            new.version_is_nullable = new.version is None
-
+        val = payload.get('clientToken')
+        if val is not None:
+            new.client_token = val
+        val = payload.get('metadata')
+        if val is not None:
+            new.metadata = ShadowMetadata.from_payload(val)
+        val = payload.get('state')
+        if val is not None:
+            new.state = ShadowState.from_payload(val)
+        val = payload.get('timestamp')
+        if val is not None:
+            new.timestamp = datetime.datetime.fromtimestamp(val)
+        val = payload.get('version')
+        if val is not None:
+            new.version = val
         return new
 
 
