@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 import argparse
+from distutils import command
 from awscrt import io, mqtt, auth, http
 from awsiot import mqtt_connection_builder
 import sys
@@ -16,33 +17,19 @@ import json
 # The device should receive those same messages back from the message broker,
 # since it is subscribed to that same topic.
 
-parser = argparse.ArgumentParser(description="Send and receive messages through and MQTT connection.")
-parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpoint, not including a port. " +
-                                                      "Ex: \"abcd123456wxyz-ats.iot.us-east-1.amazonaws.com\"")
-parser.add_argument('--port', type=int, help="Specify port. AWS IoT supports 443 and 8883.")
-parser.add_argument('--cert', help="File path to your client certificate, in PEM format.")
-parser.add_argument('--key', help="File path to your private key, in PEM format.")
-parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. " +
-                                      "Necessary if MQTT server uses a certificate that's not already in " +
-                                      "your trust store.")
-parser.add_argument('--client-id', default="test-" + str(uuid4()), help="Client ID for MQTT connection.")
-parser.add_argument('--topic', default="test/topic", help="Topic to subscribe to, and publish messages to.")
-parser.add_argument('--message', default="Hello World!", help="Message to publish. " +
-                                                              "Specify empty string to publish nothing.")
-parser.add_argument('--count', default=10, type=int, help="Number of messages to publish/receive before exiting. " +
-                                                          "Specify 0 to run forever.")
-parser.add_argument('--use-websocket', default=False, action='store_true',
-    help="To use a websocket instead of raw mqtt. If you " +
-    "specify this option you must specify a region for signing.")
-parser.add_argument('--signing-region', default='us-east-1', help="If you specify --use-web-socket, this " +
-    "is the region that will be used for computing the Sigv4 signature")
-parser.add_argument('--proxy-host', help="Hostname of proxy to connect to.")
-parser.add_argument('--proxy-port', type=int, default=8080, help="Port of proxy to connect to.")
-parser.add_argument('--verbosity', choices=[x.name for x in io.LogLevel], default=io.LogLevel.NoLogs.name,
-    help='Logging level')
-
-# Using globals to simplify sample code
-args = parser.parse_args()
+# Parse arguments
+import command_line_utils;
+cmdUtils = command_line_utils.CommandLineUtils("PubSub - Send and recieve messages through an MQTT connection.")
+cmdUtils.add_common_mqtt_commands()
+cmdUtils.add_common_topic_message_commands()
+cmdUtils.add_common_websocket_commands()
+cmdUtils.add_common_proxy_commands()
+cmdUtils.add_common_logging_commands()
+cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).", type=int)
+cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
+cmdUtils.register_command("count", "<int>", "The number of messages to send (optional, default='10').", default=10, type=int)
+cmdUtils.update_command("cert", new_help_output="Path to your certificate in PEM format. If this is not set you must specify use_websocket")
+args = cmdUtils.get_args()
 
 io.init_logging(getattr(io.LogLevel, args.verbosity), 'stderr')
 
@@ -96,7 +83,7 @@ if __name__ == '__main__':
             region=args.signing_region,
             credentials_provider=credentials_provider,
             http_proxy_options=proxy_options,
-            ca_filepath=args.root_ca,
+            ca_filepath=args.ca_file,
             on_connection_interrupted=on_connection_interrupted,
             on_connection_resumed=on_connection_resumed,
             client_id=args.client_id,
@@ -109,7 +96,7 @@ if __name__ == '__main__':
             port=args.port,
             cert_filepath=args.cert,
             pri_key_filepath=args.key,
-            ca_filepath=args.root_ca,
+            ca_filepath=args.ca_file,
             on_connection_interrupted=on_connection_interrupted,
             on_connection_resumed=on_connection_resumed,
             client_id=args.client_id,
