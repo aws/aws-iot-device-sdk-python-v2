@@ -1,16 +1,57 @@
----
-name: "\U0001F4AC Questions / Help"
-about: If you have questions, please check AWS Forums or StackOverflow
-title: ''
-labels: guidance, needs-triage
-assignees: ''
+name: "\U0001F4AC General Issue"
+description: Create a new issue. If you don't know which type to choose, choose this one.
+title: "(short issue description)"
+labels: [guidance, needs-triage]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the issue
+      description: A clear and concise description of the issue.
+    validations:
+      required: true
 
----
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: |
+        Provide a self-contained, concise snippet of code that can be used to reproduce the issue.
+        For more complex issues provide a repo with the smallest reproducible example.
 
-Confirm by changing [ ] to [x] below:
-- [ ] I've searched for [previous similar issues](https://github.com/aws/aws-iot-device-sdk-pyhton-v2/issues) and didn't find any solution
+        Avoid including business logic or unrelated code, it makes diagnosis more difficult.
+    validations:
+      required: false
 
-**Platform/OS/Device**
-What are you running the sdk on?
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behavior
+      description: |
+        Tell us what happens instead of the expected behavior.
 
-**Describe the question**
+        Include full errors, uncaught exceptions, stack traces, and relevant logs.
+    validations:
+      required: false
+
+  - type: input
+    id: aws-iot-device-sdk-python-v2
+    attributes:
+      label: aws-iot-device-sdk-python-v2 version used
+    validations:
+      required: true
+
+  - type: input
+    id: compiler-version
+    attributes:
+      label: Python version used
+      description: output of `python3 --version`
+    validations:
+      required: true
+
+  - type: input
+    id: operating-system
+    attributes:
+      label: Operating System and version
+    validations:
+      required: true
