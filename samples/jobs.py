@@ -33,29 +33,20 @@ from uuid import uuid4
 # This event is sent by the service when the current job completes, so the
 # sample will be continually prompted to try another job until none remain.
 
-parser = argparse.ArgumentParser(description="Jobs sample runs all pending job executions.")
-parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpoint, not including a port. " +
-                                                      "Ex: \"w6zbse3vjd5b4p-ats.iot.us-west-2.amazonaws.com\"")
-parser.add_argument('--cert', help="File path to your client certificate, in PEM format")
-parser.add_argument('--key', help="File path to your private key file, in PEM format")
-parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. " +
-                                      "Necessary if MQTT server uses a certificate that's not already in " +
-                                      "your trust store")
-parser.add_argument('--client-id', default="test-" + str(uuid4()), help="Client ID for MQTT connection.")
-parser.add_argument('--thing-name', required=True, help="The name assigned to your IoT Thing")
-parser.add_argument('--job-time', default=5, type=float, help="Emulate working on job by sleeping this many seconds.")
-parser.add_argument('--use-websocket', default=False, action='store_true',
-    help="To use a websocket instead of raw mqtt. If you " +
-    "specify this option you must specify a region for signing.")
-parser.add_argument('--signing-region', default='us-east-1', help="If you specify --use-web-socket, this " +
-    "is the region that will be used for computing the Sigv4 signature")
-parser.add_argument('--proxy-host', help="Hostname of proxy to connect to.")
-parser.add_argument('--proxy-port', type=int, default=8080, help="Port of proxy to connect to.")
-parser.add_argument('--verbosity', choices=[x.name for x in io.LogLevel], default=io.LogLevel.NoLogs.name,
-    help='Logging level')
-
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
+
+# Parse arguments
+import command_line_utils;
+cmdUtils = command_line_utils.CommandLineUtils("Jobs - Recieve and execute operations on the device.")
+cmdUtils.add_common_mqtt_commands()
+cmdUtils.add_common_websocket_commands()
+cmdUtils.add_common_proxy_commands()
+cmdUtils.add_common_logging_commands()
+cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
+cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
+cmdUtils.register_command("job_time", "<int>", "Emulate working on a job by sleeping this many seconds (optional, default='5')", default=5)
+args = cmdUtils.get_args()
 
 mqtt_connection = None
 jobs_client = None
@@ -220,7 +211,6 @@ def on_update_job_execution_rejected(rejected):
 
 if __name__ == '__main__':
     # Process input args
-    args = parser.parse_args()
     thing_name = args.thing_name
     io.init_logging(getattr(io.LogLevel, args.verbosity), 'stderr')
 
@@ -235,7 +225,7 @@ if __name__ == '__main__':
             region=args.signing_region,
             credentials_provider=credentials_provider,
             http_proxy_options=proxy_options,
-            ca_filepath=args.root_ca,
+            ca_filepath=args.ca_file,
             client_id=args.client_id,
             clean_session=False,
             keep_alive_secs=30)
@@ -245,7 +235,7 @@ if __name__ == '__main__':
             endpoint=args.endpoint,
             cert_filepath=args.cert,
             pri_key_filepath=args.key,
-            ca_filepath=args.root_ca,
+            ca_filepath=args.ca_file,
             client_id=args.client_id,
             clean_session=False,
             keep_alive_secs=30,

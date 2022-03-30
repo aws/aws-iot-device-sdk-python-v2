@@ -1327,16 +1327,14 @@ class ShadowState(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> ShadowState
         new = cls()
-        val = payload.get('desired')
-        if val is not None:
-            new.desired = val
-        val = payload.get('reported')
-        if val is not None:
-            new.reported = val
-        if new.desired == None:
-            new.desired_is_nullable = True
-        if new.reported == None:
-            new.reported_is_nullable = True
+        if 'desired' in payload:
+            new.desired = payload['desired']
+            new.desired_is_nullable = new.desired is None
+
+        if 'reported' in payload:
+            new.reported = payload['reported']
+            new.reported_is_nullable = new.reported is None
+
         return new
 
     def to_payload(self):
