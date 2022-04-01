@@ -1,12 +1,24 @@
 # Sample apps for the AWS IoT Device SDK v2 for Python
 
 * [PubSub](#pubsub)
-* [PKCS#11 PubSub](#pkcs11-pubsub)
-* [Windows Certificate PubSub](#windows-certificate-pubsub)
+* [Basic Connect](#basic-connect)
+* [Websocket Connect](#websocket-connect)
+* [PKCS#11 Connect](#pkcs11-connect)
+* [Windows Certificate Connect](#windows-certificate-connect)
 * [Shadow](#shadow)
 * [Jobs](#jobs)
 * [Fleet Provisioning](#fleet-provisioning)
 * [Greengrass Discovery](#greengrass-discovery)
+
+## Build instructions
+
+First, install the aws-iot-devices-sdk-python-v2 with following the instructions from [Installation](../README.md#Installation).
+
+Then change into the samples directory to run the Python commands to execute the samples. You can view the commands of a sample like this:
+
+``` sh
+python3 pubsub.py --help
+```
 
 ## PubSub
 
@@ -20,11 +32,6 @@ since it is subscribed to that same topic.
 Status updates are continually printed to the console.
 
 Source: `samples/pubsub.py`
-
-Run the sample like this:
-``` sh
-python3 pubsub.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file>
-```
 
 Your Thing's
 [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
@@ -70,14 +77,120 @@ and receive.
 </pre>
 </details>
 
-## PKCS#11 PubSub
+Run the sample like this:
+``` sh
+python3 pubsub.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file>
+```
 
-This sample is similar to the basic [PubSub](#pubsub),
+## Basic Connect
+
+This sample makes an MQTT connection using a certificate and key file. On startup, the device connects to the server using the certificate and key files, and then disconnects.
+This sample is for reference on connecting via certificate and key files.
+
+Source: `samples/basic_connect.py`
+
+Your Thing's
+[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
+must provide privileges for this sample to connect, subscribe, publish,
+and receive.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
+
+Run the sample like this:
+``` sh
+python3 basic_connect.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file>
+```
+
+## Websocket Connect
+
+This sample makes an MQTT connection via websockets and then disconnects. On startup, the device connects to the server via websockets and then disconnects.
+This sample is for reference on connecting via websockets.
+
+Source: `samples/websocket_connect.py`
+
+Your Thing's
+[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
+must provide privileges for this sample to connect, subscribe, publish,
+and receive.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
+
+Run the sample like this:
+``` sh
+python3 websocket_connect.py --endpoint <endpoint> --ca_file <file> --signing_region <signing region>
+```
+
+Note that using Websockets will attempt to fetch the AWS credentials from your enviornment variables or local files. See the [authorizing direct AWS](https://docs.aws.amazon.com/iot/latest/developerguide/authorizing-direct-aws.html) page for documentation on how to get the AWS credentials, which then you can set to the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS`, and `AWS_SESSION_TOKEN` environment variables.
+
+## PKCS#11 Connect
+
+This sample is similar to the [Basic Connect](#basic-connect),
 but the private key for mutual TLS is stored on a PKCS#11 compatible smart card or Hardware Security Module (HSM)
 
 WARNING: Unix only. Currently, TLS integration with PKCS#11 is only available on Unix devices.
 
-source: `samples/pkcs11_pubsub.py`
+source: `samples/pkcs11_connect.py`
+
+Your Thing's
+[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
+must provide privileges for this sample to connect, subscribe, publish,
+and receive.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
 
 To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the PKCS#11 device:
 
@@ -120,14 +233,14 @@ To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the 
 
 5)  Now you can run the sample:
     ```sh
-    python3 pkcs11_pubsub.py --endpoint <xxxx-ats.iot.xxxx.amazonaws.com> --ca_file <AmazonRootCA1.pem> --cert <certificate.pem.crt> --pkcs11_lib <libsofthsm2.so> --pin <user-pin> --token_label <token-label> --key_label <key-label>
+    python3 pkcs11_connect.py --endpoint <endpoint> --ca_file <path to root CA> --cert <path to certificate> --pkcs11_lib <path to PKCS11 lib> --pin <user-pin> --token_label <token-label> --key_label <key-label>
+    ```
 
-
-## Windows Certificate PubSub
+## Windows Certificate Connect
 
 WARNING: Windows only
 
-This sample is similar to the basic [PubSub](#pubsub),
+This sample is similar to the basic [Connect](#basic-connect),
 but your certificate and private key are in a
 [Windows certificate store](https://docs.microsoft.com/en-us/windows-hardware/drivers/install/certificate-stores),
 rather than simply being files on disk.
@@ -141,7 +254,32 @@ If your certificate and private key are in a
 [TPM](https://docs.microsoft.com/en-us/windows/security/information-protection/tpm/trusted-platform-module-overview),,
 you would use them by passing their certificate store path.
 
-source: `samples/windows_cert_pubsub.py`
+source: `samples/windows_cert_connect.py`
+
+Your Thing's
+[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
+must provide privileges for this sample to connect, subscribe, publish,
+and receive.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
 
 To run this sample with a basic certificate from AWS IoT Core:
 
@@ -183,7 +321,7 @@ To run this sample with a basic certificate from AWS IoT Core:
 4) Now you can run the sample:
 
     ```sh
-    python3 windows_cert_pubsub.py --endpoint xxxx-ats.iot.xxxx.amazonaws.com --root-ca AmazonRootCA.pem --cert CurrentUser\My\A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6
+    python3 windows_cert_connect.py --endpoint <endpoint> --ca_file <path to root CA> --cert <path to certificate>
     ```
 
 ## Shadow
@@ -488,11 +626,11 @@ and `--key` appropriately:
 
 ``` sh
 python3 fleetprovisioning.py \
-        --endpoint [your endpoint]-ats.iot.[region].amazonaws.com \
-        --ca_file [pathToRootCA] \
-        --cert /tmp/provision.cert.pem \
-        --key /tmp/provision.private.key \
-        --template_name [TemplateName] \
+        --endpoint <endpoint> \
+        --ca_file <path to root CA> \
+        --cert <path to certificate> \
+        --key <path to private key> \
+        --template_name <template name> \
         --template_parameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}"
 ```
 
@@ -528,13 +666,13 @@ using a permanent certificate set, replace the paths specified in the `--cert` a
 
 ``` sh
 python3 fleetprovisioning.py \
-        --endpoint [your endpoint]-ats.iot.[region].amazonaws.com \
-        --ca_file [pathToRootCA] \
-        --cert /tmp/provision.cert.pem \
-        --key /tmp/provision.private.key \
-        --template_name [TemplateName] \
+        --endpoint <endpoint> \
+        --ca_file <path to root CA> \
+        --cert <path to certificate> \
+        --key <path to key> \
+        --template_name <template name> \
         --template_parameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" \
-        --csr /tmp/deviceCert.csr
+        --csr <path to csr file>
 ```
 
 ## Greengrass Discovery
