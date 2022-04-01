@@ -233,7 +233,7 @@ To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the 
 
 5)  Now you can run the sample:
     ```sh
-    python3 pkcs11_connect.py --endpoint <xxxx-ats.iot.xxxx.amazonaws.com> --ca_file <AmazonRootCA1.pem> --cert <certificate.pem.crt> --pkcs11_lib <libsofthsm2.so> --pin <user-pin> --token_label <token-label> --key_label <key-label>
+    python3 pkcs11_connect.py --endpoint <endpoint> --ca_file <path to root CA> --cert <path to certificate> --pkcs11_lib <path to PKCS11 lib> --pin <user-pin> --token_label <token-label> --key_label <key-label>
     ```
 
 ## Windows Certificate Connect
@@ -321,7 +321,7 @@ To run this sample with a basic certificate from AWS IoT Core:
 4) Now you can run the sample:
 
     ```sh
-    python3 windows_cert_connect.py --endpoint xxxx-ats.iot.xxxx.amazonaws.com --ca_file AmazonRootCA.pem --cert CurrentUser\My\A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6
+    python3 windows_cert_connect.py --endpoint <endpoint> --ca_file <path to root CA> --cert <path to certificate>
     ```
 
 ## Shadow
@@ -626,11 +626,11 @@ and `--key` appropriately:
 
 ``` sh
 python3 fleetprovisioning.py \
-        --endpoint [your endpoint]-ats.iot.[region].amazonaws.com \
-        --ca_file [pathToRootCA] \
-        --cert /tmp/provision.cert.pem \
-        --key /tmp/provision.private.key \
-        --template_name [TemplateName] \
+        --endpoint <endpoint> \
+        --ca_file <path to root CA> \
+        --cert <path to certificate> \
+        --key <path to private key> \
+        --template_name <template name> \
         --template_parameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}"
 ```
 
@@ -666,13 +666,13 @@ using a permanent certificate set, replace the paths specified in the `--cert` a
 
 ``` sh
 python3 fleetprovisioning.py \
-        --endpoint [your endpoint]-ats.iot.[region].amazonaws.com \
-        --ca_file [pathToRootCA] \
-        --cert /tmp/provision.cert.pem \
-        --key /tmp/provision.private.key \
-        --template_name [TemplateName] \
+        --endpoint <endpoint> \
+        --ca_file <path to root CA> \
+        --cert <path to certificate> \
+        --key <path to key> \
+        --template_name <template name> \
         --template_parameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" \
-        --csr /tmp/deviceCert.csr
+        --csr <path to csr file>
 ```
 
 ## Greengrass Discovery
