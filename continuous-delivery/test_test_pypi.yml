@@ -22,7 +22,7 @@ phases:
       # this is here because typing isn't in testpypi, so pull it from prod instead
       - python3 -m pip install typing
       - python3 continuous-delivery/pip-install-with-retry.py -i https://testpypi.python.org/simple --user awsiotsdk==$CURRENT_TAG_VERSION
-      - python3 samples/basic_discovery.py --region us-east-1 --cert /tmp/certificate.pem --key /tmp/privatekey.pem --root-ca /tmp/AmazonRootCA1.pem --thing-name aws-sdk-crt-unit-test --print-discover-resp-only --verbosity Trace
+      - python3 samples/basic_discovery.py --region us-east-1 --cert /tmp/certificate.pem --key /tmp/privatekey.pem --ca_file /tmp/AmazonRootCA1.pem --thing_name aws-sdk-crt-unit-test --print_discover_resp_only --verbosity Trace
 
   post_build:
     commands:
