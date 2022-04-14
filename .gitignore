@@ -2,3 +2,4 @@ docs/.buildinfo
 docs/.doctrees/
 __pycache__/
 *.egg-info
+build/*
