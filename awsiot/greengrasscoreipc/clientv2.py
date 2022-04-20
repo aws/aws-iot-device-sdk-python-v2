@@ -16,10 +16,6 @@ class GreengrassCoreIPCClientV2:
     """
     V2 client for the GreengrassCoreIPC service.
 
-    !! Developer Preview !! - This class is currently in developer preview.
-    The interface is not guaranteed to be stable yet.
-    Please report any issues or make suggestions in https://github.com/aws/aws-iot-device-sdk-python-v2/issues
-
     Args:
         client: Connection that this client will use. If you do not provide one, it will be made automatically.
         executor: Executor used to run on_stream_event and on_stream_closed callbacks to avoid blocking the networking
