@@ -156,6 +156,7 @@ def on_shadow_delta_updated(delta):
                 print("  Delta reports that desired value is '{}'. Changing local value...".format(value))
                 if (delta.client_token is not None):
                     print ("  ClientToken is: " + delta.client_token)
+                change_shadow_value(value)
         else:
             print("  Delta did not report a change in '{}'".format(shadow_property))
 
