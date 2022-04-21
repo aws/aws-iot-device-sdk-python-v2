@@ -47,7 +47,7 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 if __name__ == '__main__':
     # Create a connection using websockets.
     # Note: The data for the connection is gotten from cmdUtils.
-    # (see build_websocket_mqtt_connection for implementation)
+    # (see build_pkcs11_mqtt_connection for implementation)
     mqtt_connection = cmdUtils.build_pkcs11_mqtt_connection(on_connection_interrupted, on_connection_resumed)
 
     print("Connecting to {} with client ID '{}'...".format(

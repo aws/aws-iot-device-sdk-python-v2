@@ -127,6 +127,7 @@ class CommandLineUtils:
             client_id=self.get_command_required("client_id"),
             clean_session=False,
             keep_alive_secs=30)
+        return mqtt_connection
 
     def build_websocket_mqtt_connection(self, on_connection_interrupted, on_connection_resumed):
         proxy_options = self.get_proxy_options_for_mqtt_connection()
