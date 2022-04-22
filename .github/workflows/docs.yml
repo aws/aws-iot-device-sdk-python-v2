@@ -5,7 +5,7 @@ name: docs
 on:
   push:
     branches:
-      - 'autodocs'
+      - 'main'
 
 jobs:
   update-docs-branch:
