@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches:
-      - '*'
-      - '!main'
+    branches-ignore:
+      - 'main'
+      - 'docs'
 
 env:
   BUILDER_VERSION: v0.8.28
@@ -45,4 +45,15 @@ jobs:
         chmod a+x builder
         ./builder build -p ${{ env.PACKAGE_NAME }}
 
-
+  # check that docs can still build
+  check-docs:
+    runs-on: ubuntu-20.04 # latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Check docs
+        run: |
+          python3 -m pip install sphinx
+          python3 -m pip install --verbose .
+          ./make-docs.py
