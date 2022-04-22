@@ -32,7 +32,7 @@ def connect(*,
             environment variable AWS_GG_NUCLEUS_DOMAIN_SOCKET_FILEPATH_FOR_COMPONENT
         authtoken: Authentication token, defaults to environment variable SVCUID
         lifecycle_handler: Handler for events over the course of this
-            network connection. See :class:`LifecycleHandler` for more info.
+            network connection. See :class:`awsiot.eventstreamrpc.LifecycleHandler` for more info.
             Handler methods will only be invoked if the connect attempt
             succeeds.
         timeout: The number of seconds to wait for establishing the connection.

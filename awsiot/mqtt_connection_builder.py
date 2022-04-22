@@ -292,7 +292,7 @@ def mtls_with_pkcs11(*,
             The certificate must be PEM-formatted. The certificate may be
             specified by other means instead (ex: `cert_bytes`)
 
-        cert_bytes (Optional[bytes-like object]):
+        cert_bytes (Optional[Union[str, bytes, bytearray]]):
             Use this X.509 certificate (contents in memory).
             The certificate must be PEM-formatted. The certificate may be
             specified by other means instead (ex: `cert_filepath`)
