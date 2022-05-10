@@ -456,19 +456,19 @@ def direct_with_custom_authorizer(
     described at the top of this doc, as well as...
 
     Keyword Args:
-        auth_username (String): The username to use with the custom authorizer.
+        auth_username (`str`): The username to use with the custom authorizer.
             If provided, the username given will be passed when connecting to the custom authorizer.
             If not provided, it will check to see if a username has already been set (via username="example")
             and will use that instead.
             If no username has been set then no username will be sent with the MQTT connection.
 
-        auth_authorizer_name (String):  The name of the custom authorizer.
+        auth_authorizer_name (`str`):  The name of the custom authorizer.
             If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
 
-        auth_authorizer_signature (String):  The signature of the custom authorizer.
+        auth_authorizer_signature (`str`):  The signature of the custom authorizer.
             If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
 
-        auth_password (String):  The password to use with the custom authorizer.
+        auth_password (`str`):  The password to use with the custom authorizer.
             If not provided, then no passord will be set.
     """
 

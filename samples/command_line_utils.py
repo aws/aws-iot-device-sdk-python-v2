@@ -81,7 +81,7 @@ class CommandLineUtils:
         self.register_command(self.m_cmd_custom_auth_username, "<str>", "The name to send when connecting through the custom authorizer (optional)")
         self.register_command(self.m_cmd_custom_auth_authorizer_name, "<str>", "The name of the custom authorizer to connect to (optional but required for everything but custom domains)")
         self.register_command(self.m_cmd_custom_auth_username, "<str>", "The signature to send when connecting through a custom authorizer (optional)")
-        self.register_command(self.m_cmd_custom_auth_username, "<str>", "The password to send when connecting through a custom authorizer (optional)")
+        self.register_command(self.m_cmd_custom_auth_password, "<str>", "The password to send when connecting through a custom authorizer (optional)")
 
     """
     Returns the command if it exists and has been passed to the console, otherwise it will print the help for the sample and exit the application.
