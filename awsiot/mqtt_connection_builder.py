@@ -127,26 +127,38 @@ def _get(kwargs, name, default=None):
 _metrics_str = None
 
 
-def _get_metrics_str():
+def _get_metrics_str(current_username=""):
     global _metrics_str
+
+    username_has_query = False
+    if not current_username.find("?") is -1:
+        username_has_query = True
+
     if _metrics_str is None:
         try:
             import pkg_resources
             try:
                 version = pkg_resources.get_distribution("awsiotsdk").version
-                _metrics_str = "?SDK=PythonV2&Version={}".format(version)
+                _metrics_str = "SDK=PythonV2&Version={}".format(version)
             except pkg_resources.DistributionNotFound:
-                _metrics_str = "?SDK=PythonV2&Version=dev"
+                _metrics_str = "SDK=PythonV2&Version=dev"
         except BaseException:
             _metrics_str = ""
 
-    return _metrics_str
+    if not _metrics_str == "":
+        if username_has_query:
+            return "&" + _metrics_str
+        else:
+            return "?" + _metrics_str
+    else:
+        return ""
 
 
 def _builder(
         tls_ctx_options,
         use_websockets=False,
         websocket_handshake_transform=None,
+        use_custom_authorizer=False,
         **kwargs):
 
     ca_bytes = _get(kwargs, 'ca_bytes')
@@ -165,7 +177,7 @@ def _builder(
         else:
             port = 8883
 
-    if port == 443 and awscrt.io.is_alpn_available():
+    if port == 443 and awscrt.io.is_alpn_available() and use_custom_authorizer is False:
         tls_ctx_options.alpn_list = ['http/1.1'] if use_websockets else ['x-amzn-mqtt-ca']
 
     socket_options = awscrt.io.SocketOptions()
@@ -185,7 +197,7 @@ def _builder(
 
     username = _get(kwargs, 'username', '')
     if _get(kwargs, 'enable_metrics_collection', True):
-        username += _get_metrics_str()
+        username += _get_metrics_str(username)
 
     client_bootstrap = _get(kwargs, 'client_bootstrap')
     if client_bootstrap is None:
@@ -414,3 +426,93 @@ def websockets_with_custom_handshake(
                     websocket_handshake_transform=websocket_handshake_transform,
                     websocket_proxy_options=websocket_proxy_options,
                     **kwargs)
+
+def _add_username_parameter(input_string, parameter_value, parameter_pretext, added_string_to_username):
+    """
+    Helper function to add parameters to the username in the direct_with_custom_authorizer function
+    """
+    return_string = input_string
+    if added_string_to_username is False:
+        return_string += "?"
+    else:
+        return_string += "&"
+
+    if not parameter_value.find(parameter_pretext) is -1:
+        return return_string + parameter_value
+    else:
+        return return_string + parameter_pretext + parameter_value
+
+def direct_with_custom_authorizer(
+        auth_username=None,
+        auth_authorizer_name=None,
+        auth_authorizer_signature=None,
+        auth_password=None,
+        **kwargs) -> awscrt.mqtt.Connection:
+    """
+    This builder creates an :class:`awscrt.mqtt.Connection`, configured for an MQTT connection using a custom
+    authorizer. This function will set the username, port, and TLS options.
+
+    This function takes all :mod:`common arguments<awsiot.mqtt_connection_builder>`
+    described at the top of this doc, as well as...
+
+    Keyword Args:
+        auth_username (String): The username to use with the custom authorizer.
+            If provided, the username given will be passed when connecting to the custom authorizer.
+            If not provided, it will check to see if a username has already been set (via username="example")
+            and will use that instead.
+            If no username has been set then no username will be sent with the MQTT connection.
+
+        auth_authorizer_name (String):  The name of the custom authorizer.
+            If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
+
+        auth_authorizer_signature (String):  The signature of the custom authorizer.
+            If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
+
+        auth_password (String):  The password to use with the custom authorizer.
+            If not provided, then no passord will be set.
+    """
+
+    _check_required_kwargs(**kwargs)
+    username_string = ""
+    added_string_to_username = False
+
+    if auth_username is None:
+        if not _get(kwargs, "username") is None:
+            username_string += _get(kwargs, "username")
+    else:
+        username_string += auth_username
+
+    if not auth_authorizer_name is None:
+        username_string = _add_username_parameter(
+            username_string, auth_authorizer_name, "x-amz-customauthorizer-name=", added_string_to_username)
+        added_string_to_username = True
+    if not auth_authorizer_signature is None:
+        username_string = _add_username_parameter(
+            username_string, auth_authorizer_signature, "x-amz-customauthorizer-signature=", added_string_to_username)
+
+    kwargs["username"] = username_string
+    kwargs["password"] = auth_password
+    kwargs["port"] = 443
+
+    tls_ctx_options = awscrt.io.TlsContextOptions()
+    tls_ctx_options.alpn_list = ["mqtt"]
+
+    return _builder(tls_ctx_options=tls_ctx_options,
+                    use_websockets=False,
+                    use_custom_authorizer=True,
+                    **kwargs)
+
+
+def new_default_builder(**kwargs) -> awscrt.mqtt.Connection:
+    """
+    This builder creates an :class:`awscrt.mqtt.Connection`, without any configuration besides the default TLS context options.
+
+    This requires setting the connection details manually by passing all the necessary data
+    in :mod:`common arguments<awsiot.mqtt_connection_builder>` to make a connection
+    """
+    _check_required_kwargs(kwargs)
+    tls_ctx_options = awscrt.io.TlsContextOptions()
+
+    return _builder(tls_ctx_options=tls_ctx_options,
+                    use_websockets=False,
+                    kwargs=kwargs)
