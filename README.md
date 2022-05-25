@@ -43,7 +43,12 @@ python3 -m pip install awsiotsdk
 
 ### Install from source
 ```
+# Create a workspace directory to hold all the SDK files
+mkdir sdk-workspace
+cd sdk-workspace
+# Clone the repository
 git clone https://github.com/aws/aws-iot-device-sdk-python-v2.git
+# Install using Pip
 python3 -m pip install ./aws-iot-device-sdk-python-v2
 ```
 
@@ -51,7 +56,7 @@ python3 -m pip install ./aws-iot-device-sdk-python-v2
 
 `awsiotsdk` depends on [awscrt](https://github.com/awslabs/aws-crt-python), which makes use of C extensions. Precompiled wheels are downloaded when installing on major platforms (Mac, Windows, Linux, Raspberry Pi OS). If wheels are unavailable for your platform, your machine must compile some C libraries.
 
-If you encounter issues, see [Installation Issues](./PREREQUISITES.md#installation-issues) and try again:
+If you encounter issues, see [Installation Issues](./PREREQUISITES.md#installation-issues) and try again.
 
 ## Mac-Only TLS Behavior
 
@@ -60,7 +65,6 @@ Please note that on Mac, once a private key is used with a certificate, that cer
 ```
 static: certificate has an existing certificate-key pair that was previously imported into the Keychain.  Using key from Keychain instead of the one provided.
 ```
-
 
 ## Samples
 

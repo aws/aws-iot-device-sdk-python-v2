@@ -1,10 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-import argparse
-from distutils import command
-from awscrt import io, mqtt, auth, http
-from awsiot import mqtt_connection_builder
+from awscrt import mqtt
 import sys
 import threading
 import time
@@ -22,16 +19,15 @@ import command_line_utils;
 cmdUtils = command_line_utils.CommandLineUtils("PubSub - Send and recieve messages through an MQTT connection.")
 cmdUtils.add_common_mqtt_commands()
 cmdUtils.add_common_topic_message_commands()
-cmdUtils.add_common_websocket_commands()
 cmdUtils.add_common_proxy_commands()
 cmdUtils.add_common_logging_commands()
+cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
+cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
 cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).", type=int)
 cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
 cmdUtils.register_command("count", "<int>", "The number of messages to send (optional, default='10').", default=10, type=int)
-cmdUtils.update_command("cert", new_help_output="Path to your certificate in PEM format. If this is not set you must specify use_websocket")
-args = cmdUtils.get_args()
-
-io.init_logging(getattr(io.LogLevel, args.verbosity), 'stderr')
+# Needs to be called so the command utils parse the commands
+cmdUtils.get_args()
 
 received_count = 0
 received_all_event = threading.Event()
@@ -68,55 +64,28 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     print("Received message from topic '{}': {}".format(topic, payload))
     global received_count
     received_count += 1
-    if received_count == args.count:
+    if received_count == cmdUtils.get_command("count"):
         received_all_event.set()
 
 if __name__ == '__main__':
-    proxy_options = None
-    if (args.proxy_host):
-        proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
-
-    if args.use_websocket == True:
-        credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
-        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
-            endpoint=args.endpoint,
-            region=args.signing_region,
-            credentials_provider=credentials_provider,
-            http_proxy_options=proxy_options,
-            ca_filepath=args.ca_file,
-            on_connection_interrupted=on_connection_interrupted,
-            on_connection_resumed=on_connection_resumed,
-            client_id=args.client_id,
-            clean_session=False,
-            keep_alive_secs=30)
-
-    else:
-        mqtt_connection = mqtt_connection_builder.mtls_from_path(
-            endpoint=args.endpoint,
-            port=args.port,
-            cert_filepath=args.cert,
-            pri_key_filepath=args.key,
-            ca_filepath=args.ca_file,
-            on_connection_interrupted=on_connection_interrupted,
-            on_connection_resumed=on_connection_resumed,
-            client_id=args.client_id,
-            clean_session=False,
-            keep_alive_secs=30,
-            http_proxy_options=proxy_options)
+    mqtt_connection = cmdUtils.build_mqtt_connection(on_connection_interrupted, on_connection_resumed)
 
     print("Connecting to {} with client ID '{}'...".format(
-        args.endpoint, args.client_id))
-
+        cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
     connect_future = mqtt_connection.connect()
 
     # Future.result() waits until a result is available
     connect_future.result()
     print("Connected!")
 
+    message_count = cmdUtils.get_command("count")
+    message_topic = cmdUtils.get_command(cmdUtils.m_cmd_topic)
+    message_string = cmdUtils.get_command(cmdUtils.m_cmd_message)
+
     # Subscribe
-    print("Subscribing to topic '{}'...".format(args.topic))
+    print("Subscribing to topic '{}'...".format(message_topic))
     subscribe_future, packet_id = mqtt_connection.subscribe(
-        topic=args.topic,
+        topic=message_topic,
         qos=mqtt.QoS.AT_LEAST_ONCE,
         callback=on_message_received)
 
@@ -126,19 +95,19 @@ if __name__ == '__main__':
     # Publish message to server desired number of times.
     # This step is skipped if message is blank.
     # This step loops forever if count was set to 0.
-    if args.message:
-        if args.count == 0:
+    if message_string:
+        if message_count == 0:
             print ("Sending messages until program killed")
         else:
-            print ("Sending {} message(s)".format(args.count))
+            print ("Sending {} message(s)".format(message_count))
 
         publish_count = 1
-        while (publish_count <= args.count) or (args.count == 0):
-            message = "{} [{}]".format(args.message, publish_count)
-            print("Publishing message to topic '{}': {}".format(args.topic, message))
+        while (publish_count <= message_count) or (message_count == 0):
+            message = "{} [{}]".format(message_string, publish_count)
+            print("Publishing message to topic '{}': {}".format(message_topic, message))
             message_json = json.dumps(message)
             mqtt_connection.publish(
-                topic=args.topic,
+                topic=message_topic,
                 payload=message_json,
                 qos=mqtt.QoS.AT_LEAST_ONCE)
             time.sleep(1)
@@ -146,7 +115,7 @@ if __name__ == '__main__':
 
     # Wait for all messages to be received.
     # This waits forever if count was set to 0.
-    if args.count != 0 and not received_all_event.is_set():
+    if message_count != 0 and not received_all_event.is_set():
         print("Waiting for all messages to be received...")
 
     received_all_event.wait()

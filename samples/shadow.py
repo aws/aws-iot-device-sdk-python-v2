@@ -1,10 +1,8 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-import argparse
-from awscrt import auth, io, mqtt, http
+from awscrt import mqtt
 from awsiot import iotshadow
-from awsiot import mqtt_connection_builder
 from concurrent.futures import Future
 import sys
 import threading
@@ -34,24 +32,22 @@ from uuid import uuid4
 import command_line_utils;
 cmdUtils = command_line_utils.CommandLineUtils("Shadow - Keep a property in sync between device and server.")
 cmdUtils.add_common_mqtt_commands()
+cmdUtils.add_common_proxy_commands()
+cmdUtils.add_common_logging_commands()
+cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
+cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
+cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).", type=int)
 cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
 cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
 cmdUtils.register_command("shadow_property", "<str>", "The name of the shadow property you want to change (optional, default='color'", default="color")
-cmdUtils.register_command("use_websocket", "", "If specified, uses a websocket over https (optional).", default=False, action="store_true")
-cmdUtils.register_command("signing_region", "<str>",
-    "Used for websocket signer. It should only be specified if websockets are used (optional, default='us-east-1')", default="us-east-1")
-cmdUtils.register_command("proxy_host", "<str>", "Host name of the http proxy to use (optional)")
-cmdUtils.register_command("proxy_port", "<int>", "Port of the http proxy to use (optional, default='8080')", type=int, default=8080)
-cmdUtils.register_command("verbosity", "<Log Level>", "Logging level.", default=io.LogLevel.NoLogs.name, choices=[x.name for x in io.LogLevel])
-args = cmdUtils.get_args()
+# Needs to be called so the command utils parse the commands
+cmdUtils.get_args()
 
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
-
 mqtt_connection = None
-shadow_client = None
-thing_name = ""
-shadow_property = ""
+shadow_thing_name = cmdUtils.get_command_required("thing_name")
+shadow_property = cmdUtils.get_command("shadow_property")
 
 SHADOW_VALUE_DEFAULT = "off"
 
@@ -158,6 +154,8 @@ def on_shadow_delta_updated(delta):
                 return
             else:
                 print("  Delta reports that desired value is '{}'. Changing local value...".format(value))
+                if (delta.client_token is not None):
+                    print ("  ClientToken is: " + delta.client_token)
                 change_shadow_value(value)
         else:
             print("  Delta did not report a change in '{}'".format(shadow_property))
@@ -239,12 +237,11 @@ def change_shadow_value(value):
         token = str(uuid4())
 
         # if the value is "clear shadow" then send a UpdateShadowRequest with None
-        # for both reported and desired to clear the shadow document completely
-        # of both.
+        # for both reported and desired to clear the shadow document completely.
         if value == "clear_shadow":
             tmp_state = iotshadow.ShadowState(reported=None, desired=None, reported_is_nullable=True, desired_is_nullable=True)
             request = iotshadow.UpdateShadowRequest(
-                thing_name=thing_name,
+                thing_name=shadow_thing_name,
                 state=tmp_state,
                 client_token=token,
             )
@@ -256,7 +253,7 @@ def change_shadow_value(value):
                 value = None
 
             request = iotshadow.UpdateShadowRequest(
-            thing_name=thing_name,
+            thing_name=shadow_thing_name,
             state=iotshadow.ShadowState(
                 reported={ shadow_property: value },
                 desired={ shadow_property: value },
@@ -290,40 +287,10 @@ def user_input_thread_fn():
             break
 
 if __name__ == '__main__':
-    # Process input args
-    thing_name = args.thing_name
-    shadow_property = args.shadow_property
-    io.init_logging(getattr(io.LogLevel, args.verbosity), 'stderr')
-
-    proxy_options = None
-    if (args.proxy_host):
-        proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
-
-    if args.use_websocket == True:
-        credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
-        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
-            endpoint=args.endpoint,
-            region=args.signing_region,
-            credentials_provider=credentials_provider,
-            http_proxy_options=proxy_options,
-            ca_filepath=args.ca_file,
-            client_id=args.client_id,
-            clean_session=True,
-            keep_alive_secs=30)
-
-    else:
-        mqtt_connection = mqtt_connection_builder.mtls_from_path(
-            endpoint=args.endpoint,
-            cert_filepath=args.cert,
-            pri_key_filepath=args.key,
-            ca_filepath=args.ca_file,
-            client_id=args.client_id,
-            clean_session=True,
-            keep_alive_secs=30,
-            http_proxy_options=proxy_options)
+    mqtt_connection = cmdUtils.build_mqtt_connection(None, None)
 
     print("Connecting to {} with client ID '{}'...".format(
-        args.endpoint, args.client_id))
+        cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
 
     connected_future = mqtt_connection.connect()
 
@@ -343,12 +310,12 @@ if __name__ == '__main__':
         # to succeed before publishing the corresponding "request".
         print("Subscribing to Update responses...")
         update_accepted_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_accepted(
-            request=iotshadow.UpdateShadowSubscriptionRequest(thing_name=args.thing_name),
+            request=iotshadow.UpdateShadowSubscriptionRequest(thing_name=shadow_thing_name),
             qos=mqtt.QoS.AT_LEAST_ONCE,
             callback=on_update_shadow_accepted)
 
         update_rejected_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_rejected(
-            request=iotshadow.UpdateShadowSubscriptionRequest(thing_name=args.thing_name),
+            request=iotshadow.UpdateShadowSubscriptionRequest(thing_name=shadow_thing_name),
             qos=mqtt.QoS.AT_LEAST_ONCE,
             callback=on_update_shadow_rejected)
 
@@ -358,12 +325,12 @@ if __name__ == '__main__':
 
         print("Subscribing to Get responses...")
         get_accepted_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_accepted(
-            request=iotshadow.GetShadowSubscriptionRequest(thing_name=args.thing_name),
+            request=iotshadow.GetShadowSubscriptionRequest(thing_name=shadow_thing_name),
             qos=mqtt.QoS.AT_LEAST_ONCE,
             callback=on_get_shadow_accepted)
 
         get_rejected_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_rejected(
-            request=iotshadow.GetShadowSubscriptionRequest(thing_name=args.thing_name),
+            request=iotshadow.GetShadowSubscriptionRequest(thing_name=shadow_thing_name),
             qos=mqtt.QoS.AT_LEAST_ONCE,
             callback=on_get_shadow_rejected)
 
@@ -373,7 +340,7 @@ if __name__ == '__main__':
 
         print("Subscribing to Delta events...")
         delta_subscribed_future, _ = shadow_client.subscribe_to_shadow_delta_updated_events(
-            request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(thing_name=args.thing_name),
+            request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(thing_name=shadow_thing_name),
             qos=mqtt.QoS.AT_LEAST_ONCE,
             callback=on_shadow_delta_updated)
 
@@ -392,7 +359,7 @@ if __name__ == '__main__':
             token = str(uuid4())
 
             publish_get_future = shadow_client.publish_get_shadow(
-                request=iotshadow.GetShadowRequest(thing_name=args.thing_name, client_token=token),
+                request=iotshadow.GetShadowRequest(thing_name=shadow_thing_name, client_token=token),
                 qos=mqtt.QoS.AT_LEAST_ONCE)
 
             locked_data.request_tokens.add(token)

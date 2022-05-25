@@ -71,3 +71,14 @@ html_theme = 'bizstyle'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+# Extra warnings
+nitpicky = True
+nitpick_ignore_regex = [
+    # sphinx gets tripped up by classes in concurrent.futures.*
+    ('py:class', r'concurrent\.futures\._base\..*'),
+
+    # complains because public Operation classes have _private base classes,
+    # and private classes aren't documented, but we want sphinx to document base classes by default.
+    # Ignoring the warnings seems like a reasonable compromise
+    ('py:class', r'awsiot\.greengrasscoreipc\.model\._.*Operation'),
+]

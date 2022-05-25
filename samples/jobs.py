@@ -40,17 +40,20 @@ is_sample_done = threading.Event()
 import command_line_utils;
 cmdUtils = command_line_utils.CommandLineUtils("Jobs - Recieve and execute operations on the device.")
 cmdUtils.add_common_mqtt_commands()
-cmdUtils.add_common_websocket_commands()
 cmdUtils.add_common_proxy_commands()
 cmdUtils.add_common_logging_commands()
+cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
+cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
 cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
+cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).", type=int)
 cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
-cmdUtils.register_command("job_time", "<int>", "Emulate working on a job by sleeping this many seconds (optional, default='5')", default=5)
-args = cmdUtils.get_args()
+cmdUtils.register_command("job_time", "<int>", "Emulate working on a job by sleeping this many seconds (optional, default='5')", default=5, type=int)
+# Needs to be called so the command utils parse the commands
+cmdUtils.get_args()
 
 mqtt_connection = None
 jobs_client = None
-thing_name = ""
+jobs_thing_name = cmdUtils.get_command_required("thing_name")
 
 class LockedData:
     def __init__(self):
@@ -91,7 +94,7 @@ def try_start_next_job():
         locked_data.is_next_job_waiting = False
 
     print("Publishing request to start next job...")
-    request = iotjobs.StartNextPendingJobExecutionRequest(thing_name=args.thing_name)
+    request = iotjobs.StartNextPendingJobExecutionRequest(thing_name=jobs_thing_name)
     publish_future = jobs_client.publish_start_next_pending_job_execution(request, mqtt.QoS.AT_LEAST_ONCE)
     publish_future.add_done_callback(on_publish_start_next_pending_job_execution)
 
@@ -173,12 +176,12 @@ def on_start_next_pending_job_execution_rejected(rejected):
 def job_thread_fn(job_id, job_document):
     try:
         print("Starting local work on job...")
-        time.sleep(args.job_time)
+        time.sleep(cmdUtils.get_command("job_time"))
         print("Done working on job.")
 
         print("Publishing request to update job status to SUCCEEDED...")
         request = iotjobs.UpdateJobExecutionRequest(
-            thing_name=args.thing_name,
+            thing_name=jobs_thing_name,
             job_id=job_id,
             status=iotjobs.JobStatus.SUCCEEDED)
         publish_future = jobs_client.publish_update_job_execution(request, mqtt.QoS.AT_LEAST_ONCE)
@@ -210,39 +213,9 @@ def on_update_job_execution_rejected(rejected):
         rejected.code, rejected.message))
 
 if __name__ == '__main__':
-    # Process input args
-    thing_name = args.thing_name
-    io.init_logging(getattr(io.LogLevel, args.verbosity), 'stderr')
-
-    proxy_options = None
-    if (args.proxy_host):
-        proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
-
-    if args.use_websocket == True:
-        credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
-        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
-            endpoint=args.endpoint,
-            region=args.signing_region,
-            credentials_provider=credentials_provider,
-            http_proxy_options=proxy_options,
-            ca_filepath=args.ca_file,
-            client_id=args.client_id,
-            clean_session=False,
-            keep_alive_secs=30)
-
-    else:
-        mqtt_connection = mqtt_connection_builder.mtls_from_path(
-            endpoint=args.endpoint,
-            cert_filepath=args.cert,
-            pri_key_filepath=args.key,
-            ca_filepath=args.ca_file,
-            client_id=args.client_id,
-            clean_session=False,
-            keep_alive_secs=30,
-            http_proxy_options=proxy_options)
-
+    mqtt_connection = cmdUtils.build_mqtt_connection(None, None)
     print("Connecting to {} with client ID '{}'...".format(
-        args.endpoint, args.client_id))
+        cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
 
     connected_future = mqtt_connection.connect()
 
@@ -262,7 +235,7 @@ if __name__ == '__main__':
         # to succeed before publishing the corresponding "request".
         print("Subscribing to Next Changed events...")
         changed_subscription_request = iotjobs.NextJobExecutionChangedSubscriptionRequest(
-            thing_name=args.thing_name)
+            thing_name=jobs_thing_name)
 
         subscribed_future, _ = jobs_client.subscribe_to_next_job_execution_changed_events(
             request=changed_subscription_request,
@@ -274,7 +247,7 @@ if __name__ == '__main__':
 
         print("Subscribing to Start responses...")
         start_subscription_request = iotjobs.StartNextPendingJobExecutionSubscriptionRequest(
-            thing_name=args.thing_name)
+            thing_name=jobs_thing_name)
         subscribed_accepted_future, _ = jobs_client.subscribe_to_start_next_pending_job_execution_accepted(
             request=start_subscription_request,
             qos=mqtt.QoS.AT_LEAST_ONCE,
@@ -293,7 +266,7 @@ if __name__ == '__main__':
         # Note that we subscribe to "+", the MQTT wildcard, to receive
         # responses about any job-ID.
         update_subscription_request = iotjobs.UpdateJobExecutionSubscriptionRequest(
-                thing_name=args.thing_name,
+                thing_name=jobs_thing_name,
                 job_id='+')
 
         subscribed_accepted_future, _ = jobs_client.subscribe_to_update_job_execution_accepted(
