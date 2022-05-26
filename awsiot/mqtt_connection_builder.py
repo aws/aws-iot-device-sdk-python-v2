@@ -427,15 +427,16 @@ def websockets_with_custom_handshake(
                     websocket_proxy_options=websocket_proxy_options,
                     **kwargs)
 
-def _add_username_parameter(input_string, parameter_value, parameter_pretext, added_string_to_username):
+def _add_to_username_parameter(input_string, parameter_value, parameter_pretext):
     """
     Helper function to add parameters to the username in the direct_with_custom_authorizer function
     """
     return_string = input_string
-    if added_string_to_username is False:
-        return_string += "?"
-    else:
+
+    if not return_string.find("?") is -1:
         return_string += "&"
+    else:
+        return_string += "?"
 
     if not parameter_value.find(parameter_pretext) is -1:
         return return_string + parameter_value
@@ -474,7 +475,6 @@ def direct_with_custom_authorizer(
 
     _check_required_kwargs(**kwargs)
     username_string = ""
-    added_string_to_username = False
 
     if auth_username is None:
         if not _get(kwargs, "username") is None:
@@ -483,12 +483,11 @@ def direct_with_custom_authorizer(
         username_string += auth_username
 
     if not auth_authorizer_name is None:
-        username_string = _add_username_parameter(
-            username_string, auth_authorizer_name, "x-amz-customauthorizer-name=", added_string_to_username)
-        added_string_to_username = True
+        username_string = _add_to_username_parameter(
+            username_string, auth_authorizer_name, "x-amz-customauthorizer-name=")
     if not auth_authorizer_signature is None:
-        username_string = _add_username_parameter(
-            username_string, auth_authorizer_signature, "x-amz-customauthorizer-signature=", added_string_to_username)
+        username_string = _add_to_username_parameter(
+            username_string, auth_authorizer_signature, "x-amz-customauthorizer-signature=")
 
     kwargs["username"] = username_string
     kwargs["password"] = auth_password
