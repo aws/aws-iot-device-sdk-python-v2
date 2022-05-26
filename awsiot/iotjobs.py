@@ -505,12 +505,16 @@ class DescribeJobExecutionRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
-            payload['clientToken'] = self.client_token
+            payload['client_token'] = self.client_token
+
         if self.execution_number is not None:
-            payload['executionNumber'] = self.execution_number
+            payload['execution_number'] = self.execution_number
+
         if self.include_job_document is not None:
-            payload['includeJobDocument'] = self.include_job_document
+            payload['include_job_document'] = self.include_job_document
+
         return payload
 
 class DescribeJobExecutionResponse(awsiot.ModeledClass):
@@ -546,7 +550,7 @@ class DescribeJobExecutionResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> DescribeJobExecutionResponse
         new = cls()
-        val = payload.get('clientToken')
+        val = payload.get('client_token')
         if val is not None:
             new.client_token = val
         val = payload.get('execution')
@@ -612,8 +616,10 @@ class GetPendingJobExecutionsRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
-            payload['clientToken'] = self.client_token
+            payload['client_token'] = self.client_token
+
         return payload
 
 class GetPendingJobExecutionsResponse(awsiot.ModeledClass):
@@ -652,13 +658,13 @@ class GetPendingJobExecutionsResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> GetPendingJobExecutionsResponse
         new = cls()
-        val = payload.get('clientToken')
+        val = payload.get('client_token')
         if val is not None:
             new.client_token = val
-        val = payload.get('inProgressJobs')
+        val = payload.get('in_progress_jobs')
         if val is not None:
             new.in_progress_jobs = [JobExecutionSummary.from_payload(i) for i in val]
-        val = payload.get('queuedJobs')
+        val = payload.get('queued_jobs')
         if val is not None:
             new.queued_jobs = [JobExecutionSummary.from_payload(i) for i in val]
         val = payload.get('timestamp')
@@ -743,34 +749,34 @@ class JobExecutionData(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> JobExecutionData
         new = cls()
-        val = payload.get('executionNumber')
+        val = payload.get('execution_number')
         if val is not None:
             new.execution_number = val
-        val = payload.get('jobDocument')
+        val = payload.get('job_document')
         if val is not None:
             new.job_document = val
-        val = payload.get('jobId')
+        val = payload.get('job_id')
         if val is not None:
             new.job_id = val
-        val = payload.get('lastUpdatedAt')
+        val = payload.get('last_updated_at')
         if val is not None:
             new.last_updated_at = datetime.datetime.fromtimestamp(val)
-        val = payload.get('queuedAt')
+        val = payload.get('queued_at')
         if val is not None:
             new.queued_at = datetime.datetime.fromtimestamp(val)
-        val = payload.get('startedAt')
+        val = payload.get('started_at')
         if val is not None:
             new.started_at = datetime.datetime.fromtimestamp(val)
         val = payload.get('status')
         if val is not None:
             new.status = val
-        val = payload.get('statusDetails')
+        val = payload.get('status_details')
         if val is not None:
             new.status_details = val
-        val = payload.get('thingName')
+        val = payload.get('thing_name')
         if val is not None:
             new.thing_name = val
-        val = payload.get('versionNumber')
+        val = payload.get('version_number')
         if val is not None:
             new.version_number = val
         return new
@@ -811,10 +817,10 @@ class JobExecutionState(awsiot.ModeledClass):
         val = payload.get('status')
         if val is not None:
             new.status = val
-        val = payload.get('statusDetails')
+        val = payload.get('status_details')
         if val is not None:
             new.status_details = val
-        val = payload.get('versionNumber')
+        val = payload.get('version_number')
         if val is not None:
             new.version_number = val
         return new
@@ -861,22 +867,22 @@ class JobExecutionSummary(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> JobExecutionSummary
         new = cls()
-        val = payload.get('executionNumber')
+        val = payload.get('execution_number')
         if val is not None:
             new.execution_number = val
-        val = payload.get('jobId')
+        val = payload.get('job_id')
         if val is not None:
             new.job_id = val
-        val = payload.get('lastUpdatedAt')
+        val = payload.get('last_updated_at')
         if val is not None:
             new.last_updated_at = datetime.datetime.fromtimestamp(val)
-        val = payload.get('queuedAt')
+        val = payload.get('queued_at')
         if val is not None:
             new.queued_at = datetime.datetime.fromtimestamp(val)
-        val = payload.get('startedAt')
+        val = payload.get('started_at')
         if val is not None:
             new.started_at = datetime.datetime.fromtimestamp(val)
-        val = payload.get('versionNumber')
+        val = payload.get('version_number')
         if val is not None:
             new.version_number = val
         return new
@@ -1042,13 +1048,13 @@ class RejectedError(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> RejectedError
         new = cls()
-        val = payload.get('clientToken')
+        val = payload.get('client_token')
         if val is not None:
             new.client_token = val
         val = payload.get('code')
         if val is not None:
             new.code = val
-        val = payload.get('executionState')
+        val = payload.get('execution_state')
         if val is not None:
             new.execution_state = JobExecutionState.from_payload(val)
         val = payload.get('message')
@@ -1092,7 +1098,7 @@ class StartNextJobExecutionResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> StartNextJobExecutionResponse
         new = cls()
-        val = payload.get('clientToken')
+        val = payload.get('client_token')
         if val is not None:
             new.client_token = val
         val = payload.get('execution')
@@ -1138,12 +1144,16 @@ class StartNextPendingJobExecutionRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
-            payload['clientToken'] = self.client_token
+            payload['client_token'] = self.client_token
+
         if self.status_details is not None:
-            payload['statusDetails'] = self.status_details
+            payload['status_details'] = self.status_details
+
         if self.step_timeout_in_minutes is not None:
-            payload['stepTimeoutInMinutes'] = self.step_timeout_in_minutes
+            payload['step_timeout_in_minutes'] = self.step_timeout_in_minutes
+
         return payload
 
 class StartNextPendingJobExecutionSubscriptionRequest(awsiot.ModeledClass):
@@ -1222,22 +1232,31 @@ class UpdateJobExecutionRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.client_token is not None:
-            payload['clientToken'] = self.client_token
+            payload['client_token'] = self.client_token
+
         if self.execution_number is not None:
-            payload['executionNumber'] = self.execution_number
+            payload['execution_number'] = self.execution_number
+
         if self.expected_version is not None:
-            payload['expectedVersion'] = self.expected_version
+            payload['expected_version'] = self.expected_version
+
         if self.include_job_document is not None:
-            payload['includeJobDocument'] = self.include_job_document
+            payload['include_job_document'] = self.include_job_document
+
         if self.include_job_execution_state is not None:
-            payload['includeJobExecutionState'] = self.include_job_execution_state
+            payload['include_job_execution_state'] = self.include_job_execution_state
+
         if self.status is not None:
             payload['status'] = self.status
+
         if self.status_details is not None:
-            payload['statusDetails'] = self.status_details
+            payload['status_details'] = self.status_details
+
         if self.step_timeout_in_minutes is not None:
-            payload['stepTimeoutInMinutes'] = self.step_timeout_in_minutes
+            payload['step_timeout_in_minutes'] = self.step_timeout_in_minutes
+
         return payload
 
 class UpdateJobExecutionResponse(awsiot.ModeledClass):
@@ -1276,13 +1295,13 @@ class UpdateJobExecutionResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> UpdateJobExecutionResponse
         new = cls()
-        val = payload.get('clientToken')
+        val = payload.get('client_token')
         if val is not None:
             new.client_token = val
-        val = payload.get('executionState')
+        val = payload.get('execution_state')
         if val is not None:
             new.execution_state = JobExecutionState.from_payload(val)
-        val = payload.get('jobDocument')
+        val = payload.get('job_document')
         if val is not None:
             new.job_document = val
         val = payload.get('timestamp')

@@ -767,7 +767,7 @@ class DeleteNamedShadowRequest(awsiot.ModeledClass):
         payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.client_token is not None:
-            payload['clientToken'] = self.client_token
+            payload['client_token'] = self.client_token
 
         return payload
 
@@ -828,7 +828,7 @@ class DeleteShadowRequest(awsiot.ModeledClass):
         payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.client_token is not None:
-            payload['clientToken'] = self.client_token
+            payload['client_token'] = self.client_token
 
         return payload
 
@@ -865,7 +865,7 @@ class DeleteShadowResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> DeleteShadowResponse
         new = cls()
-        val = payload.get('clientToken')
+        val = payload.get('client_token')
         if val is not None:
             new.client_token = val
         val = payload.get('timestamp')
@@ -935,7 +935,7 @@ class ErrorResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> ErrorResponse
         new = cls()
-        val = payload.get('clientToken')
+        val = payload.get('client_token')
         if val is not None:
             new.client_token = val
         val = payload.get('code')
@@ -983,7 +983,7 @@ class GetNamedShadowRequest(awsiot.ModeledClass):
         payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.client_token is not None:
-            payload['clientToken'] = self.client_token
+            payload['client_token'] = self.client_token
 
         return payload
 
@@ -1044,7 +1044,7 @@ class GetShadowRequest(awsiot.ModeledClass):
         payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.client_token is not None:
-            payload['clientToken'] = self.client_token
+            payload['client_token'] = self.client_token
 
         return payload
 
@@ -1087,7 +1087,7 @@ class GetShadowResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> GetShadowResponse
         new = cls()
-        val = payload.get('clientToken')
+        val = payload.get('client_token')
         if val is not None:
             new.client_token = val
         val = payload.get('metadata')
@@ -1218,7 +1218,7 @@ class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> ShadowDeltaUpdatedEvent
         new = cls()
-        val = payload.get('clientToken')
+        val = payload.get('client_token')
         if val is not None:
             new.client_token = val
         val = payload.get('metadata')
@@ -1556,7 +1556,7 @@ class UpdateNamedShadowRequest(awsiot.ModeledClass):
         payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.client_token is not None:
-            payload['clientToken'] = self.client_token
+            payload['client_token'] = self.client_token
 
         if self.state is not None:
             payload['state'] = self.state.to_payload()
@@ -1629,7 +1629,7 @@ class UpdateShadowRequest(awsiot.ModeledClass):
         payload = {} # type: typing.Dict[str, typing.Any]
 
         if self.client_token is not None:
-            payload['clientToken'] = self.client_token
+            payload['client_token'] = self.client_token
 
         if self.state is not None:
             payload['state'] = self.state.to_payload()
@@ -1678,7 +1678,7 @@ class UpdateShadowResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> UpdateShadowResponse
         new = cls()
-        val = payload.get('clientToken')
+        val = payload.get('client_token')
         if val is not None:
             new.client_token = val
         val = payload.get('metadata')
@@ -1717,3 +1717,4 @@ class UpdateShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+

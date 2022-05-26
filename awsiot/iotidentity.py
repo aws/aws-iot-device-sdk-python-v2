@@ -309,8 +309,10 @@ class CreateCertificateFromCsrRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.certificate_signing_request is not None:
-            payload['certificateSigningRequest'] = self.certificate_signing_request
+            payload['certificate_signing_request'] = self.certificate_signing_request
+
         return payload
 
 class CreateCertificateFromCsrResponse(awsiot.ModeledClass):
@@ -346,13 +348,13 @@ class CreateCertificateFromCsrResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> CreateCertificateFromCsrResponse
         new = cls()
-        val = payload.get('certificateId')
+        val = payload.get('certificate_id')
         if val is not None:
             new.certificate_id = val
-        val = payload.get('certificateOwnershipToken')
+        val = payload.get('certificate_ownership_token')
         if val is not None:
             new.certificate_ownership_token = val
-        val = payload.get('certificatePem')
+        val = payload.get('certificate_pem')
         if val is not None:
             new.certificate_pem = val
         return new
@@ -425,16 +427,16 @@ class CreateKeysAndCertificateResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> CreateKeysAndCertificateResponse
         new = cls()
-        val = payload.get('certificateId')
+        val = payload.get('certificate_id')
         if val is not None:
             new.certificate_id = val
-        val = payload.get('certificateOwnershipToken')
+        val = payload.get('certificate_ownership_token')
         if val is not None:
             new.certificate_ownership_token = val
-        val = payload.get('certificatePem')
+        val = payload.get('certificate_pem')
         if val is not None:
             new.certificate_pem = val
-        val = payload.get('privateKey')
+        val = payload.get('private_key')
         if val is not None:
             new.private_key = val
         return new
@@ -488,13 +490,13 @@ class ErrorResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> ErrorResponse
         new = cls()
-        val = payload.get('errorCode')
+        val = payload.get('error_code')
         if val is not None:
             new.error_code = val
-        val = payload.get('errorMessage')
+        val = payload.get('error_message')
         if val is not None:
             new.error_message = val
-        val = payload.get('statusCode')
+        val = payload.get('status_code')
         if val is not None:
             new.status_code = val
         return new
@@ -531,10 +533,13 @@ class RegisterThingRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
+
         if self.certificate_ownership_token is not None:
-            payload['certificateOwnershipToken'] = self.certificate_ownership_token
+            payload['certificate_ownership_token'] = self.certificate_ownership_token
+
         if self.parameters is not None:
             payload['parameters'] = self.parameters
+
         return payload
 
 class RegisterThingResponse(awsiot.ModeledClass):
@@ -567,10 +572,10 @@ class RegisterThingResponse(awsiot.ModeledClass):
     def from_payload(cls, payload):
         # type: (typing.Dict[str, typing.Any]) -> RegisterThingResponse
         new = cls()
-        val = payload.get('deviceConfiguration')
+        val = payload.get('device_configuration')
         if val is not None:
             new.device_configuration = val
-        val = payload.get('thingName')
+        val = payload.get('thing_name')
         if val is not None:
             new.thing_name = val
         return new
