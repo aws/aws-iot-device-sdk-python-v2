@@ -4,19 +4,16 @@
 from awsiot import mqtt_connection_builder
 from uuid import uuid4
 
-# This sample is similar to `samples/basic_connect.py` but the certificate
-# for mutual TLS is stored in a Windows certificate store.
-#
-# See `samples/README.md` for instructions on setting up your PC
-# to run this sample.
-#
-# WARNING: Windows only.
+# This sample is similar to `samples/basic_connect.py` but it connects
+# through a custom authorizer rather than using a key and certificate.
 
 # Parse arguments
 import command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils("Windows Cert Connect - Make a MQTT connection using Windows Store Certificates.")
+cmdUtils = command_line_utils.CommandLineUtils(
+    "Custom Authorizer Connect - Make a MQTT connection using a custom authorizer.")
 cmdUtils.add_common_mqtt_commands()
 cmdUtils.add_common_logging_commands()
+cmdUtils.add_common_custom_authorizer_commands()
 cmdUtils.register_command("client_id", "<str>",
                           "Client ID to use for MQTT connection (optional, default='test-*').",
                           default="test-" + str(uuid4()))
@@ -35,12 +32,15 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 
 
 if __name__ == '__main__':
-    # Create MQTT connection
-    mqtt_connection = mqtt_connection_builder.mtls_with_windows_cert_store_path(
-        cert_store_path=cmdUtils.get_command_required("cert"),
+
+    # Create MQTT connection with a custom authorizer
+    mqtt_connection = mqtt_connection_builder.direct_with_custom_authorizer(
         endpoint=cmdUtils.get_command_required(cmdUtils.m_cmd_endpoint),
-        port=cmdUtils.get_command("port"),
         ca_filepath=cmdUtils.get_command(cmdUtils.m_cmd_ca_file),
+        auth_username=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_username),
+        auth_authorizer_name=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_authorizer_name),
+        auth_authorizer_signature=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_authorizer_signature),
+        auth_password=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_password),
         on_connection_interrupted=on_connection_interrupted,
         on_connection_resumed=on_connection_resumed,
         client_id=cmdUtils.get_command("client_id"),
