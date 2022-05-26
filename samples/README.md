@@ -5,6 +5,7 @@
 * [Websocket Connect](#websocket-connect)
 * [PKCS#11 Connect](#pkcs11-connect)
 * [Windows Certificate Connect](#windows-certificate-connect)
+* [Custom Authorizer Connect](#custom-authorizer-connect)
 * [Shadow](#shadow)
 * [Jobs](#jobs)
 * [Fleet Provisioning](#fleet-provisioning)
@@ -323,6 +324,39 @@ To run this sample with a basic certificate from AWS IoT Core:
     ```sh
     python3 windows_cert_connect.py --endpoint <endpoint> --ca_file <path to root CA> --cert <path to certificate>
     ```
+
+## Custom Authorizer Connect
+
+This sample makes an MQTT connection and connects through a [Custom Authorizer](https://docs.aws.amazon.com/iot/latest/developerguide/custom-authentication.html). On startup, the device connects to the server and then disconnects. This sample is for reference on connecting using a custom authorizer.
+
+Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
+
+Run the sample like this:
+``` sh
+python3 custom_authorizer_connect.py --endpoint <endpoint> --ca_file <path to root CA> --custom_auth_authorizer_name <authorizer name>
+```
+
+You will need to setup your Custom Authorizer so that the lambda function returns a policy document. See [this page on the documentation](https://docs.aws.amazon.com/iot/latest/developerguide/config-custom-auth.html) for more details and example return result.
 
 ## Shadow
 
