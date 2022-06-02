@@ -4,6 +4,7 @@ import json
 import os
 import subprocess
 import re
+import random
 from time import sleep
 
 ##############################################
@@ -34,6 +35,11 @@ def process_logs(log_group, log_stream, thing_name):
     f.close()
     s3.Bucket(os.environ['DA_S3_NAME']).upload_file(log_file, log_file)
     os.remove(log_file)
+    print("[Device Advisor] Device Advisor Log file uploaded to "+ log_file)
+
+# Sleep for a random time between base and bax
+def sleep_with_backoff(base, max):
+    sleep(random.randint(base,max))
 
 ##############################################
 # Initialize variables
@@ -42,6 +48,10 @@ client = boto3.client('iot')
 dataClient = boto3.client('iot-data')
 deviceAdvisor = boto3.client('iotdeviceadvisor')
 s3 = boto3.resource('s3')
+
+# const
+BACKOFF_BASE = 5
+BACKOFF_MAX = 10
 
 # load test config
 f = open('deviceadvisor/script/DATestConfig.json')
@@ -171,6 +181,7 @@ for test_name in DATestConfig['tests']:
         # 'createdAt': datetime(2015, 1, 1)
         # }
         print("[Device Advisor]Info: Start device advisor test: " + test_name)
+        sleep_with_backoff(BACKOFF_BASE, BACKOFF_MAX)
         test_start_response = deviceAdvisor.start_suite_run(
         suiteDefinitionId=DATestConfig['test_suite_ids'][test_name],
         suiteRunConfiguration={
@@ -187,8 +198,8 @@ for test_name in DATestConfig['tests']:
         os.environ['DA_ENDPOINT'] = endpoint_response['endpoint']
 
         while True:
-            # sleep for 1s every loop to avoid TooManyRequestsException
-            sleep(1)
+            # Add backoff to avoid TooManyRequestsException
+            sleep_with_backoff(BACKOFF_BASE, BACKOFF_MAX)
             test_result_responds = deviceAdvisor.get_suite_run(
                 suiteDefinitionId=DATestConfig['test_suite_ids'][test_name],
                 suiteRunId=test_start_response['suiteRunId']
