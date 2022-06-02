@@ -96,6 +96,7 @@
         "DA_TOPIC": "test/da",
         "DA_SHADOW_PROPERTY": "datest",
         "DA_SHADOW_VALUE_SET": "ON",
-        "DA_SHADOW_VALUE_DEFAULT": "OFF"
+        "DA_SHADOW_VALUE_DEFAULT": "OFF",
+        "DA_S3_NAME": "aws-iot-sdk-deviceadvisor-logs"
     }
 }
