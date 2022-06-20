@@ -50,6 +50,15 @@ class Product(rpc.Shape):
         self.name = name  # type: typing.Optional[str]
         self.price = price  # type: typing.Optional[float]
 
+    def set_name(self, name: str):
+        self.name = name
+        return self
+
+    def set_price(self, price: float):
+        self.price = price
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.name is not None:
@@ -105,6 +114,15 @@ class Pair(rpc.Shape):
         super().__init__()
         self.key = key  # type: typing.Optional[str]
         self.value = value  # type: typing.Optional[str]
+
+    def set_key(self, key: str):
+        self.key = key
+        return self
+
+    def set_value(self, value: str):
+        self.value = value
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -176,6 +194,19 @@ class Customer(rpc.Shape):
         self.id = id  # type: typing.Optional[int]
         self.first_name = first_name  # type: typing.Optional[str]
         self.last_name = last_name  # type: typing.Optional[str]
+
+    def set_id(self, id: int):
+        self.id = id
+        return self
+
+    def set_first_name(self, first_name: str):
+        self.first_name = first_name
+        return self
+
+    def set_last_name(self, last_name: str):
+        self.last_name = last_name
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -250,7 +281,7 @@ class MessageData(rpc.Shape):
                  time_message: typing.Optional[datetime.datetime] = None,
                  document_message: typing.Optional[typing.Dict[str, typing.Any]] = None,
                  enum_message: typing.Optional[str] = None,
-                 blob_message: typing.Optional[bytes] = None,
+                 blob_message: typing.Optional[typing.Union[bytes, str]] = None,
                  string_list_message: typing.Optional[typing.List[str]] = None,
                  key_value_pair_list: typing.Optional[typing.List[Pair]] = None,
                  string_to_value: typing.Optional[typing.Dict[str, Product]] = None):
@@ -260,10 +291,51 @@ class MessageData(rpc.Shape):
         self.time_message = time_message  # type: typing.Optional[datetime.datetime]
         self.document_message = document_message  # type: typing.Optional[typing.Dict[str, typing.Any]]
         self.enum_message = enum_message  # type: typing.Optional[str]
+        if blob_message is not None and isinstance(blob_message, str):
+            blob_message = blob_message.encode('utf-8')
         self.blob_message = blob_message  # type: typing.Optional[bytes]
         self.string_list_message = string_list_message  # type: typing.Optional[typing.List[str]]
         self.key_value_pair_list = key_value_pair_list  # type: typing.Optional[typing.List[Pair]]
         self.string_to_value = string_to_value  # type: typing.Optional[typing.Dict[str, Product]]
+
+    def set_string_message(self, string_message: str):
+        self.string_message = string_message
+        return self
+
+    def set_boolean_message(self, boolean_message: bool):
+        self.boolean_message = boolean_message
+        return self
+
+    def set_time_message(self, time_message: datetime.datetime):
+        self.time_message = time_message
+        return self
+
+    def set_document_message(self, document_message: typing.Dict[str, typing.Any]):
+        self.document_message = document_message
+        return self
+
+    def set_enum_message(self, enum_message: str):
+        self.enum_message = enum_message
+        return self
+
+    def set_blob_message(self, blob_message: typing.Union[bytes, str]):
+        if blob_message is not None and isinstance(blob_message, str):
+            blob_message = blob_message.encode('utf-8')
+        self.blob_message = blob_message
+        return self
+
+    def set_string_list_message(self, string_list_message: typing.List[str]):
+        self.string_list_message = string_list_message
+        return self
+
+    def set_key_value_pair_list(self, key_value_pair_list: typing.List[Pair]):
+        self.key_value_pair_list = key_value_pair_list
+        return self
+
+    def set_string_to_value(self, string_to_value: typing.Dict[str, Product]):
+        self.string_to_value = string_to_value
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -329,7 +401,7 @@ class MessageData(rpc.Shape):
 
 class EchoStreamingMessage(rpc.Shape):
     """
-    MessageData is a "tagged union" class.
+    EchoStreamingMessage is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -350,6 +422,15 @@ class EchoStreamingMessage(rpc.Shape):
         super().__init__()
         self.stream_message = stream_message  # type: typing.Optional[MessageData]
         self.key_value_pair = key_value_pair  # type: typing.Optional[Pair]
+
+    def set_stream_message(self, stream_message: MessageData):
+        self.stream_message = stream_message
+        return self
+
+    def set_key_value_pair(self, key_value_pair: Pair):
+        self.key_value_pair = key_value_pair
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -403,6 +484,11 @@ class GetAllCustomersResponse(rpc.Shape):
         super().__init__()
         self.customers = customers  # type: typing.Optional[typing.List[Customer]]
 
+    def set_customers(self, customers: typing.List[Customer]):
+        self.customers = customers
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.customers is not None:
@@ -440,6 +526,7 @@ class GetAllCustomersRequest(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -484,6 +571,11 @@ class EchoMessageResponse(rpc.Shape):
                  message: typing.Optional[MessageData] = None):
         super().__init__()
         self.message = message  # type: typing.Optional[MessageData]
+
+    def set_message(self, message: MessageData):
+        self.message = message
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -533,6 +625,11 @@ class EchoMessageRequest(rpc.Shape):
         super().__init__()
         self.message = message  # type: typing.Optional[MessageData]
 
+    def set_message(self, message: MessageData):
+        self.message = message
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.message is not None:
@@ -571,6 +668,7 @@ class EchoStreamingResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -604,6 +702,7 @@ class EchoStreamingRequest(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -639,6 +738,7 @@ class CauseServiceErrorResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -672,6 +772,7 @@ class CauseServiceErrorRequest(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -720,6 +821,15 @@ class ServiceError(EchoTestRPCError):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
         self.value = value  # type: typing.Optional[str]
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+    def set_value(self, value: str):
+        self.value = value
+        return self
+
 
     def _get_error_type_string(self):
         return 'server'
@@ -776,6 +886,11 @@ class GetAllProductsResponse(rpc.Shape):
         super().__init__()
         self.products = products  # type: typing.Optional[typing.Dict[str, Product]]
 
+    def set_products(self, products: typing.Dict[str, Product]):
+        self.products = products
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.products is not None:
@@ -813,6 +928,7 @@ class GetAllProductsRequest(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
