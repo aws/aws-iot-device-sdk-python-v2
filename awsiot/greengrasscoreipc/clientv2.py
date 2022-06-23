@@ -113,6 +113,37 @@ class GreengrassCoreIPCClientV2:
             return real_self.__create_stream_handler(operation, on_stream_event, on_stream_error, on_stream_closed)
         return stream_handler
 
+    def authorize_client_device_action(self, *,
+        client_device_auth_token: typing.Optional[str] = None,
+        operation: typing.Optional[str] = None,
+        resource: typing.Optional[str] = None) -> model.AuthorizeClientDeviceActionResponse:
+        """
+        Perform the AuthorizeClientDeviceAction operation synchronously.
+
+        Args:
+            client_device_auth_token: 
+            operation: 
+            resource: 
+        """
+        return self.authorize_client_device_action_async(client_device_auth_token=client_device_auth_token, operation=operation, resource=resource).result()
+
+    def authorize_client_device_action_async(self, *,
+        client_device_auth_token: typing.Optional[str] = None,
+        operation: typing.Optional[str] = None,
+        resource: typing.Optional[str] = None):  # type: (...) -> concurrent.futures.Future[model.AuthorizeClientDeviceActionResponse]
+        """
+        Perform the AuthorizeClientDeviceAction operation asynchronously.
+
+        Args:
+            client_device_auth_token: 
+            operation: 
+            resource: 
+        """
+        request = model.AuthorizeClientDeviceActionRequest(client_device_auth_token=client_device_auth_token, operation=operation, resource=resource)
+        operation = self.client.new_authorize_client_device_action()
+        write_future = operation.activate(request)
+        return self.__combine_futures(write_future, operation.get_response())
+
     def create_debug_password(self) -> model.CreateDebugPasswordResponse:
         """
         Perform the CreateDebugPassword operation synchronously.
@@ -232,6 +263,29 @@ class GreengrassCoreIPCClientV2:
         """
         request = model.DeleteThingShadowRequest(thing_name=thing_name, shadow_name=shadow_name)
         operation = self.client.new_delete_thing_shadow()
+        write_future = operation.activate(request)
+        return self.__combine_futures(write_future, operation.get_response())
+
+    def get_client_device_auth_token(self, *,
+        credential: typing.Optional[model.CredentialDocument] = None) -> model.GetClientDeviceAuthTokenResponse:
+        """
+        Perform the GetClientDeviceAuthToken operation synchronously.
+
+        Args:
+            credential: 
+        """
+        return self.get_client_device_auth_token_async(credential=credential).result()
+
+    def get_client_device_auth_token_async(self, *,
+        credential: typing.Optional[model.CredentialDocument] = None):  # type: (...) -> concurrent.futures.Future[model.GetClientDeviceAuthTokenResponse]
+        """
+        Perform the GetClientDeviceAuthToken operation asynchronously.
+
+        Args:
+            credential: 
+        """
+        request = model.GetClientDeviceAuthTokenRequest(credential=credential)
+        operation = self.client.new_get_client_device_auth_token()
         write_future = operation.activate(request)
         return self.__combine_futures(write_future, operation.get_response())
 
@@ -604,6 +658,66 @@ class GreengrassCoreIPCClientV2:
         write_future = operation.activate(request)
         return self.__combine_futures(write_future, operation.get_response())
 
+    def subscribe_to_certificate_updates(self, *,
+        certificate_options: typing.Optional[model.CertificateOptions] = None,
+        stream_handler: typing.Optional[client.SubscribeToCertificateUpdatesStreamHandler] = None,
+        on_stream_event: typing.Optional[typing.Callable[[model.CertificateUpdateEvent], None]] = None,
+        on_stream_error: typing.Optional[typing.Callable[[Exception], bool]] = None,
+        on_stream_closed: typing.Optional[typing.Callable[[], None]] = None
+) -> typing.Tuple[model.SubscribeToCertificateUpdatesResponse, client.SubscribeToCertificateUpdatesOperation]:
+        """
+        Perform the SubscribeToCertificateUpdates operation synchronously.
+        The initial response or error will be returned synchronously, further events will arrive via the streaming
+        callbacks
+
+        Args:
+            certificate_options: 
+            stream_handler: Methods on this object will be called as stream events happen on this operation. If an
+                executor is provided, the on_stream_event and on_stream_closed methods will run in the executor.
+            on_stream_event: Callback for stream events. Mutually exclusive with stream_handler. If an executor is
+                provided, this method will run in the executor.
+            on_stream_error: Callback for stream errors. Return true to close the stream, return false to keep the
+                stream open. Mutually exclusive with stream_handler. Even if an executor is provided, this method
+                will not run in the executor.
+            on_stream_closed: Callback for when the stream closes. Mutually exclusive with stream_handler. If an
+                executor is provided, this method will run in the executor.
+        """
+        (fut, op) = self.subscribe_to_certificate_updates_async(certificate_options=certificate_options, 
+            stream_handler=stream_handler, on_stream_event=on_stream_event, on_stream_error=on_stream_error,
+            on_stream_closed=on_stream_closed)
+        return fut.result(), op
+
+    def subscribe_to_certificate_updates_async(self, *,
+        certificate_options: typing.Optional[model.CertificateOptions] = None,
+        stream_handler: client.SubscribeToCertificateUpdatesStreamHandler = None,
+        on_stream_event: typing.Optional[typing.Callable[[model.CertificateUpdateEvent], None]] = None,
+        on_stream_error: typing.Optional[typing.Callable[[Exception], bool]] = None,
+        on_stream_closed: typing.Optional[typing.Callable[[], None]] = None
+        ):  # type: (...) -> typing.Tuple[concurrent.futures.Future[model.SubscribeToCertificateUpdatesResponse], client.SubscribeToCertificateUpdatesOperation]
+        """
+        Perform the SubscribeToCertificateUpdates operation asynchronously.
+        The initial response or error will be returned as the result of the asynchronous future, further events will
+        arrive via the streaming callbacks
+
+        Args:
+            certificate_options: 
+            stream_handler: Methods on this object will be called as stream events happen on this operation. If an
+                executor is provided, the on_stream_event and on_stream_closed methods will run in the executor.
+            on_stream_event: Callback for stream events. Mutually exclusive with stream_handler. If an executor is
+                provided, this method will run in the executor.
+            on_stream_error: Callback for stream errors. Return true to close the stream, return false to keep the
+                stream open. Mutually exclusive with stream_handler. Even if an executor is provided, this method
+                will not run in the executor.
+            on_stream_closed: Callback for when the stream closes. Mutually exclusive with stream_handler. If an
+                executor is provided, this method will run in the executor.
+        """
+        stream_handler = self.__handle_stream_handler("SubscribeToCertificateUpdates", stream_handler,
+            on_stream_event, on_stream_error, on_stream_closed)
+        request = model.SubscribeToCertificateUpdatesRequest(certificate_options=certificate_options)
+        operation = self.client.new_subscribe_to_certificate_updates(stream_handler)
+        write_future = operation.activate(request)
+        return self.__combine_futures(write_future, operation.get_response()), operation
+
     def subscribe_to_component_updates(self, *,
         stream_handler: typing.Optional[client.SubscribeToComponentUpdatesStreamHandler] = None,
         on_stream_event: typing.Optional[typing.Callable[[model.ComponentUpdatePolicyEvents], None]] = None,
@@ -790,6 +904,7 @@ class GreengrassCoreIPCClientV2:
 
     def subscribe_to_topic(self, *,
         topic: typing.Optional[str] = None,
+        receive_mode: typing.Optional[str] = None,
         stream_handler: typing.Optional[client.SubscribeToTopicStreamHandler] = None,
         on_stream_event: typing.Optional[typing.Callable[[model.SubscriptionResponseMessage], None]] = None,
         on_stream_error: typing.Optional[typing.Callable[[Exception], bool]] = None,
@@ -802,6 +917,7 @@ class GreengrassCoreIPCClientV2:
 
         Args:
             topic: 
+            receive_mode: ReceiveMode enum value
             stream_handler: Methods on this object will be called as stream events happen on this operation. If an
                 executor is provided, the on_stream_event and on_stream_closed methods will run in the executor.
             on_stream_event: Callback for stream events. Mutually exclusive with stream_handler. If an executor is
@@ -812,13 +928,14 @@ class GreengrassCoreIPCClientV2:
             on_stream_closed: Callback for when the stream closes. Mutually exclusive with stream_handler. If an
                 executor is provided, this method will run in the executor.
         """
-        (fut, op) = self.subscribe_to_topic_async(topic=topic, 
+        (fut, op) = self.subscribe_to_topic_async(topic=topic, receive_mode=receive_mode, 
             stream_handler=stream_handler, on_stream_event=on_stream_event, on_stream_error=on_stream_error,
             on_stream_closed=on_stream_closed)
         return fut.result(), op
 
     def subscribe_to_topic_async(self, *,
         topic: typing.Optional[str] = None,
+        receive_mode: typing.Optional[str] = None,
         stream_handler: client.SubscribeToTopicStreamHandler = None,
         on_stream_event: typing.Optional[typing.Callable[[model.SubscriptionResponseMessage], None]] = None,
         on_stream_error: typing.Optional[typing.Callable[[Exception], bool]] = None,
@@ -831,6 +948,7 @@ class GreengrassCoreIPCClientV2:
 
         Args:
             topic: 
+            receive_mode: ReceiveMode enum value
             stream_handler: Methods on this object will be called as stream events happen on this operation. If an
                 executor is provided, the on_stream_event and on_stream_closed methods will run in the executor.
             on_stream_event: Callback for stream events. Mutually exclusive with stream_handler. If an executor is
@@ -843,7 +961,7 @@ class GreengrassCoreIPCClientV2:
         """
         stream_handler = self.__handle_stream_handler("SubscribeToTopic", stream_handler,
             on_stream_event, on_stream_error, on_stream_closed)
-        request = model.SubscribeToTopicRequest(topic=topic)
+        request = model.SubscribeToTopicRequest(topic=topic, receive_mode=receive_mode)
         operation = self.client.new_subscribe_to_topic(stream_handler)
         write_future = operation.activate(request)
         return self.__combine_futures(write_future, operation.get_response()), operation
@@ -1009,5 +1127,28 @@ class GreengrassCoreIPCClientV2:
         """
         request = model.ValidateAuthorizationTokenRequest(token=token)
         operation = self.client.new_validate_authorization_token()
+        write_future = operation.activate(request)
+        return self.__combine_futures(write_future, operation.get_response())
+
+    def verify_client_device_identity(self, *,
+        credential: typing.Optional[model.ClientDeviceCredential] = None) -> model.VerifyClientDeviceIdentityResponse:
+        """
+        Perform the VerifyClientDeviceIdentity operation synchronously.
+
+        Args:
+            credential: 
+        """
+        return self.verify_client_device_identity_async(credential=credential).result()
+
+    def verify_client_device_identity_async(self, *,
+        credential: typing.Optional[model.ClientDeviceCredential] = None):  # type: (...) -> concurrent.futures.Future[model.VerifyClientDeviceIdentityResponse]
+        """
+        Perform the VerifyClientDeviceIdentity operation asynchronously.
+
+        Args:
+            credential: 
+        """
+        request = model.VerifyClientDeviceIdentityRequest(credential=credential)
+        operation = self.client.new_verify_client_device_identity()
         write_future = operation.activate(request)
         return self.__combine_futures(write_future, operation.get_response())

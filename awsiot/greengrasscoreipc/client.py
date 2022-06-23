@@ -8,6 +8,40 @@ import awsiot.eventstreamrpc as rpc
 import concurrent.futures
 
 
+class AuthorizeClientDeviceActionOperation(model._AuthorizeClientDeviceActionOperation):
+    """
+    AuthorizeClientDeviceActionOperation
+
+    Create with GreengrassCoreIPCClient.new_authorize_client_device_action()
+    """
+
+    def activate(self, request: model.AuthorizeClientDeviceActionRequest):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Activate this operation by sending the initial AuthorizeClientDeviceActionRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.AuthorizeClientDeviceActionResponse]
+        """
+        Returns a Future which completes with a result of AuthorizeClientDeviceActionResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
 class CreateDebugPasswordOperation(model._CreateDebugPasswordOperation):
     """
     CreateDebugPasswordOperation
@@ -130,6 +164,40 @@ class DeleteThingShadowOperation(model._DeleteThingShadowOperation):
     def get_response(self):  # type: (...) -> concurrent.futures.Future[model.DeleteThingShadowResponse]
         """
         Returns a Future which completes with a result of DeleteThingShadowResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
+class GetClientDeviceAuthTokenOperation(model._GetClientDeviceAuthTokenOperation):
+    """
+    GetClientDeviceAuthTokenOperation
+
+    Create with GreengrassCoreIPCClient.new_get_client_device_auth_token()
+    """
+
+    def activate(self, request: model.GetClientDeviceAuthTokenRequest):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Activate this operation by sending the initial GetClientDeviceAuthTokenRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.GetClientDeviceAuthTokenResponse]
+        """
+        Returns a Future which completes with a result of GetClientDeviceAuthTokenResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
@@ -654,6 +722,69 @@ class StopComponentOperation(model._StopComponentOperation):
         return super().close()
 
 
+class SubscribeToCertificateUpdatesStreamHandler(rpc.StreamResponseHandler):
+    """
+    Event handler for SubscribeToCertificateUpdatesOperation
+
+    Inherit from this class and override methods to handle
+    stream events during a SubscribeToCertificateUpdatesOperation.
+    """
+
+    def on_stream_event(self, event: model.CertificateUpdateEvent) -> None:
+        """
+        Invoked when a CertificateUpdateEvent is received.
+        """
+        pass
+
+    def on_stream_error(self, error: Exception) -> bool:
+        """
+        Invoked when an error occurs on the operation stream.
+
+        Return True if operation should close as a result of this error,
+        """
+        return True
+
+    def on_stream_closed(self) -> None:
+        """
+        Invoked when the stream for this operation is closed.
+        """
+        pass
+
+
+class SubscribeToCertificateUpdatesOperation(model._SubscribeToCertificateUpdatesOperation):
+    """
+    SubscribeToCertificateUpdatesOperation
+
+    Create with GreengrassCoreIPCClient.new_subscribe_to_certificate_updates()
+    """
+
+    def activate(self, request: model.SubscribeToCertificateUpdatesRequest):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Activate this operation by sending the initial SubscribeToCertificateUpdatesRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.SubscribeToCertificateUpdatesResponse]
+        """
+        Returns a Future which completes with a result of SubscribeToCertificateUpdatesResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
 class SubscribeToComponentUpdatesStreamHandler(rpc.StreamResponseHandler):
     """
     Event handler for SubscribeToComponentUpdatesOperation
@@ -1105,10 +1236,44 @@ class ValidateAuthorizationTokenOperation(model._ValidateAuthorizationTokenOpera
         return super().close()
 
 
+class VerifyClientDeviceIdentityOperation(model._VerifyClientDeviceIdentityOperation):
+    """
+    VerifyClientDeviceIdentityOperation
+
+    Create with GreengrassCoreIPCClient.new_verify_client_device_identity()
+    """
+
+    def activate(self, request: model.VerifyClientDeviceIdentityRequest):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Activate this operation by sending the initial VerifyClientDeviceIdentityRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.VerifyClientDeviceIdentityResponse]
+        """
+        Returns a Future which completes with a result of VerifyClientDeviceIdentityResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
 class GreengrassCoreIPCClient(rpc.Client):
     """
     Client for the GreengrassCoreIPC service.
-    There is a new V2 client available for testing in developer preview.
+    There is a new V2 client which should be preferred.
     See the GreengrassCoreIPCClientV2 class in the clientv2 subpackage.
 
     Args:
@@ -1117,6 +1282,16 @@ class GreengrassCoreIPCClient(rpc.Client):
 
     def __init__(self, connection: rpc.Connection):
         super().__init__(connection, model.SHAPE_INDEX)
+
+    def new_authorize_client_device_action(self) -> AuthorizeClientDeviceActionOperation:
+        """
+        Create a new AuthorizeClientDeviceActionOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+        """
+        return self._new_operation(AuthorizeClientDeviceActionOperation)
 
     def new_create_debug_password(self) -> CreateDebugPasswordOperation:
         """
@@ -1157,6 +1332,16 @@ class GreengrassCoreIPCClient(rpc.Client):
         events to fire.
         """
         return self._new_operation(DeleteThingShadowOperation)
+
+    def new_get_client_device_auth_token(self) -> GetClientDeviceAuthTokenOperation:
+        """
+        Create a new GetClientDeviceAuthTokenOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+        """
+        return self._new_operation(GetClientDeviceAuthTokenOperation)
 
     def new_get_component_details(self) -> GetComponentDetailsOperation:
         """
@@ -1308,6 +1493,20 @@ class GreengrassCoreIPCClient(rpc.Client):
         """
         return self._new_operation(StopComponentOperation)
 
+    def new_subscribe_to_certificate_updates(self, stream_handler: SubscribeToCertificateUpdatesStreamHandler) -> SubscribeToCertificateUpdatesOperation:
+        """
+        Create a new SubscribeToCertificateUpdatesOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+
+        Args:
+            stream_handler: Methods on this object will be called as
+                stream events happen on this operation.
+        """
+        return self._new_operation(SubscribeToCertificateUpdatesOperation, stream_handler)
+
     def new_subscribe_to_component_updates(self, stream_handler: SubscribeToComponentUpdatesStreamHandler) -> SubscribeToComponentUpdatesOperation:
         """
         Create a new SubscribeToComponentUpdatesOperation.
@@ -1417,3 +1616,13 @@ class GreengrassCoreIPCClient(rpc.Client):
         events to fire.
         """
         return self._new_operation(ValidateAuthorizationTokenOperation)
+
+    def new_verify_client_device_identity(self) -> VerifyClientDeviceIdentityOperation:
+        """
+        Create a new VerifyClientDeviceIdentityOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+        """
+        return self._new_operation(VerifyClientDeviceIdentityOperation)
