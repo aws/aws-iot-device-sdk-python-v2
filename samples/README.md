@@ -1,11 +1,25 @@
 # Sample apps for the AWS IoT Device SDK v2 for Python
 
 * [PubSub](#pubsub)
-* [PKCS#11 PubSub](#pkcs11-pubsub)
+* [Basic Connect](#basic-connect)
+* [Websocket Connect](#websocket-connect)
+* [PKCS#11 Connect](#pkcs11-connect)
+* [Windows Certificate Connect](#windows-certificate-connect)
+* [Custom Authorizer Connect](#custom-authorizer-connect)
 * [Shadow](#shadow)
 * [Jobs](#jobs)
 * [Fleet Provisioning](#fleet-provisioning)
 * [Greengrass Discovery](#greengrass-discovery)
+
+## Build instructions
+
+First, install the aws-iot-devices-sdk-python-v2 with following the instructions from [Installation](../README.md#Installation).
+
+Then change into the samples directory to run the Python commands to execute the samples. You can view the commands of a sample like this:
+
+``` sh
+python3 pubsub.py --help
+```
 
 ## PubSub
 
@@ -20,15 +34,7 @@ Status updates are continually printed to the console.
 
 Source: `samples/pubsub.py`
 
-Run the sample like this:
-``` sh
-python3 pubsub.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file>
-```
-
-Your Thing's
-[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
-must provide privileges for this sample to connect, subscribe, publish,
-and receive.
+Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect, subscribe, publish, and receive. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
 
 <details>
 <summary>(see sample policy)</summary>
@@ -69,14 +75,111 @@ and receive.
 </pre>
 </details>
 
-## PKCS#11 PubSub
+Run the sample like this:
+``` sh
+python3 pubsub.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file>
+```
 
-This sample is similar to the [Pub-Sub](#pubsub),
+## Basic Connect
+
+This sample makes an MQTT connection using a certificate and key file. On startup, the device connects to the server using the certificate and key files, and then disconnects.
+This sample is for reference on connecting via certificate and key files.
+
+Source: `samples/basic_connect.py`
+
+Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
+
+Run the sample like this:
+``` sh
+python3 basic_connect.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file>
+```
+
+## Websocket Connect
+
+This sample makes an MQTT connection via websockets and then disconnects. On startup, the device connects to the server via websockets and then disconnects.
+This sample is for reference on connecting via websockets.
+
+Source: `samples/websocket_connect.py`
+
+Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
+
+Run the sample like this:
+``` sh
+python3 websocket_connect.py --endpoint <endpoint> --ca_file <file> --signing_region <signing region>
+```
+
+Note that using Websockets will attempt to fetch the AWS credentials from your enviornment variables or local files. See the [authorizing direct AWS](https://docs.aws.amazon.com/iot/latest/developerguide/authorizing-direct-aws.html) page for documentation on how to get the AWS credentials, which then you can set to the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS`, and `AWS_SESSION_TOKEN` environment variables.
+
+## PKCS#11 Connect
+
+This sample is similar to the [Basic Connect](#basic-connect),
 but the private key for mutual TLS is stored on a PKCS#11 compatible smart card or Hardware Security Module (HSM)
 
 WARNING: Unix only. Currently, TLS integration with PKCS#11 is only available on Unix devices.
 
-source: `samples/pkcs11_pubsub.py`
+source: `samples/pkcs11_connect.py`
+
+Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
 
 To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the PKCS#11 device:
 
@@ -119,8 +222,126 @@ To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the 
 
 5)  Now you can run the sample:
     ```sh
-    python3 pkcs11_pubsub.py --endpoint <xxxx-ats.iot.xxxx.amazonaws.com> --root-ca <AmazonRootCA1.pem> --cert <certificate.pem.crt> --pkcs11-lib <libsofthsm2.so> --pin <user-pin> --token-label <token-label> --key-label <key-label>
+    python3 pkcs11_connect.py --endpoint <endpoint> --ca_file <path to root CA> --cert <path to certificate> --pkcs11_lib <path to PKCS11 lib> --pin <user-pin> --token_label <token-label> --key_label <key-label>
+    ```
 
+## Windows Certificate Connect
+
+WARNING: Windows only
+
+This sample is similar to the basic [Connect](#basic-connect),
+but your certificate and private key are in a
+[Windows certificate store](https://docs.microsoft.com/en-us/windows-hardware/drivers/install/certificate-stores),
+rather than simply being files on disk.
+
+To run this sample you need the path to your certificate in the store,
+which will look something like:
+"CurrentUser\My\A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6"
+(where "CurrentUser\My" is the store and "A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6" is the certificate's thumbprint)
+
+If your certificate and private key are in a
+[TPM](https://docs.microsoft.com/en-us/windows/security/information-protection/tpm/trusted-platform-module-overview),,
+you would use them by passing their certificate store path.
+
+source: `samples/windows_cert_connect.py`
+
+Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
+
+To run this sample with a basic certificate from AWS IoT Core:
+
+1)  Create an IoT Thing with a certificate and key if you haven't already.
+
+2)  Combine the certificate and private key into a single .pfx file.
+
+    You will be prompted for a password while creating this file. Remember it for the next step.
+
+    If you have OpenSSL installed:
+    ```powershell
+    openssl pkcs12 -in certificate.pem.crt -inkey private.pem.key -out certificate.pfx
+    ```
+
+    Otherwise use [CertUtil](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/certutil).
+    ```powershell
+    certutil -mergePFX certificate.pem.crt,private.pem.key certificate.pfx
+    ```
+
+3)  Add the .pfx file to a Windows certificate store using PowerShell's
+    [Import-PfxCertificate](https://docs.microsoft.com/en-us/powershell/module/pki/import-pfxcertificate)
+
+    In this example we're adding it to "CurrentUser\My"
+
+    ```powershell
+    $mypwd = Get-Credential -UserName 'Enter password below' -Message 'Enter password below'
+    Import-PfxCertificate -FilePath certificate.pfx -CertStoreLocation Cert:\CurrentUser\My -Password $mypwd.Password
+    ```
+
+    Note the certificate thumbprint that is printed out:
+    ```
+    Thumbprint                                Subject
+    ----------                                -------
+    A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6  CN=AWS IoT Certificate
+    ```
+
+    So this certificate's path would be: "CurrentUser\My\A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6"
+
+4) Now you can run the sample:
+
+    ```sh
+    python3 windows_cert_connect.py --endpoint <endpoint> --ca_file <path to root CA> --cert <path to certificate>
+    ```
+
+## Custom Authorizer Connect
+
+This sample makes an MQTT connection and connects through a [Custom Authorizer](https://docs.aws.amazon.com/iot/latest/developerguide/custom-authentication.html). On startup, the device connects to the server and then disconnects. This sample is for reference on connecting using a custom authorizer.
+
+Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
+
+Run the sample like this:
+``` sh
+python3 custom_authorizer_connect.py --endpoint <endpoint> --ca_file <path to root CA> --custom_auth_authorizer_name <authorizer name>
+```
+
+You will need to setup your Custom Authorizer so that the lambda function returns a policy document. See [this page on the documentation](https://docs.aws.amazon.com/iot/latest/developerguide/config-custom-auth.html) for more details and example return result.
 
 ## Shadow
 
@@ -146,13 +367,10 @@ Source: `samples/shadow.py`
 
 Run the sample like this:
 ``` sh
-python3 shadow.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
+python3 shadow.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --thing-name <name>
 ```
 
-Your Thing's
-[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
-must provide privileges for this sample to connect, subscribe, publish,
-and receive.
+Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect, subscribe, publish, and receive. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
 
 <details>
 <summary>(see sample policy)</summary>
@@ -232,13 +450,11 @@ Source: `samples/jobs.py`
 
 Run the sample like this:
 ``` sh
-python3 jobs.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --thing-name <name>
+python3 jobs.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --thing_name <name>
 ```
 
-Your Thing's
-[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
-must provide privileges for this sample to connect, subscribe, publish,
-and receive.
+Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect, subscribe, publish, and receive. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+
 <details>
 <summary>(see sample policy)</summary>
 <pre>
@@ -304,18 +520,15 @@ Source: `samples/fleetprovisioning.py`
 
 Run the sample using createKeysAndCertificate:
 ``` sh
-python3 fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters>
+python3 fleetprovisioning.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --template_name <name> --template_parameters <parameters>
 ```
 
 Run the sample using createCertificateFromCsr:
 ``` sh
-python3 fleetprovisioning.py --endpoint <endpoint> --root-ca <file> --cert <file> --key <file> --templateName <name> --templateParameters <parameters> --csr <csr file>
+python3 fleetprovisioning.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --template_name <name> --template_parameters <parameters> --csr <csr file>
 ```
 
-Your Thing's
-[Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html)
-must provide privileges for this sample to connect, subscribe, publish,
-and receive.
+Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect, subscribe, publish, and receive. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
 
 <details>
 <summary>(see sample policy)</summary>
@@ -424,12 +637,12 @@ and `--key` appropriately:
 
 ``` sh
 python3 fleetprovisioning.py \
-        --endpoint [your endpoint]-ats.iot.[region].amazonaws.com \
-        --root-ca [pathToRootCA] \
-        --cert /tmp/provision.cert.pem \
-        --key /tmp/provision.private.key \
-        --templateName [TemplateName] \
-        --templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}"
+        --endpoint <endpoint> \
+        --ca_file <path to root CA> \
+        --cert <path to certificate> \
+        --key <path to private key> \
+        --template_name <template name> \
+        --template_parameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}"
 ```
 
 Notice that we provided substitution values for the two parameters in the template body, `DeviceLocation` and `SerialNumber`.
@@ -464,13 +677,13 @@ using a permanent certificate set, replace the paths specified in the `--cert` a
 
 ``` sh
 python3 fleetprovisioning.py \
-        --endpoint [your endpoint]-ats.iot.[region].amazonaws.com \
-        --root-ca [pathToRootCA] \
-        --cert /tmp/provision.cert.pem \
-        --key /tmp/provision.private.key \
-        --templateName [TemplateName] \
-        --templateParameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" \
-        --csr /tmp/deviceCert.csr
+        --endpoint <endpoint> \
+        --ca_file <path to root CA> \
+        --cert <path to certificate> \
+        --key <path to key> \
+        --template_name <template name> \
+        --template_parameters "{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}" \
+        --csr <path to csr file>
 ```
 
 ## Greengrass Discovery

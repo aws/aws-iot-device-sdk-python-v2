@@ -1,2 +1,8 @@
 docs/.buildinfo
 docs/.doctrees/
+__pycache__/
+*.egg-info
+build/*
+
+# docs are updated automatically by .github/workflows/docs.yml
+docs/

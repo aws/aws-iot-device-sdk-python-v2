@@ -821,6 +821,26 @@ class Client:
         self._connection = connection
         self._shape_index = shape_index
 
+    def close(self, reason: Optional[Exception] = None) -> Future:
+        """
+        Close the connection.
+
+        Shutdown is asynchronous. This call has no effect if the connection
+        is already closed or closing.
+
+        Args:
+            reason: If set, the connection will
+                close with this error as the reason (unless
+                it was already closing for another reason).
+
+        Returns:
+            The future which will complete
+            when the shutdown process is done. The future will have an
+            exception if shutdown was caused by an error, or a result
+            of None if the shutdown was clean and user-initiated.
+        """
+        return self._connection.close(reason=reason)
+
     def _new_operation(self, operation_type: type, stream_handler: StreamResponseHandler = None):
         return operation_type(stream_handler, self._shape_index, self._connection)
 

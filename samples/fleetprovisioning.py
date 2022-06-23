@@ -1,10 +1,8 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-import argparse
-from awscrt import auth, http, io, mqtt
+from awscrt import mqtt
 from awsiot import iotidentity
-from awsiot import mqtt_connection_builder
 from concurrent.futures import Future
 import sys
 import threading
@@ -26,36 +24,26 @@ import json
 # On startup, the script subscribes to topics based on the request type of either CSR or Keys
 # publishes the request to corresponding topic and calls RegisterThing.
 
-parser = argparse.ArgumentParser(description="Fleet Provisioning sample script.")
-parser.add_argument('--endpoint', required=True, help="Your AWS IoT custom endpoint, not including a port. " +
-                                                      "Ex: \"w6zbse3vjd5b4p-ats.iot.us-west-2.amazonaws.com\"")
-parser.add_argument('--cert', help="File path to your client certificate, in PEM format")
-parser.add_argument('--key', help="File path to your private key file, in PEM format")
-parser.add_argument('--root-ca', help="File path to root certificate authority, in PEM format. " +
-                                      "Necessary if MQTT server uses a certificate that's not already in " +
-                                      "your trust store")
-parser.add_argument('--client-id', default="test-" + str(uuid4()), help="Client ID for MQTT connection.")
-parser.add_argument('--use-websocket', default=False, action='store_true',
-                    help="To use a websocket instead of raw mqtt. If you " +
-                         "specify this option you must specify a region for signing.")
-parser.add_argument('--signing-region', default='us-east-1', help="If you specify --use-web-socket, this " +
-                                                                  "is the region that will be used for computing the Sigv4 signature")
-parser.add_argument('--proxy-host', help="Hostname of proxy to connect to.")
-parser.add_argument('--proxy-port', type=int, default=8080, help="Port of proxy to connect to.")
-parser.add_argument('--verbosity', choices=[x.name for x in io.LogLevel], default=io.LogLevel.NoLogs.name,
-                    help='Logging level')
-parser.add_argument("--csr", help="File path to your client CSR in PEM format")
-parser.add_argument("--templateName", help="Template name")
-parser.add_argument("--templateParameters", help="Values for Template Parameters")
+# Parse arguments
+import command_line_utils;
+cmdUtils = command_line_utils.CommandLineUtils("Fleet Provisioning - Provision device using either the keys or CSR.")
+cmdUtils.add_common_mqtt_commands()
+cmdUtils.add_common_proxy_commands()
+cmdUtils.add_common_logging_commands()
+cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
+cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
+cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
+cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
+cmdUtils.register_command("csr", "<path>", "Path to CSR in Pem format (optional).")
+cmdUtils.register_command("template_name", "<str>", "The name of your provisioning template.")
+cmdUtils.register_command("template_parameters", "<json>", "Template parameters json.")
+# Needs to be called so the command utils parse the commands
+cmdUtils.get_args()
 
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
-args = parser.parse_args()
-
-io.init_logging(getattr(io.LogLevel, args.verbosity), 'stderr')
 mqtt_connection = None
 identity_client = None
-
 createKeysAndCertificateResponse = None
 createCertificateFromCsrResponse = None
 registerThingResponse = None
@@ -227,46 +215,11 @@ def waitForRegisterThingResponse():
         time.sleep(1)
 
 if __name__ == '__main__':
-    # Spin up resources
-    event_loop_group = io.EventLoopGroup(1)
-    host_resolver = io.DefaultHostResolver(event_loop_group)
-    client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
-
     proxy_options = None
-    if (args.proxy_host):
-        proxy_options = http.HttpProxyOptions(host_name=args.proxy_host, port=args.proxy_port)
-
-    if args.use_websocket == True:
-        credentials_provider = auth.AwsCredentialsProvider.new_default_chain(client_bootstrap)
-        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
-            endpoint=args.endpoint,
-            client_bootstrap=client_bootstrap,
-            region=args.signing_region,
-            credentials_provider=credentials_provider,
-            http_proxy_options=proxy_options,
-            on_connection_interrupted=on_connection_interrupted,
-            on_connection_resumed=on_connection_resumed,
-            ca_filepath=args.root_ca,
-            client_id=args.client_id,
-            clean_session=False,
-            keep_alive_secs=30)
-
-    else:
-        mqtt_connection = mqtt_connection_builder.mtls_from_path(
-            endpoint=args.endpoint,
-            cert_filepath=args.cert,
-            pri_key_filepath=args.key,
-            client_bootstrap=client_bootstrap,
-            ca_filepath=args.root_ca,
-            client_id=args.client_id,
-            on_connection_interrupted=on_connection_interrupted,
-            on_connection_resumed=on_connection_resumed,
-            clean_session=False,
-            keep_alive_secs=30,
-            http_proxy_options=proxy_options)
+    mqtt_connection = cmdUtils.build_mqtt_connection(on_connection_interrupted, on_connection_resumed)
 
     print("Connecting to {} with client ID '{}'...".format(
-        args.endpoint, args.client_id))
+        cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
 
     connected_future = mqtt_connection.connect()
 
@@ -286,7 +239,7 @@ if __name__ == '__main__':
         # to succeed before publishing the corresponding "request".
 
         # Keys workflow if csr is not provided
-        if args.csr is None:
+        if cmdUtils.get_command("csr") is None:
             createkeysandcertificate_subscription_request = iotidentity.CreateKeysAndCertificateSubscriptionRequest()
 
             print("Subscribing to CreateKeysAndCertificate Accepted topic...")
@@ -328,7 +281,7 @@ if __name__ == '__main__':
             createcertificatefromcsr_subscribed_rejected_future.result()
 
 
-        registerthing_subscription_request = iotidentity.RegisterThingSubscriptionRequest(template_name=args.templateName)
+        registerthing_subscription_request = iotidentity.RegisterThingSubscriptionRequest(template_name=cmdUtils.get_command_required("template_name"))
 
         print("Subscribing to RegisterThing Accepted topic...")
         registerthing_subscribed_accepted_future, _ = identity_client.subscribe_to_register_thing_accepted(
@@ -347,7 +300,9 @@ if __name__ == '__main__':
         # Wait for subscription to succeed
         registerthing_subscribed_rejected_future.result()
 
-        if args.csr is None:
+        fleet_template_name = cmdUtils.get_command_required("template_name")
+        fleet_template_parameters = cmdUtils.get_command_required("template_parameters")
+        if cmdUtils.get_command("csr") is None:
             print("Publishing to CreateKeysAndCertificate...")
             publish_future = identity_client.publish_create_keys_and_certificate(
                 request=iotidentity.CreateKeysAndCertificateRequest(), qos=mqtt.QoS.AT_LEAST_ONCE)
@@ -359,12 +314,12 @@ if __name__ == '__main__':
                 raise Exception('CreateKeysAndCertificate API did not succeed')
 
             registerThingRequest = iotidentity.RegisterThingRequest(
-                template_name=args.templateName,
+                template_name=fleet_template_name,
                 certificate_ownership_token=createKeysAndCertificateResponse.certificate_ownership_token,
-                parameters=json.loads(args.templateParameters))
+                parameters=json.loads(fleet_template_parameters))
         else:
             print("Publishing to CreateCertificateFromCsr...")
-            csrPath = open(args.csr, 'r').read()
+            csrPath = open(cmdUtils.get_command("csr"), 'r').read()
             publish_future = identity_client.publish_create_certificate_from_csr(
                 request=iotidentity.CreateCertificateFromCsrRequest(certificate_signing_request=csrPath),
                 qos=mqtt.QoS.AT_LEAST_ONCE)
@@ -376,9 +331,9 @@ if __name__ == '__main__':
                 raise Exception('CreateCertificateFromCsr API did not succeed')
 
             registerThingRequest = iotidentity.RegisterThingRequest(
-                template_name=args.templateName,
+                template_name=fleet_template_name,
                 certificate_ownership_token=createCertificateFromCsrResponse.certificate_ownership_token,
-                parameters=json.loads(args.templateParameters))
+                parameters=json.loads(fleet_template_parameters))
 
         print("Publishing to RegisterThing topic...")
         registerthing_publish_future = identity_client.publish_register_thing(registerThingRequest, mqtt.QoS.AT_LEAST_ONCE)

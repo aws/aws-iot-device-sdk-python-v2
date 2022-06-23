@@ -9,6 +9,9 @@ jobs:
   cleanup:
     runs-on: ubuntu-latest
     name: Stale issue job
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
     - uses: aws-actions/stale-issue-cleanup@v3
       with:
@@ -20,7 +23,7 @@ jobs:
 
         # These labels are required
         stale-issue-label: closing-soon
-        exempt-issue-label: investigating
+        exempt-issue-label: investigating, automation-exempt
         stale-pr-label: closing-soon
         exempt-pr-label: pr/needs-review
         response-requested-label: response-requested

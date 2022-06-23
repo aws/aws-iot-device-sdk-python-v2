@@ -15,7 +15,7 @@ class CauseServiceErrorOperation(model._CauseServiceErrorOperation):
     Create with EchoTestRPCClient.new_cause_service_error()
     """
 
-    def activate(self, request: model.CauseServiceErrorRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.CauseServiceErrorRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial CauseServiceErrorRequest message.
 
@@ -25,14 +25,14 @@ class CauseServiceErrorOperation(model._CauseServiceErrorOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.CauseServiceErrorResponse]
         """
         Returns a Future which completes with a result of CauseServiceErrorResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -78,7 +78,7 @@ class CauseStreamServiceToErrorOperation(model._CauseStreamServiceToErrorOperati
     Create with EchoTestRPCClient.new_cause_stream_service_to_error()
     """
 
-    def activate(self, request: model.EchoStreamingRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.EchoStreamingRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial EchoStreamingRequest message.
 
@@ -100,14 +100,14 @@ class CauseStreamServiceToErrorOperation(model._CauseStreamServiceToErrorOperati
         """
         return self._send_stream_event(event)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.EchoStreamingResponse]
         """
         Returns a Future which completes with a result of EchoStreamingResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -124,7 +124,7 @@ class EchoMessageOperation(model._EchoMessageOperation):
     Create with EchoTestRPCClient.new_echo_message()
     """
 
-    def activate(self, request: model.EchoMessageRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.EchoMessageRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial EchoMessageRequest message.
 
@@ -134,14 +134,14 @@ class EchoMessageOperation(model._EchoMessageOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.EchoMessageResponse]
         """
         Returns a Future which completes with a result of EchoMessageResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -187,7 +187,7 @@ class EchoStreamMessagesOperation(model._EchoStreamMessagesOperation):
     Create with EchoTestRPCClient.new_echo_stream_messages()
     """
 
-    def activate(self, request: model.EchoStreamingRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.EchoStreamingRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial EchoStreamingRequest message.
 
@@ -209,14 +209,14 @@ class EchoStreamMessagesOperation(model._EchoStreamMessagesOperation):
         """
         return self._send_stream_event(event)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.EchoStreamingResponse]
         """
         Returns a Future which completes with a result of EchoStreamingResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -233,7 +233,7 @@ class GetAllCustomersOperation(model._GetAllCustomersOperation):
     Create with EchoTestRPCClient.new_get_all_customers()
     """
 
-    def activate(self, request: model.GetAllCustomersRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.GetAllCustomersRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial GetAllCustomersRequest message.
 
@@ -243,14 +243,14 @@ class GetAllCustomersOperation(model._GetAllCustomersOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.GetAllCustomersResponse]
         """
         Returns a Future which completes with a result of GetAllCustomersResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -267,7 +267,7 @@ class GetAllProductsOperation(model._GetAllProductsOperation):
     Create with EchoTestRPCClient.new_get_all_products()
     """
 
-    def activate(self, request: model.GetAllProductsRequest) -> concurrent.futures.Future:
+    def activate(self, request: model.GetAllProductsRequest):  # type: (...) -> concurrent.futures.Future[None]
         """
         Activate this operation by sending the initial GetAllProductsRequest message.
 
@@ -277,14 +277,14 @@ class GetAllProductsOperation(model._GetAllProductsOperation):
         """
         return self._activate(request)
 
-    def get_response(self) -> concurrent.futures.Future:
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.GetAllProductsResponse]
         """
         Returns a Future which completes with a result of GetAllProductsResponse,
         when the initial response is received, or an exception.
         """
         return self._get_response()
 
-    def close(self) -> concurrent.futures.Future:
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
         """
         Close the operation, whether or not it has completed.
 
@@ -297,7 +297,6 @@ class GetAllProductsOperation(model._GetAllProductsOperation):
 class EchoTestRPCClient(rpc.Client):
     """
     Client for the EchoTestRPC service.
-
     Args:
         connection: Connection that this client will use.
     """

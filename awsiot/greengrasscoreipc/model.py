@@ -50,6 +50,15 @@ class SystemResourceLimits(rpc.Shape):
         self.memory = memory  # type: typing.Optional[int]
         self.cpus = cpus  # type: typing.Optional[float]
 
+    def set_memory(self, memory: int):
+        self.memory = memory
+        return self
+
+    def set_cpus(self, cpus: float):
+        self.cpus = cpus
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.memory is not None:
@@ -70,6 +79,59 @@ class SystemResourceLimits(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#SystemResourceLimits'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class MessageContext(rpc.Shape):
+    """
+    MessageContext
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        topic: 
+
+    Attributes:
+        topic: 
+    """
+
+    def __init__(self, *,
+                 topic: typing.Optional[str] = None):
+        super().__init__()
+        self.topic = topic  # type: typing.Optional[str]
+
+    def set_topic(self, topic: str):
+        self.topic = topic
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.topic is not None:
+            payload['topic'] = self.topic
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'topic' in payload:
+            new.topic = payload['topic']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#MessageContext'
 
     def __repr__(self):
         attrs = []
@@ -105,6 +167,15 @@ class ValidateConfigurationUpdateEvent(rpc.Shape):
         super().__init__()
         self.configuration = configuration  # type: typing.Optional[typing.Dict[str, typing.Any]]
         self.deployment_id = deployment_id  # type: typing.Optional[str]
+
+    def set_configuration(self, configuration: typing.Dict[str, typing.Any]):
+        self.configuration = configuration
+        return self
+
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -166,6 +237,19 @@ class RunWithInfo(rpc.Shape):
         self.windows_user = windows_user  # type: typing.Optional[str]
         self.system_resource_limits = system_resource_limits  # type: typing.Optional[SystemResourceLimits]
 
+    def set_posix_user(self, posix_user: str):
+        self.posix_user = posix_user
+        return self
+
+    def set_windows_user(self, windows_user: str):
+        self.windows_user = windows_user
+        return self
+
+    def set_system_resource_limits(self, system_resource_limits: SystemResourceLimits):
+        self.system_resource_limits = system_resource_limits
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.posix_user is not None:
@@ -226,6 +310,15 @@ class PreComponentUpdateEvent(rpc.Shape):
         self.deployment_id = deployment_id  # type: typing.Optional[str]
         self.is_ggc_restarting = is_ggc_restarting  # type: typing.Optional[bool]
 
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+    def set_is_ggc_restarting(self, is_ggc_restarting: bool):
+        self.is_ggc_restarting = is_ggc_restarting
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.deployment_id is not None:
@@ -278,6 +371,11 @@ class PostComponentUpdateEvent(rpc.Shape):
         super().__init__()
         self.deployment_id = deployment_id  # type: typing.Optional[str]
 
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.deployment_id is not None:
@@ -325,10 +423,23 @@ class MQTTMessage(rpc.Shape):
 
     def __init__(self, *,
                  topic_name: typing.Optional[str] = None,
-                 payload: typing.Optional[bytes] = None):
+                 payload: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
         self.topic_name = topic_name  # type: typing.Optional[str]
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
         self.payload = payload  # type: typing.Optional[bytes]
+
+    def set_topic_name(self, topic_name: str):
+        self.topic_name = topic_name
+        return self
+
+    def set_payload(self, payload: typing.Union[bytes, str]):
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
+        self.payload = payload
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -350,6 +461,95 @@ class MQTTMessage(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#MQTTMessage'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class MQTTCredential(rpc.Shape):
+    """
+    MQTTCredential
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        client_id: 
+        certificate_pem: 
+        username: 
+        password: 
+
+    Attributes:
+        client_id: 
+        certificate_pem: 
+        username: 
+        password: 
+    """
+
+    def __init__(self, *,
+                 client_id: typing.Optional[str] = None,
+                 certificate_pem: typing.Optional[str] = None,
+                 username: typing.Optional[str] = None,
+                 password: typing.Optional[str] = None):
+        super().__init__()
+        self.client_id = client_id  # type: typing.Optional[str]
+        self.certificate_pem = certificate_pem  # type: typing.Optional[str]
+        self.username = username  # type: typing.Optional[str]
+        self.password = password  # type: typing.Optional[str]
+
+    def set_client_id(self, client_id: str):
+        self.client_id = client_id
+        return self
+
+    def set_certificate_pem(self, certificate_pem: str):
+        self.certificate_pem = certificate_pem
+        return self
+
+    def set_username(self, username: str):
+        self.username = username
+        return self
+
+    def set_password(self, password: str):
+        self.password = password
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.client_id is not None:
+            payload['clientId'] = self.client_id
+        if self.certificate_pem is not None:
+            payload['certificatePem'] = self.certificate_pem
+        if self.username is not None:
+            payload['username'] = self.username
+        if self.password is not None:
+            payload['password'] = self.password
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'clientId' in payload:
+            new.client_id = payload['clientId']
+        if 'certificatePem' in payload:
+            new.certificate_pem = payload['certificatePem']
+        if 'username' in payload:
+            new.username = payload['username']
+        if 'password' in payload:
+            new.password = payload['password']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#MQTTCredential'
 
     def __repr__(self):
         attrs = []
@@ -387,20 +587,35 @@ class JsonMessage(rpc.Shape):
 
     Keyword Args:
         message: 
+        context: The context is ignored if used in PublishMessage.
 
     Attributes:
         message: 
+        context: The context is ignored if used in PublishMessage.
     """
 
     def __init__(self, *,
-                 message: typing.Optional[typing.Dict[str, typing.Any]] = None):
+                 message: typing.Optional[typing.Dict[str, typing.Any]] = None,
+                 context: typing.Optional[MessageContext] = None):
         super().__init__()
         self.message = message  # type: typing.Optional[typing.Dict[str, typing.Any]]
+        self.context = context  # type: typing.Optional[MessageContext]
+
+    def set_message(self, message: typing.Dict[str, typing.Any]):
+        self.message = message
+        return self
+
+    def set_context(self, context: MessageContext):
+        self.context = context
+        return self
+
 
     def _to_payload(self):
         payload = {}
         if self.message is not None:
             payload['message'] = self.message
+        if self.context is not None:
+            payload['context'] = self.context._to_payload()
         return payload
 
     @classmethod
@@ -408,6 +623,8 @@ class JsonMessage(rpc.Shape):
         new = cls()
         if 'message' in payload:
             new.message = payload['message']
+        if 'context' in payload:
+            new.context = MessageContext._from_payload(payload['context'])
         return new
 
     @classmethod
@@ -469,6 +686,15 @@ class ConfigurationUpdateEvent(rpc.Shape):
         self.component_name = component_name  # type: typing.Optional[str]
         self.key_path = key_path  # type: typing.Optional[typing.List[str]]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+    def set_key_path(self, key_path: typing.List[str]):
+        self.key_path = key_path
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -503,6 +729,103 @@ class ConfigurationUpdateEvent(rpc.Shape):
         return False
 
 
+class CertificateUpdate(rpc.Shape):
+    """
+    CertificateUpdate
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        private_key: 
+        public_key: 
+        certificate: 
+        ca_certificates: 
+
+    Attributes:
+        private_key: 
+        public_key: 
+        certificate: 
+        ca_certificates: 
+    """
+
+    def __init__(self, *,
+                 private_key: typing.Optional[str] = None,
+                 public_key: typing.Optional[str] = None,
+                 certificate: typing.Optional[str] = None,
+                 ca_certificates: typing.Optional[typing.List[str]] = None):
+        super().__init__()
+        self.private_key = private_key  # type: typing.Optional[str]
+        self.public_key = public_key  # type: typing.Optional[str]
+        self.certificate = certificate  # type: typing.Optional[str]
+        self.ca_certificates = ca_certificates  # type: typing.Optional[typing.List[str]]
+
+    def set_private_key(self, private_key: str):
+        self.private_key = private_key
+        return self
+
+    def set_public_key(self, public_key: str):
+        self.public_key = public_key
+        return self
+
+    def set_certificate(self, certificate: str):
+        self.certificate = certificate
+        return self
+
+    def set_ca_certificates(self, ca_certificates: typing.List[str]):
+        self.ca_certificates = ca_certificates
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.private_key is not None:
+            payload['privateKey'] = self.private_key
+        if self.public_key is not None:
+            payload['publicKey'] = self.public_key
+        if self.certificate is not None:
+            payload['certificate'] = self.certificate
+        if self.ca_certificates is not None:
+            payload['caCertificates'] = self.ca_certificates
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'privateKey' in payload:
+            new.private_key = payload['privateKey']
+        if 'publicKey' in payload:
+            new.public_key = payload['publicKey']
+        if 'certificate' in payload:
+            new.certificate = payload['certificate']
+        if 'caCertificates' in payload:
+            new.ca_certificates = payload['caCertificates']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#CertificateUpdate'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class CertificateType:
+    """
+    CertificateType enum
+    """
+
+    SERVER = 'SERVER'
+
+
 class BinaryMessage(rpc.Shape):
     """
     BinaryMessage
@@ -511,20 +834,39 @@ class BinaryMessage(rpc.Shape):
 
     Keyword Args:
         message: 
+        context: The context is ignored if used in PublishMessage.
 
     Attributes:
         message: 
+        context: The context is ignored if used in PublishMessage.
     """
 
     def __init__(self, *,
-                 message: typing.Optional[bytes] = None):
+                 message: typing.Optional[typing.Union[bytes, str]] = None,
+                 context: typing.Optional[MessageContext] = None):
         super().__init__()
+        if message is not None and isinstance(message, str):
+            message = message.encode('utf-8')
         self.message = message  # type: typing.Optional[bytes]
+        self.context = context  # type: typing.Optional[MessageContext]
+
+    def set_message(self, message: typing.Union[bytes, str]):
+        if message is not None and isinstance(message, str):
+            message = message.encode('utf-8')
+        self.message = message
+        return self
+
+    def set_context(self, context: MessageContext):
+        self.context = context
+        return self
+
 
     def _to_payload(self):
         payload = {}
         if self.message is not None:
             payload['message'] = base64.b64encode(self.message).decode()
+        if self.context is not None:
+            payload['context'] = self.context._to_payload()
         return payload
 
     @classmethod
@@ -532,6 +874,8 @@ class BinaryMessage(rpc.Shape):
         new = cls()
         if 'message' in payload:
             new.message = base64.b64decode(payload['message'])
+        if 'context' in payload:
+            new.context = MessageContext._from_payload(payload['context'])
         return new
 
     @classmethod
@@ -553,7 +897,7 @@ class BinaryMessage(rpc.Shape):
 
 class ValidateConfigurationUpdateEvents(rpc.Shape):
     """
-    BinaryMessage is a "tagged union" class.
+    ValidateConfigurationUpdateEvents is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -570,6 +914,11 @@ class ValidateConfigurationUpdateEvents(rpc.Shape):
                  validate_configuration_update_event: typing.Optional[ValidateConfigurationUpdateEvent] = None):
         super().__init__()
         self.validate_configuration_update_event = validate_configuration_update_event  # type: typing.Optional[ValidateConfigurationUpdateEvent]
+
+    def set_validate_configuration_update_event(self, validate_configuration_update_event: ValidateConfigurationUpdateEvent):
+        self.validate_configuration_update_event = validate_configuration_update_event
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -603,7 +952,7 @@ class ValidateConfigurationUpdateEvents(rpc.Shape):
 
 class SubscriptionResponseMessage(rpc.Shape):
     """
-    BinaryMessage is a "tagged union" class.
+    SubscriptionResponseMessage is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -624,6 +973,15 @@ class SubscriptionResponseMessage(rpc.Shape):
         super().__init__()
         self.json_message = json_message  # type: typing.Optional[JsonMessage]
         self.binary_message = binary_message  # type: typing.Optional[BinaryMessage]
+
+    def set_json_message(self, json_message: JsonMessage):
+        self.json_message = json_message
+        return self
+
+    def set_binary_message(self, binary_message: BinaryMessage):
+        self.binary_message = binary_message
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -661,7 +1019,7 @@ class SubscriptionResponseMessage(rpc.Shape):
 
 class SecretValue(rpc.Shape):
     """
-    BinaryMessage is a "tagged union" class.
+    SecretValue is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -678,10 +1036,23 @@ class SecretValue(rpc.Shape):
 
     def __init__(self, *,
                  secret_string: typing.Optional[str] = None,
-                 secret_binary: typing.Optional[bytes] = None):
+                 secret_binary: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
         self.secret_string = secret_string  # type: typing.Optional[str]
+        if secret_binary is not None and isinstance(secret_binary, str):
+            secret_binary = secret_binary.encode('utf-8')
         self.secret_binary = secret_binary  # type: typing.Optional[bytes]
+
+    def set_secret_string(self, secret_string: str):
+        self.secret_string = secret_string
+        return self
+
+    def set_secret_binary(self, secret_binary: typing.Union[bytes, str]):
+        if secret_binary is not None and isinstance(secret_binary, str):
+            secret_binary = secret_binary.encode('utf-8')
+        self.secret_binary = secret_binary
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -735,6 +1106,15 @@ class ReportedLifecycleState:
     ERRORED = 'ERRORED'
 
 
+class ReceiveMode:
+    """
+    ReceiveMode enum
+    """
+
+    RECEIVE_ALL_MESSAGES = 'RECEIVE_ALL_MESSAGES'
+    RECEIVE_MESSAGES_FROM_OTHERS = 'RECEIVE_MESSAGES_FROM_OTHERS'
+
+
 class QOS:
     """
     QOS enum
@@ -746,7 +1126,7 @@ class QOS:
 
 class PublishMessage(rpc.Shape):
     """
-    BinaryMessage is a "tagged union" class.
+    PublishMessage is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -767,6 +1147,15 @@ class PublishMessage(rpc.Shape):
         super().__init__()
         self.json_message = json_message  # type: typing.Optional[JsonMessage]
         self.binary_message = binary_message  # type: typing.Optional[BinaryMessage]
+
+    def set_json_message(self, json_message: JsonMessage):
+        self.json_message = json_message
+        return self
+
+    def set_binary_message(self, binary_message: BinaryMessage):
+        self.binary_message = binary_message
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -824,6 +1213,15 @@ class LocalDeployment(rpc.Shape):
         self.deployment_id = deployment_id  # type: typing.Optional[str]
         self.status = status  # type: typing.Optional[str]
 
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+    def set_status(self, status: str):
+        self.status = status
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.deployment_id is not None:
@@ -860,7 +1258,7 @@ class LocalDeployment(rpc.Shape):
 
 class IoTCoreMessage(rpc.Shape):
     """
-    LocalDeployment is a "tagged union" class.
+    IoTCoreMessage is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -878,6 +1276,11 @@ class IoTCoreMessage(rpc.Shape):
         super().__init__()
         self.message = message  # type: typing.Optional[MQTTMessage]
 
+    def set_message(self, message: MQTTMessage):
+        self.message = message
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.message is not None:
@@ -894,6 +1297,61 @@ class IoTCoreMessage(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#IoTCoreMessage'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class CredentialDocument(rpc.Shape):
+    """
+    CredentialDocument is a "tagged union" class.
+
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        mqtt_credential: 
+
+    Attributes:
+        mqtt_credential: 
+    """
+
+    def __init__(self, *,
+                 mqtt_credential: typing.Optional[MQTTCredential] = None):
+        super().__init__()
+        self.mqtt_credential = mqtt_credential  # type: typing.Optional[MQTTCredential]
+
+    def set_mqtt_credential(self, mqtt_credential: MQTTCredential):
+        self.mqtt_credential = mqtt_credential
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.mqtt_credential is not None:
+            payload['mqttCredential'] = self.mqtt_credential._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'mqttCredential' in payload:
+            new.mqtt_credential = MQTTCredential._from_payload(payload['mqttCredential'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#CredentialDocument'
 
     def __repr__(self):
         attrs = []
@@ -933,6 +1391,19 @@ class ConfigurationValidityReport(rpc.Shape):
         self.status = status  # type: typing.Optional[str]
         self.deployment_id = deployment_id  # type: typing.Optional[str]
         self.message = message  # type: typing.Optional[str]
+
+    def set_status(self, status: str):
+        self.status = status
+        return self
+
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -974,7 +1445,7 @@ class ConfigurationValidityReport(rpc.Shape):
 
 class ConfigurationUpdateEvents(rpc.Shape):
     """
-    ConfigurationValidityReport is a "tagged union" class.
+    ConfigurationUpdateEvents is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -991,6 +1462,11 @@ class ConfigurationUpdateEvents(rpc.Shape):
                  configuration_update_event: typing.Optional[ConfigurationUpdateEvent] = None):
         super().__init__()
         self.configuration_update_event = configuration_update_event  # type: typing.Optional[ConfigurationUpdateEvent]
+
+    def set_configuration_update_event(self, configuration_update_event: ConfigurationUpdateEvent):
+        self.configuration_update_event = configuration_update_event
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -1024,7 +1500,7 @@ class ConfigurationUpdateEvents(rpc.Shape):
 
 class ComponentUpdatePolicyEvents(rpc.Shape):
     """
-    ConfigurationValidityReport is a "tagged union" class.
+    ComponentUpdatePolicyEvents is a "tagged union" class.
 
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
@@ -1045,6 +1521,15 @@ class ComponentUpdatePolicyEvents(rpc.Shape):
         super().__init__()
         self.pre_update_event = pre_update_event  # type: typing.Optional[PreComponentUpdateEvent]
         self.post_update_event = post_update_event  # type: typing.Optional[PostComponentUpdateEvent]
+
+    def set_pre_update_event(self, pre_update_event: PreComponentUpdateEvent):
+        self.pre_update_event = pre_update_event
+        return self
+
+    def set_post_update_event(self, post_update_event: PostComponentUpdateEvent):
+        self.post_update_event = post_update_event
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -1110,6 +1595,23 @@ class ComponentDetails(rpc.Shape):
         self.state = state  # type: typing.Optional[str]
         self.configuration = configuration  # type: typing.Optional[typing.Dict[str, typing.Any]]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+    def set_version(self, version: str):
+        self.version = version
+        return self
+
+    def set_state(self, state: str):
+        self.state = state
+        return self
+
+    def set_configuration(self, configuration: typing.Dict[str, typing.Any]):
+        self.configuration = configuration
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -1152,6 +1654,169 @@ class ComponentDetails(rpc.Shape):
         return False
 
 
+class ClientDeviceCredential(rpc.Shape):
+    """
+    ClientDeviceCredential is a "tagged union" class.
+
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        client_device_certificate: 
+
+    Attributes:
+        client_device_certificate: 
+    """
+
+    def __init__(self, *,
+                 client_device_certificate: typing.Optional[str] = None):
+        super().__init__()
+        self.client_device_certificate = client_device_certificate  # type: typing.Optional[str]
+
+    def set_client_device_certificate(self, client_device_certificate: str):
+        self.client_device_certificate = client_device_certificate
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.client_device_certificate is not None:
+            payload['clientDeviceCertificate'] = self.client_device_certificate
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'clientDeviceCertificate' in payload:
+            new.client_device_certificate = payload['clientDeviceCertificate']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ClientDeviceCredential'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class CertificateUpdateEvent(rpc.Shape):
+    """
+    CertificateUpdateEvent is a "tagged union" class.
+
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        certificate_update: 
+
+    Attributes:
+        certificate_update: 
+    """
+
+    def __init__(self, *,
+                 certificate_update: typing.Optional[CertificateUpdate] = None):
+        super().__init__()
+        self.certificate_update = certificate_update  # type: typing.Optional[CertificateUpdate]
+
+    def set_certificate_update(self, certificate_update: CertificateUpdate):
+        self.certificate_update = certificate_update
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.certificate_update is not None:
+            payload['certificateUpdate'] = self.certificate_update._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'certificateUpdate' in payload:
+            new.certificate_update = CertificateUpdate._from_payload(payload['certificateUpdate'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#CertificateUpdateEvent'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class CertificateOptions(rpc.Shape):
+    """
+    CertificateOptions
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        certificate_type: CertificateType enum value
+
+    Attributes:
+        certificate_type: CertificateType enum value
+    """
+
+    def __init__(self, *,
+                 certificate_type: typing.Optional[str] = None):
+        super().__init__()
+        self.certificate_type = certificate_type  # type: typing.Optional[str]
+
+    def set_certificate_type(self, certificate_type: str):
+        self.certificate_type = certificate_type
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.certificate_type is not None:
+            payload['certificateType'] = self.certificate_type
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'certificateType' in payload:
+            new.certificate_type = payload['certificateType']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#CertificateOptions'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
 class InvalidArtifactsDirectoryPathError(GreengrassCoreIPCError):
     """
     InvalidArtifactsDirectoryPathError
@@ -1169,6 +1834,11 @@ class InvalidArtifactsDirectoryPathError(GreengrassCoreIPCError):
                  message: typing.Optional[str] = None):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
 
     def _get_error_type_string(self):
         return 'client'
@@ -1221,6 +1891,11 @@ class InvalidRecipeDirectoryPathError(GreengrassCoreIPCError):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _get_error_type_string(self):
         return 'client'
 
@@ -1271,6 +1946,11 @@ class CreateLocalDeploymentResponse(rpc.Shape):
                  deployment_id: typing.Optional[str] = None):
         super().__init__()
         self.deployment_id = deployment_id  # type: typing.Optional[str]
+
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -1344,6 +2024,35 @@ class CreateLocalDeploymentRequest(rpc.Shape):
         self.recipe_directory_path = recipe_directory_path  # type: typing.Optional[str]
         self.artifacts_directory_path = artifacts_directory_path  # type: typing.Optional[str]
 
+    def set_group_name(self, group_name: str):
+        self.group_name = group_name
+        return self
+
+    def set_root_component_versions_to_add(self, root_component_versions_to_add: typing.Dict[str, str]):
+        self.root_component_versions_to_add = root_component_versions_to_add
+        return self
+
+    def set_root_components_to_remove(self, root_components_to_remove: typing.List[str]):
+        self.root_components_to_remove = root_components_to_remove
+        return self
+
+    def set_component_to_configuration(self, component_to_configuration: typing.Dict[str, typing.Dict[str, typing.Any]]):
+        self.component_to_configuration = component_to_configuration
+        return self
+
+    def set_component_to_run_with_info(self, component_to_run_with_info: typing.Dict[str, RunWithInfo]):
+        self.component_to_run_with_info = component_to_run_with_info
+        return self
+
+    def set_recipe_directory_path(self, recipe_directory_path: str):
+        self.recipe_directory_path = recipe_directory_path
+        return self
+
+    def set_artifacts_directory_path(self, artifacts_directory_path: str):
+        self.artifacts_directory_path = artifacts_directory_path
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.group_name is not None:
@@ -1406,6 +2115,7 @@ class PauseComponentResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -1449,6 +2159,11 @@ class PauseComponentRequest(rpc.Shape):
                  component_name: typing.Optional[str] = None):
         super().__init__()
         self.component_name = component_name  # type: typing.Optional[str]
+
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -1502,6 +2217,15 @@ class StopComponentResponse(rpc.Shape):
         self.stop_status = stop_status  # type: typing.Optional[str]
         self.message = message  # type: typing.Optional[str]
 
+    def set_stop_status(self, stop_status: str):
+        self.stop_status = stop_status
+        return self
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.stop_status is not None:
@@ -1554,6 +2278,11 @@ class StopComponentRequest(rpc.Shape):
         super().__init__()
         self.component_name = component_name  # type: typing.Optional[str]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -1602,6 +2331,11 @@ class ListLocalDeploymentsResponse(rpc.Shape):
         super().__init__()
         self.local_deployments = local_deployments  # type: typing.Optional[typing.List[LocalDeployment]]
 
+    def set_local_deployments(self, local_deployments: typing.List[LocalDeployment]):
+        self.local_deployments = local_deployments
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.local_deployments is not None:
@@ -1640,6 +2374,7 @@ class ListLocalDeploymentsRequest(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -1674,6 +2409,7 @@ class SubscribeToComponentUpdatesResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -1707,6 +2443,7 @@ class SubscribeToComponentUpdatesRequest(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -1759,6 +2496,19 @@ class ListNamedShadowsForThingResponse(rpc.Shape):
         self.results = results  # type: typing.Optional[typing.List[str]]
         self.timestamp = timestamp  # type: typing.Optional[datetime.datetime]
         self.next_token = next_token  # type: typing.Optional[str]
+
+    def set_results(self, results: typing.List[str]):
+        self.results = results
+        return self
+
+    def set_timestamp(self, timestamp: datetime.datetime):
+        self.timestamp = timestamp
+        return self
+
+    def set_next_token(self, next_token: str):
+        self.next_token = next_token
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -1824,6 +2574,19 @@ class ListNamedShadowsForThingRequest(rpc.Shape):
         self.next_token = next_token  # type: typing.Optional[str]
         self.page_size = page_size  # type: typing.Optional[int]
 
+    def set_thing_name(self, thing_name: str):
+        self.thing_name = thing_name
+        return self
+
+    def set_next_token(self, next_token: str):
+        self.next_token = next_token
+        return self
+
+    def set_page_size(self, page_size: int):
+        self.page_size = page_size
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.thing_name is not None:
@@ -1870,6 +2633,7 @@ class UpdateStateResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -1913,6 +2677,11 @@ class UpdateStateRequest(rpc.Shape):
                  state: typing.Optional[str] = None):
         super().__init__()
         self.state = state  # type: typing.Optional[str]
+
+    def set_state(self, state: str):
+        self.state = state
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -1973,6 +2742,23 @@ class GetSecretValueResponse(rpc.Shape):
         self.version_id = version_id  # type: typing.Optional[str]
         self.version_stage = version_stage  # type: typing.Optional[typing.List[str]]
         self.secret_value = secret_value  # type: typing.Optional[SecretValue]
+
+    def set_secret_id(self, secret_id: str):
+        self.secret_id = secret_id
+        return self
+
+    def set_version_id(self, version_id: str):
+        self.version_id = version_id
+        return self
+
+    def set_version_stage(self, version_stage: typing.List[str]):
+        self.version_stage = version_stage
+        return self
+
+    def set_secret_value(self, secret_value: SecretValue):
+        self.secret_value = secret_value
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2042,6 +2828,19 @@ class GetSecretValueRequest(rpc.Shape):
         self.version_id = version_id  # type: typing.Optional[str]
         self.version_stage = version_stage  # type: typing.Optional[str]
 
+    def set_secret_id(self, secret_id: str):
+        self.secret_id = secret_id
+        return self
+
+    def set_version_id(self, version_id: str):
+        self.version_id = version_id
+        return self
+
+    def set_version_stage(self, version_stage: str):
+        self.version_stage = version_stage
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.secret_id is not None:
@@ -2098,6 +2897,11 @@ class GetLocalDeploymentStatusResponse(rpc.Shape):
         super().__init__()
         self.deployment = deployment  # type: typing.Optional[LocalDeployment]
 
+    def set_deployment(self, deployment: LocalDeployment):
+        self.deployment = deployment
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.deployment is not None:
@@ -2146,6 +2950,11 @@ class GetLocalDeploymentStatusRequest(rpc.Shape):
         super().__init__()
         self.deployment_id = deployment_id  # type: typing.Optional[str]
 
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.deployment_id is not None:
@@ -2193,6 +3002,11 @@ class ComponentNotFoundError(GreengrassCoreIPCError):
                  message: typing.Optional[str] = None):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
 
     def _get_error_type_string(self):
         return 'client'
@@ -2249,6 +3063,15 @@ class RestartComponentResponse(rpc.Shape):
         self.restart_status = restart_status  # type: typing.Optional[str]
         self.message = message  # type: typing.Optional[str]
 
+    def set_restart_status(self, restart_status: str):
+        self.restart_status = restart_status
+        return self
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.restart_status is not None:
@@ -2301,6 +3124,11 @@ class RestartComponentRequest(rpc.Shape):
         super().__init__()
         self.component_name = component_name  # type: typing.Optional[str]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -2348,6 +3176,11 @@ class InvalidTokenError(GreengrassCoreIPCError):
                  message: typing.Optional[str] = None):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
 
     def _get_error_type_string(self):
         return 'server'
@@ -2400,6 +3233,11 @@ class ValidateAuthorizationTokenResponse(rpc.Shape):
         super().__init__()
         self.is_valid = is_valid  # type: typing.Optional[bool]
 
+    def set_is_valid(self, is_valid: bool):
+        self.is_valid = is_valid
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.is_valid is not None:
@@ -2447,6 +3285,11 @@ class ValidateAuthorizationTokenRequest(rpc.Shape):
                  token: typing.Optional[str] = None):
         super().__init__()
         self.token = token  # type: typing.Optional[str]
+
+    def set_token(self, token: str):
+        self.token = token
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2496,6 +3339,11 @@ class FailedUpdateConditionCheckError(GreengrassCoreIPCError):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _get_error_type_string(self):
         return 'client'
 
@@ -2536,6 +3384,7 @@ class UpdateConfigurationResponse(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -2588,6 +3437,19 @@ class UpdateConfigurationRequest(rpc.Shape):
         self.key_path = key_path  # type: typing.Optional[typing.List[str]]
         self.timestamp = timestamp  # type: typing.Optional[datetime.datetime]
         self.value_to_merge = value_to_merge  # type: typing.Optional[typing.Dict[str, typing.Any]]
+
+    def set_key_path(self, key_path: typing.List[str]):
+        self.key_path = key_path
+        return self
+
+    def set_timestamp(self, timestamp: datetime.datetime):
+        self.timestamp = timestamp
+        return self
+
+    def set_value_to_merge(self, value_to_merge: typing.Dict[str, typing.Any]):
+        self.value_to_merge = value_to_merge
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2645,6 +3507,11 @@ class ConflictError(GreengrassCoreIPCError):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _get_error_type_string(self):
         return 'client'
 
@@ -2692,9 +3559,18 @@ class UpdateThingShadowResponse(rpc.Shape):
     """
 
     def __init__(self, *,
-                 payload: typing.Optional[bytes] = None):
+                 payload: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
         self.payload = payload  # type: typing.Optional[bytes]
+
+    def set_payload(self, payload: typing.Union[bytes, str]):
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
+        self.payload = payload
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2746,11 +3622,28 @@ class UpdateThingShadowRequest(rpc.Shape):
     def __init__(self, *,
                  thing_name: typing.Optional[str] = None,
                  shadow_name: typing.Optional[str] = None,
-                 payload: typing.Optional[bytes] = None):
+                 payload: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
         self.thing_name = thing_name  # type: typing.Optional[str]
         self.shadow_name = shadow_name  # type: typing.Optional[str]
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
         self.payload = payload  # type: typing.Optional[bytes]
+
+    def set_thing_name(self, thing_name: str):
+        self.thing_name = thing_name
+        return self
+
+    def set_shadow_name(self, shadow_name: str):
+        self.shadow_name = shadow_name
+        return self
+
+    def set_payload(self, payload: typing.Union[bytes, str]):
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
+        self.payload = payload
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2798,6 +3691,7 @@ class SendConfigurationValidityReportResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -2841,6 +3735,11 @@ class SendConfigurationValidityReportRequest(rpc.Shape):
                  configuration_validity_report: typing.Optional[ConfigurationValidityReport] = None):
         super().__init__()
         self.configuration_validity_report = configuration_validity_report  # type: typing.Optional[ConfigurationValidityReport]
+
+    def set_configuration_validity_report(self, configuration_validity_report: ConfigurationValidityReport):
+        self.configuration_validity_report = configuration_validity_report
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2886,9 +3785,18 @@ class GetThingShadowResponse(rpc.Shape):
     """
 
     def __init__(self, *,
-                 payload: typing.Optional[bytes] = None):
+                 payload: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
         self.payload = payload  # type: typing.Optional[bytes]
+
+    def set_payload(self, payload: typing.Union[bytes, str]):
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
+        self.payload = payload
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2941,6 +3849,15 @@ class GetThingShadowRequest(rpc.Shape):
         super().__init__()
         self.thing_name = thing_name  # type: typing.Optional[str]
         self.shadow_name = shadow_name  # type: typing.Optional[str]
+
+    def set_thing_name(self, thing_name: str):
+        self.thing_name = thing_name
+        return self
+
+    def set_shadow_name(self, shadow_name: str):
+        self.shadow_name = shadow_name
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3010,6 +3927,27 @@ class CreateDebugPasswordResponse(rpc.Shape):
         self.certificate_sha256_hash = certificate_sha256_hash  # type: typing.Optional[str]
         self.certificate_sha1_hash = certificate_sha1_hash  # type: typing.Optional[str]
 
+    def set_password(self, password: str):
+        self.password = password
+        return self
+
+    def set_username(self, username: str):
+        self.username = username
+        return self
+
+    def set_password_expiration(self, password_expiration: datetime.datetime):
+        self.password_expiration = password_expiration
+        return self
+
+    def set_certificate_sha256_hash(self, certificate_sha256_hash: str):
+        self.certificate_sha256_hash = certificate_sha256_hash
+        return self
+
+    def set_certificate_sha1_hash(self, certificate_sha1_hash: str):
+        self.certificate_sha1_hash = certificate_sha1_hash
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.password is not None:
@@ -3064,6 +4002,7 @@ class CreateDebugPasswordRequest(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -3108,6 +4047,11 @@ class ListComponentsResponse(rpc.Shape):
         super().__init__()
         self.components = components  # type: typing.Optional[typing.List[ComponentDetails]]
 
+    def set_components(self, components: typing.List[ComponentDetails]):
+        self.components = components
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.components is not None:
@@ -3146,6 +4090,7 @@ class ListComponentsRequest(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -3172,6 +4117,386 @@ class ListComponentsRequest(rpc.Shape):
         return False
 
 
+class InvalidClientDeviceAuthTokenError(GreengrassCoreIPCError):
+    """
+    InvalidClientDeviceAuthTokenError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message: 
+
+    Attributes:
+        message: 
+    """
+
+    def __init__(self, *,
+                 message: typing.Optional[str] = None):
+        super().__init__()
+        self.message = message  # type: typing.Optional[str]
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
+    def _get_error_type_string(self):
+        return 'client'
+
+    def _to_payload(self):
+        payload = {}
+        if self.message is not None:
+            payload['message'] = self.message
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'message' in payload:
+            new.message = payload['message']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#InvalidClientDeviceAuthTokenError'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class AuthorizeClientDeviceActionResponse(rpc.Shape):
+    """
+    AuthorizeClientDeviceActionResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        is_authorized: 
+
+    Attributes:
+        is_authorized: 
+    """
+
+    def __init__(self, *,
+                 is_authorized: typing.Optional[bool] = None):
+        super().__init__()
+        self.is_authorized = is_authorized  # type: typing.Optional[bool]
+
+    def set_is_authorized(self, is_authorized: bool):
+        self.is_authorized = is_authorized
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.is_authorized is not None:
+            payload['isAuthorized'] = self.is_authorized
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'isAuthorized' in payload:
+            new.is_authorized = payload['isAuthorized']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#AuthorizeClientDeviceActionResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class AuthorizeClientDeviceActionRequest(rpc.Shape):
+    """
+    AuthorizeClientDeviceActionRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        client_device_auth_token: 
+        operation: 
+        resource: 
+
+    Attributes:
+        client_device_auth_token: 
+        operation: 
+        resource: 
+    """
+
+    def __init__(self, *,
+                 client_device_auth_token: typing.Optional[str] = None,
+                 operation: typing.Optional[str] = None,
+                 resource: typing.Optional[str] = None):
+        super().__init__()
+        self.client_device_auth_token = client_device_auth_token  # type: typing.Optional[str]
+        self.operation = operation  # type: typing.Optional[str]
+        self.resource = resource  # type: typing.Optional[str]
+
+    def set_client_device_auth_token(self, client_device_auth_token: str):
+        self.client_device_auth_token = client_device_auth_token
+        return self
+
+    def set_operation(self, operation: str):
+        self.operation = operation
+        return self
+
+    def set_resource(self, resource: str):
+        self.resource = resource
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.client_device_auth_token is not None:
+            payload['clientDeviceAuthToken'] = self.client_device_auth_token
+        if self.operation is not None:
+            payload['operation'] = self.operation
+        if self.resource is not None:
+            payload['resource'] = self.resource
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'clientDeviceAuthToken' in payload:
+            new.client_device_auth_token = payload['clientDeviceAuthToken']
+        if 'operation' in payload:
+            new.operation = payload['operation']
+        if 'resource' in payload:
+            new.resource = payload['resource']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#AuthorizeClientDeviceActionRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class VerifyClientDeviceIdentityResponse(rpc.Shape):
+    """
+    VerifyClientDeviceIdentityResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        is_valid_client_device: 
+
+    Attributes:
+        is_valid_client_device: 
+    """
+
+    def __init__(self, *,
+                 is_valid_client_device: typing.Optional[bool] = None):
+        super().__init__()
+        self.is_valid_client_device = is_valid_client_device  # type: typing.Optional[bool]
+
+    def set_is_valid_client_device(self, is_valid_client_device: bool):
+        self.is_valid_client_device = is_valid_client_device
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.is_valid_client_device is not None:
+            payload['isValidClientDevice'] = self.is_valid_client_device
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'isValidClientDevice' in payload:
+            new.is_valid_client_device = payload['isValidClientDevice']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#VerifyClientDeviceIdentityResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class VerifyClientDeviceIdentityRequest(rpc.Shape):
+    """
+    VerifyClientDeviceIdentityRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        credential: 
+
+    Attributes:
+        credential: 
+    """
+
+    def __init__(self, *,
+                 credential: typing.Optional[ClientDeviceCredential] = None):
+        super().__init__()
+        self.credential = credential  # type: typing.Optional[ClientDeviceCredential]
+
+    def set_credential(self, credential: ClientDeviceCredential):
+        self.credential = credential
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.credential is not None:
+            payload['credential'] = self.credential._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'credential' in payload:
+            new.credential = ClientDeviceCredential._from_payload(payload['credential'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#VerifyClientDeviceIdentityRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class SubscribeToCertificateUpdatesResponse(rpc.Shape):
+    """
+    SubscribeToCertificateUpdatesResponse
+    """
+
+    def __init__(self):
+        super().__init__()
+
+
+    def _to_payload(self):
+        payload = {}
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToCertificateUpdatesResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class SubscribeToCertificateUpdatesRequest(rpc.Shape):
+    """
+    SubscribeToCertificateUpdatesRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        certificate_options: 
+
+    Attributes:
+        certificate_options: 
+    """
+
+    def __init__(self, *,
+                 certificate_options: typing.Optional[CertificateOptions] = None):
+        super().__init__()
+        self.certificate_options = certificate_options  # type: typing.Optional[CertificateOptions]
+
+    def set_certificate_options(self, certificate_options: CertificateOptions):
+        self.certificate_options = certificate_options
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.certificate_options is not None:
+            payload['certificateOptions'] = self.certificate_options._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'certificateOptions' in payload:
+            new.certificate_options = CertificateOptions._from_payload(payload['certificateOptions'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToCertificateUpdatesRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
 class PublishToTopicResponse(rpc.Shape):
     """
     PublishToTopicResponse
@@ -3179,6 +4504,7 @@ class PublishToTopicResponse(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -3228,6 +4554,15 @@ class PublishToTopicRequest(rpc.Shape):
         self.topic = topic  # type: typing.Optional[str]
         self.publish_message = publish_message  # type: typing.Optional[PublishMessage]
 
+    def set_topic(self, topic: str):
+        self.topic = topic
+        return self
+
+    def set_publish_message(self, publish_message: PublishMessage):
+        self.publish_message = publish_message
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.topic is not None:
@@ -3262,6 +4597,168 @@ class PublishToTopicRequest(rpc.Shape):
         return False
 
 
+class InvalidCredentialError(GreengrassCoreIPCError):
+    """
+    InvalidCredentialError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message: 
+
+    Attributes:
+        message: 
+    """
+
+    def __init__(self, *,
+                 message: typing.Optional[str] = None):
+        super().__init__()
+        self.message = message  # type: typing.Optional[str]
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
+    def _get_error_type_string(self):
+        return 'client'
+
+    def _to_payload(self):
+        payload = {}
+        if self.message is not None:
+            payload['message'] = self.message
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'message' in payload:
+            new.message = payload['message']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#InvalidCredentialError'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class GetClientDeviceAuthTokenResponse(rpc.Shape):
+    """
+    GetClientDeviceAuthTokenResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        client_device_auth_token: 
+
+    Attributes:
+        client_device_auth_token: 
+    """
+
+    def __init__(self, *,
+                 client_device_auth_token: typing.Optional[str] = None):
+        super().__init__()
+        self.client_device_auth_token = client_device_auth_token  # type: typing.Optional[str]
+
+    def set_client_device_auth_token(self, client_device_auth_token: str):
+        self.client_device_auth_token = client_device_auth_token
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.client_device_auth_token is not None:
+            payload['clientDeviceAuthToken'] = self.client_device_auth_token
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'clientDeviceAuthToken' in payload:
+            new.client_device_auth_token = payload['clientDeviceAuthToken']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#GetClientDeviceAuthTokenResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class GetClientDeviceAuthTokenRequest(rpc.Shape):
+    """
+    GetClientDeviceAuthTokenRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        credential: 
+
+    Attributes:
+        credential: 
+    """
+
+    def __init__(self, *,
+                 credential: typing.Optional[CredentialDocument] = None):
+        super().__init__()
+        self.credential = credential  # type: typing.Optional[CredentialDocument]
+
+    def set_credential(self, credential: CredentialDocument):
+        self.credential = credential
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.credential is not None:
+            payload['credential'] = self.credential._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'credential' in payload:
+            new.credential = CredentialDocument._from_payload(payload['credential'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#GetClientDeviceAuthTokenRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
 class GetComponentDetailsResponse(rpc.Shape):
     """
     GetComponentDetailsResponse
@@ -3279,6 +4776,11 @@ class GetComponentDetailsResponse(rpc.Shape):
                  component_details: typing.Optional[ComponentDetails] = None):
         super().__init__()
         self.component_details = component_details  # type: typing.Optional[ComponentDetails]
+
+    def set_component_details(self, component_details: ComponentDetails):
+        self.component_details = component_details
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3328,6 +4830,11 @@ class GetComponentDetailsRequest(rpc.Shape):
         super().__init__()
         self.component_name = component_name  # type: typing.Optional[str]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -3365,16 +4872,21 @@ class SubscribeToTopicResponse(rpc.Shape):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        topic_name: 
+        topic_name: Deprecated  No longer used
 
     Attributes:
-        topic_name: 
+        topic_name: Deprecated  No longer used
     """
 
     def __init__(self, *,
                  topic_name: typing.Optional[str] = None):
         super().__init__()
         self.topic_name = topic_name  # type: typing.Optional[str]
+
+    def set_topic_name(self, topic_name: str):
+        self.topic_name = topic_name
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3414,20 +4926,35 @@ class SubscribeToTopicRequest(rpc.Shape):
 
     Keyword Args:
         topic: 
+        receive_mode: ReceiveMode enum value
 
     Attributes:
         topic: 
+        receive_mode: ReceiveMode enum value
     """
 
     def __init__(self, *,
-                 topic: typing.Optional[str] = None):
+                 topic: typing.Optional[str] = None,
+                 receive_mode: typing.Optional[str] = None):
         super().__init__()
         self.topic = topic  # type: typing.Optional[str]
+        self.receive_mode = receive_mode  # type: typing.Optional[str]
+
+    def set_topic(self, topic: str):
+        self.topic = topic
+        return self
+
+    def set_receive_mode(self, receive_mode: str):
+        self.receive_mode = receive_mode
+        return self
+
 
     def _to_payload(self):
         payload = {}
         if self.topic is not None:
             payload['topic'] = self.topic
+        if self.receive_mode is not None:
+            payload['receiveMode'] = self.receive_mode
         return payload
 
     @classmethod
@@ -3435,6 +4962,8 @@ class SubscribeToTopicRequest(rpc.Shape):
         new = cls()
         if 'topic' in payload:
             new.topic = payload['topic']
+        if 'receiveMode' in payload:
+            new.receive_mode = payload['receiveMode']
         return new
 
     @classmethod
@@ -3475,6 +5004,15 @@ class GetConfigurationResponse(rpc.Shape):
         super().__init__()
         self.component_name = component_name  # type: typing.Optional[str]
         self.value = value  # type: typing.Optional[typing.Dict[str, typing.Any]]
+
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+    def set_value(self, value: typing.Dict[str, typing.Any]):
+        self.value = value
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3532,6 +5070,15 @@ class GetConfigurationRequest(rpc.Shape):
         self.component_name = component_name  # type: typing.Optional[str]
         self.key_path = key_path  # type: typing.Optional[typing.List[str]]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+    def set_key_path(self, key_path: typing.List[str]):
+        self.key_path = key_path
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -3574,6 +5121,7 @@ class SubscribeToValidateConfigurationUpdatesResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -3608,6 +5156,7 @@ class SubscribeToValidateConfigurationUpdatesRequest(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -3641,6 +5190,7 @@ class DeferComponentUpdateResponse(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -3693,6 +5243,19 @@ class DeferComponentUpdateRequest(rpc.Shape):
         self.deployment_id = deployment_id  # type: typing.Optional[str]
         self.message = message  # type: typing.Optional[str]
         self.recheck_after_ms = recheck_after_ms  # type: typing.Optional[int]
+
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+    def set_recheck_after_ms(self, recheck_after_ms: int):
+        self.recheck_after_ms = recheck_after_ms
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3750,6 +5313,11 @@ class InvalidArgumentsError(GreengrassCoreIPCError):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _get_error_type_string(self):
         return 'client'
 
@@ -3797,9 +5365,18 @@ class DeleteThingShadowResponse(rpc.Shape):
     """
 
     def __init__(self, *,
-                 payload: typing.Optional[bytes] = None):
+                 payload: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
         self.payload = payload  # type: typing.Optional[bytes]
+
+    def set_payload(self, payload: typing.Union[bytes, str]):
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
+        self.payload = payload
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3853,6 +5430,15 @@ class DeleteThingShadowRequest(rpc.Shape):
         self.thing_name = thing_name  # type: typing.Optional[str]
         self.shadow_name = shadow_name  # type: typing.Optional[str]
 
+    def set_thing_name(self, thing_name: str):
+        self.thing_name = thing_name
+        return self
+
+    def set_shadow_name(self, shadow_name: str):
+        self.shadow_name = shadow_name
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.thing_name is not None:
@@ -3894,6 +5480,7 @@ class SubscribeToConfigurationUpdateResponse(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -3943,6 +5530,15 @@ class SubscribeToConfigurationUpdateRequest(rpc.Shape):
         self.component_name = component_name  # type: typing.Optional[str]
         self.key_path = key_path  # type: typing.Optional[typing.List[str]]
 
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
+    def set_key_path(self, key_path: typing.List[str]):
+        self.key_path = key_path
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.component_name is not None:
@@ -3984,6 +5580,7 @@ class PublishToIoTCoreResponse(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -4031,11 +5628,28 @@ class PublishToIoTCoreRequest(rpc.Shape):
     def __init__(self, *,
                  topic_name: typing.Optional[str] = None,
                  qos: typing.Optional[str] = None,
-                 payload: typing.Optional[bytes] = None):
+                 payload: typing.Optional[typing.Union[bytes, str]] = None):
         super().__init__()
         self.topic_name = topic_name  # type: typing.Optional[str]
         self.qos = qos  # type: typing.Optional[str]
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
         self.payload = payload  # type: typing.Optional[bytes]
+
+    def set_topic_name(self, topic_name: str):
+        self.topic_name = topic_name
+        return self
+
+    def set_qos(self, qos: str):
+        self.qos = qos
+        return self
+
+    def set_payload(self, payload: typing.Union[bytes, str]):
+        if payload is not None and isinstance(payload, str):
+            payload = payload.encode('utf-8')
+        self.payload = payload
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -4101,6 +5715,19 @@ class ResourceNotFoundError(GreengrassCoreIPCError):
         self.resource_type = resource_type  # type: typing.Optional[str]
         self.resource_name = resource_name  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+    def set_resource_type(self, resource_type: str):
+        self.resource_type = resource_type
+        return self
+
+    def set_resource_name(self, resource_name: str):
+        self.resource_name = resource_name
+        return self
+
+
     def _get_error_type_string(self):
         return 'client'
 
@@ -4150,6 +5777,7 @@ class ResumeComponentResponse(rpc.Shape):
     def __init__(self):
         super().__init__()
 
+
     def _to_payload(self):
         payload = {}
         return payload
@@ -4193,6 +5821,11 @@ class ResumeComponentRequest(rpc.Shape):
                  component_name: typing.Optional[str] = None):
         super().__init__()
         self.component_name = component_name  # type: typing.Optional[str]
+
+    def set_component_name(self, component_name: str):
+        self.component_name = component_name
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -4241,6 +5874,11 @@ class UnauthorizedError(GreengrassCoreIPCError):
                  message: typing.Optional[str] = None):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
 
     def _get_error_type_string(self):
         return 'client'
@@ -4293,6 +5931,11 @@ class ServiceError(GreengrassCoreIPCError):
         super().__init__()
         self.message = message  # type: typing.Optional[str]
 
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
     def _get_error_type_string(self):
         return 'server'
 
@@ -4333,6 +5976,7 @@ class SubscribeToIoTCoreResponse(rpc.Shape):
 
     def __init__(self):
         super().__init__()
+
 
     def _to_payload(self):
         payload = {}
@@ -4382,6 +6026,15 @@ class SubscribeToIoTCoreRequest(rpc.Shape):
         self.topic_name = topic_name  # type: typing.Optional[str]
         self.qos = qos  # type: typing.Optional[str]
 
+    def set_topic_name(self, topic_name: str):
+        self.topic_name = topic_name
+        return self
+
+    def set_qos(self, qos: str):
+        self.qos = qos
+        return self
+
+
     def _to_payload(self):
         payload = {}
         if self.topic_name is not None:
@@ -4418,17 +6071,21 @@ class SubscribeToIoTCoreRequest(rpc.Shape):
 
 SHAPE_INDEX = rpc.ShapeIndex([
     SystemResourceLimits,
+    MessageContext,
     ValidateConfigurationUpdateEvent,
     RunWithInfo,
     PreComponentUpdateEvent,
     PostComponentUpdateEvent,
     MQTTMessage,
+    MQTTCredential,
     JsonMessage,
     ConfigurationUpdateEvent,
+    CertificateUpdate,
     BinaryMessage,
     LocalDeployment,
     ConfigurationValidityReport,
     ComponentDetails,
+    CertificateOptions,
     InvalidArtifactsDirectoryPathError,
     InvalidRecipeDirectoryPathError,
     CreateLocalDeploymentResponse,
@@ -4469,8 +6126,18 @@ SHAPE_INDEX = rpc.ShapeIndex([
     CreateDebugPasswordRequest,
     ListComponentsResponse,
     ListComponentsRequest,
+    InvalidClientDeviceAuthTokenError,
+    AuthorizeClientDeviceActionResponse,
+    AuthorizeClientDeviceActionRequest,
+    VerifyClientDeviceIdentityResponse,
+    VerifyClientDeviceIdentityRequest,
+    SubscribeToCertificateUpdatesResponse,
+    SubscribeToCertificateUpdatesRequest,
     PublishToTopicResponse,
     PublishToTopicRequest,
+    InvalidCredentialError,
+    GetClientDeviceAuthTokenResponse,
+    GetClientDeviceAuthTokenRequest,
     GetComponentDetailsResponse,
     GetComponentDetailsRequest,
     SubscribeToTopicResponse,
@@ -4496,6 +6163,28 @@ SHAPE_INDEX = rpc.ShapeIndex([
     SubscribeToIoTCoreResponse,
     SubscribeToIoTCoreRequest,
 ])
+
+
+class _AuthorizeClientDeviceActionOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#AuthorizeClientDeviceAction'
+
+    @classmethod
+    def _request_type(cls):
+        return AuthorizeClientDeviceActionRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return AuthorizeClientDeviceActionResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
 
 
 class _CreateDebugPasswordOperation(rpc.ClientOperation):
@@ -4580,6 +6269,28 @@ class _DeleteThingShadowOperation(rpc.ClientOperation):
     @classmethod
     def _response_type(cls):
         return DeleteThingShadowResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _GetClientDeviceAuthTokenOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#GetClientDeviceAuthToken'
+
+    @classmethod
+    def _request_type(cls):
+        return GetClientDeviceAuthTokenRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return GetClientDeviceAuthTokenResponse
 
     @classmethod
     def _response_stream_type(cls):
@@ -4916,6 +6627,28 @@ class _StopComponentOperation(rpc.ClientOperation):
         return None
 
 
+class _SubscribeToCertificateUpdatesOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToCertificateUpdates'
+
+    @classmethod
+    def _request_type(cls):
+        return SubscribeToCertificateUpdatesRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return SubscribeToCertificateUpdatesResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return CertificateUpdateEvent
+
+
 class _SubscribeToComponentUpdatesOperation(rpc.ClientOperation):
     @classmethod
     def _model_name(cls):
@@ -5108,6 +6841,28 @@ class _ValidateAuthorizationTokenOperation(rpc.ClientOperation):
     @classmethod
     def _response_type(cls):
         return ValidateAuthorizationTokenResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _VerifyClientDeviceIdentityOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#VerifyClientDeviceIdentity'
+
+    @classmethod
+    def _request_type(cls):
+        return VerifyClientDeviceIdentityRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return VerifyClientDeviceIdentityResponse
 
     @classmethod
     def _response_stream_type(cls):
