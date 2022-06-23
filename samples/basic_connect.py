@@ -16,7 +16,7 @@ cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", Tr
 cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
 cmdUtils.register_command("port", "<int>",
                           "Connection port for direct connection. " +
-                          "AWS IoT supports 433 and 8883 (optional, default=8883).",
+                          "AWS IoT supports 443 and 8883 (optional, default=8883).",
                           False, int)
 cmdUtils.register_command("client_id", "<str>",
                           "Client ID to use for MQTT connection (optional, default='test-*').",

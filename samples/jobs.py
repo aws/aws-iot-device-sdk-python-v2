@@ -45,7 +45,7 @@ cmdUtils.add_common_logging_commands()
 cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
 cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
 cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
-cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).", type=int)
+cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
 cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
 cmdUtils.register_command("job_time", "<int>", "Emulate working on a job by sleeping this many seconds (optional, default='5')", default=5, type=int)
 # Needs to be called so the command utils parse the commands
