@@ -25,7 +25,7 @@ cmdUtils.register_command("client_id", "<str>",
                           "Client ID to use for MQTT connection (optional, default='test-*').",
                           default="test-" + str(uuid4()))
 cmdUtils.register_command("port", "<port>",
-                          "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).",
+                          "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).",
                           type=int)
 cmdUtils.register_command("pkcs11_lib", "<path>", "Path to PKCS#11 Library", required=True)
 cmdUtils.register_command("pin", "<str>", "User PIN for logging into PKCS#11 token.", required=True)
