@@ -111,7 +111,6 @@ class MqttBuilderTest(unittest.TestCase):
 
         self._test_connection(connection)
 
-    @unittest.skipIf(os.environ.get('AWS_CONTAINER_CREDENTIALS_RELATIVE_URI'), "ECS credentials provider is currently broken")
     def test_websockets_default(self):
         """Websocket connection with default credentials provider"""
         config = Config.get()
