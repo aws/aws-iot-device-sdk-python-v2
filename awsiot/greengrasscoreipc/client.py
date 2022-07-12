@@ -586,6 +586,40 @@ class PublishToTopicOperation(model._PublishToTopicOperation):
         return super().close()
 
 
+class PutComponentMetricOperation(model._PutComponentMetricOperation):
+    """
+    PutComponentMetricOperation
+
+    Create with GreengrassCoreIPCClient.new_put_component_metric()
+    """
+
+    def activate(self, request: model.PutComponentMetricRequest):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Activate this operation by sending the initial PutComponentMetricRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.PutComponentMetricResponse]
+        """
+        Returns a Future which completes with a result of PutComponentMetricResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
 class RestartComponentOperation(model._RestartComponentOperation):
     """
     RestartComponentOperation
@@ -1452,6 +1486,16 @@ class GreengrassCoreIPCClient(rpc.Client):
         events to fire.
         """
         return self._new_operation(PublishToTopicOperation)
+
+    def new_put_component_metric(self) -> PutComponentMetricOperation:
+        """
+        Create a new PutComponentMetricOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+        """
+        return self._new_operation(PutComponentMetricOperation)
 
     def new_restart_component(self) -> RestartComponentOperation:
         """

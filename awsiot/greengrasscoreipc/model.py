@@ -93,6 +93,19 @@ class SystemResourceLimits(rpc.Shape):
         return False
 
 
+class MetricUnitType:
+    """
+    MetricUnitType enum
+    """
+
+    BYTES = 'BYTES'
+    BYTES_PER_SECOND = 'BYTES_PER_SECOND'
+    COUNT = 'COUNT'
+    COUNT_PER_SECOND = 'COUNT_PER_SECOND'
+    MEGABYTES = 'MEGABYTES'
+    SECONDS = 'SECONDS'
+
+
 class MessageContext(rpc.Shape):
     """
     MessageContext
@@ -550,6 +563,83 @@ class MQTTCredential(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#MQTTCredential'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class Metric(rpc.Shape):
+    """
+    Metric
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        name: 
+        unit: MetricUnitType enum value
+        value: 
+
+    Attributes:
+        name: 
+        unit: MetricUnitType enum value
+        value: 
+    """
+
+    def __init__(self, *,
+                 name: typing.Optional[str] = None,
+                 unit: typing.Optional[str] = None,
+                 value: typing.Optional[float] = None):
+        super().__init__()
+        self.name = name  # type: typing.Optional[str]
+        self.unit = unit  # type: typing.Optional[str]
+        self.value = value  # type: typing.Optional[float]
+
+    def set_name(self, name: str):
+        self.name = name
+        return self
+
+    def set_unit(self, unit: str):
+        self.unit = unit
+        return self
+
+    def set_value(self, value: float):
+        self.value = value
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.name is not None:
+            payload['name'] = self.name
+        if self.unit is not None:
+            payload['unit'] = self.unit
+        if self.value is not None:
+            payload['value'] = self.value
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'name' in payload:
+            new.name = payload['name']
+        if 'unit' in payload:
+            new.unit = payload['unit']
+        if 'value' in payload:
+            new.value = float(payload['value'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#Metric'
 
     def __repr__(self):
         attrs = []
@@ -5295,6 +5385,94 @@ class DeferComponentUpdateRequest(rpc.Shape):
         return False
 
 
+class PutComponentMetricResponse(rpc.Shape):
+    """
+    PutComponentMetricResponse
+    """
+
+    def __init__(self):
+        super().__init__()
+
+
+    def _to_payload(self):
+        payload = {}
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#PutComponentMetricResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class PutComponentMetricRequest(rpc.Shape):
+    """
+    PutComponentMetricRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        metrics: 
+
+    Attributes:
+        metrics: 
+    """
+
+    def __init__(self, *,
+                 metrics: typing.Optional[typing.List[Metric]] = None):
+        super().__init__()
+        self.metrics = metrics  # type: typing.Optional[typing.List[Metric]]
+
+    def set_metrics(self, metrics: typing.List[Metric]):
+        self.metrics = metrics
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.metrics is not None:
+            payload['metrics'] = [i._to_payload() for i in self.metrics]
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'metrics' in payload:
+            new.metrics = [Metric._from_payload(i) for i in payload['metrics']]
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#PutComponentMetricRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
 class InvalidArgumentsError(GreengrassCoreIPCError):
     """
     InvalidArgumentsError
@@ -6078,6 +6256,7 @@ SHAPE_INDEX = rpc.ShapeIndex([
     PostComponentUpdateEvent,
     MQTTMessage,
     MQTTCredential,
+    Metric,
     JsonMessage,
     ConfigurationUpdateEvent,
     CertificateUpdate,
@@ -6148,6 +6327,8 @@ SHAPE_INDEX = rpc.ShapeIndex([
     SubscribeToValidateConfigurationUpdatesRequest,
     DeferComponentUpdateResponse,
     DeferComponentUpdateRequest,
+    PutComponentMetricResponse,
+    PutComponentMetricRequest,
     InvalidArgumentsError,
     DeleteThingShadowResponse,
     DeleteThingShadowRequest,
@@ -6533,6 +6714,28 @@ class _PublishToTopicOperation(rpc.ClientOperation):
     @classmethod
     def _response_type(cls):
         return PublishToTopicResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _PutComponentMetricOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#PutComponentMetric'
+
+    @classmethod
+    def _request_type(cls):
+        return PutComponentMetricRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return PutComponentMetricResponse
 
     @classmethod
     def _response_stream_type(cls):
