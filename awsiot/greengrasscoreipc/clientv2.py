@@ -566,6 +566,29 @@ class GreengrassCoreIPCClientV2:
         write_future = operation.activate(request)
         return self.__combine_futures(write_future, operation.get_response())
 
+    def put_component_metric(self, *,
+        metrics: typing.Optional[typing.List[model.Metric]] = None) -> model.PutComponentMetricResponse:
+        """
+        Perform the PutComponentMetric operation synchronously.
+
+        Args:
+            metrics: 
+        """
+        return self.put_component_metric_async(metrics=metrics).result()
+
+    def put_component_metric_async(self, *,
+        metrics: typing.Optional[typing.List[model.Metric]] = None):  # type: (...) -> concurrent.futures.Future[model.PutComponentMetricResponse]
+        """
+        Perform the PutComponentMetric operation asynchronously.
+
+        Args:
+            metrics: 
+        """
+        request = model.PutComponentMetricRequest(metrics=metrics)
+        operation = self.client.new_put_component_metric()
+        write_future = operation.activate(request)
+        return self.__combine_futures(write_future, operation.get_response())
+
     def restart_component(self, *,
         component_name: typing.Optional[str] = None) -> model.RestartComponentResponse:
         """
