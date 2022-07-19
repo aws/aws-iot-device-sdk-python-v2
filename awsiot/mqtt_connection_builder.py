@@ -131,7 +131,7 @@ def _get_metrics_str(current_username=""):
     global _metrics_str
 
     username_has_query = False
-    if not current_username.find("?") is -1:
+    if current_username.find("?") != -1:
         username_has_query = True
 
     if _metrics_str is None:
@@ -433,12 +433,12 @@ def _add_to_username_parameter(input_string, parameter_value, parameter_pretext)
     """
     return_string = input_string
 
-    if not return_string.find("?") is -1:
+    if return_string.find("?") != -1:
         return_string += "&"
     else:
         return_string += "?"
 
-    if not parameter_value.find(parameter_pretext) is -1:
+    if parameter_value.find(parameter_pretext) != -1:
         return return_string + parameter_value
     else:
         return return_string + parameter_pretext + parameter_value
