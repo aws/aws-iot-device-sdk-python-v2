@@ -47,7 +47,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # For cross-linking to types from other libraries
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
-    'awscrt': ('https://awslabs.github.io/aws-crt-python', None),
+    'awscrt': ('https://awslabs.github.io/aws-crt-python/api', None),
 }
 
 # -- Options for HTML output -------------------------------------------------
