@@ -40,7 +40,7 @@ setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'awscrt==0.13.13',
+        'awscrt==0.13.14',
     ],
     python_requires='>=3.6',
 )
