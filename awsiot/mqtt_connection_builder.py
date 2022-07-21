@@ -199,6 +199,9 @@ def _builder(
     if _get(kwargs, 'enable_metrics_collection', True):
         username += _get_metrics_str(username)
 
+    if username == "":
+        username = None
+
     client_bootstrap = _get(kwargs, 'client_bootstrap')
     if client_bootstrap is None:
         client_bootstrap = awscrt.io.ClientBootstrap.get_or_create_static_default()
@@ -427,6 +430,7 @@ def websockets_with_custom_handshake(
                     websocket_proxy_options=websocket_proxy_options,
                     **kwargs)
 
+
 def _add_to_username_parameter(input_string, parameter_value, parameter_pretext):
     """
     Helper function to add parameters to the username in the direct_with_custom_authorizer function
@@ -442,6 +446,7 @@ def _add_to_username_parameter(input_string, parameter_value, parameter_pretext)
         return return_string + parameter_value
     else:
         return return_string + parameter_pretext + parameter_value
+
 
 def direct_with_custom_authorizer(
         auth_username=None,
@@ -482,10 +487,10 @@ def direct_with_custom_authorizer(
     else:
         username_string += auth_username
 
-    if not auth_authorizer_name is None:
+    if auth_authorizer_name is not None:
         username_string = _add_to_username_parameter(
             username_string, auth_authorizer_name, "x-amz-customauthorizer-name=")
-    if not auth_authorizer_signature is None:
+    if auth_authorizer_signature is not None:
         username_string = _add_to_username_parameter(
             username_string, auth_authorizer_signature, "x-amz-customauthorizer-signature=")
 
