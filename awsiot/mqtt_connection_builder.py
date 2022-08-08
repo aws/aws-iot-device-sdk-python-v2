@@ -512,11 +512,11 @@ def new_default_builder(**kwargs) -> awscrt.mqtt.Connection:
     This builder creates an :class:`awscrt.mqtt.Connection`, without any configuration besides the default TLS context options.
 
     This requires setting the connection details manually by passing all the necessary data
-    in :mod:`common arguments<awsiot.mqtt_connection_builder>` to make a connection
+    in :mod:`common arguments<awsiot.mqtt_connection_builder>` to make a connection.
     """
-    _check_required_kwargs(kwargs)
+    _check_required_kwargs(**kwargs)
     tls_ctx_options = awscrt.io.TlsContextOptions()
 
     return _builder(tls_ctx_options=tls_ctx_options,
                     use_websockets=False,
-                    kwargs=kwargs)
+                    **kwargs)
