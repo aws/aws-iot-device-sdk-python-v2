@@ -33,7 +33,9 @@ setup(
     long_description_content_type='text/markdown',
     author='AWS SDK Common Runtime Team',
     url='https://github.com/aws/aws-iot-device-sdk-python-v2',
+    package_data={"awsiot": ["py.typed"]},
     packages=find_packages(include=['awsiot*']),
+    include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
