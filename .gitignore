@@ -1,3 +1,4 @@
+.DS_Store
 docs/.buildinfo
 docs/.doctrees/
 __pycache__/
