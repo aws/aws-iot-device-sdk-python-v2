@@ -57,3 +57,13 @@ jobs:
           python3 -m pip install sphinx
           python3 -m pip install --verbose .
           ./make-docs.py
+
+  check-codegen-edits:
+    runs-on: ubuntu-20.04 # latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Check for edits to code-generated files
+        run: |
+          ./utils/check_codegen_edits.py
