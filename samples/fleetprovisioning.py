@@ -114,7 +114,8 @@ def createkeysandcertificate_execution_accepted(response):
     try:
         global createKeysAndCertificateResponse
         createKeysAndCertificateResponse = response
-        print("Received a new message {}".format(createKeysAndCertificateResponse))
+        if (is_ci == False):
+            print("Received a new message {}".format(createKeysAndCertificateResponse))
 
         return
 
@@ -131,7 +132,8 @@ def createcertificatefromcsr_execution_accepted(response):
     try:
         global createCertificateFromCsrResponse
         createCertificateFromCsrResponse = response
-        print("Received a new message {}".format(createCertificateFromCsrResponse))
+        if (is_ci == False):
+            print("Received a new message {}".format(createCertificateFromCsrResponse))
         global certificateOwnershipToken
         certificateOwnershipToken = response.certificate_ownership_token
 
@@ -150,7 +152,8 @@ def registerthing_execution_accepted(response):
     try:
         global registerThingResponse
         registerThingResponse = response
-        print("Received a new message {} ".format(registerThingResponse))
+        if (is_ci == False):
+            print("Received a new message {} ".format(registerThingResponse))
         return
 
     except Exception as e:
@@ -192,7 +195,10 @@ def waitForCreateKeysAndCertificateResponse():
     while loopCount < 10 and createKeysAndCertificateResponse is None:
         if createKeysAndCertificateResponse is not None:
             break
-        print('Waiting... CreateKeysAndCertificateResponse: ' + json.dumps(createKeysAndCertificateResponse))
+        if is_ci == False:
+            print('Waiting... CreateKeysAndCertificateResponse: ' + json.dumps(createKeysAndCertificateResponse))
+        else:
+            print("Waiting... CreateKeysAndCertificateResponse: ...")
         loopCount += 1
         time.sleep(1)
 
@@ -202,7 +208,10 @@ def waitForCreateCertificateFromCsrResponse():
     while loopCount < 10 and createCertificateFromCsrResponse is None:
         if createCertificateFromCsrResponse is not None:
             break
-        print('Waiting...CreateCertificateFromCsrResponse: ' + json.dumps(createCertificateFromCsrResponse))
+        if is_ci == False:
+            print('Waiting...CreateCertificateFromCsrResponse: ' + json.dumps(createCertificateFromCsrResponse))
+        else:
+            print("Waiting... CreateCertificateFromCsrResponse: ...")
         loopCount += 1
         time.sleep(1)
 
@@ -213,7 +222,10 @@ def waitForRegisterThingResponse():
         if registerThingResponse is not None:
             break
         loopCount += 1
-        print('Waiting... RegisterThingResponse: ' + json.dumps(registerThingResponse))
+        if is_ci == False:
+            print('Waiting... RegisterThingResponse: ' + json.dumps(registerThingResponse))
+        else:
+            print('Waiting... RegisterThingResponse: ...')
         time.sleep(1)
 
 if __name__ == '__main__':

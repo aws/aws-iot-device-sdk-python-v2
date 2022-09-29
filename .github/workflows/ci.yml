@@ -198,7 +198,7 @@ jobs:
         run: |
           echo "Generating UUID for IoT thing"
           Sample_UUID=$(python3  -c "import uuid; print (uuid.uuid4())")
-          python3 ./aws-iot-device-sdk-python-v2/utils/run_sample_ci.py --language Python --sample_file './aws-iot-device-sdk-python-v2/samples/fleetprovisioning.py' --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/FleetProvisioning/cert' --sample_secret_private_key 'ci/FleetProvisioning/key' --sample_arguments "--template_name CI_FleetProvisioning_Template --template_parameters '{SerialNumber:${Sample_UUID}}'"
+          python3 ./aws-iot-device-sdk-python-v2/utils/run_sample_ci.py --language Python --sample_file './aws-iot-device-sdk-python-v2/samples/fleetprovisioning.py' --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/FleetProvisioning/cert' --sample_secret_private_key 'ci/FleetProvisioning/key' --sample_arguments "--template_name CI_FleetProvisioning_Template --template_parameters {SerialNumber:${Sample_UUID}}"
           python3 ./aws-iot-device-sdk-python-v2/utils/delete_iot_thing_ci.py --thing_name "Fleet_Thing_${Sample_UUID}" --region "us-east-1"
 
   # check that docs can still build
