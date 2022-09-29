@@ -14,6 +14,10 @@ env:
   LINUX_BASE_IMAGE: ubuntu-16-x64
   RUN: ${{ github.run_id }}-${{ github.run_number }}
   AWS_DEFAULT_REGION: us-east-1
+  DA_TOPIC: test/da
+  DA_SHADOW_PROPERTY: datest
+  DA_SHADOW_VALUE_SET: ON
+  DA_SHADOW_VALUE_DEFAULT: OFF
   CI_IOT_CONTAINERS: ${{ secrets.AWS_CI_IOT_CONTAINERS }}
   CI_PUBSUB_ROLE: ${{ secrets.AWS_CI_PUBSUB_ROLE }}
   CI_CUSTOM_AUTHORIZER_ROLE: ${{ secrets.AWS_CI_CUSTOM_AUTHORIZER_ROLE }}
