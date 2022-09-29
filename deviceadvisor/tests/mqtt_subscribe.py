@@ -15,7 +15,7 @@ if __name__ == '__main__':
         endpoint = DATestUtils.endpoint,
         cert_filepath = DATestUtils.certificatePath,
         pri_key_filepath = DATestUtils.keyPath,
-        client_id = DATestUtils.generate_client_id(postfix="-sub"),
+        client_id = DATestUtils.generate_client_id("-sub"),
         clean_session = True,
         tcp_connect_timeout_ms = 120000, # 2 minutes
         keep_alive_secs = 120000, # 2 minutes
