@@ -299,6 +299,7 @@ def user_input_thread_fn():
                 change_shadow_value(input)
                 sleep(1)
                 messages_sent += 1
+            exit("CI has quit")
         except Exception as e:
             print ("Exception on input thread (CI)")
             exit(e)

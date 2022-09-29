@@ -18,8 +18,9 @@ if __name__ == '__main__':
         pri_key_filepath=DATestUtils.keyPath,
         client_id = DATestUtils.client_id,
         clean_session = True,
-        keep_alive_secs = 6000,
-        ping_timeout_ms = 12000)
+        tcp_connect_timeout_ms = 12000,
+        keep_alive_secs = 12000,
+        ping_timeout_ms = 24000)
 
     connect_future = mqtt_connection.connect()
 
