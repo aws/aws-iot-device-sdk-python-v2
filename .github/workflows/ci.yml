@@ -65,7 +65,8 @@ jobs:
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: run DeviceAdvisor
       run: |
-        python ./aws-iot-device-sdk-python-v2/deviceadvisor/script/DATestRun.py
+        cd ./aws-iot-device-sdk-python-v2
+        python ./deviceadvisor/script/DATestRun.py
 
   osx:
     runs-on: macos-latest
@@ -93,7 +94,37 @@ jobs:
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: run DeviceAdvisor
       run: |
-        python3 ./aws-iot-device-sdk-python-v2/deviceadvisor/script/DATestRun.py
+        cd ./aws-iot-device-sdk-python-v2
+        python3 ./deviceadvisor/script/DATestRun.py
+
+  linux:
+    runs-on: ubuntu-20.04 # latest
+    permissions:
+      id-token: write # This is required for requesting the JWT
+    steps:
+    - name: Build ${{ env.PACKAGE_NAME }}
+      run: |
+        python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
+        chmod a+x builder
+        ./builder build -p ${{ env.PACKAGE_NAME }}
+    - name: configure AWS credentials (PubSub)
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ env.CI_PUBSUB_ROLE }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+    - name: run PubSub sample
+      run: |
+        python3 -m pip install boto3
+        python3 ./aws-iot-device-sdk-python-v2/utils/run_sample_ci.py --language Python --sample_file './aws-iot-device-sdk-python-v2/samples/pubsub.py' --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/key'
+    - name: configure AWS credentials (Device Advisor)
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ env.CI_DEVICE_ADVISOR }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+    - name: run DeviceAdvisor
+      run: |
+        cd ./aws-iot-device-sdk-python-v2
+        python3 ./deviceadvisor/script/DATestRun.py
 
   # check that docs can still build
   check-docs:
