@@ -6,8 +6,8 @@ from uuid import uuid4
 
 class TestType(Enum):
     CONNECT = 1
-    SUB_PUB = 1
-    SHADOW = 1
+    SUB_PUB = 2
+    SHADOW = 3
 
 class DATestUtils:
     endpoint = os.getenv('DA_ENDPOINT')
@@ -29,5 +29,5 @@ class DATestUtils:
 
         if (not (cls.thing_name and cls.shadowProperty and cls.shadowValue) and test_type == TestType.SHADOW):
             return False
-        
+
         return True
