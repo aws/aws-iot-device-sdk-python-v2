@@ -1,6 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
+from time import sleep
 from awscrt import mqtt
 from awsiot import iotshadow
 from concurrent.futures import Future
@@ -40,6 +41,7 @@ cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 44
 cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
 cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
 cmdUtils.register_command("shadow_property", "<str>", "The name of the shadow property you want to change (optional, default='color'", default="color")
+cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None'. Will publish shadow automatically if set)")
 # Needs to be called so the command utils parse the commands
 cmdUtils.get_args()
 
@@ -48,6 +50,7 @@ is_sample_done = threading.Event()
 mqtt_connection = None
 shadow_thing_name = cmdUtils.get_command_required("thing_name")
 shadow_property = cmdUtils.get_command("shadow_property")
+is_ci = cmdUtils.get_command("is_ci", None) != None
 
 SHADOW_VALUE_DEFAULT = "off"
 
@@ -268,23 +271,37 @@ def change_shadow_value(value):
         future.add_done_callback(on_publish_update_shadow)
 
 def user_input_thread_fn():
-    while True:
-        try:
-            # Read user input
-            new_value = input()
+    # If we are not in CI, then take terminal input
+    if is_ci == False:
+        while True:
+            try:
+                # Read user input
+                new_value = input()
 
-            # If user wants to quit sample, then quit.
-            # Otherwise change the shadow value.
-            if new_value in ['exit', 'quit']:
-                exit("User has quit")
+                # If user wants to quit sample, then quit.
+                # Otherwise change the shadow value.
+                if new_value in ['exit', 'quit']:
+                    exit("User has quit")
+                    break
+                else:
+                    change_shadow_value(new_value)
+
+            except Exception as e:
+                print("Exception on input thread.")
+                exit(e)
                 break
-            else:
-                change_shadow_value(new_value)
-
+    # Otherwise, send shadow updates automatically
+    else:
+        try:
+            messages_sent = 0
+            while messages_sent < 5:
+                input = "Shadow_Value_" + str(messages_sent)
+                change_shadow_value(input)
+                sleep(1)
+                messages_sent += 1
         except Exception as e:
-            print("Exception on input thread.")
+            print ("Exception on input thread (CI)")
             exit(e)
-            break
 
 if __name__ == '__main__':
     mqtt_connection = cmdUtils.build_mqtt_connection(None, None)

@@ -1,10 +1,8 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-import argparse
-from awscrt import auth, http, io, mqtt
+from awscrt import mqtt
 from awsiot import iotjobs
-from awsiot import mqtt_connection_builder
 from concurrent.futures import Future
 import sys
 import threading
@@ -48,12 +46,14 @@ cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT conne
 cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
 cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
 cmdUtils.register_command("job_time", "<int>", "Emulate working on a job by sleeping this many seconds (optional, default='5')", default=5, type=int)
+cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None'. Will just describe job if set)")
 # Needs to be called so the command utils parse the commands
 cmdUtils.get_args()
 
 mqtt_connection = None
 jobs_client = None
 jobs_thing_name = cmdUtils.get_command_required("thing_name")
+is_ci = cmdUtils.get_command("is_ci", None) != None
 
 class LockedData:
     def __init__(self):
@@ -80,6 +80,10 @@ def exit(msg_or_exception):
             future.add_done_callback(on_disconnected)
 
 def try_start_next_job():
+    if is_ci:
+        print ("CI does not start jobs! Skipping...")
+        return
+
     print("Trying to start the next job...")
     with locked_data.lock:
         if locked_data.is_working_on_job:
@@ -286,6 +290,7 @@ if __name__ == '__main__':
         # Make initial attempt to start next job. The service should reply with
         # an "accepted" response, even if no jobs are pending. The response
         # will contain data about the next job, if there is one.
+        # (Will do nothing if we are in CI)
         try_start_next_job()
 
     except Exception as e:
