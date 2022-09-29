@@ -37,7 +37,7 @@ def process_logs(log_group, log_stream, thing_name):
     try:
         secrets_client = boto3.client(
             "secretsmanager", region_name=os.environ["AWS_DEFAULT_REGION"])
-        s3_bucket_name = secrets_client.get_secret_value("ci/DeviceAdvisor/s3bucket")["SecretString"]
+        s3_bucket_name = secrets_client.get_secret_value(SecretId="ci/DeviceAdvisor/s3bucket")["SecretString"]
         s3.Bucket(s3_bucket_name).upload_file(log_file, log_file)
         print("[Device Advisor] Device Advisor Log file uploaded to "+ log_file)
     except Exception:
@@ -54,12 +54,13 @@ def sleep_with_backoff(base, max):
 # Initialize variables
 # create aws clients
 try:
-    client = boto3.client('iot')
-    dataClient = boto3.client('iot-data')
-    deviceAdvisor = boto3.client('iotdeviceadvisor')
+    client = boto3.client('iot', region_name="us-east-1")
+    dataClient = boto3.client('iot-data', region_name="us-east-1")
+    deviceAdvisor = boto3.client('iotdeviceadvisor', region_name="us-east-1")
     s3 = boto3.resource('s3')
-except Exception:
+except Exception as ex:
     print ("[Device Advisor] Error: could not create boto3 clients.")
+    print (ex)
     exit(-1)
 
 # const
@@ -152,6 +153,25 @@ for test_name in DATestConfig['tests']:
         print("[Device Advisor] Error: Failed to create certificate.")
         exit(-1)
 
+    certificate_arn = create_cert_response['certificateArn']
+    certificate_id = create_cert_response['certificateId']
+
+    ##############################################
+    # attach policy to certificate
+    try:
+        secrets_client = boto3.client(
+            "secretsmanager", region_name=os.environ["AWS_DEFAULT_REGION"])
+        policy_name = secrets_client.get_secret_value(SecretId="ci/DeviceAdvisor/policy_name")["SecretString"]
+        client.attach_policy (
+            policyName= policy_name,
+            target = certificate_arn
+        )
+    except Exception as ex:
+        print (ex)
+        delete_thing_with_certi(thing_name, certificate_id, certificate_arn )
+        print("[Device Advisor] Error: Failed to attach policy.")
+        exit(-1)
+
     ##############################################
     # attach certification to thing
     try:
@@ -159,11 +179,8 @@ for test_name in DATestConfig['tests']:
         # attache the certificate to thing
         client.attach_thing_principal(
             thingName = thing_name,
-            principal = create_cert_response['certificateArn']
+            principal = certificate_arn
         )
-
-        certificate_arn = create_cert_response['certificateArn']
-        certificate_id = create_cert_response['certificateId']
 
     except Exception:
         delete_thing_with_certi(thing_name, certificate_id ,certificate_arn )
