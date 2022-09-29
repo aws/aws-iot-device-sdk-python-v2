@@ -436,14 +436,16 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
 
 This sample uses the AWS IoT
 [Jobs](https://docs.aws.amazon.com/iot/latest/developerguide/iot-jobs.html)
-Service to receive and execute operations
-on the device. Imagine periodic software updates that must be sent to and
+Service to get a list of pending jobs and
+then execution operations on these pending jobs until there are no more
+remaining on the device. Imagine periodic software updates that must be sent to and
 executed on devices in the wild.
 
 This sample requires you to create jobs for your device to execute. See
 [instructions here](https://docs.aws.amazon.com/iot/latest/developerguide/create-manage-jobs.html).
 
-On startup, the sample tries to start the next pending job execution.
+On startup, the sample tries to get a list of all the in-progress and queued
+jobs and display them in a list. Then it tries to start the next pending job execution.
 If such a job exists, the sample emulates "doing work" by spawning a thread
 that sleeps for several seconds before marking the job as SUCCEEDED. When no
 pending job executions exist, the sample sits in an idle state.
@@ -516,7 +518,7 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
 
 This sample uses the AWS IoT
 [Fleet provisioning](https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html)
-to provision devices using either a CSR or KeysAndcertificate and subsequently calls RegisterThing.
+to provision devices using either a CSR or Keys-And-Certificate and subsequently calls RegisterThing.
 
 On startup, the script subscribes to topics based on the request type of either CSR or Keys topics,
 publishes the request to corresponding topic and calls RegisterThing.

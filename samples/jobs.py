@@ -8,11 +8,13 @@ import sys
 import threading
 import time
 import traceback
+import time
 from uuid import uuid4
 
 # - Overview -
-# This sample uses the AWS IoT Jobs Service to receive and execute operations
-# on the device. Imagine periodic software updates that must be sent to and
+# This sample uses the AWS IoT Jobs Service to get a list of pending jobs and
+# then execution operations on these pending jobs until there are no more
+# remaining on the device. Imagine periodic software updates that must be sent to and
 # executed on devices in the wild.
 #
 # - Instructions -
@@ -20,7 +22,8 @@ from uuid import uuid4
 # https://docs.aws.amazon.com/iot/latest/developerguide/create-manage-jobs.html
 #
 # - Detail -
-# On startup, the sample tries to start the next pending job execution.
+# On startup, the sample tries to get a list of all the in-progress and queued
+# jobs and display them in a list. Then it tries to start the next pending job execution.
 # If such a job exists, the sample emulates "doing work" by spawning a thread
 # that sleeps for several seconds before marking the job as SUCCEEDED. When no
 # pending job executions exist, the sample sits in an idle state.
@@ -61,6 +64,7 @@ class LockedData:
         self.disconnect_called = False
         self.is_working_on_job = False
         self.is_next_job_waiting = False
+        self.got_job_response = False
 
 locked_data = LockedData()
 
@@ -80,11 +84,6 @@ def exit(msg_or_exception):
             future.add_done_callback(on_disconnected)
 
 def try_start_next_job():
-    if is_ci:
-        exit("CI does not start jobs. Quit sample...")
-        is_sample_done.set()
-        return
-
     print("Trying to start the next job...")
     with locked_data.lock:
         if locked_data.is_working_on_job:
@@ -117,6 +116,29 @@ def on_disconnected(disconnect_future):
 
     # Signal that sample is finished
     is_sample_done.set()
+
+# A list to hold all the pending jobs
+available_jobs = []
+def on_get_pending_job_executions_accepted(response):
+    # type: (iotjobs.GetPendingJobExecutionsResponse) -> None
+    with locked_data.lock:
+        if (len(response.queued_jobs) > 0 or len(response.in_progress_jobs) > 0):
+            print ("Pending Jobs:")
+            for job in response.in_progress_jobs:
+                available_jobs.append(job)
+                print(f"  In Progress: {job.job_id} @ {job.last_updated_at}")
+            for job in response.queued_jobs:
+                available_jobs.append(job)
+                print (f"  {job.job_id} @ {job.last_updated_at}")
+        else:
+            print ("No pending or queued jobs found!")
+        locked_data.got_job_response = True
+
+def on_get_pending_job_executions_rejected(error):
+    # type: (iotjobs.RejectedError) -> None
+    print (f"Request rejected: {error.code}: {error.message}")
+    exit("Get pending jobs request rejected!")
+
 
 def on_next_job_execution_changed(event):
     # type: (iotjobs.NextJobExecutionChangedEvent) -> None
@@ -236,6 +258,53 @@ if __name__ == '__main__':
     # fails or succeeds.
     connected_future.result()
     print("Connected!")
+
+    try:
+        # List the jobs queued and pending
+        get_jobs_request = iotjobs.GetPendingJobExecutionsRequest(thing_name=jobs_thing_name)
+        jobs_request_future_accepted, _ = jobs_client.subscribe_to_get_pending_job_executions_accepted(
+            request=get_jobs_request,
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_get_pending_job_executions_accepted
+        )
+        # Wait for the subscription to succeed
+        jobs_request_future_accepted.result()
+
+        jobs_request_future_rejected, _ = jobs_client.subscribe_to_get_pending_job_executions_rejected(
+            request=get_jobs_request,
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+            callback=on_get_pending_job_executions_rejected
+        )
+        # Wait for the subscription to succeed
+        jobs_request_future_rejected.result()
+
+        # Get a list of all the jobs
+        get_jobs_request_future = jobs_client.publish_get_pending_job_executions(
+            request=get_jobs_request,
+            qos=mqtt.QoS.AT_LEAST_ONCE
+        )
+        # Wait for the publish to succeed
+        get_jobs_request_future.result()
+    except Exception as e:
+        exit(e)
+
+    # If we are running in CI, then we want to check how many jobs were reported and stop
+    if (is_ci):
+        # Wait until we get a response. If we do not get a response after 50 tries, then abort
+        got_job_response_tries = 0
+        while (locked_data.got_job_response == False):
+            got_job_response_tries += 1
+            if (got_job_response_tries > 50):
+                exit("Got job response timeout exceeded")
+                sys.exit(-1)
+            time.sleep(0.2)
+
+        if (len(available_jobs) > 0):
+            print ("At least one job queued in CI! No further work to do. Exiting sample...")
+            sys.exit(0)
+        else:
+            print ("ERROR: No jobs queued in CI! At least one job should be queued!")
+            sys.exit(-1)
 
     try:
         # Subscribe to necessary topics.
