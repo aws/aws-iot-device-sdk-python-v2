@@ -12,10 +12,10 @@ if __name__ == '__main__':
         quit(-1)
 
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
-        endpoint=DATestUtils.endpoint,
-        cert_filepath=DATestUtils.certificatePath,
-        pri_key_filepath=DATestUtils.keyPath,
-        client_id=DATestUtils.client_id + 'pub',
+        endpoint = DATestUtils.endpoint,
+        cert_filepath = DATestUtils.certificatePath,
+        pri_key_filepath = DATestUtils.keyPath,
+        client_id = DATestUtils.generate_client_id(postfix="-pub"),
         clean_session = True,
         tcp_connect_timeout_ms = 120000, # 2 minutes
         keep_alive_secs = 120000, # 2 minutes
