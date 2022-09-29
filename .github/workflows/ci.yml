@@ -180,7 +180,7 @@ jobs:
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
       - name: run Shadow sample
         run: |
-          python3 ./aws-iot-device-sdk-python-v2/utils/run_sample_ci.py --language Python --sample_file './aws-iot-device-sdk-python-v2/samples/shadow.py' --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/Shadow/cert' --sample_secret_private_key 'ci/Shadow/key' --sample_arguments '--thing_name CI_Shadow_Thing --is_ci True'
+          python3 ./aws-iot-device-sdk-python-v2/utils/run_sample_ci.py --language Python --sample_file './aws-iot-device-sdk-python-v2/samples/shadow.py' --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/Shadow/cert' --sample_secret_private_key 'ci/Shadow/key' --sample_arguments '--thing_name CI_Shadow_Thing'
       - name: configure AWS credentials (Jobs)
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -188,7 +188,7 @@ jobs:
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
       - name: run Jobs sample
         run: |
-          python3 ./aws-iot-device-sdk-python-v2/utils/run_sample_ci.py --language Python --sample_file './aws-iot-device-sdk-python-v2/samples/jobs.py' --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/Jobs/cert' --sample_secret_private_key 'ci/Jobs/key' --sample_arguments '--thing_name CI_Jobs_Thing --is_ci True'
+          python3 ./aws-iot-device-sdk-python-v2/utils/run_sample_ci.py --language Python --sample_file './aws-iot-device-sdk-python-v2/samples/jobs.py' --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/Jobs/cert' --sample_secret_private_key 'ci/Jobs/key' --sample_arguments '--thing_name CI_Jobs_Thing'
       - name: configure AWS credentials (Fleet provisioning)
         uses: aws-actions/configure-aws-credentials@v1
         with:

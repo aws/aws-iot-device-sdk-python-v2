@@ -135,6 +135,9 @@ def launch_sample(parsed_commands, sample_endpoint, sample_certificate, sample_p
         exit_code = sample_return.returncode
 
     elif (parsed_commands.language == "Python"):
+        launch_arguments.append("--is_ci")
+        launch_arguments.append("True")
+
         sample_return = subprocess.run(
             args=[sys.executable, parsed_commands.sample_file] + launch_arguments)
         exit_code = sample_return.returncode

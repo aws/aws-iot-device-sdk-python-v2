@@ -37,6 +37,7 @@ cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 44
 cmdUtils.register_command("csr", "<path>", "Path to CSR in Pem format (optional).")
 cmdUtils.register_command("template_name", "<str>", "The name of your provisioning template.")
 cmdUtils.register_command("template_parameters", "<json>", "Template parameters json.")
+cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
 # Needs to be called so the command utils parse the commands
 cmdUtils.get_args()
 
@@ -47,6 +48,7 @@ identity_client = None
 createKeysAndCertificateResponse = None
 createCertificateFromCsrResponse = None
 registerThingResponse = None
+is_ci = cmdUtils.get_command("is_ci", None) != None
 
 class LockedData:
     def __init__(self):
@@ -218,8 +220,11 @@ if __name__ == '__main__':
     proxy_options = None
     mqtt_connection = cmdUtils.build_mqtt_connection(on_connection_interrupted, on_connection_resumed)
 
-    print("Connecting to {} with client ID '{}'...".format(
-        cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    if is_ci == False:
+        print("Connecting to {} with client ID '{}'...".format(
+            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    else:
+        print("Connecting to endpoint with client ID")
 
     connected_future = mqtt_connection.connect()
 

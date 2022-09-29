@@ -81,7 +81,8 @@ def exit(msg_or_exception):
 
 def try_start_next_job():
     if is_ci:
-        print ("CI does not start jobs! Skipping...")
+        exit("CI does not start jobs. Quit sample...")
+        is_sample_done.set()
         return
 
     print("Trying to start the next job...")
@@ -218,8 +219,11 @@ def on_update_job_execution_rejected(rejected):
 
 if __name__ == '__main__':
     mqtt_connection = cmdUtils.build_mqtt_connection(None, None)
-    print("Connecting to {} with client ID '{}'...".format(
-        cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    if is_ci == False:
+        print("Connecting to {} with client ID '{}'...".format(
+            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    else:
+        print("Connecting to endpoint with client ID")
 
     connected_future = mqtt_connection.connect()
 
