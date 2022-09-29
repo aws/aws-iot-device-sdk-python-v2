@@ -32,5 +32,5 @@ class DATestUtils:
         return True
 
     @classmethod
-    def generate_client_id(postfix):
+    def generate_client_id(_self, postfix):
         return "test-DA" + str(uuid4()) + postfix
