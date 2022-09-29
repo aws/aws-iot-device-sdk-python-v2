@@ -9,10 +9,7 @@ phases:
     commands:
       - echo Build started on `date`
       - $CODEBUILD_SRC_DIR/codebuild/samples/setup-linux.sh
-      - $CODEBUILD_SRC_DIR/codebuild/samples/connect-linux.sh
-      - $CODEBUILD_SRC_DIR/codebuild/samples/pkcs11-connect-linux.sh
       - $CODEBUILD_SRC_DIR/codebuild/samples/pubsub-linux.sh
-      - $CODEBUILD_SRC_DIR/codebuild/samples/connect-auth-linux.sh
   post_build:
     commands:
       - echo Build completed on `date`

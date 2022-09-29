@@ -1,6 +1,5 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
-
 from awsiot import mqtt_connection_builder
 from da_test_utils import DATestUtils, TestType
 
@@ -18,10 +17,9 @@ if __name__ == '__main__':
         pri_key_filepath=DATestUtils.keyPath,
         client_id = DATestUtils.client_id,
         clean_session = True,
-        tcp_connect_timeout_ms = 12000,
-        keep_alive_secs = 12000,
-        ping_timeout_ms = 24000)
-
+        tcp_connect_timeout_ms = 120000, # 2 minutes
+        keep_alive_secs = 120000, # 2 minutes
+        ping_timeout_ms = 180000) # 3 minutes
     connect_future = mqtt_connection.connect()
 
     # Future.result() waits until a result is available
