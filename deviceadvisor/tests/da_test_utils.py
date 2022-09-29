@@ -17,7 +17,7 @@ class DATestUtils:
     thing_name = os.getenv('DA_THING_NAME')
     shadowProperty = os.getenv('DA_SHADOW_PROPERTY')
     shadowValue = os.getenv('DA_SHADOW_VALUE_SET')
-    client_id = "test-" + str(uuid4())
+    client_id = "test-DA" + str(uuid4())
 
     @classmethod
     def valid(cls, test_type):
