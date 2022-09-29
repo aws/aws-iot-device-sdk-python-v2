@@ -19,9 +19,9 @@ if __name__ == '__main__':
         pri_key_filepath = DATestUtils.keyPath,
         client_id = DATestUtils.generate_client_id("-shadow"),
         clean_session = True,
-        tcp_connect_timeout_ms = 120000, # 2 minutes
-        keep_alive_secs = 120000, # 2 minutes
-        ping_timeout_ms = 180000) # 3 minutes
+        tcp_connect_timeout_ms = 60000, # 1 minute
+        keep_alive_secs = 60000, # 1 minute
+        ping_timeout_ms = 120000) # 2 minutes
 
     connect_future = mqtt_connection.connect()
     connect_future.result()
