@@ -17,8 +17,9 @@ if __name__ == '__main__':
         cert_filepath=DATestUtils.certificatePath,
         pri_key_filepath=DATestUtils.keyPath,
         client_id = DATestUtils.client_id,
-        clean_session = True, 
-        ping_timeout_ms = 6000)
+        clean_session = True,
+        keep_alive_secs = 6000,
+        ping_timeout_ms = 12000)
 
     connect_future = mqtt_connection.connect()
 

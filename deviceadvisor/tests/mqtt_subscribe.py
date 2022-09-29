@@ -17,7 +17,8 @@ if __name__ == '__main__':
         pri_key_filepath=DATestUtils.keyPath,
         client_id = DATestUtils.client_id,
         clean_session = True,
-        ping_timeout_ms = 6000)
+        keep_alive_secs = 6000,
+        ping_timeout_ms = 12000)
 
     connect_future = mqtt_connection.connect()
 
@@ -29,7 +30,7 @@ if __name__ == '__main__':
         topic=DATestUtils.topic,
         qos=mqtt.QoS.AT_MOST_ONCE)
     subscribe_future.result()
-    
+
     # Disconnect
     disconnect_future = mqtt_connection.disconnect()
     disconnect_future.result()

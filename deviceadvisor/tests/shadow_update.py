@@ -19,7 +19,8 @@ if __name__ == '__main__':
         pri_key_filepath=DATestUtils.keyPath,
         client_id = DATestUtils.client_id,
         clean_session = True,
-        ping_timeout_ms = 6000)
+        keep_alive_secs = 6000,
+        ping_timeout_ms = 12000)
 
     connect_future = mqtt_connection.connect()
     connect_future.result()
@@ -34,7 +35,7 @@ if __name__ == '__main__':
             desired={ DATestUtils.shadowProperty: DATestUtils.shadowValue },
         )
     )
-    # Device advisor test will not return PUBACK, therefore we use AT_MOST_ONCE so that 
+    # Device advisor test will not return PUBACK, therefore we use AT_MOST_ONCE so that
     # we dont busy wait for PUBACK
     shadow_future = shadow_client.publish_update_shadow(request, mqtt.QoS.AT_MOST_ONCE)
     shadow_future.result()

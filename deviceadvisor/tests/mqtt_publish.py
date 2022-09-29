@@ -17,7 +17,8 @@ if __name__ == '__main__':
         pri_key_filepath=DATestUtils.keyPath,
         client_id=DATestUtils.client_id,
         clean_session = True,
-        ping_timeout_ms = 6000)
+        keep_alive_secs = 6000,
+        ping_timeout_ms = 12000)
     connect_future = mqtt_connection.connect()
 
     # Future.result() waits until a result is available
@@ -25,7 +26,7 @@ if __name__ == '__main__':
 
     message = "Hello World"
     message_json = json.dumps(message)
-    # Device advisor test will not return PUBACK, therefore we use AT_MOST_ONCE so that 
+    # Device advisor test will not return PUBACK, therefore we use AT_MOST_ONCE so that
     # we dont busy wait for PUBACK
     publish_future, packet_id = mqtt_connection.publish(
         topic=DATestUtils.topic,
