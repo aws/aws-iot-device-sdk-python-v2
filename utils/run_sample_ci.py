@@ -144,14 +144,37 @@ def launch_sample(parsed_commands, sample_endpoint, sample_certificate, sample_p
 
     elif (parsed_commands.language == "Javascript"):
         os.chdir(parsed_commands.sample_file)
-        sample_return_one = subprocess.run(args=["npm", "install"])
-        if (sample_return_one.returncode != 0):
+
+        launch_arguments.append("--is_ci")
+        launch_arguments.append("true")
+
+        sample_return_one = None
+        if sys.platform == "win32" or sys.platform == "cygwin":
+            sample_return_one = subprocess.run(args=["npm", "install"], shell=True)
+        else:
+            sample_return_one = subprocess.run(args=["npm", "install"])
+
+        if (sample_return_one == None or sample_return_one.returncode != 0):
             exit_code = sample_return_one.returncode
         else:
-            arguments = ["node", "dist/index.js"]
-            sample_return_two = subprocess.run(
-                args=arguments + launch_arguments)
-            exit_code = sample_return_two.returncode
+            sample_return_two = None
+            arguments = []
+            if (parsed_commands.node_cmd == "" or parsed_commands.node_cmd == None):
+                arguments = ["node", "dist/index.js"]
+            else:
+                arguments = parsed_commands.node_cmd.split(" ")
+
+            if sys.platform == "win32" or sys.platform == "cygwin":
+                sample_return_two = subprocess.run(
+                    args=arguments + launch_arguments, shell=True)
+            else:
+                sample_return_two = subprocess.run(
+                    args=arguments + launch_arguments)
+
+            if (sample_return_two != None):
+                exit_code = sample_return_two.returncode
+            else:
+                exit_code = 1
 
     else:
         print("ERROR - unknown programming language! Supported programming languages are 'Java', 'CPP', 'Python', and 'Javascript'")
@@ -188,6 +211,8 @@ def main():
                                  help="Arguments to pass to sample. In Java, these arguments will be in a double quote (\") string")
     argument_parser.add_argument("--sample_main_class", metavar="<pubsub.PubSub - Java ONLY>",
                                  required=False, default="", help="Java only: The main class to run")
+    argument_parser.add_argument("--node_cmd", metavar="<node index.js - Javascript ONLY>", required=False, default="",
+                                 help="Javascript only: Overrides the default 'npm dist/index.js' with whatever you pass. Useful for launching pure Javascript samples")
 
     parsed_commands = argument_parser.parse_args()
 
