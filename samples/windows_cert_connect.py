@@ -21,6 +21,9 @@ cmdUtils.register_command("client_id", "<str>",
                           "Client ID to use for MQTT connection (optional, default='test-*').",
                           default="test-" + str(uuid4()))
 cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
+cmdUtils.register_command("cert", "<path>", "Path to certificate in Windows cert store. "
+                            "e.g. \"CurrentUser\\MY\\6ac133ac58f0a88b83e9c794eba156a98da39b4c\"", True, str)
+cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
 # Needs to be called so the command utils parse the commands
 cmdUtils.get_args()
 
