@@ -55,6 +55,9 @@ jobs:
       run: |
         python -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder.pyz')"
         python builder.pyz build -p ${{ env.PACKAGE_NAME }}
+    - name: Running samples in CI setup
+      run: |
+        python -m pip install boto3
     - name: configure AWS credentials (PubSub)
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -62,7 +65,6 @@ jobs:
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: run PubSub sample
       run: |
-        python -m pip install boto3
         python ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/pubsub.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/key'
     - name: run Windows Certificate Connect sample
       run: |
@@ -87,6 +89,9 @@ jobs:
         python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
         chmod a+x builder
         ./builder build -p ${{ env.PACKAGE_NAME }}
+    - name: Running samples in CI setup
+      run: |
+        python3 -m pip install boto3
     - name: configure AWS credentials (PubSub)
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -94,7 +99,6 @@ jobs:
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: run PubSub sample
       run: |
-        python3 -m pip install boto3
         python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/pubsub.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/key'
     - name: configure AWS credentials (Device Advisor)
       uses: aws-actions/configure-aws-credentials@v1
@@ -116,6 +120,9 @@ jobs:
         python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
         chmod a+x builder
         ./builder build -p ${{ env.PACKAGE_NAME }}
+    - name: Running samples in CI setup
+      run: |
+        python3 -m pip install boto3
     - name: configure AWS credentials (PubSub)
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -123,7 +130,6 @@ jobs:
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: run PubSub sample
       run: |
-        python3 -m pip install boto3
         python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/pubsub.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/key'
     - name: configure AWS credentials (Device Advisor)
       uses: aws-actions/configure-aws-credentials@v1
@@ -146,6 +152,12 @@ jobs:
           python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
           chmod a+x builder
           ./builder build -p ${{ env.PACKAGE_NAME }}
+      - name: Running samples in CI setup
+        run: |
+          python3 -m pip install boto3
+          sudo apt-get update -y
+          sudo apt-get install softhsm -y
+          softhsm2-util --version
       - name: configure AWS credentials (Connect and PubSub)
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -153,7 +165,6 @@ jobs:
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
       - name: run Basic Connect sample
         run: |
-          python3 -m pip install boto3
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/basic_connect.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/key'
       - name: run Websocket Connect sample
         run: |
@@ -163,9 +174,6 @@ jobs:
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/pubsub.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/key'
       - name: run PKCS11 Connect sample
         run: |
-          sudo apt-get update -y
-          sudo apt-get install softhsm -y
-          softhsm2-util --version
           mkdir -p /tmp/tokens
           export SOFTHSM2_CONF=/tmp/softhsm2.conf
           echo "directories.tokendir = /tmp/tokens" > /tmp/softhsm2.conf
