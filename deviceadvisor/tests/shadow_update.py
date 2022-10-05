@@ -14,17 +14,18 @@ if __name__ == '__main__':
         quit(-1)
 
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
-        endpoint=DATestUtils.endpoint,
-        cert_filepath=DATestUtils.certificatePath,
-        pri_key_filepath=DATestUtils.keyPath,
-        client_id = DATestUtils.client_id,
+        endpoint = DATestUtils.endpoint,
+        cert_filepath = DATestUtils.certificatePath,
+        pri_key_filepath = DATestUtils.keyPath,
+        client_id = DATestUtils.generate_client_id("-shadow"),
         clean_session = True,
-        ping_timeout_ms = 6000)
+        tcp_connect_timeout_ms = 60000, # 1 minute
+        keep_alive_secs = 60000, # 1 minute
+        ping_timeout_ms = 120000) # 2 minutes
 
     connect_future = mqtt_connection.connect()
     connect_future.result()
     shadow_client = iotshadow.IotShadowClient(mqtt_connection)
-
 
     # Publish shadow value
     request = iotshadow.UpdateShadowRequest(
@@ -34,7 +35,7 @@ if __name__ == '__main__':
             desired={ DATestUtils.shadowProperty: DATestUtils.shadowValue },
         )
     )
-    # Device advisor test will not return PUBACK, therefore we use AT_MOST_ONCE so that 
+    # Device advisor test will not return PUBACK, therefore we use AT_MOST_ONCE so that
     # we dont busy wait for PUBACK
     shadow_future = shadow_client.publish_update_shadow(request, mqtt.QoS.AT_MOST_ONCE)
     shadow_future.result()

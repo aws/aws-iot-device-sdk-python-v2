@@ -18,6 +18,7 @@ First, install the aws-iot-devices-sdk-python-v2 with following the instructions
 Then change into the samples directory to run the Python commands to execute the samples. You can view the commands of a sample like this:
 
 ``` sh
+# For Windows: replace 'python3' with 'python'
 python3 pubsub.py --help
 ```
 
@@ -77,6 +78,7 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
 
 Run the sample like this:
 ``` sh
+# For Windows: replace 'python3' with 'python'
 python3 pubsub.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file>
 ```
 
@@ -111,6 +113,7 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
 
 Run the sample like this:
 ``` sh
+# For Windows: replace 'python3' with 'python'
 python3 basic_connect.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file>
 ```
 
@@ -145,6 +148,7 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
 
 Run the sample like this:
 ``` sh
+# For Windows: replace 'python3' with 'python'
 python3 websocket_connect.py --endpoint <endpoint> --ca_file <file> --signing_region <signing region>
 ```
 
@@ -222,6 +226,7 @@ To run this sample using [SoftHSM2](https://www.opendnssec.org/softhsm/) as the 
 
 5)  Now you can run the sample:
     ```sh
+    # For Windows: replace 'python3' with 'python'
     python3 pkcs11_connect.py --endpoint <endpoint> --ca_file <path to root CA> --cert <path to certificate> --pkcs11_lib <path to PKCS11 lib> --pin <user-pin> --token_label <token-label> --key_label <key-label>
     ```
 
@@ -307,6 +312,7 @@ To run this sample with a basic certificate from AWS IoT Core:
 4) Now you can run the sample:
 
     ```sh
+    # For Windows: replace 'python3' with 'python'
     python3 windows_cert_connect.py --endpoint <endpoint> --ca_file <path to root CA> --cert <path to certificate>
     ```
 
@@ -338,6 +344,7 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
 
 Run the sample like this:
 ``` sh
+# For Windows: replace 'python3' with 'python'
 python3 custom_authorizer_connect.py --endpoint <endpoint> --ca_file <path to root CA> --custom_auth_authorizer_name <authorizer name>
 ```
 
@@ -367,6 +374,7 @@ Source: `samples/shadow.py`
 
 Run the sample like this:
 ``` sh
+# For Windows: replace 'python3' with 'python'
 python3 shadow.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --thing-name <name>
 ```
 
@@ -428,14 +436,16 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
 
 This sample uses the AWS IoT
 [Jobs](https://docs.aws.amazon.com/iot/latest/developerguide/iot-jobs.html)
-Service to receive and execute operations
-on the device. Imagine periodic software updates that must be sent to and
+Service to get a list of pending jobs and
+then execution operations on these pending jobs until there are no more
+remaining on the device. Imagine periodic software updates that must be sent to and
 executed on devices in the wild.
 
 This sample requires you to create jobs for your device to execute. See
 [instructions here](https://docs.aws.amazon.com/iot/latest/developerguide/create-manage-jobs.html).
 
-On startup, the sample tries to start the next pending job execution.
+On startup, the sample tries to get a list of all the in-progress and queued
+jobs and display them in a list. Then it tries to start the next pending job execution.
 If such a job exists, the sample emulates "doing work" by spawning a thread
 that sleeps for several seconds before marking the job as SUCCEEDED. When no
 pending job executions exist, the sample sits in an idle state.
@@ -450,51 +460,48 @@ Source: `samples/jobs.py`
 
 Run the sample like this:
 ``` sh
+# For Windows: replace 'python3' with 'python'
 python3 jobs.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --thing_name <name>
 ```
 
 Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect, subscribe, publish, and receive. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
 
 <details>
-<summary>(see sample policy)</summary>
+<summary>Sample Policy</summary>
 <pre>
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "iot:Publish"
-      ],
+      "Action": "iot:Publish",
       "Resource": [
         "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/start-next",
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/*/update"
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/*/update",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/*/get",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/get"
       ]
     },
     {
       "Effect": "Allow",
-      "Action": [
-        "iot:Receive"
-      ],
+      "Action": "iot:Receive",
       "Resource": [
         "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/notify-next",
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/start-next/accepted",
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/start-next/rejected",
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/*/update/accepted",
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/*/update/rejected"
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/start-next/*",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/*/update/*",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/get/*",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/things/<b>thingname</b>/jobs/*/get/*"
       ]
     },
     {
       "Effect": "Allow",
-      "Action": [
-        "iot:Subscribe"
-      ],
+      "Action": "iot:Subscribe",
       "Resource": [
         "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/notify-next",
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/start-next/accepted",
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/start-next/rejected",
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/*/update/accepted",
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/*/update/rejected"
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/start-next/*",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/*/update/*",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/get/*",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/things/<b>thingname</b>/jobs/*/get/*"
       ]
     },
     {
@@ -511,7 +518,7 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
 
 This sample uses the AWS IoT
 [Fleet provisioning](https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html)
-to provision devices using either a CSR or KeysAndcertificate and subsequently calls RegisterThing.
+to provision devices using either a CSR or Keys-And-Certificate and subsequently calls RegisterThing.
 
 On startup, the script subscribes to topics based on the request type of either CSR or Keys topics,
 publishes the request to corresponding topic and calls RegisterThing.
@@ -520,11 +527,13 @@ Source: `samples/fleetprovisioning.py`
 
 Run the sample using createKeysAndCertificate:
 ``` sh
+# For Windows: replace 'python3' with 'python'
 python3 fleetprovisioning.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --template_name <name> --template_parameters <parameters>
 ```
 
 Run the sample using createCertificateFromCsr:
 ``` sh
+# For Windows: replace 'python3' with 'python'
 python3 fleetprovisioning.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --template_name <name> --template_parameters <parameters> --csr <csr file>
 ```
 
@@ -538,9 +547,7 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "iot:Publish"
-      ],
+      "Action": "iot:Publish",
       "Resource": [
         "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/certificates/create/json",
         "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/certificates/create-from-csr/json",
@@ -550,8 +557,7 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
     {
       "Effect": "Allow",
       "Action": [
-        "iot:Receive",
-        "iot:Subscribe"
+        "iot:Receive"
       ],
       "Resource": [
         "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/certificates/create/json/accepted",
@@ -560,6 +566,20 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
         "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/certificates/create-from-csr/json/rejected",
         "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/provisioning-templates/<b>templatename</b>/provision/json/accepted",
         "arn:aws:iot:<b>region</b>:<b>account</b>:topic/$aws/provisioning-templates/<b>templatename</b>/provision/json/rejected"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Subscribe"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/certificates/create/json/accepted",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/certificates/create/json/rejected",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/certificates/create-from-csr/json/accepted",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/certificates/create-from-csr/json/rejected",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/provisioning-templates/<b>templatename</b>/provision/json/accepted",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/$aws/provisioning-templates/<b>templatename</b>/provision/json/rejected"
       ]
     },
     {
@@ -606,9 +626,104 @@ aws iot create-provisioning-template \
         --enabled
 ```
 The rest of the instructions assume you have used the following for the template body:
+
+<details>
+<summary>(see template body)</summary>
 ``` sh
-{\"Parameters\":{\"DeviceLocation\":{\"Type\":\"String\"},\"AWS::IoT::Certificate::Id\":{\"Type\":\"String\"},\"SerialNumber\":{\"Type\":\"String\"}},\"Mappings\":{\"LocationTable\":{\"Seattle\":{\"LocationUrl\":\"https://example.aws\"}}},\"Resources\":{\"thing\":{\"Type\":\"AWS::IoT::Thing\",\"Properties\":{\"ThingName\":{\"Fn::Join\":[\"\",[\"ThingPrefix_\",{\"Ref\":\"SerialNumber\"}]]},\"AttributePayload\":{\"version\":\"v1\",\"serialNumber\":\"serialNumber\"}},\"OverrideSettings\":{\"AttributePayload\":\"MERGE\",\"ThingTypeName\":\"REPLACE\",\"ThingGroups\":\"DO_NOTHING\"}},\"certificate\":{\"Type\":\"AWS::IoT::Certificate\",\"Properties\":{\"CertificateId\":{\"Ref\":\"AWS::IoT::Certificate::Id\"},\"Status\":\"Active\"},\"OverrideSettings\":{\"Status\":\"REPLACE\"}},\"policy\":{\"Type\":\"AWS::IoT::Policy\",\"Properties\":{\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"iot:Connect\",\"iot:Subscribe\",\"iot:Publish\",\"iot:Receive\"],\"Resource\":\"*\"}]}}}},\"DeviceConfiguration\":{\"FallbackUrl\":\"https://www.example.com/test-site\",\"LocationUrl\":{\"Fn::FindInMap\":[\"LocationTable\",{\"Ref\":\"DeviceLocation\"},\"LocationUrl\"]}}}
+{
+  "Parameters": {
+    "DeviceLocation": {
+      "Type": "String"
+    },
+    "AWS::IoT::Certificate::Id": {
+      "Type": "String"
+    },
+    "SerialNumber": {
+      "Type": "String"
+    }
+  },
+  "Mappings": {
+    "LocationTable": {
+      "Seattle": {
+        "LocationUrl": "https://example.aws"
+      }
+    }
+  },
+  "Resources": {
+    "thing": {
+      "Type": "AWS::IoT::Thing",
+      "Properties": {
+        "ThingName": {
+          "Fn::Join": [
+            "",
+            [
+              "ThingPrefix_",
+              {
+                "Ref": "SerialNumber"
+              }
+            ]
+          ]
+        },
+        "AttributePayload": {
+          "version": "v1",
+          "serialNumber": "serialNumber"
+        }
+      },
+      "OverrideSettings": {
+        "AttributePayload": "MERGE",
+        "ThingTypeName": "REPLACE",
+        "ThingGroups": "DO_NOTHING"
+      }
+    },
+    "certificate": {
+      "Type": "AWS::IoT::Certificate",
+      "Properties": {
+        "CertificateId": {
+          "Ref": "AWS::IoT::Certificate::Id"
+        },
+        "Status": "Active"
+      },
+      "OverrideSettings": {
+        "Status": "REPLACE"
+      }
+    },
+    "policy": {
+      "Type": "AWS::IoT::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "iot:Connect",
+                "iot:Subscribe",
+                "iot:Publish",
+                "iot:Receive"
+              ],
+              "Resource": "*"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "DeviceConfiguration": {
+    "FallbackUrl": "https://www.example.com/test-site",
+    "LocationUrl": {
+      "Fn::FindInMap": [
+        "LocationTable",
+        {
+          "Ref": "DeviceLocation"
+        },
+        "LocationUrl"
+      ]
+    }
+  }
+}
 ```
+</details>
+
 If you use a different body, you may need to pass in different template parameters.
 
 #### Running the sample and provisioning using a certificate-key set from a provisioning claim
@@ -636,6 +751,7 @@ to perform the actual provisioning. If you are not using the temporary provision
 and `--key` appropriately:
 
 ``` sh
+# For Windows: replace 'python3' with 'python'
 python3 fleetprovisioning.py \
         --endpoint <endpoint> \
         --ca_file <path to root CA> \
@@ -676,6 +792,7 @@ Finally, supply the certificate signing request while invoking the provisioning 
 using a permanent certificate set, replace the paths specified in the `--cert` and `--key` arguments:
 
 ``` sh
+# For Windows: replace 'python3' with 'python'
 python3 fleetprovisioning.py \
         --endpoint <endpoint> \
         --ca_file <path to root CA> \

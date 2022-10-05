@@ -12,12 +12,14 @@ if __name__ == '__main__':
         quit(-1)
 
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
-        endpoint=DATestUtils.endpoint,
-        cert_filepath=DATestUtils.certificatePath,
-        pri_key_filepath=DATestUtils.keyPath,
-        client_id=DATestUtils.client_id,
+        endpoint = DATestUtils.endpoint,
+        cert_filepath = DATestUtils.certificatePath,
+        pri_key_filepath = DATestUtils.keyPath,
+        client_id = DATestUtils.generate_client_id("-pub"),
         clean_session = True,
-        ping_timeout_ms = 6000)
+        tcp_connect_timeout_ms = 60000, # 1 minute
+        keep_alive_secs = 60000, # 1 minute
+        ping_timeout_ms = 120000) # 2 minutes
     connect_future = mqtt_connection.connect()
 
     # Future.result() waits until a result is available
@@ -25,7 +27,7 @@ if __name__ == '__main__':
 
     message = "Hello World"
     message_json = json.dumps(message)
-    # Device advisor test will not return PUBACK, therefore we use AT_MOST_ONCE so that 
+    # Device advisor test will not return PUBACK, therefore we use AT_MOST_ONCE so that
     # we dont busy wait for PUBACK
     publish_future, packet_id = mqtt_connection.publish(
         topic=DATestUtils.topic,

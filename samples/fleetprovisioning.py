@@ -37,6 +37,7 @@ cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 44
 cmdUtils.register_command("csr", "<path>", "Path to CSR in Pem format (optional).")
 cmdUtils.register_command("template_name", "<str>", "The name of your provisioning template.")
 cmdUtils.register_command("template_parameters", "<json>", "Template parameters json.")
+cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
 # Needs to be called so the command utils parse the commands
 cmdUtils.get_args()
 
@@ -47,6 +48,7 @@ identity_client = None
 createKeysAndCertificateResponse = None
 createCertificateFromCsrResponse = None
 registerThingResponse = None
+is_ci = cmdUtils.get_command("is_ci", None) != None
 
 class LockedData:
     def __init__(self):
@@ -112,7 +114,8 @@ def createkeysandcertificate_execution_accepted(response):
     try:
         global createKeysAndCertificateResponse
         createKeysAndCertificateResponse = response
-        print("Received a new message {}".format(createKeysAndCertificateResponse))
+        if (is_ci == False):
+            print("Received a new message {}".format(createKeysAndCertificateResponse))
 
         return
 
@@ -129,7 +132,8 @@ def createcertificatefromcsr_execution_accepted(response):
     try:
         global createCertificateFromCsrResponse
         createCertificateFromCsrResponse = response
-        print("Received a new message {}".format(createCertificateFromCsrResponse))
+        if (is_ci == False):
+            print("Received a new message {}".format(createCertificateFromCsrResponse))
         global certificateOwnershipToken
         certificateOwnershipToken = response.certificate_ownership_token
 
@@ -148,7 +152,8 @@ def registerthing_execution_accepted(response):
     try:
         global registerThingResponse
         registerThingResponse = response
-        print("Received a new message {} ".format(registerThingResponse))
+        if (is_ci == False):
+            print("Received a new message {} ".format(registerThingResponse))
         return
 
     except Exception as e:
@@ -190,7 +195,10 @@ def waitForCreateKeysAndCertificateResponse():
     while loopCount < 10 and createKeysAndCertificateResponse is None:
         if createKeysAndCertificateResponse is not None:
             break
-        print('Waiting... CreateKeysAndCertificateResponse: ' + json.dumps(createKeysAndCertificateResponse))
+        if is_ci == False:
+            print('Waiting... CreateKeysAndCertificateResponse: ' + json.dumps(createKeysAndCertificateResponse))
+        else:
+            print("Waiting... CreateKeysAndCertificateResponse: ...")
         loopCount += 1
         time.sleep(1)
 
@@ -200,7 +208,10 @@ def waitForCreateCertificateFromCsrResponse():
     while loopCount < 10 and createCertificateFromCsrResponse is None:
         if createCertificateFromCsrResponse is not None:
             break
-        print('Waiting...CreateCertificateFromCsrResponse: ' + json.dumps(createCertificateFromCsrResponse))
+        if is_ci == False:
+            print('Waiting...CreateCertificateFromCsrResponse: ' + json.dumps(createCertificateFromCsrResponse))
+        else:
+            print("Waiting... CreateCertificateFromCsrResponse: ...")
         loopCount += 1
         time.sleep(1)
 
@@ -211,15 +222,21 @@ def waitForRegisterThingResponse():
         if registerThingResponse is not None:
             break
         loopCount += 1
-        print('Waiting... RegisterThingResponse: ' + json.dumps(registerThingResponse))
+        if is_ci == False:
+            print('Waiting... RegisterThingResponse: ' + json.dumps(registerThingResponse))
+        else:
+            print('Waiting... RegisterThingResponse: ...')
         time.sleep(1)
 
 if __name__ == '__main__':
     proxy_options = None
     mqtt_connection = cmdUtils.build_mqtt_connection(on_connection_interrupted, on_connection_resumed)
 
-    print("Connecting to {} with client ID '{}'...".format(
-        cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    if is_ci == False:
+        print("Connecting to {} with client ID '{}'...".format(
+            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    else:
+        print("Connecting to endpoint with client ID")
 
     connected_future = mqtt_connection.connect()
 

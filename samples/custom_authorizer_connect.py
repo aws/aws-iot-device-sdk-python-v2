@@ -17,8 +17,10 @@ cmdUtils.add_common_custom_authorizer_commands()
 cmdUtils.register_command("client_id", "<str>",
                           "Client ID to use for MQTT connection (optional, default='test-*').",
                           default="test-" + str(uuid4()))
+cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
 # Needs to be called so the command utils parse the commands
 cmdUtils.get_args()
+is_ci = cmdUtils.get_command("is_ci", None) != None
 
 
 def on_connection_interrupted(connection, error, **kwargs):
@@ -47,8 +49,11 @@ if __name__ == '__main__':
         clean_session=False,
         keep_alive_secs=30)
 
-    print("Connecting to {} with client ID '{}'...".format(
-        cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    if is_ci == False:
+        print("Connecting to {} with client ID '{}'...".format(
+            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    else:
+        print("Connecting to endpoint with client ID")
 
     connect_future = mqtt_connection.connect()
 

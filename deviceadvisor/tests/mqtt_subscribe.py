@@ -12,13 +12,14 @@ if __name__ == '__main__':
         quit(-1)
 
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
-        endpoint=DATestUtils.endpoint,
-        cert_filepath=DATestUtils.certificatePath,
-        pri_key_filepath=DATestUtils.keyPath,
-        client_id = DATestUtils.client_id,
+        endpoint = DATestUtils.endpoint,
+        cert_filepath = DATestUtils.certificatePath,
+        pri_key_filepath = DATestUtils.keyPath,
+        client_id = DATestUtils.generate_client_id("-sub"),
         clean_session = True,
-        ping_timeout_ms = 6000)
-
+        tcp_connect_timeout_ms = 60000, # 1 minute
+        keep_alive_secs = 60000, # 1 minute
+        ping_timeout_ms = 120000) # 2 minutes
     connect_future = mqtt_connection.connect()
 
     # Future.result() waits until a result is available
@@ -29,7 +30,7 @@ if __name__ == '__main__':
         topic=DATestUtils.topic,
         qos=mqtt.QoS.AT_MOST_ONCE)
     subscribe_future.result()
-    
+
     # Disconnect
     disconnect_future = mqtt_connection.disconnect()
     disconnect_future.result()

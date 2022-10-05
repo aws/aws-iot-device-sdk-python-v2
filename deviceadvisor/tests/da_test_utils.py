@@ -6,8 +6,8 @@ from uuid import uuid4
 
 class TestType(Enum):
     CONNECT = 1
-    SUB_PUB = 1
-    SHADOW = 1
+    SUB_PUB = 2
+    SHADOW = 3
 
 class DATestUtils:
     endpoint = os.getenv('DA_ENDPOINT')
@@ -17,7 +17,6 @@ class DATestUtils:
     thing_name = os.getenv('DA_THING_NAME')
     shadowProperty = os.getenv('DA_SHADOW_PROPERTY')
     shadowValue = os.getenv('DA_SHADOW_VALUE_SET')
-    client_id = "test-" + str(uuid4())
 
     @classmethod
     def valid(cls, test_type):
@@ -29,5 +28,9 @@ class DATestUtils:
 
         if (not (cls.thing_name and cls.shadowProperty and cls.shadowValue) and test_type == TestType.SHADOW):
             return False
-        
+
         return True
+
+    @classmethod
+    def generate_client_id(_self, postfix):
+        return "test-DA" + str(uuid4()) + postfix

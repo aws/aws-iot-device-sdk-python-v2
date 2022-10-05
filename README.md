@@ -36,8 +36,17 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 [Step-by-step instructions](./documents/PREREQUISITES.md)
 
 ### Install from PyPI
+
+#### MacOS and Linux:
+
 ```
 python3 -m pip install awsiotsdk
+```
+
+#### Windows:
+
+```
+python -m pip install awsiotsdk
 ```
 
 ### Install from source
@@ -47,7 +56,7 @@ mkdir sdk-workspace
 cd sdk-workspace
 # Clone the repository
 git clone https://github.com/aws/aws-iot-device-sdk-python-v2.git
-# Install using Pip
+# Install using Pip (use 'python' instead of 'python3' on Windows)
 python3 -m pip install ./aws-iot-device-sdk-python-v2
 ```
 

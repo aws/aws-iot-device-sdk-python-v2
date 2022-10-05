@@ -26,11 +26,13 @@ cmdUtils.register_command("cert", "<path>", "Path to your client certificate in 
 cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
 cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
 cmdUtils.register_command("count", "<int>", "The number of messages to send (optional, default='10').", default=10, type=int)
+cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
 # Needs to be called so the command utils parse the commands
 cmdUtils.get_args()
 
 received_count = 0
 received_all_event = threading.Event()
+is_ci = cmdUtils.get_command("is_ci", None) != None
 
 # Callback when connection is accidentally lost.
 def on_connection_interrupted(connection, error, **kwargs):
@@ -70,8 +72,11 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
 if __name__ == '__main__':
     mqtt_connection = cmdUtils.build_mqtt_connection(on_connection_interrupted, on_connection_resumed)
 
-    print("Connecting to {} with client ID '{}'...".format(
-        cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    if is_ci == False:
+        print("Connecting to {} with client ID '{}'...".format(
+            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    else:
+        print("Connecting to endpoint with client ID")
     connect_future = mqtt_connection.connect()
 
     # Future.result() waits until a result is available
