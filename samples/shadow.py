@@ -295,8 +295,8 @@ def user_input_thread_fn():
         try:
             messages_sent = 0
             while messages_sent < 5:
-                input = "Shadow_Value_" + str(messages_sent)
-                change_shadow_value(input)
+                cli_input = "Shadow_Value_" + str(messages_sent)
+                change_shadow_value(cli_input)
                 sleep(1)
                 messages_sent += 1
             exit("CI has quit")
