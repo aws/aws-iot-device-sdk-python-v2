@@ -375,7 +375,7 @@ Source: `samples/shadow.py`
 Run the sample like this:
 ``` sh
 # For Windows: replace 'python3' with 'python'
-python3 shadow.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --thing-name <name>
+python3 shadow.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file> --thing_name <name>
 ```
 
 Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect, subscribe, publish, and receive. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
