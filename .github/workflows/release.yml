@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  update-version:
+    runs-on: ubuntu-20.04 # latest
+    permissions:
+      contents: write # allow push
+
+    steps:
+    - name: Checkout Sources
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Update Version
+      run: ./update-version.sh ${{ secrets.GITHUB_TOKEN }} ${{ secrets.TAG_PR_TOKEN }}
+
+    - name: configure AWS credentials (Release)
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ secrets.AWS_CI_RELEASE_ROLE }}
+        aws-region: us-east-1
+
+    - name: Trigger Release
+      run: |
+        zip VERSION.zip VERSION
+        export S3_URL=$(aws secretsmanager get-secret-value --secret-id ci/python_v2_version --query "SecretString" | cut -f2 -d\")
+        aws s3 cp VERSION.zip $S3_URL
