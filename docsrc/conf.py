@@ -50,6 +50,8 @@ intersphinx_mapping = {
     'awscrt': ('https://awslabs.github.io/aws-crt-python', None),
 }
 
+toc_object_entries_show_parents = 'hide'
+
 # -- Options for HTML output -------------------------------------------------
 
 autoclass_content = "both"
@@ -66,10 +68,16 @@ autodoc_typehints = 'description'
 #
 html_theme = 'bizstyle'
 
+html_theme_options = {
+    'sidebarwidth': 300
+}
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+html_style = 'css/custom.css'
 
 # Extra warnings
 nitpicky = True
