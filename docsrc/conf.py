@@ -50,6 +50,8 @@ intersphinx_mapping = {
     'awscrt': ('https://awslabs.github.io/aws-crt-python', None),
 }
 
+# A string that determines how domain objects (e.g. functions, classes, 
+# attributes, etc.) are displayed in their table of contents entry.
 toc_object_entries_show_parents = 'hide'
 
 # -- Options for HTML output -------------------------------------------------
