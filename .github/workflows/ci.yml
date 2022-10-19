@@ -46,6 +46,31 @@ jobs:
         aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
         ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-al2-x64 build -p ${{ env.PACKAGE_NAME }}
 
+
+  raspberry:
+    runs-on: ubuntu-latest # latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - raspbian-bullseye
+    steps:
+    - name: configure AWS credentials (containers)
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ env.CI_IOT_CONTAINERS }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+    steps:
+    # set arm arch
+    - name: Install qemu/docker
+      run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+    - name: Build ${{ env.PACKAGE_NAME }}
+      run: |
+        aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
+        ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-${{ matrix.image }} build -p ${{ env.PACKAGE_NAME }}
+ 
+
   windows:
     runs-on: windows-latest
     permissions:
