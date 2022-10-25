@@ -456,7 +456,7 @@ def direct_with_custom_authorizer(
         **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an MQTT connection using a custom
-    authorizer. This function will set the username, port, and TLS options.
+    authorizer using a direct MQTT connection. This function will set the username, port, and TLS options.
 
     This function takes all :mod:`common arguments<awsiot.mqtt_connection_builder>`
     described at the top of this doc, as well as...
@@ -478,6 +478,73 @@ def direct_with_custom_authorizer(
             If not provided, then no passord will be set.
     """
 
+    return _with_custom_authorizer(
+        auth_username=auth_username,
+        auth_authorizer_name=auth_authorizer_name,
+        auth_authorizer_signature=auth_authorizer_signature,
+        auth_password=auth_password,
+        use_websockets=False,
+        **kwargs)
+
+def websockets_with_custom_authorizer(
+        region,
+        credentials_provider,
+        auth_username=None,
+        auth_authorizer_name=None,
+        auth_authorizer_signature=None,
+        auth_password=None,
+        **kwargs) -> awscrt.mqtt.Connection:
+    """
+    This builder creates an :class:`awscrt.mqtt.Connection`, configured for an MQTT connection using a custom
+    authorizer using websockets. This function will set the username, port, and TLS options.
+
+    This function takes all :mod:`common arguments<awsiot.mqtt_connection_builder>`
+    described at the top of this doc, as well as...
+
+    Keyword Args:
+        region (str): AWS region to use when signing.
+
+        credentials_provider (awscrt.auth.AwsCredentialsProvider): Source of AWS credentials to use when signing.
+
+        auth_username (`str`): The username to use with the custom authorizer.
+            If provided, the username given will be passed when connecting to the custom authorizer.
+            If not provided, it will check to see if a username has already been set (via username="example")
+            and will use that instead.
+            If no username has been set then no username will be sent with the MQTT connection.
+
+        auth_authorizer_name (`str`):  The name of the custom authorizer.
+            If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
+
+        auth_authorizer_signature (`str`):  The signature of the custom authorizer.
+            If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
+
+        auth_password (`str`):  The password to use with the custom authorizer.
+            If not provided, then no passord will be set.
+    """
+
+    return _with_custom_authorizer(
+        auth_username=auth_username,
+        auth_authorizer_name=auth_authorizer_name,
+        auth_authorizer_signature=auth_authorizer_signature,
+        auth_password=auth_password,
+        use_websockets=True,
+        websockets_region=region,
+        websockets_credentials_provider=credentials_provider,
+        **kwargs)
+
+
+def _with_custom_authorizer(auth_username=None,
+        auth_authorizer_name=None,
+        auth_authorizer_signature=None,
+        auth_password=None,
+        use_websockets=False,
+        websockets_credentials_provider=None,
+        websockets_region=None,
+        **kwargs) -> awscrt.mqtt.Connection:
+    """
+    Helper function that contains the setup needed for custom authorizers
+    """
+
     _check_required_kwargs(**kwargs)
     username_string = ""
 
@@ -496,14 +563,33 @@ def direct_with_custom_authorizer(
 
     kwargs["username"] = username_string
     kwargs["password"] = auth_password
-    kwargs["port"] = 443
 
     tls_ctx_options = awscrt.io.TlsContextOptions()
-    tls_ctx_options.alpn_list = ["mqtt"]
+    if use_websockets == False:
+        kwargs["port"] = 443
+        tls_ctx_options.alpn_list = ["mqtt"]
+
+    def _sign_websocket_handshake_request(transform_args, **kwargs):
+        # transform_args need to know when transform is done
+        try:
+            signing_config = awscrt.auth.AwsSigningConfig(
+                algorithm=awscrt.auth.AwsSigningAlgorithm.V4,
+                signature_type=awscrt.auth.AwsSignatureType.HTTP_REQUEST_QUERY_PARAMS,
+                credentials_provider=websockets_credentials_provider,
+                region=websockets_region,
+                service='iotdevicegateway',
+                omit_session_token=True,  # IoT is weird and does not sign X-Amz-Security-Token
+            )
+
+            signing_future = awscrt.auth.aws_sign_request(transform_args.http_request, signing_config)
+            signing_future.add_done_callback(lambda x: transform_args.set_done(x.exception()))
+        except Exception as e:
+            transform_args.set_done(e)
 
     return _builder(tls_ctx_options=tls_ctx_options,
-                    use_websockets=False,
+                    use_websockets=use_websockets,
                     use_custom_authorizer=True,
+                    websocket_handshake_transform=_sign_websocket_handshake_request if use_websockets else None,
                     **kwargs)
 
 
