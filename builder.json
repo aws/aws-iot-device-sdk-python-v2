@@ -22,7 +22,7 @@
             }
         },
         "manylinux": {
-            "post_build_steps": [,
+            "post_build_steps": [
                 ["echo", "------ Python 3.11 ------"],
                 ["/opt/python/cp311-cp311m/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
                 ["/opt/python/cp311-cp311m/bin/python", "-m", "pip", "install", ".", "--verbose"],
