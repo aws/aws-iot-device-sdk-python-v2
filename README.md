@@ -31,7 +31,7 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 ## Installation
 
 ### Minimum Requirements
-* Python 3.6+
+* Python 3.7+
 
 [Step-by-step instructions](./documents/PREREQUISITES.md)
 
