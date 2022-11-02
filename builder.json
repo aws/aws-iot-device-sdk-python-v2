@@ -24,15 +24,15 @@
         "manylinux": {
             "post_build_steps": [
                 ["echo", "------ Python 3.11 ------"],
-                ["/opt/python/cp311-cp311m/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
-                ["/opt/python/cp311-cp311m/bin/python", "-m", "pip", "install", ".", "--verbose"],
-                ["/opt/python/cp311-cp311m/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
-                ["/opt/python/cp311-cp311m/bin/python", "-m", "unittest", "discover", "--verbose"],
+                ["/opt/python/cp311-cp311/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
+                ["/opt/python/cp311-cp311/bin/python", "-m", "pip", "install", ".", "--verbose"],
+                ["/opt/python/cp311-cp311/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
+                ["/opt/python/cp311-cp311/bin/python", "-m", "unittest", "discover", "--verbose"],
                 ["echo", "------ Python 3.10 ------"],
-                ["/opt/python/cp310-cp310m/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
-                ["/opt/python/cp310-cp310m/bin/python", "-m", "pip", "install", ".", "--verbose"],
-                ["/opt/python/cp310-cp310m/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
-                ["/opt/python/cp310-cp310m/bin/python", "-m", "unittest", "discover", "--verbose"]
+                ["/opt/python/cp310-cp310/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
+                ["/opt/python/cp310-cp310/bin/python", "-m", "pip", "install", ".", "--verbose"],
+                ["/opt/python/cp310-cp310/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
+                ["/opt/python/cp310-cp310/bin/python", "-m", "unittest", "discover", "--verbose"],
                 ["echo", "------ Python 3.9 ------"],
                 ["/opt/python/cp39-cp39/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
                 ["/opt/python/cp39-cp39/bin/python", "-m", "pip", "install", ".", "--verbose"],
