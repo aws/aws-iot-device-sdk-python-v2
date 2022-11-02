@@ -29,8 +29,7 @@ env:
   CI_DEVICE_ADVISOR: ${{ secrets.AWS_CI_DEVICE_ADVISOR_ROLE }}
 
 jobs:
-  # This is to build on many versions of Python using hackery from builder.json
-  manylinux:
+  all-python-versions:
     runs-on: ubuntu-latest
     permissions:
       id-token: write # This is required for requesting the JWT
@@ -41,6 +40,8 @@ jobs:
         role-to-assume: ${{ env.CI_IOT_CONTAINERS }}
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
+      # There's hackery in builder.json so that when we run on manylinux
+      # we build and test using every version of python that we support.
       run: |
         aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
         ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-manylinux2014-x64 build -p ${{ env.PACKAGE_NAME }}
