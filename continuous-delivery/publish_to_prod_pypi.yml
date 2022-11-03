@@ -1,5 +1,5 @@
 version: 0.2
-# this image assumes Ubuntu 14.04 base image
+# this image assumes Ubuntu base image
 phases:
   install:
     commands:
