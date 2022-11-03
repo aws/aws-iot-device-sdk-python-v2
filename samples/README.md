@@ -1,5 +1,6 @@
 # Sample apps for the AWS IoT Device SDK v2 for Python
 
+* [MQTT5 PubSub](#mqtt5-pubsub)
 * [PubSub](#pubsub)
 * [Basic Connect](#basic-connect)
 * [Websocket Connect](#websocket-connect)
@@ -20,6 +21,65 @@ Then change into the samples directory to run the Python commands to execute the
 ``` sh
 # For Windows: replace 'python3' with 'python'
 python3 pubsub.py --help
+```
+
+## MQTT5 PubSub
+This sample uses the
+[Message Broker](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html)
+for AWS IoT to send and receive messages
+through an MQTT5 connection. On startup, the device connects to the server,
+subscribes to a topic, and begins publishing messages to that topic.
+The device should receive those same messages back from the message broker,
+since it is subscribed to that same topic.
+Status updates are continually printed to the console.
+
+Source: `samples/mqtt5_pubsub.py`
+
+Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect, subscribe, publish, and receive. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Publish",
+        "iot:Receive"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/test/topic"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Subscribe"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/test/topic"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}
+</pre>
+</details>
+
+Run the sample like this:
+``` sh
+# For Windows: replace 'python3' with 'python'
+python3 mqtt5_pubsub.py --endpoint <endpoint> --ca_file <file> --cert <file> --key <file>
 ```
 
 ## PubSub
