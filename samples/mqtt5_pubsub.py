@@ -72,7 +72,7 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 # Callback for the lifecycle event Connection Failure
 def on_lifecycle_connection_failure(lifecycle_connection_failure: mqtt5.LifecycleConnectFailureData):
     print("Lifecycle Connection Failure")
-    print("Connection failed with error_code:{}".format(lifecycle_connection_failure.exception))
+    print("Connection failed with exception:{}".format(lifecycle_connection_failure.exception))
 
 
 if __name__ == '__main__':
