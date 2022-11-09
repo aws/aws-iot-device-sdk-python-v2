@@ -5,6 +5,10 @@ phases:
       - add-apt-repository ppa:ubuntu-toolchain-r/test
       - apt-get update -y
       - apt-get install python3 softhsm -y
+      - echo "\nBuild version data:"
+      - echo "\nPython Version:"; python3 --version
+      - echo "\nSoftHSM (PKCS11) version:"; softhsm2-util --version
+      - echo "\n"
   build:
     commands:
       - echo Build started on `date`
