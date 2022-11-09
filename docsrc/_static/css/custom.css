@@ -1,0 +1,5 @@
+@import "../bizstyle.css";
+
+span.pre {
+    white-space: pre-wrap !important;
+}
