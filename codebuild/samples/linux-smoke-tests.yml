@@ -1,3 +1,6 @@
+# Assumes are running using the Ubuntu Codebuild standard image
+# NOTE: This script assumes that the AWS CLI-V2 is pre-installed!
+# - AWS CLI-V2 is a requirement to run this script.
 version: 0.2
 phases:
   install:
