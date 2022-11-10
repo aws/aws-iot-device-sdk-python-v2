@@ -1,0 +1,26 @@
+{
+    "language": "Python",
+    "sample_file": "./aws-iot-device-sdk-python-v2/samples/jobs.py",
+    "sample_region": "us-east-1",
+    "sample_main_class": "",
+    "arguments": [
+        {
+            "name": "--endpoint",
+            "secret": "ci/endpoint"
+        },
+        {
+            "name": "--cert",
+            "secret": "ci/Jobs/cert",
+            "filename": "tmp_certificate.pem"
+        },
+        {
+            "name": "--key",
+            "secret": "ci/Jobs/key",
+            "filename": "tmp_key.pem"
+        },
+        {
+            "name": "--thing_name",
+            "data": "CI_Jobs_Thing"
+        }
+    ]
+}
