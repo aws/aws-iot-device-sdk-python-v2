@@ -1,8 +1,9 @@
-# Assumes are running using the Ubuntu 16.04:x64 image
-# Runs second - makes sure the version in CD has not already been released.
+# Assumes are running using the Ubuntu Codebuild standard image
+# Makes sure the version in CD has not already been released.
 # Will fail the build and stop the pipeline if the version has already been released.
 #
-# (The first step is to download source and does not have a YAML file associated with it at this time)
+# NOTE: This script assumes that the AWS CLI-V2 is pre-installed!
+# - AWS CLI-V2 is a requirement to run this script.
 version: 0.2
 phases:
   install:
@@ -10,6 +11,8 @@ phases:
       - sudo apt-get update -y
       - sudo apt-get install python3 python3-pip -y
       - pip3 install --upgrade setuptools
+      - echo "\nBuild version data:"
+      - echo "\nPython Version:"; python3 --version
   build:
     commands:
       - cd $CODEBUILD_SRC_DIR/aws-iot-device-sdk-python-v2

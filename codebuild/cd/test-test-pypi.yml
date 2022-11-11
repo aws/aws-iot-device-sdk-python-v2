@@ -1,5 +1,8 @@
-# Assumes are running using the Ubuntu 16.04:x64 image
-# Runs fourth - makes sure the release to test PyPi repository worked
+# Assumes are running using the Ubuntu Codebuild standard image
+# Makes sure the release to test PyPi repository worked
+#
+# NOTE: This script assumes that the AWS CLI-V2 is pre-installed!
+# - AWS CLI-V2 is a requirement to run this script.
 version: 0.2
 phases:
   install:
@@ -8,6 +11,8 @@ phases:
       - sudo apt-get install python3 python3-pip -y
       - python3 -m pip install --upgrade pip
       - python3 -m pip install --upgrade setuptools
+      - echo "\nBuild version data:"
+      - echo "\nPython Version:"; python3 --version
 
   pre_build:
     commands:
@@ -19,10 +24,7 @@ phases:
     commands:
       - echo Build started on `date`
       - cd $CODEBUILD_SRC_DIR/aws-iot-device-sdk-python-v2
-
-      # For testing purposes - run a hard-coded version
-      # - CURRENT_TAG_VERSION=$(cat VERSION)
-      - CURRENT_TAG_VERSION=1.11.9
+      - CURRENT_TAG_VERSION=$(cat VERSION)
       # this is here because typing isn't in test-pypi, so pull it from prod instead
       - python3 -m pip install typing
       - python3 codebuild/cd/pip-install-with-retry.py -i https://testpypi.python.org/simple --user awsiotsdk==$CURRENT_TAG_VERSION
