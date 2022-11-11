@@ -1,0 +1,34 @@
+# Assumes are running using the Ubuntu 16.04:x64 image
+# Runs fourth - makes sure the release to test PyPi repository worked
+version: 0.2
+phases:
+  install:
+    commands:
+      - sudo apt-get update -y
+      - sudo apt-get install python3 python3-pip -y
+      - python3 -m pip install --upgrade pip
+      - python3 -m pip install --upgrade setuptools
+
+  pre_build:
+    commands:
+      - curl https://www.amazontrust.com/repository/AmazonRootCA1.pem --output /tmp/AmazonRootCA1.pem
+      - cert=$(aws secretsmanager get-secret-value --secret-id "ci/PubSub/cert" --query "SecretString" | cut -f2 -d":" | cut -f2 -d\") && echo "$cert" > /tmp/certificate.pem
+      - key=$(aws secretsmanager get-secret-value --secret-id "ci/PubSub/key" --query "SecretString" | cut -f2 -d":" | cut -f2 -d\") && echo "$key" > /tmp/privatekey.pem
+      - ENDPOINT=$(aws secretsmanager get-secret-value --secret-id "ci/endpoint" --query "SecretString" | cut -f2 -d":" | sed -e 's/[\\\"\}]//g')
+  build:
+    commands:
+      - echo Build started on `date`
+      - cd $CODEBUILD_SRC_DIR/aws-iot-device-sdk-python-v2
+
+      # For testing purposes - run a hard-coded version
+      # - CURRENT_TAG_VERSION=$(cat VERSION)
+      - CURRENT_TAG_VERSION=1.11.9
+      # this is here because typing isn't in test-pypi, so pull it from prod instead
+      - python3 -m pip install typing
+      - python3 codebuild/cd/pip-install-with-retry.py -i https://testpypi.python.org/simple --user awsiotsdk==$CURRENT_TAG_VERSION
+      # Run PubSub sample
+      - python3 samples/pubsub.py --endpoint ${ENDPOINT} --cert /tmp/certificate.pem --key /tmp/privatekey.pem --ca_file /tmp/AmazonRootCA1.pem --verbosity Trace
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
