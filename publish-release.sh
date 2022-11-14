@@ -47,7 +47,6 @@ if [ $RELEASE_TITLE == "" ]; then
     echo "ERROR: No title set! Cannot make release. Exitting..."
     exit -1
 fi
-# (We do not need to validate the pre-release input, it either will be 'true' or not)
 
 # Setup Github credentials
 git config --local user.email "aws-sdk-common-runtime@amazon.com"
@@ -76,7 +75,7 @@ else
 fi
 
 # Create the release with auto-generated notes as the description
-# - NOTE: This will only add stuff if there is at least one PR. If there is no PRs,
+# - NOTE: This will only add notes if there is at least one PR. If there is no PRs,
 # - then this will be blank and need manual input/changing after running.
 if [ $IS_PRE_RELEASE == "true" ]; then
     gh release create "v${new_version}" -p --generate-notes --notes-start-tag "$current_version" --target main -t "${RELEASE_TITLE}"
