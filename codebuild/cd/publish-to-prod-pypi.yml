@@ -24,10 +24,8 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-
-      # TMP DEBUG ONLY - not that I plan to accidentally run the workflow, but disable all this just for extra safety while experimenting!
-      # - python3 setup.py sdist bdist_wheel
-      # - python3 -m twine upload -r pypi dist/*
+      - python3 setup.py sdist bdist_wheel
+      - python3 -m twine upload -r pypi dist/*
   post_build:
     commands:
       - echo Build completed on `date`
