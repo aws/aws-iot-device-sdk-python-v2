@@ -1,8 +1,26 @@
 name: Release
 
+env:
+  GH_TOKEN: ${{ github.token }}
+
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
+    inputs:
+      release_type:
+        type: choice
+        description: "The type of release to make (Minor, Patch, etc)"
+        required: true
+        options:
+          - PATCH
+          - MINOR
+      release_title:
+        description: "The title of the release"
+        required: true
+      pre_release:
+        type: boolean
+        description: "Is this release a pre-release?"
+        required: false
+        default: false
 
 jobs:
   update-version:
@@ -16,17 +34,16 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Update Version
-      run: ./update-version.sh ${{ secrets.GITHUB_TOKEN }} ${{ secrets.TAG_PR_TOKEN }}
-
-    - name: configure AWS credentials (Release)
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: ${{ secrets.AWS_CI_RELEASE_ROLE }}
-        aws-region: us-east-1
-
-    - name: Trigger Release
+    - name: Make new release
       run: |
+        ./publish-release.sh "${{ github.event.inputs.release_type }}" "${{ github.event.inputs.release_title }}" "${{ github.event.inputs.pre_release }}"
+
+    - name: "Create VERSION file and trigger release"
+      run: |
+        version=$(git describe --tags --abbrev=0)
+        version_without_v=$(echo ${version} | cut -f2 -dv)
+        echo "${version_without_v}" > VERSION
+
         zip VERSION.zip VERSION
         export S3_URL=$(aws secretsmanager get-secret-value --secret-id ci/python_v2_version --query "SecretString" | cut -f2 -d\")
         aws s3 cp VERSION.zip $S3_URL
