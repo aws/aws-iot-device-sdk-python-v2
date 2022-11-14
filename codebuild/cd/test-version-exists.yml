@@ -16,4 +16,4 @@ phases:
   build:
     commands:
       - cd $CODEBUILD_SRC_DIR/aws-iot-device-sdk-python-v2
-      - bash ./codebuild/cd/test-version-exists.sh
+      - bash ./codebuild/cd/test-version-exists.sh $CODEBUILD_SRC_DIR/VERSION
