@@ -7,7 +7,6 @@ exec 1>&2
 
 RELEASE_TYPE=$1
 RELEASE_TITLE=$2
-IS_PRE_RELEASE=$3
 
 # Increments the version up by one
 # Credit: https://stackoverflow.com/a/64390598
@@ -66,8 +65,15 @@ git tag -f v${new_version} -m "${RELEASE_TITLE}"
 # Push new tag to github
 git push "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/aws/aws-iot-device-sdk-python-v2.git" --tags
 
-# now recreate the release on the updated tag
-# (If a pre-release, then -p needs to be added)
+# Determine if this is a pre-release or not based on the major version
+IS_PRE_RELEASE="false"
+VERSION_STRING_DELIMITER=.
+VERSION_STRING_ARRAY=($(echo "$new_version" | tr $VERSION_STRING_DELIMITER '\n'))
+if [ ${VERSION_STRING_ARRAY[0]} == "0" ]; then
+    IS_PRE_RELEASE="true"
+else
+    IS_PRE_RELEASE="false"
+fi
 
 # Create the release with auto-generated notes as the description
 # - NOTE: This will only add stuff if there is at least one PR. If there is no PRs,

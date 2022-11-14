@@ -16,11 +16,6 @@ on:
       release_title:
         description: "The title of the release"
         required: true
-      pre_release:
-        type: boolean
-        description: "Is this release a pre-release?"
-        required: false
-        default: false
 
 jobs:
   update-version:
@@ -36,7 +31,7 @@ jobs:
 
     - name: Make new release
       run: |
-        ./publish-release.sh "${{ github.event.inputs.release_type }}" "${{ github.event.inputs.release_title }}" "${{ github.event.inputs.pre_release }}"
+        ./publish-release.sh "${{ github.event.inputs.release_type }}" "${{ github.event.inputs.release_title }}"
 
     - name: "Create VERSION file and trigger release"
       run: |
