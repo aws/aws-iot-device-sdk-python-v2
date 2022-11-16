@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
-set -ex
+set -euxo pipefail
 
 # Redirect output to stderr.
 exec 1>&2
 
-RELEASE_TYPE=$1
-RELEASE_TITLE=$2
+RELEASE_TYPE="$1"
+RELEASE_TITLE="$2"
+
+# Make sure there are ONLY two arguments
+if [ "$#" != "2" ]; then
+    echo "ERROR: Arguments passed is NOT equal to two!"
+    exit 1
+fi
 
 # Increments the version up by one
 # Credit: https://stackoverflow.com/a/64390598
@@ -29,12 +35,12 @@ current_version_without_v=$(echo ${current_version} | cut -f2 -dv)
 echo "Current release version is ${current_version_without_v}"
 
 # Validate that RELEASE_TYPE is what we expect and bump the version:
-new_version=${current_version_without_v}
-if [ $RELEASE_TYPE == "PATCH" ]; then
+new_version="${current_version_without_v}"
+if [ "$RELEASE_TYPE" == "bug fix (PATCH)" ]; then
     new_version=$(increment_version ${current_version_without_v} 2 )
-elif [ $RELEASE_TYPE == "MINOR" ]; then
+elif [ "$RELEASE_TYPE" == "new feature (MINOR)" ]; then
     new_version=$(increment_version ${current_version_without_v} 1 )
-elif [ $RELEASE_TYPE == "MAJOR" ]; then
+elif [ "$RELEASE_TYPE" == "new version (MAJOR)" ]; then
     new_version=$(increment_version ${current_version_without_v} 0 )
 else
     echo "ERROR: Unknown release type! Exitting..."
@@ -43,7 +49,7 @@ fi
 echo "New version is ${new_version}"
 
 # Validate that the title is set
-if [ $RELEASE_TITLE == "" ]; then
+if [ "$RELEASE_TITLE" == "" ]; then
     echo "ERROR: No title set! Cannot make release. Exitting..."
     exit -1
 fi
@@ -68,7 +74,7 @@ git push "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/aws/aws-iot-device-
 IS_PRE_RELEASE="false"
 VERSION_STRING_DELIMITER=.
 VERSION_STRING_ARRAY=($(echo "$new_version" | tr $VERSION_STRING_DELIMITER '\n'))
-if [ ${VERSION_STRING_ARRAY[0]} == "0" ]; then
+if [ "${VERSION_STRING_ARRAY[0]}" == "0" ]; then
     IS_PRE_RELEASE="true"
 else
     IS_PRE_RELEASE="false"

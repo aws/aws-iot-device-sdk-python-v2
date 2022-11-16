@@ -8,11 +8,11 @@ on:
     inputs:
       release_type:
         type: choice
-        description: "The type of release to make (Minor, Patch, etc)"
+        description: "Release type:"
         required: true
         options:
-          - PATCH
-          - MINOR
+          - bug fix (PATCH)
+          - new feature (MINOR)
       release_title:
         description: "The title of the release"
         required: true
@@ -30,8 +30,14 @@ jobs:
         fetch-depth: 0
 
     - name: Make new release
+      env:
+        Title: ${{ github.event.inputs.release_title }}
       run: |
-        ./publish-release.sh "${{ github.event.inputs.release_type }}" "${{ github.event.inputs.release_title }}"
+        Title=$(echo ${Title//[\"]\\\"})
+        Title=$(echo ${Title//[\']\\\'})
+        Title=$(echo ${Title//[\$]})
+
+        ./utils/publish-release.sh "${{ github.event.inputs.release_type }}" "$Title"
 
     - name: configure AWS credentials (Release)
       uses: aws-actions/configure-aws-credentials@v1
