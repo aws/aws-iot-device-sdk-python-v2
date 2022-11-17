@@ -33,6 +33,7 @@ jobs:
       env:
         Title: ${{ github.event.inputs.release_title }}
       run: |
+        # Escape special characters
         Title=$(echo ${Title//[\"]\\\"})
         Title=$(echo ${Title//[\']\\\'})
         Title=$(echo ${Title//[\$]})
