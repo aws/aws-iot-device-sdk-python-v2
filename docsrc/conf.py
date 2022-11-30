@@ -33,7 +33,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autodoc.typehints',
     'sphinx.ext.napoleon',
-    'sphinx.ext.intersphinx', # for linking external docs (ex: aws-crt-python)
+    'sphinx.ext.intersphinx',  # for linking external docs (ex: aws-crt-python)
 ]
 
 # Add any paths that contain templates here, relative to this directory.

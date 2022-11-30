@@ -4,6 +4,20 @@ MQTT5 support is currently in **developer preview**.  We encourage feedback at a
 
 The MQTT5 client cannot yet be used with the AWS IoT MQTT services (Shadow, Jobs, Identity).  This is a shortcoming that we hope to address in the near future.
 
+## Introduction
+
+This user guide is designed to act as a reference and guide for how to use MQTT5 with the Java SDK. This guide includes code snippets for how to make a MQTT5 client with proper configuration, how to connect to AWS IoT Core, how to perform operations and interact with AWS IoT Core through MQTT5, and some best practices for MQTT5.
+
+If you are completely new to MQTT, it is highly recommended to check out the following resources to learn more about MQTT:
+
+* MQTT.org getting started: https://mqtt.org/getting-started/
+* MQTT.org FAQ (includes list of commonly used terms): https://mqtt.org/faq/
+* MQTT on AWS IoT Core documentation: https://docs.aws.amazon.com/iot/latest/developerguide/mqtt.html
+* MQTT 5 standard: https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html
+* MQTT 311 standard: https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html
+
+This user guide expects some beginner level familiarity with MQTT and the terms used to describe MQTT.
+
 ## What's Different? (relative to the MQTT311 implementation)
 SDK MQTT5 support comes from a separate client implementation.  In doing so, we took the opportunity to incorporate feedback about the 311 client that we could not apply without making breaking changes.  If you're used to the 311 client's API contract, there are a number of differences.
 
@@ -12,15 +26,15 @@ SDK MQTT5 support comes from a separate client implementation.  In doing so, we 
 * The set of client lifecycle events is expanded and contains more detailed information whenever possible.  All protocol data is exposed to the user.
 * MQTT operations are completed with the full associated ACK packet when possible.
 * New behavioral configuration options:
-    * IoT Core specific validation - will validate and fail operations that break IoT Core specific restrictions
-    * IoT Core specific flow control - will apply flow control to honor IoT Core specific per-connection limits and quotas
-    * Flexible queue control - provides a number of options to control what happens to incomplete operations on a disconnection event
-* A new API has been added to query the internal state of the client's operation queue.  This API allows the user to make more informed flow control decisions before submitting operatons to the client.
+    * [IoT Core specific validation](https://awslabs.github.io/aws-crt-python/api/mqtt5.html#awscrt.mqtt5.ExtendedValidationAndFlowControlOptions) - will validate and fail operations that break IoT Core specific restrictions
+    * [IoT Core specific flow control](https://awslabs.github.io/aws-crt-python/api/mqtt5.html#awscrt.mqtt5.ExtendedValidationAndFlowControlOptions) - will apply flow control to honor IoT Core specific per-connection limits and quotas
+    * [Flexible queue control](https://awslabs.github.io/aws-crt-python/api/mqtt5.html#awscrt.mqtt5.ClientOperationQueueBehaviorType) - provides a number of options to control what happens to incomplete operations on a disconnection event
+* A [new API](https://awslabs.github.io/aws-crt-python/api/mqtt5.html#awscrt.mqtt5.Client) has been added to query the internal state of the client's operation queue.  This API allows the user to make more informed flow control decisions before submitting operatons to the client.
 * Data can no longer back up on the socket.  At most one frame of data is ever pending-write on the socket.
 * The MQTT5 client has a single message-received callback.  Per-subscription callbacks are not supported.
 
 ### Minor changes
-* Public API terminology has changed.  You *start* or *stop* the MQTT5 client.  This removes the semantic confusion with connect/disconnect as client-level controls vs. internal recurrent networking events.
+* Public API terminology has changed.  You `start()` or `stop()` the MQTT5 client.  This removes the semantic confusion with connect/disconnect as client-level controls vs. internal recurrent networking events.
 * With the 311 implementation, there were two separate objects, a client and a connection.  With MQTT5, there is only the client.
 
 ### Not Supported
