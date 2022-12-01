@@ -90,11 +90,6 @@ class Mqtt5BuilderTest(unittest.TestCase):
         client.stop()
         callbacks.future_stopped(TIMEOUT)
 
-    def test_environ_variable(self):
-        env_text = os.environ['AWS_TEST_MQTT5_KEY_FILE']
-        self.assertIsNotNone(env_text)
-        self.assertGreater(len(env_text), 0)
-
     def test_mtls_from_bytes(self):
         config = Config.get()
         elg = EventLoopGroup()
@@ -131,7 +126,7 @@ class Mqtt5BuilderTest(unittest.TestCase):
             with open(key_filepath, 'wb') as key_file:
                 key_file.write(config.key)
 
-            client = mqtt5_client_builder.mtls_from_bytes(
+            client = mqtt5_client_builder.mtls_from_path(
                 cert_filepath=cert_filepath,
                 pri_key_filepath=key_filepath,
                 endpoint=config.endpoint,

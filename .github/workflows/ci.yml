@@ -34,8 +34,6 @@ jobs:
     permissions:
       id-token: write # This is required for requesting the JWT
     steps:
-    - name: Checkout Sources
-      uses: actions/checkout@v2
     - name: Build ${{ env.PACKAGE_NAME }}
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DA_ROLE_KEY }}
@@ -43,8 +41,6 @@ jobs:
       # There's hackery in builder.json so that when we run on manylinux
       # we build and test using every version of python that we support.
       run: |
-        chmod a+xr ./utils/mqtt5_test_setup.sh
-        source ./utils/mqtt5_test_setup.sh s3://aws-crt-test-stuff/TestIotProdMQTT5EnvironmentVariables.txt us-east-1
         aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
         ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-manylinux2014-x64 build -p ${{ env.PACKAGE_NAME }}
 
