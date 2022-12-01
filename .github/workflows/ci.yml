@@ -97,17 +97,6 @@ jobs:
       run: |
         python -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder.pyz')"
         python builder.pyz build -p ${{ env.PACKAGE_NAME }}
-    # - name: configure AWS credentials (MQTT5)
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     role-to-assume: ${{ env.CI_MQTT5_ROLE }}
-    #     aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    # - name: MQTT5 tests
-    #   shell: bash
-    #   run: |
-    #     source utils/mqtt5_test_setup.sh s3://iot-sdk-ci-bucket-us-east1/IotUsProdMqtt5EnvironmentVariables.txt us-east-1
-    #     mvn test -Dtest=Mqtt5BuilderTest -DfailIfNoTests=false
-    #     source utils/mqtt5_test_setup.sh s3://iot-sdk-ci-bucket-us-east1/IotUsProdMqtt5EnvironmentVariables.txt cleanup
     - name: Running samples in CI setup
       run: |
         python -m pip install boto3
@@ -156,9 +145,6 @@ jobs:
     - name: run PubSub sample
       run: |
         python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/pubsub.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/key'
-    - name: run MQTT5 PubSub sample
-      run: |
-        python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/mqtt5_pubsub.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/key'
     - name: configure AWS credentials (Device Advisor)
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -190,9 +176,6 @@ jobs:
     - name: run PubSub sample
       run: |
         python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/pubsub.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/key'
-    - name: run MQTT5 PubSub sample
-      run: |
-        python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/mqtt5_pubsub.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/key'
     - name: configure AWS credentials (Device Advisor)
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -234,10 +217,7 @@ jobs:
       - name: run PubSub sample
         run: |
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/pubsub.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/key'
-      - name: run MQTT5 PubSub sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/mqtt5_pubsub.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/key'
-    - name: run PKCS11 Connect sample
+      - name: run PKCS11 Connect sample
         run: |
           mkdir -p /tmp/tokens
           export SOFTHSM2_CONF=/tmp/softhsm2.conf
