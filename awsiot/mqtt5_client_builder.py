@@ -106,7 +106,7 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
     **connack_timeout_ms** (`int`): The time interval to wait after sending a CONNECT request for a CONNACK to arrive.
         If one does not arrive, the connection will be shut down.
 
-    **operation_timeout_sec** (`int`): The time interval to wait for an ack after sending a QoS 1+ PUBLISH, SUBSCRIBE,
+    **ack_timeout_sec** (`int`): The time interval to wait for an ack after sending a QoS 1+ PUBLISH, SUBSCRIBE,
         or UNSUBSCRIBE before failing the operation.
 
     **on_publish_received** (`Callable`): Callback invoked for all publish packets received by client.
@@ -281,8 +281,8 @@ def _builder(
         client_options.ping_timeout_ms = _get(kwargs, 'ping_timeout_ms')
     if client_options.connack_timeout_ms is None:
         client_options.connack_timeout_ms = _get(kwargs, 'connack_timeout_ms')
-    if client_options.operation_timeout_sec is None:
-        client_options.operation_timeout_sec = _get(kwargs, 'operation_timeout_sec')
+    if client_options.ack_timeout_sec is None:
+        client_options.ack_timeout_sec = _get(kwargs, 'ack_timeout_sec')
     if client_options.websocket_handshake_transform is None:
         client_options.websocket_handshake_transform = websocket_handshake_transform
 
