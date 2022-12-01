@@ -47,7 +47,6 @@ jobs:
       # we build and test using every version of python that we support.
       run: |
         aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
-      # source utils/mqtt5_test_setup.sh s3://iot-sdk-ci-bucket-us-east1/IotUsProdMqtt5EnvironmentVariables.txt us-east-1
         ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-manylinux2014-x64 build -p ${{ env.PACKAGE_NAME }}
 
   al2:
