@@ -61,8 +61,8 @@ export $(grep -v '^#' environment_files.txt | xargs)
 
 # CRT/non-builder certificate and key processing
 # Get the certificate and key secrets (dumps straight to a file)
-crt_cert_file=$(aws secretsmanager get-secret-value --secret-id "${AWS_TEST_MQTT5_CERTIFICATE_FILE_SECRET}" --query "SecretString" --region ${region} | cut -f2 -d\") && echo "$crt_cert_file" > ${PWD}/crt_certificate.pem
-crt_key_file=$(aws secretsmanager get-secret-value --secret-id "${AWS_TEST_MQTT5_KEY_FILE_SECRET}" --query "SecretString" --region ${region} | cut -f2 -d\") && echo "$crt_key_file" > ${PWD}/crt_privatekey.pem
+crt_cert_file=$(aws secretsmanager get-secret-value --secret-id "${AWS_TEST_MQTT5_CERTIFICATE_FILE_SECRET}" --query "SecretString" --region ${region} | cut -f2 -d\") && echo -e "$crt_cert_file" > ${PWD}/crt_certificate.pem
+crt_key_file=$(aws secretsmanager get-secret-value --secret-id "${AWS_TEST_MQTT5_KEY_FILE_SECRET}" --query "SecretString" --region ${region} | cut -f2 -d\") && echo -e "$crt_key_file" > ${PWD}/crt_privatekey.pem
 # Does the certificate file have data? If not, then abort!
 if [ "${crt_cert_file}" != "" ]; then
     echo "CRT Certificate secret found"
