@@ -112,7 +112,7 @@ class Mqtt5BuilderTest(unittest.TestCase):
             on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
             on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
 
-        self._test_connection(self, client, callbacks)
+        self._test_connection(client, callbacks)
 
     def test_mtls_from_path(self):
         config = Config.get()
@@ -144,7 +144,7 @@ class Mqtt5BuilderTest(unittest.TestCase):
         finally:
             shutil.rmtree(tmp_dirpath)
 
-        self._test_connection(self, client, callbacks)
+        self._test_connection(client, callbacks)
 
     def test_websockets_default(self):
         """Websocket connection with default credentials provider"""
@@ -164,4 +164,4 @@ class Mqtt5BuilderTest(unittest.TestCase):
             on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
             on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
 
-        self._test_connection(self, client, callbacks)
+        self._test_connection(client, callbacks)
