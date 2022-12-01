@@ -35,6 +35,7 @@ cmdUtils.register_command(
     "The number of messages to send (optional, default='10').",
     default=10,
     type=int)
+cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
 # Needs to be called so the command utils parse the commands
 cmdUtils.get_args()
 
@@ -42,6 +43,7 @@ received_count = 0
 received_all_event = threading.Event()
 future_stopped = Future()
 future_connection_success = Future()
+is_ci = cmdUtils.get_command("is_ci", None) != None
 
 # Callback when any publish is received
 
@@ -88,6 +90,12 @@ if __name__ == '__main__':
         on_lifecycle_connection_success=on_lifecycle_connection_success,
         on_lifecycle_connection_failure=on_lifecycle_connection_failure)
     print("MQTT5 Client Created")
+
+    if is_ci == False:
+        print("Connecting to {} with client ID '{}'...".format(
+            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    else:
+        print("Connecting to endpoint with client ID")
 
     client.start()
     lifecycle_connect_success_data = future_connection_success.result(TIMEOUT)
