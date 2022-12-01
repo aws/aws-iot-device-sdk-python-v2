@@ -90,6 +90,12 @@ class Mqtt5BuilderTest(unittest.TestCase):
         client.stop()
         callbacks.future_stopped(TIMEOUT)
 
+    def test_cache(self):
+        config = Config.get()
+        self.assertIsNotNone(config.cert)
+        self.assertIsNotNone(config.key)
+        self.assertIsNotNone(config.endpoint)
+
     def test_mtls_from_bytes(self):
         config = Config.get()
         elg = EventLoopGroup()
