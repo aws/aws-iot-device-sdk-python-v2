@@ -85,11 +85,15 @@ class Mqtt5TestCallbacks():
 
 class Mqtt5BuilderTest(unittest.TestCase):
     def _test_connection(self, client: mqtt5.Client, callbacks: Mqtt5TestCallbacks):
-        print(os.environ['AWS_TEST_MQTT5_KEY_FILE'])
         client.start()
         callbacks.future_connection_success.result(TIMEOUT)
         client.stop()
         callbacks.future_stopped(TIMEOUT)
+
+    def test_environ_variable(self):
+        env_text = os.environ['AWS_TEST_MQTT5_KEY_FILE']
+        self.assertIsNotNone(env_text)
+        self.assertGreater(len(env_text), 0)
 
     def test_mtls_from_bytes(self):
         config = Config.get()
