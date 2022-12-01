@@ -43,29 +43,6 @@ jobs:
       # There's hackery in builder.json so that when we run on manylinux
       # we build and test using every version of python that we support.
       run: |
-
-        export AWS_ROLE_ARN=${CI_IOT_CONTAINERS}
-        export AWS_WEB_IDENTITY_TOKEN_FILE=/tmp/awscreds
-        export AWS_DEFAULT_REGION=us-east-1
-
-        echo AWS_WEB_IDENTITY_TOKEN_FILE=$AWS_WEB_IDENTITY_TOKEN_FILE >> $GITHUB_ENV
-        echo AWS_ROLE_ARN=$AWS_ROLE_ARN >> $GITHUB_ENV
-        echo AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION >> $GITHUB_ENV
-
-        curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL" | jq -r '.value' > $AWS_WEB_IDENTITY_TOKEN_FILE
-        apt-get install awscli
-
-        temp_role=$(aws sts assume-role-with-web-identity \
-            --web-identity-token file://$AWS_WEB_IDENTITY_TOKEN_FILE \
-            --role-arn "${CI_IOT_CONTAINERS}" \
-            --role-session-name "Test session name here")
-        export AWS_ACCESS_KEY_ID=$(echo $temp_role | jq -r .Credentials.AccessKeyId) >> GITHUB_ENV
-        echo "::add-mask::$AWS_ACCESS_KEY_ID"
-        export AWS_SECRET_ACCESS_KEY=$(echo $temp_role | jq -r .Credentials.SecretAccessKey) >> $GITHUB_ENV
-        echo "::add-mask::$AWS_SECRET_ACCESS_KEY"
-        export AWS_SESSION_TOKEN=$(echo $temp_role | jq -r .Credentials.SessionToken) >> $GITHUB_ENV
-        echo "::add-mask::$AWS_SESSION_TOKEN"
-
         aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
         ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-manylinux2014-x64 build -p ${{ env.PACKAGE_NAME }}
 
