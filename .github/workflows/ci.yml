@@ -20,7 +20,7 @@ env:
   DA_SHADOW_VALUE_DEFAULT: OFF
   CI_UTILS_FOLDER: "./aws-iot-device-sdk-python-v2/utils"
   CI_SAMPLES_FOLDER: "./aws-iot-device-sdk-python-v2/samples"
-  CI_IOT_CONTAINERS: ${{ secrets.AWS_CI_IOT_CONTAINERS }}
+  CI_IOT_CONTAINERS_ROLE: ${{ secrets.AWS_CI_IOT_CONTAINERS }}
   CI_PUBSUB_ROLE: ${{ secrets.AWS_CI_PUBSUB_ROLE }}
   CI_CUSTOM_AUTHORIZER_ROLE: ${{ secrets.AWS_CI_CUSTOM_AUTHORIZER_ROLE }}
   CI_SHADOW_ROLE: ${{ secrets.AWS_CI_SHADOW_ROLE }}
@@ -39,7 +39,7 @@ jobs:
     - name: configure AWS credentials (containers)
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: ${{ env.CI_IOT_CONTAINERS }}
+        role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
       # There's hackery in builder.json so that when we run on manylinux
@@ -56,7 +56,7 @@ jobs:
     - name: configure AWS credentials (containers)
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: ${{ env.CI_IOT_CONTAINERS }}
+        role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
       # We can't use the `uses: docker://image` version yet, GitHub lacks authentication for actions -> packages
     - name: Build ${{ env.PACKAGE_NAME }}
@@ -78,7 +78,7 @@ jobs:
     - name: configure AWS credentials (containers)
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: ${{ env.CI_IOT_CONTAINERS }}
+        role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     # set arm arch
     - name: Install qemu/docker
