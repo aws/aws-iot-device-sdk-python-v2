@@ -85,6 +85,7 @@ class Mqtt5TestCallbacks():
 
 class Mqtt5BuilderTest(unittest.TestCase):
     def _test_connection(self, client: mqtt5.Client, callbacks: Mqtt5TestCallbacks):
+        print(os.environ['AWS_TEST_MQTT5_KEY_FILE'])
         client.start()
         callbacks.future_connection_success.result(TIMEOUT)
         client.stop()
@@ -100,6 +101,58 @@ class Mqtt5BuilderTest(unittest.TestCase):
         client = mqtt5_client_builder.mtls_from_bytes(
             cert_bytes=config.cert,
             pri_key_bytes=config.key,
+            endpoint=config.endpoint,
+            client_id=create_client_id(),
+            client_bootstrap=bootstrap,
+            on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
+            on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
+
+        self._test_connection(self, client, callbacks)
+
+    def test_mtls_from_path(self):
+        config = Config.get()
+        elg = EventLoopGroup()
+        resolver = DefaultHostResolver(elg)
+        bootstrap = ClientBootstrap(elg, resolver)
+        callbacks = Mqtt5TestCallbacks()
+
+        # test "from path" builder by writing secrets to tempfiles
+        tmp_dirpath = tempfile.mkdtemp()
+        try:
+            cert_filepath = os.path.join(tmp_dirpath, 'cert')
+            with open(cert_filepath, 'wb') as cert_file:
+                cert_file.write(config.cert)
+
+            key_filepath = os.path.join(tmp_dirpath, 'key')
+            with open(key_filepath, 'wb') as key_file:
+                key_file.write(config.key)
+
+            client = mqtt5_client_builder.mtls_from_bytes(
+                cert_filepath=cert_filepath,
+                pri_key_filepath=key_filepath,
+                endpoint=config.endpoint,
+                client_id=create_client_id(),
+                client_bootstrap=bootstrap,
+                on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
+                on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
+
+        finally:
+            shutil.rmtree(tmp_dirpath)
+
+        self._test_connection(self, client, callbacks)
+
+    def test_websockets_default(self):
+        """Websocket connection with default credentials provider"""
+        config = Config.get()
+        elg = EventLoopGroup()
+        resolver = DefaultHostResolver(elg)
+        bootstrap = ClientBootstrap(elg, resolver)
+        cred_provider = AwsCredentialsProvider.new_default_chain(bootstrap)
+        callbacks = Mqtt5TestCallbacks()
+
+        client = mqtt5_client_builder.websockets_with_default_aws_signing(
+            region=config.region,
+            credentials_provider=cred_provider,
             endpoint=config.endpoint,
             client_id=create_client_id(),
             client_bootstrap=bootstrap,
