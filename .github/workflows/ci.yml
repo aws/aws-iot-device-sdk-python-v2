@@ -40,11 +40,6 @@ jobs:
       with:
         role-to-assume: ${{ env.CI_IOT_CONTAINERS }}
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: configure AWS credentials (MQTT5)
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: ${{ env.CI_MQTT5_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
       # There's hackery in builder.json so that when we run on manylinux
       # we build and test using every version of python that we support.
