@@ -171,7 +171,7 @@ jobs:
         ./builder build -p ${{ env.PACKAGE_NAME }}
     - name: Running samples in CI setup
       run: |
-        python3 -m pip install boto
+        python3 -m pip install boto3
     - name: configure AWS credentials (PubSub)
       uses: aws-actions/configure-aws-credentials@v1
       with:
