@@ -42,6 +42,9 @@ jobs:
         role-to-assume: ${{ env.CI_IOT_CONTAINERS }}
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DATEST_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_DATEST_SECRET_ACCESS_KEY }}
       # There's hackery in builder.json so that when we run on manylinux
       # we build and test using every version of python that we support.
       run: |
