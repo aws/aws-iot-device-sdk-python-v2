@@ -46,7 +46,8 @@ future_connection_success = Future()
 # Callback when any publish is received
 
 
-def on_publish_received(publish_packet):
+def on_publish_received(publish_packet_data):
+    publish_packet = publish_packet_data.publish_packet
     assert isinstance(publish_packet, mqtt5.PublishPacket)
     print("Received message from topic'{}':{}".format(publish_packet.topic, publish_packet.payload))
     global received_count
