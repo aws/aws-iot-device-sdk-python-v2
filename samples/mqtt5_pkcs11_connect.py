@@ -16,7 +16,6 @@ cmdUtils = command_line_utils.CommandLineUtils("PubSub - Send and receive messag
 cmdUtils.add_common_mqtt5_commands()
 cmdUtils.add_common_proxy_commands()
 cmdUtils.add_common_logging_commands()
-cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
 cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
 cmdUtils.register_command(
     "port",
