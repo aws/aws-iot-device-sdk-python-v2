@@ -27,7 +27,13 @@ python3 pubsub.py --help
 This sample uses the
 [Message Broker](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html)
 for AWS IoT to send and receive messages
-through an MQTT5 connection. On startup, the device connects to the server,
+through an MQTT5 connection.
+
+MQTT5 introduces additional features and enhancements that improve the development experience with MQTT. You can read more about MQTT5 in the Python V2 SDK by checking out the [MQTT5 user guide](../documents/MQTT5.md).
+
+Note: MQTT5 support is currently in **developer preview**. We encourage feedback at all times, but feedback during the preview window is especially valuable in shaping the final product. During the preview period we may make backwards-incompatible changes to the public API, but in general, this is something we will try our best to avoid.
+
+On startup, the device connects to the server,
 subscribes to a topic, and begins publishing messages to that topic.
 The device should receive those same messages back from the message broker,
 since it is subscribed to that same topic.

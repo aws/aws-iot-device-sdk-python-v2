@@ -46,8 +46,6 @@ future_connection_success = Future()
 is_ci = cmdUtils.get_command("is_ci", None) != None
 
 # Callback when any publish is received
-
-
 def on_publish_received(publish_packet_data):
     publish_packet = publish_packet_data.publish_packet
     assert isinstance(publish_packet, mqtt5.PublishPacket)
@@ -101,10 +99,11 @@ if __name__ == '__main__':
     lifecycle_connect_success_data = future_connection_success.result(TIMEOUT)
     connack_packet = lifecycle_connect_success_data.connack_packet
     negotiated_settings = lifecycle_connect_success_data.negotiated_settings
-    print("Connected to endpoint:'{}' with Client ID:'{}' with reason_code:{}".format(
-        cmdUtils.get_command(cmdUtils.m_cmd_endpoint),
-        connack_packet.assigned_client_identifier,
-        repr(connack_packet.reason_code)))
+    if is_ci == False:
+        print("Connected to endpoint:'{}' with Client ID:'{}' with reason_code:{}".format(
+            cmdUtils.get_command(cmdUtils.m_cmd_endpoint),
+            connack_packet.assigned_client_identifier,
+            repr(connack_packet.reason_code)))
 
     # Subscribe
 
