@@ -244,6 +244,9 @@ jobs:
       - name: run CustomAuthorizerConnect sample
         run: |
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/custom_authorizer_connect.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_custom_authorizer_name 'ci/CustomAuthorizer/name' --sample_secret_custom_authorizer_password 'ci/CustomAuthorizer/password'
+      - name: run MQTT5 CustomAuthorizerConnect sample
+        run: |
+          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/mqtt5_custom_authorizer_connect.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_custom_authorizer_name 'ci/CustomAuthorizer/name' --sample_secret_custom_authorizer_password 'ci/CustomAuthorizer/password'
       - name: configure AWS credentials (Shadow)
         uses: aws-actions/configure-aws-credentials@v1
         with:

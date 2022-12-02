@@ -1,7 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-import command_line_utils
+from awsiot import mqtt5_client_builder
 from awscrt import mqtt5
 from uuid import uuid4
 from concurrent.futures import Future
@@ -9,26 +9,15 @@ from concurrent.futures import Future
 TIMEOUT = 100
 
 # Parse arguments
-cmdUtils = command_line_utils.CommandLineUtils("MQTT5 PKCS11 Connect - Make a MQTT5 Client connection using PKCS11.")
-cmdUtils.add_common_mqtt5_commands()
-cmdUtils.add_common_proxy_commands()
+import command_line_utils
+cmdUtils = command_line_utils.CommandLineUtils(
+    "Custom Authorizer Connect - Make a MQTT5 Client connection using a custom authorizer.")
+cmdUtils.add_common_mqtt_commands()
 cmdUtils.add_common_logging_commands()
-cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
-cmdUtils.register_command(
-    "port",
-    "<int>",
-    "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).",
-    type=int)
-cmdUtils.register_command(
-    "client_id",
-    "<str>",
-    "Client ID to use for MQTT5 connection (optional, default=None).",
-    default="test-" + str(uuid4()))
-cmdUtils.register_command("pkcs11_lib", "<path>", "Path to PKCS#11 Library", required=True)
-cmdUtils.register_command("pin", "<str>", "User PIN for logging into PKCS#11 token.", required=True)
-cmdUtils.register_command("token_label", "<str>", "Label of the PKCS#11 token to use (optional).")
-cmdUtils.register_command("slot_id", "<int>", "Slot ID containing the PKCS#11 token to use (optional).", False, int)
-cmdUtils.register_command("key_label", "<str>", "Label of private key on the PKCS#11 token (optional).")
+cmdUtils.add_common_custom_authorizer_commands()
+cmdUtils.register_command("client_id", "<str>",
+                          "Client ID to use for MQTT connection (optional, default='test-*').",
+                          default="test-" + str(uuid4()))
 cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
 # Needs to be called so the command utils parse the commands
 cmdUtils.get_args()
@@ -50,15 +39,19 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
     global future_connection_success
     future_connection_success.set_result(lifecycle_connect_success_data)
 
-
 if __name__ == '__main__':
-    print("\nStarting MQTT5 pkcs11 connect Sample\n")
 
-    # Create MQTT5 Client with using PKCS11
-    client = cmdUtils.build_pkcs11_mqtt5_client(
+    # Create MQTT5 Client with a custom authorizer
+    client = mqtt5_client_builder.direct_with_custom_authorizer(
+        endpoint=cmdUtils.get_command_required(cmdUtils.m_cmd_endpoint),
+        ca_filepath=cmdUtils.get_command(cmdUtils.m_cmd_ca_file),
+        auth_username=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_username),
+        auth_authorizer_name=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_authorizer_name),
+        auth_authorizer_signature=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_authorizer_signature),
+        auth_password=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_password),
         on_lifecycle_stopped=on_lifecycle_stopped,
-        on_lifecycle_connection_success=on_lifecycle_connection_success)
-    print("MQTT5 Client Created")
+        on_lifecycle_connection_success=on_lifecycle_connection_success,
+        client_id=cmdUtils.get_command("client_id"))
 
     if is_ci == False:
         print("Connecting to {} with client ID '{}'...".format(
