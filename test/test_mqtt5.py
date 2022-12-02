@@ -1,4 +1,4 @@
-from awscrt import mqtt5
+from awscrt import mqtt5, http
 from awscrt.auth import AwsCredentialsProvider
 from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup
 from awsiot import mqtt5_client_builder
@@ -149,6 +149,50 @@ class Mqtt5BuilderTest(unittest.TestCase):
             region=config.region,
             credentials_provider=cred_provider,
             endpoint=config.endpoint,
+            client_id=create_client_id(),
+            client_bootstrap=bootstrap,
+            on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
+            on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
+
+        self._test_connection(client, callbacks)
+
+    def test_websockets_sts(self):
+        """Websocket connection with X-Amz-Security-Token query param"""
+        config = Config.get()
+        elg = EventLoopGroup()
+        resolver = DefaultHostResolver(elg)
+        bootstrap = ClientBootstrap(elg, resolver)
+        cred_provider = AwsCredentialsProvider.new_static(
+            access_key_id=config.cognito_creds['AccessKeyId'],
+            secret_access_key=config.cognito_creds['SecretKey'],
+            session_token=config.cognito_creds['SessionToken'])
+        callbacks = Mqtt5TestCallbacks()
+
+        client = mqtt5_client_builder.websockets_with_default_aws_signing(
+            region=config.region,
+            credentials_provider=cred_provider,
+            endpoint=config.endpoint,
+            client_id=create_client_id(),
+            client_bootstrap=bootstrap,
+            on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
+            on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
+
+        self._test_connection(client, callbacks)
+
+    @unittest.skipIf(PROXY_HOST is None, 'requires "proxyhost" and "proxyport" env vars')
+    def test_websockets_proxy(self):
+        config = Config.get()
+        elg = EventLoopGroup()
+        resolver = DefaultHostResolver(elg)
+        bootstrap = ClientBootstrap(elg, resolver)
+        cred_provider = AwsCredentialsProvider.new_default_chain(bootstrap)
+        callbacks = Mqtt5TestCallbacks()
+
+        client = mqtt5_client_builder.websockets_with_default_aws_signing(
+            region=config.region,
+            credentials_provider=cred_provider,
+            endpoint=config.endpoint,
+            websocket_proxy_options=http.HttpProxyOptions(PROXY_HOST, PROXY_PORT),
             client_id=create_client_id(),
             client_bootstrap=bootstrap,
             on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
