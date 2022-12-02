@@ -84,25 +84,25 @@ class Mqtt5BuilderTest(unittest.TestCase):
         client.start()
         callbacks.future_connection_success.result(TIMEOUT)
         client.stop()
-        callbacks.future_stopped(TIMEOUT)
+        callbacks.future_stopped.result(TIMEOUT)
 
-    # def test_mtls_from_bytes(self):
-    #     config = Config.get()
-    #     elg = EventLoopGroup()
-    #     resolver = DefaultHostResolver(elg)
-    #     bootstrap = ClientBootstrap(elg, resolver)
-    #     callbacks = Mqtt5TestCallbacks()
+    def test_mtls_from_bytes(self):
+        config = Config.get()
+        elg = EventLoopGroup()
+        resolver = DefaultHostResolver(elg)
+        bootstrap = ClientBootstrap(elg, resolver)
+        callbacks = Mqtt5TestCallbacks()
 
-    #     client = mqtt5_client_builder.mtls_from_bytes(
-    #         cert_bytes=config.cert,
-    #         pri_key_bytes=config.key,
-    #         endpoint=config.endpoint,
-    #         client_id=create_client_id(),
-    #         client_bootstrap=bootstrap,
-    #         on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
-    #         on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
+        client = mqtt5_client_builder.mtls_from_bytes(
+            cert_bytes=config.cert,
+            pri_key_bytes=config.key,
+            endpoint=config.endpoint,
+            client_id=create_client_id(),
+            client_bootstrap=bootstrap,
+            on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
+            on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
 
-    #     self._test_connection(client, callbacks)
+        self._test_connection(client, callbacks)
 
     def test_mtls_from_path(self):
         config = Config.get()
