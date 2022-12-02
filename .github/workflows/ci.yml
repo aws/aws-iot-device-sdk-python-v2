@@ -232,9 +232,6 @@ jobs:
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/mqtt5_pkcs11_connect.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/keyp8' --sample_run_softhsm 'true' --sample_arguments '--pkcs11_lib /usr/lib/softhsm/libsofthsm2.so --pin 0000 --token_label my-token --key_label my-key'
       - name: run PKCS11 Connect sample
         run: |
-          mkdir -p /tmp/tokens
-          export SOFTHSM2_CONF=/tmp/softhsm2-2.conf
-          echo "directories.tokendir = /tmp/tokens" > /tmp/softhsm2-2.conf
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --language Python --sample_file "${{ env.CI_SAMPLES_FOLDER }}/pkcs11_connect.py" --sample_region ${{ env.AWS_DEFAULT_REGION }} --sample_secret_endpoint 'ci/endpoint' --sample_secret_certificate 'ci/PubSub/cert' --sample_secret_private_key 'ci/PubSub/keyp8' --sample_run_softhsm 'true' --sample_arguments '--pkcs11_lib /usr/lib/softhsm/libsofthsm2.so --pin 0000 --token_label my-token --key_label my-key'
       - name: configure AWS credentials (Custom Authorizer)
         uses: aws-actions/configure-aws-credentials@v1
