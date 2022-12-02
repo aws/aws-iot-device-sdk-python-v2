@@ -19,6 +19,7 @@ phases:
       - $CODEBUILD_SRC_DIR/codebuild/samples/connect-linux.sh
       - $CODEBUILD_SRC_DIR/codebuild/samples/custom-auth-linux.sh
       - $CODEBUILD_SRC_DIR/codebuild/samples/pkcs11-connect-linux.sh
+      - $CODEBUILD_SRC_DIR/codebuild/samples/pubsub-mqtt5-linux.sh
       - $CODEBUILD_SRC_DIR/codebuild/samples/pubsub-linux.sh
       - $CODEBUILD_SRC_DIR/codebuild/samples/shadow-linux.sh
   post_build:
