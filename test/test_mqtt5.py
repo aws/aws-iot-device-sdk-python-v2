@@ -74,14 +74,10 @@ class Mqtt5TestCallbacks():
         transform_args.set_done()
 
     def on_lifecycle_stopped(self, lifecycle_stopped: mqtt5.LifecycleStoppedData):
-        if self.future_stopped:
-            self.future_stopped.set_result(None)
+        self.future_stopped.set_result(None)
 
     def on_lifecycle_connection_success(self, lifecycle_connection_success: mqtt5.LifecycleConnectSuccessData):
-        self.negotiated_settings = lifecycle_connection_success.negotiated_settings
-        self.connack_packet = lifecycle_connection_success.connack_packet
-        if self.future_connection_success:
-            self.future_connection_success.set_result(lifecycle_connection_success)
+        self.future_connection_success.set_result(lifecycle_connection_success)
 
 class Mqtt5BuilderTest(unittest.TestCase):
     def _test_connection(self, client: mqtt5.Client, callbacks: Mqtt5TestCallbacks):
@@ -90,29 +86,23 @@ class Mqtt5BuilderTest(unittest.TestCase):
         client.stop()
         callbacks.future_stopped(TIMEOUT)
 
-    def test_cache(self):
-        config = Config.get()
-        self.assertIsNotNone(config.cert)
-        self.assertIsNotNone(config.key)
-        self.assertIsNotNone(config.endpoint)
+    # def test_mtls_from_bytes(self):
+    #     config = Config.get()
+    #     elg = EventLoopGroup()
+    #     resolver = DefaultHostResolver(elg)
+    #     bootstrap = ClientBootstrap(elg, resolver)
+    #     callbacks = Mqtt5TestCallbacks()
 
-    def test_mtls_from_bytes(self):
-        config = Config.get()
-        elg = EventLoopGroup()
-        resolver = DefaultHostResolver(elg)
-        bootstrap = ClientBootstrap(elg, resolver)
-        callbacks = Mqtt5TestCallbacks()
+    #     client = mqtt5_client_builder.mtls_from_bytes(
+    #         cert_bytes=config.cert,
+    #         pri_key_bytes=config.key,
+    #         endpoint=config.endpoint,
+    #         client_id=create_client_id(),
+    #         client_bootstrap=bootstrap,
+    #         on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
+    #         on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
 
-        client = mqtt5_client_builder.mtls_from_bytes(
-            cert_bytes=config.cert,
-            pri_key_bytes=config.key,
-            endpoint=config.endpoint,
-            client_id=create_client_id(),
-            client_bootstrap=bootstrap,
-            on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
-            on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
-
-        self._test_connection(client, callbacks)
+    #     self._test_connection(client, callbacks)
 
     def test_mtls_from_path(self):
         config = Config.get()
