@@ -1,10 +1,33 @@
 # MQTT 5
-## Developer Preview Disclaimer
+# Table of Contents
+
+* [Developer Preview Disclaimer](#developer-preview-disclaimer)
+* [Introduction](#introduction)
+* [MQTT5 differences relative to MQTT311 implementation](#mqtt5-differences-relative-to-mqtt311-implementation)
+    * [Major Changes](#major-changes)
+    * [Minor Changes](#minor-changes)
+    * [Not Supported](#not-supported)
+* [Getting Started with MQTT5](#getting-started-with-mqtt5)
+    * [Connecting to AWS IoT Core](#connecting-to-aws-iot-core)
+    * [How to create a MQTT5 Client based on desired connection method](#how-to-create-a-mqtt5-client-based-on-desired-connection-method)
+        * [Direct MQTT with X509-based mutual TLS](#direct-mqtt-with-x509-based-mutual-tls)
+        * [MQTT over Websockets with Sigv4 authentication](#mqtt-over-websockets-with-sigv4-authentication)
+        * [Direct MQTT with Custom Authentication](#direct-mqtt-with-custom-authentication)
+        * [Direct MQTT with PKCS11 Method](#direct-mqtt-with-pkcs11-method)
+        * [HTTP Proxy](#http-proxy)
+    * [Client Lifecycle Management](#client-lifecycle-management)
+        * [Lifecycle Events](#lifecycle-events)
+    * [Client Operations](#client-operations)
+        * [Subscribe](#subscribe)
+        * [Unsubscribe](#unsubscribe)
+        * [Publish](#publish)
+    * [MQTT5 Best Practices](#mqtt5-best-practices)
+## **Developer Preview Disclaimer**
 MQTT5 support is currently in **developer preview**.  We encourage feedback at all times, but feedback during the preview window is especially valuable in shaping the final product.  During the preview period we may make backwards-incompatible changes to the public API, but in general, this is something we will try our best to avoid.
 
 The MQTT5 client cannot yet be used with the AWS IoT MQTT services (Shadow, Jobs, Identity).  This is a shortcoming that we hope to address in the near future.
 
-## Introduction
+## **Introduction**
 
 This user guide is designed to act as a reference and guide for how to use MQTT5 with the Java SDK. This guide includes code snippets for how to make a MQTT5 client with proper configuration, how to connect to AWS IoT Core, how to perform operations and interact with AWS IoT Core through MQTT5, and some best practices for MQTT5.
 
@@ -18,7 +41,7 @@ If you are completely new to MQTT, it is highly recommended to check out the fol
 
 This user guide expects some beginner level familiarity with MQTT and the terms used to describe MQTT.
 
-## What's Different? (relative to the MQTT311 implementation)
+## **MQTT5 differences relative to MQTT311 implementation**
 SDK MQTT5 support comes from a separate client implementation.  In doing so, we took the opportunity to incorporate feedback about the 311 client that we could not apply without making breaking changes.  If you're used to the 311 client's API contract, there are a number of differences.
 
 ### Major changes
@@ -42,40 +65,16 @@ Not all parts of the MQTT5 spec are supported by the implementation.  We current
 * AUTH packets and the authentication fields in the CONNECT packet
 * QoS 2
 
-## Client lifecycle management
-Once created, an MQTT5 client's configuration is immutable.  Invoking start() on the client will put it into an active state where it
-recurrently establishes a connection to the configured remote endpoint.  Reconnecting continues until you invoke stop().
+## **Getting Started with MQTT5**
 
-```
-# Create an MQTT5 Client
+This section covers how to use MQTT5 in the Python SDK. This includes how to setup a MQTT5 builder for making MQTT5 clients, how to connect to AWS IoT Core, and how to perform the operations with the MQTT5 client. Each section below contains code snippets showing the functionality in Python.
 
-    client_options = mqtt5.ClientOptions(
-        host_name = <endpoint to connect to>,
-        port = <port to use>)
-
-    # Other options in client options can be set but once Client is initialized configuration is immutable
-    # e.g. setting the on_publish_callback_fn to be called
-    # client_options.on_publish_callback_fn = on_publish_received
-
-    client = mqtt5.Client(client_options)
-
-
-# Use the client
-    client.start();
-    ...
-```
-
-Invoking stop() breaks the current connection (if any) and moves the client into an idle state.
-
-```
-    // Shutdown
-    client.stop();
-
-```
-
-## Connecting To AWS IoT Core
+## **Connecting To AWS IoT Core**
 We strongly recommend using the AwsIotMqtt5ClientConfigBuilder class to configure MQTT5 clients when connecting to AWS IoT Core.  The builder simplifies configuration for all authentication methods supported by AWS IoT Core.  This section shows samples for all of the authentication possibilities.
 
+## **How to create a MQTT5 Client based on desired connection method**
+### **Optional Keyword Arguments**
+All lifecycle events and the callback for publishes received by the MQTT5 Client should be added to the builder on creation of the Client. A full list of accepted arguments can be found in the API guide.
 #### **Direct MQTT with X509-based mutual TLS**
 For X509 based mutual TLS, you can create a client where the certificate and private key are configured by path:
 ```
@@ -141,6 +140,29 @@ If your custom authorizer uses signing, you must specify the three signed token 
 ```
 In both cases, the builder will construct a final CONNECT packet username field value for you based on the values configured.  Do not add the token-signing fields to the value of the username that you assign within the custom authentication config structure.  Similarly, do not add any custom authentication related values to the username in the CONNECT configuration optionally attached to the client configuration. The builder will do everything for you.
 
+#### **Direct MQTT with PKCS11 Method**
+
+A MQTT5 direct connection can be made using a PKCS11 device rather than using a PEM encoded private key, the private key for mutual TLS is stored on a PKCS#11 compatible smart card or Hardware Security Module (HSM). To create a MQTT5 builder configured for this connection, see the following code:
+
+```
+    # other builder configurations can be added using **kwargs in the builder
+
+    pkcs11_lib = io.Pkcs11Lib(
+        file=<Path to PKCS11 library>,
+        behavior=io.Pkcs11Lib.InitializeFinalizeBehavior.STRICT)
+
+    client = mqtt5_client_builder.mtls_with_pkcs11(
+        pkcs11_lib=pkcs11_lib,
+        user_pin=user_pin,
+        slot_id=pkcs11_slot_id,
+        token_label=pkcs11_token_label,
+        priave_key_label=pkcs11_private_key_label,
+        cert_filepath=pkcs11_cert_filepath,
+        endpoint = <account-specific endpoint>)
+```
+
+**Note**: Currently, TLS integration with PKCS#11 is only available on Unix devices.
+
 #### **HTTP Proxy**
 No matter what your connection transport or authentication method is, you may connect through an HTTP proxy
 by adding the http_proxy_options keyword argument to the builder:
@@ -159,7 +181,37 @@ by adding the http_proxy_options keyword argument to the builder:
 SDK Proxy support also includes support for basic authentication and TLS-to-proxy.  SDK proxy support does not include any additional
 proxy authentication methods (kerberos, NTLM, etc...) nor does it include non-HTTP proxies (SOCKS5, for example).
 
-## Lifecycle Events
+## **Client lifecycle management**
+Once created, an MQTT5 client's configuration is immutable.  Invoking start() on the client will put it into an active state where it
+recurrently establishes a connection to the configured remote endpoint.  Reconnecting continues until you invoke stop().
+
+```
+# Create an MQTT5 Client
+
+    client_options = mqtt5.ClientOptions(
+        host_name = <endpoint to connect to>,
+        port = <port to use>)
+
+    # Other options in client options can be set but once Client is initialized configuration is immutable
+    # e.g. setting the on_publish_callback_fn to be called
+    # client_options.on_publish_callback_fn = on_publish_received
+
+    client = mqtt5.Client(client_options)
+
+
+# Use the client
+    client.start();
+    ...
+```
+
+Invoking stop() breaks the current connection (if any) and moves the client into an idle state.
+
+```
+    // Shutdown
+    client.stop();
+
+```
+## **Lifecycle Events**
 The MQTT5 client emits a set of events related to state and network status changes.
 
 #### **AttemptingConnect**
@@ -177,7 +229,7 @@ Emitted when the client's network connection is shut down, either by a local act
 #### **Stopped**
 Emitted once the client has shutdown any associated network connection and entered an idle state where it will no longer attempt to reconnect.  Only emitted after an invocation of stop() on the client.  A stopped client may always be started again.
 
-## Client Operations
+## **Client Operations**
 There are four basic MQTT operations you can perform with the MQTT5 client.
 
 ### Subscribe
@@ -216,3 +268,12 @@ The stop() API supports a DISCONNECT packet as an optional parameter.  If suppli
         reason_code = mqtt5.DisconnectReasonCode.NORMAL_DISCONNECTION,
         session_expiry_interval_sec = 3600))
 ```
+
+## **MQTT5 Best Practices**
+
+Below are some best practices for the MQTT5 client that are recommended to follow for the best development experience:
+
+* When creating MQTT5 clients, make sure to use ClientIDs that are unique! If you connect two MQTT5 clients with the same ClientID, they will Disconnect each other! If you do not configure a ClientID, the MQTT5 server will automatically assign one.
+* Use the minimum QoS you can get away with for the lowest latency and bandwidth costs. For example, if you are sending data consistently multiple times per second and do not have to have a guarantee the server got each and every publish, using QoS 0 may be ideal compared to QoS 1. Of course, this heavily depends on your use case but generally it is recommended to use the lowest QoS possible.
+* If you are getting unexpected disconnects when trying to connect to AWS IoT Core, make sure to check your IoT Core Thing’s policy and permissions to make sure your device is has the permissions it needs to connect!
+* For **Publish**, **Subscribe**, and **Unsubscribe**, you can check the reason codes in the returned Future to see if the operation actually succeeded.
