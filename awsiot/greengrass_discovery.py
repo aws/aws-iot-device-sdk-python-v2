@@ -19,7 +19,7 @@ class DiscoveryClient:
         tls_context: Client TLS context
         region: AWS region (not used if gg_server_name is set)
         gg_server_name: optional full server name
-        proxy_options (Optional[HttpProxyOptions]): Optional proxy options. If None is provided then a proxy is not used.
+        proxy_options (HttpProxyOptions): Optional proxy options. If None is provided then a proxy is not used.
     """
     __slots__ = [
         '_bootstrap',

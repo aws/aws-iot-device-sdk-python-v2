@@ -45,10 +45,8 @@ tls_context = io.ClientTlsContext(tls_options)
 socket_options = io.SocketOptions()
 
 proxy_options = None
-if cmdUtils.get_command(cmdUtils.m_cmd_proxy_host) or cmdUtils.get_command(cmdUtils.m_cmd_proxy_port):
-    if cmdUtils.get_command(
-            cmdUtils.m_cmd_proxy_host) is None or cmdUtils.get_command(
-            cmdUtils.m_cmd_proxy_port) is None:
+if cmdUtils.get_command(cmdUtils.m_cmd_proxy_host) != None or cmdUtils.get_command(cmdUtils.m_cmd_proxy_port) != None:
+    if cmdUtils.get_command(cmdUtils.m_cmd_proxy_host) is None and cmdUtils.get_command(cmdUtils.m_cmd_proxy_port) is None:
         print("Both 'proxy_host' and 'proxy_port' must be set to use a proxy in this sample.")
         exit(0)
     proxy_options = http.HttpProxyOptions(
