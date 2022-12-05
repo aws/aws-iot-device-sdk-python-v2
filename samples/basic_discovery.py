@@ -1,10 +1,11 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
+import command_line_utils
 import time
 import json
 from concurrent.futures import Future
-from awscrt import io
+from awscrt import io, http
 from awscrt.mqtt import QoS
 from awsiot.greengrass_discovery import DiscoveryClient
 from awsiot import mqtt_connection_builder
@@ -12,7 +13,6 @@ from awsiot import mqtt_connection_builder
 allowed_actions = ['both', 'publish', 'subscribe']
 
 # Parse arguments
-import command_line_utils;
 cmdUtils = command_line_utils.CommandLineUtils("Basic Discovery - Greengrass discovery example.")
 cmdUtils.add_common_mqtt_commands()
 cmdUtils.add_common_topic_message_commands()
@@ -21,22 +21,46 @@ cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", Tr
 cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
 cmdUtils.remove_command("endpoint")
 cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
-cmdUtils.register_command("mode", "<mode>", "The operation mode (optional, default='both').\nModes:%s"%str(allowed_actions), default='both')
+cmdUtils.register_command(
+    "mode", "<mode>",
+    f"The operation mode (optional, default='both').\nModes:{allowed_actions}", default='both')
 cmdUtils.register_command("region", "<str>", "The region to connect through.", required=True)
-cmdUtils.register_command("max_pub_ops", "<int>", "The maximum number of publish operations (optional, default='10').", default=10, type=int)
-cmdUtils.register_command("print_discover_resp_only", "", "(optional, default='False').", default=False, type=bool, action="store_true")
+cmdUtils.register_command(
+    "max_pub_ops", "<int>",
+    "The maximum number of publish operations (optional, default='10').",
+    default=10, type=int)
+cmdUtils.register_command(
+    "print_discover_resp_only", "", "(optional, default='False').",
+    default=False, type=bool, action="store_true")
+cmdUtils.add_common_proxy_commands()
 # Needs to be called so the command utils parse the commands
 cmdUtils.get_args()
 
-tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(cmdUtils.get_command_required("cert"), cmdUtils.get_command_required("key"))
+tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(
+    cmdUtils.get_command_required("cert"), cmdUtils.get_command_required("key"))
 if cmdUtils.get_command(cmdUtils.m_cmd_ca_file):
     tls_options.override_default_trust_store_from_path(None, cmdUtils.get_command(cmdUtils.m_cmd_ca_file))
 tls_context = io.ClientTlsContext(tls_options)
 
 socket_options = io.SocketOptions()
 
+proxy_options = None
+if cmdUtils.get_command(cmdUtils.m_cmd_proxy_host) or cmdUtils.get_command(cmdUtils.m_cmd_proxy_port):
+    if cmdUtils.get_command(
+            cmdUtils.m_cmd_proxy_host) is None or cmdUtils.get_command(
+            cmdUtils.m_cmd_proxy_port) is None:
+        print("Both 'proxy_host' and 'proxy_port' must be set to use a proxy in this sample.")
+        exit(0)
+    proxy_options = http.HttpProxyOptions(
+        cmdUtils.get_command_required(cmdUtils.m_cmd_proxy_host),
+        cmdUtils.get_command_required(cmdUtils.m_cmd_proxy_port))
+
 print('Performing greengrass discovery...')
-discovery_client = DiscoveryClient(io.ClientBootstrap.get_or_create_static_default(), socket_options, tls_context, cmdUtils.get_command_required("region"))
+discovery_client = DiscoveryClient(
+    io.ClientBootstrap.get_or_create_static_default(),
+    socket_options,
+    tls_context,
+    cmdUtils.get_command_required("region"), None, proxy_options)
 resp_future = discovery_client.discover(cmdUtils.get_command_required("thing_name"))
 discover_response = resp_future.result()
 
@@ -59,7 +83,7 @@ def try_iot_endpoints():
         for gg_core in gg_group.cores:
             for connectivity_info in gg_core.connectivity:
                 try:
-                    print('Trying core {} at host {} port {}'.format(gg_core.thing_arn, connectivity_info.host_address, connectivity_info.port))
+                    print (f"Trying core {gg_core.thing_arn} at host {connectivity_info.host_address} port {connectivity_info.port}")
                     mqtt_connection = mqtt_connection_builder.mtls_from_path(
                         endpoint=connectivity_info.host_address,
                         port=connectivity_info.port,

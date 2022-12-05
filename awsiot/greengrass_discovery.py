@@ -1,7 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt.http import HttpClientConnection, HttpRequest, HttpHeaders
+from awscrt.http import HttpClientConnection, HttpRequest, HttpHeaders, HttpProxyOptions
 from awscrt.io import ClientBootstrap, ClientTlsContext, is_alpn_available, SocketOptions, TlsConnectionOptions
 import awsiot
 from concurrent.futures import Future
@@ -19,6 +19,7 @@ class DiscoveryClient:
         tls_context: Client TLS context
         region: AWS region (not used if gg_server_name is set)
         gg_server_name: optional full server name
+        proxy_options (Optional[HttpProxyOptions]): Optional proxy options. If None is provided then a proxy is not used.
     """
     __slots__ = [
         '_bootstrap',
@@ -28,7 +29,8 @@ class DiscoveryClient:
         '_tls_connection_options',
         '_gg_server_name',
         'gg_url',
-        'port']
+        'port',
+        "proxy_options"]
 
     def __init__(
             self,
@@ -36,12 +38,13 @@ class DiscoveryClient:
             socket_options: SocketOptions,
             tls_context: ClientTlsContext,
             region: str,
-            gg_server_name: str = None):
+            gg_server_name: str = None,
+            proxy_options: HttpProxyOptions = None):
         assert isinstance(bootstrap, ClientBootstrap)
         assert isinstance(socket_options, SocketOptions)
         assert isinstance(tls_context, ClientTlsContext)
         assert isinstance(region, str)
-        if gg_server_name is not None: 
+        if gg_server_name is not None:
             assert isinstance(gg_server_name, str)
 
         self._bootstrap = bootstrap
@@ -55,6 +58,7 @@ class DiscoveryClient:
         self._tls_connection_options = tls_context.new_connection_options()
         self._tls_connection_options.set_server_name(self._gg_server_name)
         self.port = 8443
+        self._proxy_options = proxy_options
 
         if is_alpn_available():
             self._tls_connection_options.set_alpn_list(['x-amzn-http-ca'])
@@ -119,7 +123,8 @@ class DiscoveryClient:
             port=self.port,
             socket_options=self._socket_options,
             tls_connection_options=self._tls_connection_options,
-            bootstrap=self._bootstrap)
+            bootstrap=self._bootstrap,
+            proxy_options=self._proxy_options)
 
         connect_future.add_done_callback(on_connection_completed)
 
