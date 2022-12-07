@@ -1,0 +1,58 @@
+name: Release
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        type: choice
+        description: "Release type:"
+        required: true
+        options:
+          - bug fix (PATCH)
+          - new feature (MINOR)
+      release_title:
+        description: "The title of the release"
+        required: true
+
+jobs:
+  update-version:
+    runs-on: ubuntu-20.04 # latest
+    permissions:
+      contents: write # allow push
+      pull-requests: write # allow making PR
+
+    steps:
+    - name: Checkout Sources
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Make new release
+      env:
+        Title: ${{ github.event.inputs.release_title }}
+      run: |
+        # Escape special characters
+        Title=$(echo ${Title//[\"]\\\"})
+        Title=$(echo ${Title//[\']\\\'})
+        Title=$(echo ${Title//[\$]})
+
+        ./utils/publish-release.sh "${{ github.event.inputs.release_type }}" "$Title"
+
+    - name: configure AWS credentials (Release)
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ secrets.AWS_CI_RELEASE_ROLE }}
+        aws-region: us-east-1
+
+    - name: "Create VERSION file and trigger release"
+      run: |
+        version=$(git describe --tags --abbrev=0)
+        version_without_v=$(echo ${version} | cut -f2 -dv)
+        echo "${version_without_v}" > VERSION
+
+        zip VERSION.zip VERSION
+        export S3_URL=$(aws secretsmanager get-secret-value --secret-id ci/python_v2_version --query "SecretString" | cut -f2 -d\")
+        aws s3 cp VERSION.zip $S3_URL
