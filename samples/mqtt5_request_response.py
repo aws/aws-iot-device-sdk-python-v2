@@ -163,24 +163,23 @@ if __name__ == '__main__':
 
     publish_count = 1
     while (publish_count <= message_count) or (message_count == 0):
-        if publish_count==1:
-            correlation_data = {
-                "ligt_id": 4,
-                "correlation_id": str(uuid4())
-                }
-            print("Publishing request to request topic '{}'".format(request_topic_filter))
-            publish_future = client.publish(mqtt5.PublishPacket(
-                topic=request_topic_filter,
-                qos=mqtt5.QoS.AT_LEAST_ONCE,
-                correlation_data=json.dumps(correlation_data),
-                response_topic=response_topic_filter
-            ))
+        correlation_data = {
+            "light_id": 4,
+            "correlation_id": str(uuid4())
+            }
+        print("Publishing request to request topic '{}'".format(request_topic_filter))
+        publish_future = client.publish(mqtt5.PublishPacket(
+            topic=request_topic_filter,
+            qos=mqtt5.QoS.AT_LEAST_ONCE,
+            correlation_data=json.dumps(correlation_data),
+            response_topic=response_topic_filter
+        ))
 
-            publish_completion_data = publish_future.result(TIMEOUT)
-            print("PubAck to request topic received with {}\n".format(repr(publish_completion_data.puback.reason_code)))
+        publish_completion_data = publish_future.result(TIMEOUT)
+        print("PubAck to request topic received with {}\n".format(repr(publish_completion_data.puback.reason_code)))
 
-        time.sleep(1)
-        publish_count += 1
+    time.sleep(1)
+    publish_count += 1
 
     received_all_event.wait(TIMEOUT)
     print("{} Response(s) received.".format(response_count))
