@@ -22,6 +22,7 @@ jobs:
     runs-on: ubuntu-20.04 # latest
     permissions:
       contents: write # allow push
+      pull-requests: write # allow making PR
 
     steps:
     - name: Checkout Sources
