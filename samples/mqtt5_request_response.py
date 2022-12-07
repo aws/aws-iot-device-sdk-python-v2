@@ -178,8 +178,8 @@ if __name__ == '__main__':
         publish_completion_data = publish_future.result(TIMEOUT)
         print("PubAck to request topic received with {}\n".format(repr(publish_completion_data.puback.reason_code)))
 
-    time.sleep(1)
-    publish_count += 1
+        time.sleep(1)
+        publish_count += 1
 
     received_all_event.wait(TIMEOUT)
     print("{} Response(s) received.".format(response_count))
