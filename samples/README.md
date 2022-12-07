@@ -107,10 +107,7 @@ WARNING: This sample subscribes to both the request and response topics, but thi
 
 Note: MQTT5 support is currently in **developer preview**. We encourage feedback at all times, but feedback during the preview window is especially valuable in shaping the final product. During the preview period we may make backwards-incompatible changes to the public API, but in general, this is something we will try our best to avoid.
 
-On startup, the device connects to [AWS IoT Core](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html), subscribes to a request and response topic, and begins publishing messages to the request topic.  
-The device will then receive messages back from the message broker and publish messages, along with the correlation data, to the response topic set in the received message's properties when it was published to the request topic.
-Finally, the device will start to receive messages from the response topic.
-Status updates will be continually printed to the console.
+On startup, the device connects to [AWS IoT Core](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html), subscribes to a request and response topic, and begins publishing messages to the request topic. The device will then receive messages back from the message broker and publish messages, along with the correlation data, to the response topic set in the received message's properties when it was published to the request topic. Finally, the device will start to receive messages from the response topic. Status updates will be continually printed to the console.
 
 Source: `samples/mqtt5_request_response.py`
 
