@@ -9,8 +9,8 @@ from concurrent.futures import Future
 import time, json
 
 TIMEOUT = 100
-request_topic_filter = "cmd/control/light-1/switch"
-response_topic_filter = "cmd/control/light-1/status"
+request_topic_filter = "command/control/light-1/switch"
+response_topic_filter = "command/control/light-1/status"
 light_status = "OFF"
 
 
@@ -58,7 +58,7 @@ def on_publish_received(publish_packet_data):
 
     if publish_packet.topic == request_topic_filter:
 
-        print("Receive request from {} with correlation data {}".format(publish_packet.topic, publish_packet.correlation_data))
+        print("Received request from {} with correlation data {}".format(publish_packet.topic, publish_packet.correlation_data))
 
         global light_status
         if light_status == "ON":
@@ -68,18 +68,14 @@ def on_publish_received(publish_packet_data):
 
         print("Publishing light status {} to response topic '{}'\n".format(light_status, publish_packet.response_topic))
 
-        publish_future = client.publish(mqtt5.PublishPacket(
+        client.publish(mqtt5.PublishPacket(
             topic=publish_packet.response_topic,
             qos=mqtt5.QoS.AT_LEAST_ONCE,
             correlation_data=publish_packet.correlation_data,
             payload=light_status
         ))
-
-        publish_completion_data = publish_future.result(TIMEOUT)
-        print("PubAck to response topic received with {}".format(repr(publish_completion_data.puback.reason_code)))
-
     elif publish_packet.topic == response_topic_filter:
-        print("Received light status {} from response topic {} with correlation data {}\n".format(publish_packet.payload, publish_packet.topic, publish_packet.correlation_data))
+        print("Received light status {} from response topic {} with correlation data {}\n".format(str(publish_packet.payload), publish_packet.topic, publish_packet.correlation_data))
 
     if response_count == cmdUtils.get_command("count"):
         received_all_event.set()
@@ -132,8 +128,7 @@ if __name__ == '__main__':
             connack_packet.assigned_client_identifier,
             repr(connack_packet.reason_code)))
 
-    # Subscribe
-
+    # Subscribing to the response topic
     print("Subscribing to response topic '{}'...".format(response_topic_filter))
     subscribe_future = client.subscribe(subscribe_packet=mqtt5.SubscribePacket(
         subscriptions=[mqtt5.Subscription(
@@ -143,7 +138,7 @@ if __name__ == '__main__':
     suback = subscribe_future.result(TIMEOUT)
     print("Subscribed to response topic with {} \n".format(suback.reason_codes))
 
-    #Subcribing to the request topic is for sample purposes only. Ideally, this subcription would take place on another client.
+    #Subcribing to the request topic is for sample purposes only. Ideally, this subcription would take place on another device.
     print("Subscribing to request topic '{}'...".format(request_topic_filter))
     subscribe_future = client.subscribe(subscribe_packet=mqtt5.SubscribePacket(
         subscriptions=[mqtt5.Subscription(
@@ -154,7 +149,6 @@ if __name__ == '__main__':
     print("Subscribed to request topic  with {} \n".format(suback.reason_codes))
 
     # Publish message to server desired number of times.
-    # This step is skipped if message is blank.
     # This step loops forever if count was set to 0.
     if message_count == 0:
         print("Sending messages until program killed")
@@ -167,7 +161,7 @@ if __name__ == '__main__':
             "light_id": 4,
             "correlation_id": str(uuid4())
             }
-        print("Publishing request to request topic '{}'".format(request_topic_filter))
+        print("Publishing request to request topic {} with correlation data {}".format(request_topic_filter, str(correlation_data)))
         publish_future = client.publish(mqtt5.PublishPacket(
             topic=request_topic_filter,
             qos=mqtt5.QoS.AT_LEAST_ONCE,
@@ -185,7 +179,6 @@ if __name__ == '__main__':
     print("{} Response(s) received.".format(response_count))
 
     # Unsubscribe from response topic 
-
     print("Unsubscribing from response topic '{}'".format(response_topic_filter))
     unsubscribe_future = client.unsubscribe(unsubscribe_packet=mqtt5.UnsubscribePacket(
         topic_filters=[response_topic_filter]))
@@ -194,7 +187,6 @@ if __name__ == '__main__':
 
 
     # Unsubscribe from request topic 
-
     print("Unsubscribing from request topic '{}'".format(request_topic_filter))
     unsubscribe_future = client.unsubscribe(unsubscribe_packet=mqtt5.UnsubscribePacket(
         topic_filters=[request_topic_filter]))

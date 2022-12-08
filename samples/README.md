@@ -111,7 +111,7 @@ On startup, the device connects to [AWS IoT Core](https://docs.aws.amazon.com/io
 
 Source: `samples/mqtt5_request_response.py`
 
-Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect, subscribe, publish, and receive. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+Your AWS IoT Core Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect, subscribe, publish, and receive. Make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
 
 <details>
 <summary>(see sample policy)</summary>
@@ -126,8 +126,8 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
         "iot:Receive"
       ],
       "Resource": [
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/cmd/control/light-1/switch",
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/cmd/control/light-1/status"
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/command/control/light-1/switch",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/command/control/light-1/status"
       ]
     },
     {
@@ -136,8 +136,8 @@ Your Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-
         "iot:Subscribe"
       ],
       "Resource": [
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/cmd/control/light-1/switch",
-        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/cmd/control/light-1/status"
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/command/control/light-1/switch",
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/command/control/light-1/status"
       ]
     },
     {
