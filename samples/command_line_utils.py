@@ -3,7 +3,8 @@
 
 import argparse
 from awscrt import io, http, auth
-from awsiot import mqtt_connection_builder
+from awsiot import mqtt_connection_builder, mqtt5_client_builder
+
 
 class CommandLineUtils:
     def __init__(self, description) -> None:
@@ -63,25 +64,85 @@ class CommandLineUtils:
                 self.commands[command_name]["action"] = new_action
 
     def add_common_mqtt_commands(self):
-        self.register_command(self.m_cmd_endpoint, "<str>", "The endpoint of the mqtt server not including a port.", True, str)
-        self.register_command(self.m_cmd_ca_file, "<path>", "Path to AmazonRootCA1.pem (optional, system trust store used by default)", False, str)
+        self.register_command(
+            self.m_cmd_endpoint,
+            "<str>",
+            "The endpoint of the mqtt server not including a port.",
+            True,
+            str)
+        self.register_command(
+            self.m_cmd_ca_file,
+            "<path>",
+            "Path to AmazonRootCA1.pem (optional, system trust store used by default)",
+            False,
+            str)
+
+    def add_common_mqtt5_commands(self):
+        self.register_command(
+            self.m_cmd_endpoint,
+            "<str>",
+            "The endpoint of the mqtt server not including a port.",
+            True,
+            str)
+        self.register_command(
+            self.m_cmd_ca_file,
+            "<path>",
+            "Path to AmazonRootCA1.pem (optional, system trust store used by default)",
+            False,
+            str)
 
     def add_common_proxy_commands(self):
-        self.register_command(self.m_cmd_proxy_host, "<str>", "Host name of the proxy server to connect through (optional)", False, str)
-        self.register_command(self.m_cmd_proxy_port, "<int>", "Port of the http proxy to use (optional, default='8080')", type=int, default=8080)
+        self.register_command(
+            self.m_cmd_proxy_host,
+            "<str>",
+            "Host name of the proxy server to connect through (optional)",
+            False,
+            str)
+        self.register_command(
+            self.m_cmd_proxy_port,
+            "<int>",
+            "Port of the http proxy to use (optional, default='8080')",
+            type=int,
+            default=8080)
 
     def add_common_topic_message_commands(self):
-        self.register_command(self.m_cmd_topic, "<str>", "Topic to publish, subscribe to (optional, default='test/topic').", default="test/topic")
-        self.register_command(self.m_cmd_message, "<str>", "The message to send in the payload (optional, default='Hello World!').", default="Hello World!")
+        self.register_command(
+            self.m_cmd_topic,
+            "<str>",
+            "Topic to publish, subscribe to (optional, default='test/topic').",
+            default="test/topic")
+        self.register_command(
+            self.m_cmd_message,
+            "<str>",
+            "The message to send in the payload (optional, default='Hello World!').",
+            default="Hello World!")
 
     def add_common_logging_commands(self):
-        self.register_command(self.m_cmd_verbosity, "<Log Level>", "Logging level.", default=io.LogLevel.NoLogs.name, choices=[x.name for x in io.LogLevel])
+        self.register_command(
+            self.m_cmd_verbosity,
+            "<Log Level>",
+            "Logging level.",
+            default=io.LogLevel.NoLogs.name,
+            choices=[
+                x.name for x in io.LogLevel])
 
     def add_common_custom_authorizer_commands(self):
-        self.register_command(self.m_cmd_custom_auth_username, "<str>", "The name to send when connecting through the custom authorizer (optional)")
-        self.register_command(self.m_cmd_custom_auth_authorizer_name, "<str>", "The name of the custom authorizer to connect to (optional but required for everything but custom domains)")
-        self.register_command(self.m_cmd_custom_auth_username, "<str>", "The signature to send when connecting through a custom authorizer (optional)")
-        self.register_command(self.m_cmd_custom_auth_password, "<str>", "The password to send when connecting through a custom authorizer (optional)")
+        self.register_command(
+            self.m_cmd_custom_auth_username,
+            "<str>",
+            "The name to send when connecting through the custom authorizer (optional)")
+        self.register_command(
+            self.m_cmd_custom_auth_authorizer_name,
+            "<str>",
+            "The name of the custom authorizer to connect to (optional but required for everything but custom domains)")
+        self.register_command(
+            self.m_cmd_custom_auth_username,
+            "<str>",
+            "The signature to send when connecting through a custom authorizer (optional)")
+        self.register_command(
+            self.m_cmd_custom_auth_password,
+            "<str>",
+            "The password to send when connecting through a custom authorizer (optional)")
 
     """
     Returns the command if it exists and has been passed to the console, otherwise it will print the help for the sample and exit the application.
@@ -176,9 +237,125 @@ class CommandLineUtils:
     def get_proxy_options_for_mqtt_connection(self):
         proxy_options = None
         if self.parsed_commands.proxy_host and self.parsed_commands.proxy_port:
-            proxy_options = http.HttpProxyOptions(host_name=self.parsed_commands.proxy_host, port=self.parsed_commands.proxy_port)
+            proxy_options = http.HttpProxyOptions(
+                host_name=self.parsed_commands.proxy_host,
+                port=self.parsed_commands.proxy_port)
         return proxy_options
 
+    ########################################################################
+    # MQTT5
+    ########################################################################
+
+    def build_pkcs11_mqtt5_client(self,
+                                  on_publish_received=None,
+                                  on_lifecycle_stopped=None,
+                                  on_lifecycle_attempting_connect=None,
+                                  on_lifecycle_connection_success=None,
+                                  on_lifecycle_connection_failure=None,
+                                  on_lifecycle_disconnection=None):
+
+        pkcs11_lib_path = self.get_command_required(self.m_cmd_pkcs11_lib)
+        print(f"Loading PKCS#11 library '{pkcs11_lib_path}' ...")
+        pkcs11_lib = io.Pkcs11Lib(
+            file=pkcs11_lib_path,
+            behavior=io.Pkcs11Lib.InitializeFinalizeBehavior.STRICT)
+        print("Loaded!")
+
+        pkcs11_slot_id = None
+        if (self.get_command(self.m_cmd_pkcs11_slot) is not None):
+            pkcs11_slot_id = int(self.get_command(self.m_cmd_pkcs11_slot))
+
+        # Create MQTT5 client
+        mqtt5_client = mqtt5_client_builder.mtls_with_pkcs11(
+            pkcs11_lib=pkcs11_lib,
+            user_pin=self.get_command_required(self.m_cmd_pkcs11_pin),
+            slot_id=pkcs11_slot_id,
+            token_label=self.get_command_required(self.m_cmd_pkcs11_token),
+            private_key_label=self.get_command_required(self.m_cmd_pkcs11_key),
+            cert_filepath=self.get_command_required(self.m_cmd_pkcs11_cert),
+            endpoint=self.get_command_required(self.m_cmd_endpoint),
+            port=self.get_command("port"),
+            ca_filepath=self.get_command(self.m_cmd_ca_file),
+            on_publish_received=on_publish_received,
+            on_lifecycle_stopped=on_lifecycle_stopped,
+            on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,
+            on_lifecycle_connection_success=on_lifecycle_connection_success,
+            on_lifecycle_connection_failure=on_lifecycle_connection_failure,
+            on_lifecycle_disconnection=on_lifecycle_disconnection,
+            client_id=self.get_command("client_id"))
+
+        return mqtt5_client
+
+    def build_websocket_mqtt5_client(self,
+                                     on_publish_received=None,
+                                     on_lifecycle_stopped=None,
+                                     on_lifecycle_attempting_connect=None,
+                                     on_lifecycle_connection_success=None,
+                                     on_lifecycle_connection_failure=None,
+                                     on_lifecycle_disconnection=None):
+        proxy_options = self.get_proxy_options_for_mqtt_connection()
+        credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
+        mqtt5_client = mqtt5_client_builder.websockets_with_default_aws_signing(
+            endpoint=self.get_command_required(self.m_cmd_endpoint),
+            region=self.get_command_required(self.m_cmd_signing_region),
+            credentials_provider=credentials_provider,
+            http_proxy_options=proxy_options,
+            ca_filepath=self.get_command(self.m_cmd_ca_file),
+            on_publish_received=on_publish_received,
+            on_lifecycle_stopped=on_lifecycle_stopped,
+            on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,
+            on_lifecycle_connection_success=on_lifecycle_connection_success,
+            on_lifecycle_connection_failure=on_lifecycle_connection_failure,
+            on_lifecycle_disconnection=on_lifecycle_disconnection,
+            client_id=self.get_command_required("client_id"))
+        return mqtt5_client
+
+    def build_direct_mqtt5_client(self,
+                                  on_publish_received=None,
+                                  on_lifecycle_stopped=None,
+                                  on_lifecycle_attempting_connect=None,
+                                  on_lifecycle_connection_success=None,
+                                  on_lifecycle_connection_failure=None,
+                                  on_lifecycle_disconnection=None):
+        proxy_options = self.get_proxy_options_for_mqtt_connection()
+        mqtt5_client = mqtt5_client_builder.mtls_from_path(
+            endpoint=self.get_command_required(self.m_cmd_endpoint),
+            port=self.get_command_required("port"),
+            cert_filepath=self.get_command_required(self.m_cmd_cert_file),
+            pri_key_filepath=self.get_command_required(self.m_cmd_key_file),
+            ca_filepath=self.get_command(self.m_cmd_ca_file),
+            http_proxy_options=proxy_options,
+            on_publish_received=on_publish_received,
+            on_lifecycle_stopped=on_lifecycle_stopped,
+            on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,
+            on_lifecycle_connection_success=on_lifecycle_connection_success,
+            on_lifecycle_connection_failure=on_lifecycle_connection_failure,
+            on_lifecycle_disconnection=on_lifecycle_disconnection,
+            client_id=self.get_command_required("client_id"))
+        return mqtt5_client
+
+    def build_mqtt5_client(self,
+                           on_publish_received=None,
+                           on_lifecycle_stopped=None,
+                           on_lifecycle_attempting_connect=None,
+                           on_lifecycle_connection_success=None,
+                           on_lifecycle_connection_failure=None,
+                           on_lifecycle_disconnection=None):
+
+        if self.get_command(self.m_cmd_signing_region) is not None:
+            return self.build_websocket_mqtt5_client(on_publish_received=on_publish_received,
+                                                     on_lifecycle_stopped=on_lifecycle_stopped,
+                                                     on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,
+                                                     on_lifecycle_connection_success=on_lifecycle_connection_success,
+                                                     on_lifecycle_connection_failure=on_lifecycle_connection_failure,
+                                                     on_lifecycle_disconnection=on_lifecycle_disconnection)
+        else:
+            return self.build_direct_mqtt5_client(on_publish_received=on_publish_received,
+                                                  on_lifecycle_stopped=on_lifecycle_stopped,
+                                                  on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,
+                                                  on_lifecycle_connection_success=on_lifecycle_connection_success,
+                                                  on_lifecycle_connection_failure=on_lifecycle_connection_failure,
+                                                  on_lifecycle_disconnection=on_lifecycle_disconnection)
 
     # Constants for commonly used/needed commands
     m_cmd_endpoint = "endpoint"
