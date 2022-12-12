@@ -1,5 +1,9 @@
+# Assumes are running using the Ubuntu Codebuild standard image
+# Makes a release deployment to production PyPi repo.
+#
+# NOTE: This script assumes that the AWS CLI-V2 is pre-installed!
+# - AWS CLI-V2 is a requirement to run this script.
 version: 0.2
-# this image assumes Ubuntu 14.04 base image
 phases:
   install:
     commands:
@@ -8,11 +12,13 @@ phases:
       - export PATH=$PATH:$HOME/.local/bin
       - python3 -m pip install --user --upgrade pip
       - python3 -m pip install --user --upgrade twine setuptools wheel awscli PyOpenSSL six
+      - echo "\nBuild version data:"
+      - echo "\nPython Version:"; python3 --version
   pre_build:
     commands:
-      - cd aws-iot-device-sdk-python-v2
-      - pypirc=$(aws secretsmanager get-secret-value --secret-id "prod/aws-sdk-python-v2/.pypirc" --query "SecretString" | cut -f2 -d\") && echo "$pypirc" > ~/.pypirc
-      - export PKG_VERSION=$(git describe --tags | cut -f2 -dv)
+      - cd $CODEBUILD_SRC_DIR/aws-iot-device-sdk-python-v2
+      - pypirc=$(aws secretsmanager get-secret-value --secret-id "cd/aws-sdk-python-v2-prod/.pypirc" --query "SecretString" | cut -f2 -d\") && echo "$pypirc" > ~/.pypirc
+      - export PKG_VERSION=$(cat $CODEBUILD_SRC_DIR/VERSION)
       - echo "Updating package version to ${PKG_VERSION}"
       - sed --in-place -E "s/__version__ = '.+'/__version__ = '${PKG_VERSION}'/" awsiot/__init__.py
   build:

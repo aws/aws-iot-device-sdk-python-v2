@@ -33,7 +33,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autodoc.typehints',
     'sphinx.ext.napoleon',
-    'sphinx.ext.intersphinx', # for linking external docs (ex: aws-crt-python)
+    'sphinx.ext.intersphinx',  # for linking external docs (ex: aws-crt-python)
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -50,7 +50,7 @@ intersphinx_mapping = {
     'awscrt': ('https://awslabs.github.io/aws-crt-python', None),
 }
 
-# A string that determines how domain objects (e.g. functions, classes, 
+# A string that determines how domain objects (e.g. functions, classes,
 # attributes, etc.) are displayed in their table of contents entry.
 toc_object_entries_show_parents = 'hide'
 

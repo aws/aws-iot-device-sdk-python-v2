@@ -26,12 +26,13 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 * [Getting Help](#Getting-Help)
 * [FAQ](./documents/FAQ.md)
 * [Giving Feedback and Contributions](#Giving-Feedback-and-Contributions)
+* [MQTT5 User Guide](./documents/MQTT5_Userguide.md)
 
 
 ## Installation
 
 ### Minimum Requirements
-* Python 3.6+
+* Python 3.7+
 
 [Step-by-step instructions](./documents/PREREQUISITES.md)
 
@@ -99,3 +100,5 @@ We need your help in making this SDK great. Please participate in the community 
 ## License
 
 This library is licensed under the [Apache 2.0 License](./documents/LICENSE).
+
+Latest released version: v1.12.0
