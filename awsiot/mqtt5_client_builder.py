@@ -622,6 +622,77 @@ def direct_with_custom_authorizer(
                     **kwargs)
 
 
+def websockets_with_custom_authorizer(
+        auth_username=None,
+        auth_authorizer_name=None,
+        auth_authorizer_signature=None,
+        auth_password=None,
+        websocket_proxy_options=None,
+        **kwargs) -> awscrt.mqtt5.Client:
+    """
+    This builder creates an :class:`awscrt.mqtt5.Client`, configured for an MQTT5 Client using a custom
+    authorizer through websockets. This function will set the username, port, and TLS options.
+
+    This function takes all :mod:`common arguments<awsiot.mqtt5_client_builder>`
+    described at the top of this doc, as well as...
+
+    Keyword Args:
+        auth_username (`str`): The username to use with the custom authorizer.
+            If provided, the username given will be passed when connecting to the custom authorizer.
+            If not provided, it will check to see if a username has already been set (via username="example")
+            and will use that instead.
+            If no username has been set then no username will be sent with the MQTT connection.
+
+        auth_authorizer_name (`str`):  The name of the custom authorizer.
+            If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
+
+        auth_authorizer_signature (`str`):  The signature of the custom authorizer.
+            If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
+
+        auth_password (`str`):  The password to use with the custom authorizer.
+            If not provided, then no passord will be set.
+
+        websocket_proxy_options (awscrt.http.HttpProxyOptions): Deprecated,
+            for proxy settings use `http_proxy_options` (described in
+            :mod:`common arguments<awsiot.mqtt5_client_builder>`)
+    """
+
+    _check_required_kwargs(**kwargs)
+    username_string = ""
+
+    if auth_username is None:
+        if not _get(kwargs, "username") is None:
+            username_string += _get(kwargs, "username")
+    else:
+        username_string += auth_username
+
+    if auth_authorizer_name is not None:
+        username_string = _add_to_username_parameter(
+            username_string, auth_authorizer_name, "x-amz-customauthorizer-name=")
+    if auth_authorizer_signature is not None:
+        username_string = _add_to_username_parameter(
+            username_string, auth_authorizer_signature, "x-amz-customauthorizer-signature=")
+
+    kwargs["username"] = username_string
+    kwargs["password"] = auth_password
+
+    tls_ctx_options = awscrt.io.TlsContextOptions()
+
+    def _sign_websocket_handshake_request(transform_args, **kwargs):
+        # transform_args need to know when transform is done
+        try:
+            transform_args.set_done()
+        except Exception as e:
+            transform_args.set_done(e)
+
+    return _builder(tls_ctx_options=tls_ctx_options,
+                    use_websockets=True,
+                    use_custom_authorizer=True,
+                    websocket_handshake_transform=_sign_websocket_handshake_request,
+                    websocket_proxy_options=websocket_proxy_options,
+                    **kwargs)
+
+
 def new_default_builder(**kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, without any configuration besides the default TLS context options.
