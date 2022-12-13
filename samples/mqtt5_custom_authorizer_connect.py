@@ -44,7 +44,6 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 if __name__ == '__main__':
 
     # Create MQTT5 Client with a custom authorizer
-    client = None
     if use_websockets == None:
         client = mqtt5_client_builder.direct_with_custom_authorizer(
             endpoint=cmdUtils.get_command_required(cmdUtils.m_cmd_endpoint),
