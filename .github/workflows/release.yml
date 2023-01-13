@@ -23,6 +23,7 @@ jobs:
     permissions:
       contents: write # allow push
       pull-requests: write # allow making PR
+      id-token: write # This is required for requesting the JWT
 
     steps:
     - name: Checkout Sources
