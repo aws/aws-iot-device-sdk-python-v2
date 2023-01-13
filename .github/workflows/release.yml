@@ -1,7 +1,7 @@
 name: Release
 
 env:
-  GH_TOKEN: ${{ github.token }}
+  GITHUB_TOKEN: ${{ github.token }}
 
 on:
   workflow_dispatch:
