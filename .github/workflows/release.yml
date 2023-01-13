@@ -1,7 +1,7 @@
 name: Release
 
 env:
-  GITHUB_TOKEN: ${{ github.token }}
+  GITHUB_TOKEN: ${{ secrets.TAG_PR_TOKEN }}
 
 on:
   workflow_dispatch:
