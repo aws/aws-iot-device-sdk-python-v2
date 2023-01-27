@@ -18,7 +18,9 @@ pushd $(dirname $0) > /dev/null
 
 # Get the current version
 git checkout main
-current_version=$(git describe --tags --abbrev=0)
+
+git_tags=$(git tag)
+current_version=$(python3 ./update_semantic_version.py  --version "${git_tags}" --type MINOR --parse_latest_version true)
 current_version_without_v=$(echo ${current_version} | cut -f2 -dv)
 
 echo "Current release version is ${current_version_without_v}"
