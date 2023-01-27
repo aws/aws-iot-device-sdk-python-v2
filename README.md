@@ -51,6 +51,7 @@ python -m pip install awsiotsdk
 ```
 
 ### Install from source
+
 ```
 # Create a workspace directory to hold all the SDK files
 mkdir sdk-workspace
