@@ -700,7 +700,7 @@ def new_default_builder(**kwargs) -> awscrt.mqtt5.Client:
     This requires setting the client details manually by passing all the necessary data
     in :mod:`common arguments<awsiot.mqtt5_client_builder>` to make a connection
     """
-    _check_required_kwargs(kwargs)
+    _check_required_kwargs(**kwargs)
     tls_ctx_options = awscrt.io.TlsContextOptions()
     return _builder(tls_ctx_options=tls_ctx_options,
                     use_websockets=False,
