@@ -1,0 +1,36 @@
+# Assumes are running using the Ubuntu Codebuild standard image
+# Makes sure the release to test PyPi repository worked
+#
+# NOTE: This script assumes that the AWS CLI-V2 is pre-installed!
+# - AWS CLI-V2 is a requirement to run this script.
+version: 0.2
+phases:
+  install:
+    commands:
+      - sudo apt-get update -y
+      - sudo apt-get install python3 python3-pip -y
+      - python3 -m pip install --upgrade pip
+      - python3 -m pip install --upgrade setuptools
+      - echo "\nBuild version data:"
+      - echo "\nPython Version:"; python3 --version
+
+  pre_build:
+    commands:
+      # Material for PubSub sample
+      - curl https://www.amazontrust.com/repository/AmazonRootCA1.pem --output /tmp/AmazonRootCA1.pem
+      - cert=$(aws secretsmanager get-secret-value --secret-id "ci/PubSub/cert" --query "SecretString" | cut -f2 -d":" | cut -f2 -d\") && echo "$cert" > /tmp/certificate.pem
+      - key=$(aws secretsmanager get-secret-value --secret-id "ci/PubSub/key" --query "SecretString" | cut -f2 -d":" | cut -f2 -d\") && echo "$key" > /tmp/privatekey.pem
+      - ENDPOINT=$(aws secretsmanager get-secret-value --secret-id "ci/endpoint" --query "SecretString" | cut -f2 -d":" | sed -e 's/[\\\"\}]//g')
+  build:
+    commands:
+      - echo Build started on `date`
+      - cd $CODEBUILD_SRC_DIR/aws-iot-device-sdk-python-v2
+      - CURRENT_TAG_VERSION=$(cat $CODEBUILD_SRC_DIR/VERSION)
+      - python3 codebuild/cd/pip-install-with-retry.py --no-cache-dir --user awsiotsdk==$CURRENT_TAG_VERSION
+      # Run PubSub sample
+      - python3 samples/pubsub.py --endpoint ${ENDPOINT} --cert /tmp/certificate.pem --key /tmp/privatekey.pem --ca_file /tmp/AmazonRootCA1.pem --verbosity Trace
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+

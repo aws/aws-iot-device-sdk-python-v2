@@ -26,6 +26,7 @@ to Python by the `awscrt` package ([PyPI](https://pypi.org/project/awscrt/)) ([G
 * [Getting Help](#Getting-Help)
 * [FAQ](./documents/FAQ.md)
 * [Giving Feedback and Contributions](#Giving-Feedback-and-Contributions)
+* [MQTT5 User Guide](./documents/MQTT5_Userguide.md)
 
 
 ## Installation
@@ -50,6 +51,7 @@ python -m pip install awsiotsdk
 ```
 
 ### Install from source
+
 ```
 # Create a workspace directory to hold all the SDK files
 mkdir sdk-workspace
@@ -99,3 +101,5 @@ We need your help in making this SDK great. Please participate in the community 
 ## License
 
 This library is licensed under the [Apache 2.0 License](./documents/LICENSE).
+
+Latest released version: v1.12.3

@@ -8,6 +8,7 @@ __all__ = [
     'iotshadow',
     'greengrass_discovery',
     'mqtt_connection_builder',
+    'mqtt5_client_builder',
 ]
 
 from awscrt import mqtt
