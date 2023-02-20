@@ -212,6 +212,28 @@ class CommandLineUtils:
             keep_alive_secs=30)
         return mqtt_connection
 
+    def build_cognito_mqtt_connection(self, on_connection_interrupted, on_connection_resumed):
+        proxy_options = self.get_proxy_options_for_mqtt_connection()
+
+        cognito_endpoint = "cognito-identity." + self.get_command_required(self.m_cmd_signing_region) + ".amazonaws.com"
+        credentials_provider = auth.AwsCredentialsProvider.new_cognito(
+            endpoint=cognito_endpoint,
+            identity=self.get_command_required(self.m_cmd_cognito_identity),
+            tls_ctx=io.ClientTlsContext(io.TlsContextOptions()))
+
+        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
+            endpoint=self.get_command_required(self.m_cmd_endpoint),
+            region=self.get_command_required(self.m_cmd_signing_region),
+            credentials_provider=credentials_provider,
+            http_proxy_options=proxy_options,
+            ca_filepath=self.get_command(self.m_cmd_ca_file),
+            on_connection_interrupted=on_connection_interrupted,
+            on_connection_resumed=on_connection_resumed,
+            client_id=self.get_command_required("client_id"),
+            clean_session=False,
+            keep_alive_secs=30)
+        return mqtt_connection
+
     def build_direct_mqtt_connection(self, on_connection_interrupted, on_connection_resumed):
         proxy_options = self.get_proxy_options_for_mqtt_connection()
         mqtt_connection = mqtt_connection_builder.mtls_from_path(
@@ -378,3 +400,4 @@ class CommandLineUtils:
     m_cmd_custom_auth_authorizer_name = "custom_auth_authorizer_name"
     m_cmd_custom_auth_authorizer_signature = "custom_auth_authorizer_signature"
     m_cmd_custom_auth_password = "custom_auth_password"
+    m_cmd_cognito_identity = "cognito_identity"

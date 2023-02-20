@@ -1,0 +1,20 @@
+{
+    "language": "Python",
+    "sample_file": "./aws-iot-device-sdk-python-v2/samples/cognito_connect.py",
+    "sample_region": "us-east-1",
+    "sample_main_class": "",
+    "arguments": [
+        {
+            "name": "--endpoint",
+            "secret": "ci/endpoint"
+        },
+        {
+            "name": "--signing_region",
+            "data": "us-east-1"
+        },
+        {
+            "name": "--cognito_identity",
+            "secret": "ci/Cognito/identity_id"
+        }
+    ]
+}
