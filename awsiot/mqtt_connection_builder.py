@@ -472,7 +472,7 @@ def direct_with_custom_authorizer(
             If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
 
         auth_authorizer_signature (`str`):  The signature of the custom authorizer.
-            If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
+            If not provided, then "x-amz-customauthorizer-signature" will not be added with the MQTT connection.
 
         auth_password (`str`):  The password to use with the custom authorizer.
             If not provided, then no passord will be set.
@@ -516,7 +516,7 @@ def websockets_with_custom_authorizer(
             If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
 
         auth_authorizer_signature (`str`):  The signature of the custom authorizer.
-            If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
+            If not provided, then "x-amz-customauthorizer-signature" will not be added with the MQTT connection.
 
         auth_password (`str`):  The password to use with the custom authorizer.
             If not provided, then no passord will be set.
