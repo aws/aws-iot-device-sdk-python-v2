@@ -78,7 +78,7 @@ def on_queue_empty():
 if __name__ == '__main__':
     mqtt_connection = cmdUtils.build_mqtt_connection(on_connection_interrupted, on_connection_resumed)
 
-    queue_builder = mqtt_operation_queue.OperationQueueBuilder()
+    queue_builder = mqtt_operation_queue.MqttOperationQueueBuilder()
     queue_builder.with_connection(mqtt_connection).with_queue_limit_size(cmdUtils.get_command("queue_limit"))
     queue_builder.with_on_queue_empty_callback(on_queue_empty)
     if (cmdUtils.get_command("queue_mode") == 0):
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     elif (cmdUtils.get_command("queue_mode") == 3):
         queue_builder.with_queue_insert_behavior(mqtt_operation_queue.InsertBehavior.INSERT_FRONT)
         queue_builder.with_queue_limit_behavior(mqtt_operation_queue.LimitBehavior.DROP_BACK)
-    mqtt_queue = queue_builder.build()
+    mqtt_queue : mqtt_operation_queue.MqttOperationQueue = queue_builder.build()
 
     if is_ci == False:
         print("Connecting to {} with client ID '{}'...".format(
