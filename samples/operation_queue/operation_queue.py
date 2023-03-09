@@ -14,6 +14,7 @@ from concurrent.futures import Future
 # since it is subscribed to that same topic.
 
 import mqtt_operation_queue
+import mqtt_operation_queue_tests
 
 # Parse arguments
 from command_line_utils import CommandLineUtils
@@ -35,7 +36,8 @@ cmdUtils.register_command("queue_mode", "<int>", "The mode for the queue to use 
                           "\n\t3 = Overflow removes from queue back and new operations are pushed to queue front",
                           default=10, type=int)
 cmdUtils.register_command("run_tests", "<int>",
-                          "If set to True (1 or greater), then the queue tests will be run instead of the sample (optional, default=0)")
+                          "If set to True (1 or greater), then the queue tests will be run instead of the sample (optional, default=0)",
+                          default=0, type=int)
 cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
 # Needs to be called so the command utils parse the commands
 cmdUtils.get_args()
@@ -43,6 +45,9 @@ cmdUtils.get_args()
 received_count = 0
 received_all_event = threading.Event()
 is_ci = cmdUtils.get_command("is_ci", None) != None
+
+if (cmdUtils.get_command("run_tests") > 0):
+    mqtt_operation_queue_tests.perform_tests(cmdUtils)
 
 # Callback when connection is accidentally lost.
 def on_connection_interrupted(connection, error, **kwargs):

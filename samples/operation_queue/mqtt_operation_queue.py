@@ -415,6 +415,8 @@ class MqttOperationQueue:
         Used to make separate the logic for when the queue is full from when it is not yet full.
         Called by _add_operation_to_queue.
 
+        Returns tuple with [result, dropped operation (or None)]
+
         Keyword Args:
             operation (QueueOperation): The operation to add.
         """
@@ -426,7 +428,7 @@ class MqttOperationQueue:
             result[1] = self._operation_queue[0]
             del self._operation_queue[0]
             self._print_log_message(f"Dropped operation of type {result[1].type} from the front...")
-            result[0] =  self._add_operation_to_queue_insert(operation)
+            result[0] = self._add_operation_to_queue_insert(operation)
         elif (self._queue_limit_behavior == LimitBehavior.DROP_BACK):
             end_of_queue = len(self._operation_queue)-1
             result[1] = self._operation_queue[end_of_queue]
@@ -461,8 +463,8 @@ class MqttOperationQueue:
                     result = self._add_operation_to_queue_insert(operation)
                 else:
                     return_data = self._add_operation_to_queue_overflow(operation)
-                    dropped_operation = return_data[0]
-                    result = return_data[1]
+                    dropped_operation = return_data[1]
+                    result = return_data[0]
         except Exception as exception:
             self._print_log_message(f"Exception ocurred adding operation to queue. Exception: {exception}")
 
