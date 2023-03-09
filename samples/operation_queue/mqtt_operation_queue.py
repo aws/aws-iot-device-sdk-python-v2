@@ -12,45 +12,50 @@ from awscrt import mqtt
 # Enums
 ########################################################
 
+
 class QueueResult(Enum):
     """
     The result of attempting to perform an operation on the MqttOperationQueue.
     The value indicates either success or what type of issue was encountered.
     """
-    SUCCESS=0
-    ERROR_QUEUE_FULL=1
-    ERROR_INVALID_ARGUMENT=2
-    UNKNOWN_QUEUE_LIMIT_BEHAVIOR=3
-    UNKNOWN_QUEUE_INSERT_BEHAVIOR=4
-    UNKNOWN_OPERATION=5
-    UNKNOWN_ERROR=6
+    SUCCESS = 0
+    ERROR_QUEUE_FULL = 1
+    ERROR_INVALID_ARGUMENT = 2
+    UNKNOWN_QUEUE_LIMIT_BEHAVIOR = 3
+    UNKNOWN_QUEUE_INSERT_BEHAVIOR = 4
+    UNKNOWN_OPERATION = 5
+    UNKNOWN_ERROR = 6
+
 
 class QueueOperationType(Enum):
     """
     An enum to indicate the type of data the QueueOperation contains. Used
     to differentiate between different operations in a common blob object.
     """
-    NONE=0
-    PUBLISH=1
-    SUBSCRIBE=2
-    UNSUBSCRIBE=3
+    NONE = 0
+    PUBLISH = 1
+    SUBSCRIBE = 2
+    UNSUBSCRIBE = 3
+
 
 class LimitBehavior(Enum):
     """
     An enum to indicate what happens when the MqttOperationQueue is completely full but new
     operations are requested to be added to the queue.
     """
-    DROP_FRONT=0
-    DROP_BACK=1
-    RETURN_ERROR=2
+    DROP_FRONT = 0
+    DROP_BACK = 1
+    RETURN_ERROR = 2
+
 
 class InsertBehavior(Enum):
     """
     An enum to indicate what happens when the MqttOperationQueue has a new operation it
     needs to add to the queue, configuring where the new operation is added.
     """
-    INSERT_FRONT=0
-    INSERT_BACK=1
+    INSERT_FRONT = 0
+    INSERT_BACK = 1
+
 
 class QueueOperation():
     """
@@ -58,16 +63,17 @@ class QueueOperation():
     an enum to indicate what type of operation should be stored within. Used to provide
     a common base that all operations can be derived from.
     """
-    type : QueueOperationType = QueueOperationType.NONE
-    topic : str = ""
+    type: QueueOperationType = QueueOperationType.NONE
+    topic: str = ""
     payload: any = None
-    qos : mqtt.QoS = mqtt.QoS.AT_MOST_ONCE
-    retain : bool = None
-    subscribe_callback : FunctionType = None
+    qos: mqtt.QoS = mqtt.QoS.AT_MOST_ONCE
+    retain: bool = None
+    subscribe_callback: FunctionType = None
 
 #######################################################
 # Classes
 ########################################################
+
 
 class MqttOperationQueueBuilder:
     """
@@ -76,21 +82,21 @@ class MqttOperationQueueBuilder:
     MqttOperationQueue with the build() function.
     """
 
-    _connection : mqtt.Connection = None
-    _queue_limit_size : int = 10
-    _queue_limit_behavior : LimitBehavior = LimitBehavior.DROP_BACK
-    _queue_insert_behavior : InsertBehavior = InsertBehavior.INSERT_BACK
-    _incomplete_limit : int = 1
-    _inflight_limit : int = 1
-    _on_operation_sent_callback : FunctionType = None
-    _on_operation_sent_failure_callback : FunctionType = None
-    _on_operation_dropped_callback : FunctionType = None
-    _on_queue_full_callback : FunctionType = None
-    _on_queue_empty_callback : FunctionType = None
-    _queue_loop_time_ms : int = 1000
-    _enable_logging : bool = False
+    _connection: mqtt.Connection = None
+    _queue_limit_size: int = 10
+    _queue_limit_behavior: LimitBehavior = LimitBehavior.DROP_BACK
+    _queue_insert_behavior: InsertBehavior = InsertBehavior.INSERT_BACK
+    _incomplete_limit: int = 1
+    _inflight_limit: int = 1
+    _on_operation_sent_callback: FunctionType = None
+    _on_operation_sent_failure_callback: FunctionType = None
+    _on_operation_dropped_callback: FunctionType = None
+    _on_queue_full_callback: FunctionType = None
+    _on_queue_empty_callback: FunctionType = None
+    _queue_loop_time_ms: int = 1000
+    _enable_logging: bool = False
 
-    def with_connection(self, connection:mqtt.Connection):
+    def with_connection(self, connection: mqtt.Connection):
         """
         Sets the mqtt.Connection that will be used by the MqttOperationQueue.
         This is a REQUIRED argument that has to be set in order for the MqttOperationQueue to function.
@@ -107,7 +113,7 @@ class MqttOperationQueueBuilder:
         """
         return self._connection
 
-    def with_queue_limit_size(self, queue_limit_size:int):
+    def with_queue_limit_size(self, queue_limit_size: int):
         """
         Sets the maximum size of the operation queue in the MqttOperationQueue.
         Default operation queue size is 10.
@@ -127,7 +133,7 @@ class MqttOperationQueueBuilder:
         """
         return self._queue_limit_size
 
-    def with_queue_limit_behavior(self, queue_limit_behavior:LimitBehavior):
+    def with_queue_limit_behavior(self, queue_limit_behavior: LimitBehavior):
         """
         Sets how the MqttOperationQueue will behave when the operation queue is full but a
         new operation is requested to be added to the queue.
@@ -145,7 +151,7 @@ class MqttOperationQueueBuilder:
         """
         return self._queue_limit_behavior
 
-    def with_queue_insert_behavior(self, queue_insert_behavior:InsertBehavior):
+    def with_queue_insert_behavior(self, queue_insert_behavior: InsertBehavior):
         """
         Sets how the MqttOperationQueue will behave when inserting a new operation into the queue.
         The default is INSERT_BACK, which will add the new operation to the back (last to be executed) of the queue.
@@ -162,7 +168,7 @@ class MqttOperationQueueBuilder:
         """
         return self._queue_insert_behavior
 
-    def with_incomplete_limit(self, incomplete_limit:int):
+    def with_incomplete_limit(self, incomplete_limit: int):
         """
         Sets the maximum number of incomplete operations that the MQTT connection can have before the
         MqttOperationQueue will wait for them to be complete. Incomplete operations are those that have been
@@ -185,7 +191,7 @@ class MqttOperationQueueBuilder:
         """
         return self._incomplete_limit
 
-    def with_inflight_limit(self, inflight_limit:int):
+    def with_inflight_limit(self, inflight_limit: int):
         """
         Sets the maximum number of inflight operations that the MQTT connection can have before the
         MqttOperationQueue will wait for them to be complete. inflight operations are those that have been
@@ -272,7 +278,7 @@ class MqttOperationQueueBuilder:
         """
         return self._on_operation_dropped_callback
 
-    def with_on_queue_full_callback(self, on_queue_full_callback:FunctionType):
+    def with_on_queue_full_callback(self, on_queue_full_callback: FunctionType):
         """
         Sets the callback that will be invoked when the operation queue is full.
 
@@ -291,7 +297,7 @@ class MqttOperationQueueBuilder:
         """
         return self._on_queue_full_callback
 
-    def with_on_queue_empty_callback(self, on_queue_empty_callback:FunctionType):
+    def with_on_queue_empty_callback(self, on_queue_empty_callback: FunctionType):
         """
         Sets the callback that will be invoked when the operation queue is completely empty.
 
@@ -310,7 +316,7 @@ class MqttOperationQueueBuilder:
         """
         return self._on_queue_empty_callback
 
-    def with_queue_loop_time(self, queue_loop_time_ms:int):
+    def with_queue_loop_time(self, queue_loop_time_ms: int):
         """
         Sets the interval, in milliseconds, that the MqttOperationQueue will wait before checking the queue and (possibly)
         processing an operation based on the statistics and state of the MqttClientConnection assigned to the MqttOperationQueue.
@@ -328,7 +334,7 @@ class MqttOperationQueueBuilder:
         """
         return self._queue_loop_time_ms
 
-    def with_enable_logging(self, enable_logging:bool):
+    def with_enable_logging(self, enable_logging: bool):
         """
         Sets whether the MqttOperationQueue will print logging statements to help debug and determine how the
         MqttOperationQueue is functioning.
@@ -353,26 +359,26 @@ class MqttOperationQueueBuilder:
 
 
 class MqttOperationQueue:
-    _operation_queue : list[QueueOperation] = []
-    _operation_queue_lock : Lock = Lock()
-    _operation_queue_thread : Thread = None
-    _operation_queue_thread_running : bool = False
+    _operation_queue: list[QueueOperation] = []
+    _operation_queue_lock: Lock = Lock()
+    _operation_queue_thread: Thread = None
+    _operation_queue_thread_running: bool = False
     # configuration options/settings
-    _connection : mqtt.Connection = None
-    _queue_limit_size : int = 10
-    _queue_limit_behavior : LimitBehavior = LimitBehavior.DROP_BACK
-    _queue_insert_behavior : InsertBehavior = InsertBehavior.INSERT_BACK
-    _incomplete_limit : int = 1
-    _inflight_limit : int = 1
-    _on_operation_sent_callback : FunctionType = None
-    _on_operation_sent_failure_callback : FunctionType = None
-    _on_operation_dropped_callback : FunctionType = None
-    _on_queue_full_callback : FunctionType = None
-    _on_queue_empty_callback : FunctionType = None
-    _queue_loop_time_sec : int = 1
-    _enable_logging : bool = False
+    _connection: mqtt.Connection = None
+    _queue_limit_size: int = 10
+    _queue_limit_behavior: LimitBehavior = LimitBehavior.DROP_BACK
+    _queue_insert_behavior: InsertBehavior = InsertBehavior.INSERT_BACK
+    _incomplete_limit: int = 1
+    _inflight_limit: int = 1
+    _on_operation_sent_callback: FunctionType = None
+    _on_operation_sent_failure_callback: FunctionType = None
+    _on_operation_dropped_callback: FunctionType = None
+    _on_queue_full_callback: FunctionType = None
+    _on_queue_empty_callback: FunctionType = None
+    _queue_loop_time_sec: int = 1
+    _enable_logging: bool = False
 
-    def __init__(self, builder:MqttOperationQueueBuilder) -> None:
+    def __init__(self, builder: MqttOperationQueueBuilder) -> None:
         self._connection = builder._connection
         self._queue_limit_size = builder._queue_limit_size
         self._queue_limit_behavior = builder._queue_limit_behavior
@@ -384,7 +390,7 @@ class MqttOperationQueue:
         self._on_operation_dropped_callback = builder._on_operation_dropped_callback
         self._on_queue_full_callback = builder._on_queue_full_callback
         self._on_queue_empty_callback = builder._on_queue_empty_callback
-        self._queue_loop_time_sec = builder._queue_loop_time_ms / 1000.0 # convert to seconds since that is what sleep uses
+        self._queue_loop_time_sec = builder._queue_loop_time_ms / 1000.0  # convert to seconds since that is what sleep uses
         self._enable_logging = builder._enable_logging
 
     ####################
@@ -400,7 +406,7 @@ class MqttOperationQueue:
         Keyword Args:
             operation (QueueOperation): The operation to add.
         """
-        result : QueueResult = QueueResult.SUCCESS
+        result: QueueResult = QueueResult.SUCCESS
         if (self._queue_insert_behavior == InsertBehavior.INSERT_FRONT):
             self._operation_queue.insert(0, operation)
         elif (self._queue_insert_behavior == InsertBehavior.INSERT_BACK):
@@ -430,7 +436,7 @@ class MqttOperationQueue:
             self._print_log_message(f"Dropped operation of type {result[1].type} from the front...")
             result[0] = self._add_operation_to_queue_insert(operation)
         elif (self._queue_limit_behavior == LimitBehavior.DROP_BACK):
-            end_of_queue = len(self._operation_queue)-1
+            end_of_queue = len(self._operation_queue) - 1
             result[1] = self._operation_queue[end_of_queue]
             del self._operation_queue[end_of_queue]
             self._print_log_message(f"Dropped operation of type {result[1].type} from the back...")
@@ -446,10 +452,10 @@ class MqttOperationQueue:
         Keyword Args:
             operation (QueueOperation): The operation to add.
         """
-        result : QueueResult = QueueResult.SUCCESS
-        dropped_operation : QueueOperation = None
+        result: QueueResult = QueueResult.SUCCESS
+        dropped_operation: QueueOperation = None
 
-        if (operation == None):
+        if (operation is None):
             return QueueResult.ERROR_INVALID_ARGUMENT
 
         # CRITICAL SECTION
@@ -459,7 +465,7 @@ class MqttOperationQueue:
             if (self._queue_limit_size <= 0):
                 result = self._add_operation_to_queue_insert(operation)
             else:
-                if (len(self._operation_queue)+1 <= self._queue_limit_size):
+                if (len(self._operation_queue) + 1 <= self._queue_limit_size):
                     result = self._add_operation_to_queue_insert(operation)
                 else:
                     return_data = self._add_operation_to_queue_overflow(operation)
@@ -473,18 +479,18 @@ class MqttOperationQueue:
 
         if (result == QueueResult.SUCCESS):
             self._print_log_message(f"Added operation of type {operation.type} successfully to queue")
-            if (len(self._operation_queue) == self._queue_limit_size and dropped_operation == None):
-                if (self._on_queue_full_callback != None):
+            if (len(self._operation_queue) == self._queue_limit_size and dropped_operation is None):
+                if (self._on_queue_full_callback is not None):
                     self._on_queue_full_callback()
 
         # Note: We invoke the dropped callback outside of the critical section to avoid deadlocks
-        if (dropped_operation != None):
-            if (self._on_operation_dropped_callback != None):
+        if (dropped_operation is not None):
+            if (self._on_operation_dropped_callback is not None):
                 self._on_operation_dropped_callback(dropped_operation)
 
         return result
 
-    def _print_log_message(self, message:str) -> None:
+    def _print_log_message(self, message: str) -> None:
         """
         Helper function: Prints to the console if logging is enabled.
         Just makes code a little cleaner and easier to process.
@@ -492,7 +498,7 @@ class MqttOperationQueue:
         Keyword Args:
             message (str): The message to print.
         """
-        if self._enable_logging == True:
+        if self._enable_logging:
             print("[MqttOperationQueue] " + message)
 
     ####################
@@ -504,7 +510,7 @@ class MqttOperationQueue:
         Helper function: Takes the publish operation and passes it to the MQTT connection.
         """
         result = self._connection.publish(operation.topic, operation.payload, operation.qos, operation.retain)
-        if (self._on_operation_sent_callback != None):
+        if (self._on_operation_sent_callback is not None):
             self._on_operation_sent_callback(operation, result)
 
     def _perform_operation_subscribe(self, operation: QueueOperation) -> None:
@@ -512,7 +518,7 @@ class MqttOperationQueue:
         Helper function: Takes the subscribe operation and passes it to the MQTT connection.
         """
         result = self._connection.subscribe(operation.topic, operation.qos, operation.subscribe_callback)
-        if (self._on_operation_sent_callback != None):
+        if (self._on_operation_sent_callback is not None):
             self._on_operation_sent_callback(operation, result)
 
     def _perform_operation_unsubscribe(self, operation: QueueOperation) -> None:
@@ -520,25 +526,25 @@ class MqttOperationQueue:
         Helper function: Takes the unsubscribe operation and passes it to the MQTT connection.
         """
         result = self._connection.unsubscribe(operation.topic)
-        if (self._on_operation_sent_callback != None):
+        if (self._on_operation_sent_callback is not None):
             self._on_operation_sent_callback(operation, result)
 
     def _perform_operation_unknown(self, operation: QueueOperation) -> None:
         """
         Helper function: Takes the operation if it is unknown and sends it as a failure to the callback.
         """
-        if (operation == None):
+        if (operation is None):
             self._print_log_message("ERROR - got empty/none operation to perform")
         else:
             self._print_log_message("ERROR - got unknown operation to perform")
-            if (self._on_operation_sent_failure_callback != None):
+            if (self._on_operation_sent_failure_callback is not None):
                 self._on_operation_sent_failure_callback(operation, QueueResult.UNKNOWN_OPERATION)
 
     def _perform_operation(self, operation: QueueOperation) -> None:
         """
         Helper function: Based on the operation type, calls the appropriate helper function.
         """
-        if (operation == None):
+        if (operation is None):
             self._perform_operation_unknown(operation)
         elif (operation.type == QueueOperationType.PUBLISH):
             self._perform_operation_publish(operation)
@@ -559,11 +565,13 @@ class MqttOperationQueue:
         statistics: mqtt.OperationStatisticsData = self._connection.get_stats()
         if (statistics.incomplete_operation_count >= self._incomplete_limit):
             if (self._incomplete_limit > 0):
-                self._print_log_message("Skipping running operation due to incomplete operation count being equal or higher than maximum")
+                self._print_log_message(
+                    "Skipping running operation due to incomplete operation count being equal or higher than maximum")
                 return False
         if (statistics.unacked_operation_count >= self._inflight_limit):
             if (self._inflight_limit > 0):
-                self._print_log_message("Skipping running operation due to inflight operation count being equal or higher than maximum")
+                self._print_log_message(
+                    "Skipping running operation due to inflight operation count being equal or higher than maximum")
                 return False
         return True
 
@@ -578,14 +586,14 @@ class MqttOperationQueue:
 
         try:
             if (len(self._operation_queue) > 0):
-                operation : QueueOperation = self._operation_queue[0]
+                operation: QueueOperation = self._operation_queue[0]
                 del self._operation_queue[0]
 
                 self._print_log_message(f"Starting to perform operation of type {operation.type}")
                 self._perform_operation(operation)
 
                 if (len(self._operation_queue) <= 0):
-                    if (self._on_queue_empty_callback != None):
+                    if (self._on_queue_empty_callback is not None):
                         self._on_queue_empty_callback()
 
                 pass
@@ -602,7 +610,7 @@ class MqttOperationQueue:
         This function is called every queue_loop_time_ms milliseconds. This is where the logic for handling
         the queue resides.
         """
-        while self._operation_queue_thread_running == True:
+        while self._operation_queue_thread_running:
             self._print_log_message("Performing operation loop...")
             if (self._check_operation_statistics()):
                 self._run_operation()
@@ -621,7 +629,7 @@ class MqttOperationQueue:
         the MQTT connection has the bandwidth for the next operation (based on incomplete_limit and inflight_limit)
         and, if the MQTT connection has bandwidth, will start a next operation from the queue.
         """
-        if (self._operation_queue_thread != None):
+        if (self._operation_queue_thread is not None):
             self._print_log_message("Cannot start because queue is already started!")
             return
         self._operation_queue_thread = Thread(target=self._queue_loop)
@@ -636,7 +644,7 @@ class MqttOperationQueue:
 
         Note: calling stop() will block the thread temporarily as it waits for the operation queue thread to finish
         """
-        if (self._operation_queue_thread == None):
+        if (self._operation_queue_thread is None):
             self._print_log_message("Cannot stop because queue is already stopped!")
             return
         self._operation_queue_thread_running = False
@@ -730,13 +738,13 @@ class MqttOperationQueue:
         if (operation.type == QueueOperationType.NONE):
             return QueueResult.ERROR_INVALID_ARGUMENT
         elif (operation.type == QueueOperationType.PUBLISH):
-            if (operation.topic == None or operation.qos == None):
+            if (operation.topic is None or operation.qos is None):
                 return QueueResult.ERROR_INVALID_ARGUMENT
         elif (operation.type == QueueOperationType.SUBSCRIBE):
-            if (operation.topic == None or operation.qos == None):
+            if (operation.topic is None or operation.qos is None):
                 return QueueResult.ERROR_INVALID_ARGUMENT
         elif (operation.type == QueueOperationType.UNSUBSCRIBE):
-            if (operation.topic == None):
+            if (operation.topic is None):
                 return QueueResult.ERROR_INVALID_ARGUMENT
         else:
             return QueueResult.UNKNOWN_ERROR
@@ -748,7 +756,7 @@ class MqttOperationQueue:
         """
         # CRITICAL SECTION
         self._operation_queue_lock.acquire()
-        size : int = len(self._operation_queue)
+        size: int = len(self._operation_queue)
         self._operation_queue_lock.release()
         # END CRITICAL SECTION
         return size
