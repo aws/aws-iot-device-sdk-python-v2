@@ -54,7 +54,7 @@ Here is an example launch.json file to run the pubsub sample
             "name": "PubSub",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/samples/pubsub/pubsub.py",
+            "program": "${workspaceFolder}/samples/pubsub.py",
             "args": [
                 "--endpoint", "<account-number>-ats.iot.<region>.amazonaws.com",
                 "--ca_file", "<path to root-CA>",

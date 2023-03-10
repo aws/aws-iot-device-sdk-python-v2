@@ -5,7 +5,7 @@ set -o pipefail
 
 env
 
-pushd $CODEBUILD_SRC_DIR/samples/custom_authorizer_connect/
+pushd $CODEBUILD_SRC_DIR/samples/
 
 ENDPOINT=$(aws secretsmanager get-secret-value --secret-id "ci/endpoint" --query "SecretString" | cut -f2 -d":" | sed -e 's/[\\\"\}]//g')
 AUTH_NAME=$(aws secretsmanager get-secret-value --secret-id "ci/CustomAuthorizer/name" --query "SecretString" | cut -f2 -d":" | sed -e 's/[\\\"\}]//g')

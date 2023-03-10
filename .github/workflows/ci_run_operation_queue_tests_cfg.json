@@ -1,6 +1,6 @@
 {
     "language": "Python",
-    "sample_file": "./aws-iot-device-sdk-python-v2/samples/operation_queue/operation_queue.py",
+    "sample_file": "./aws-iot-device-sdk-python-v2/samples/operation_queue.py",
     "sample_region": "us-east-1",
     "sample_main_class": "",
     "arguments": [

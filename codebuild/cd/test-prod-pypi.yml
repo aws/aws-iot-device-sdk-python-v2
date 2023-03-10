@@ -28,7 +28,7 @@ phases:
       - CURRENT_TAG_VERSION=$(cat $CODEBUILD_SRC_DIR/VERSION)
       - python3 codebuild/cd/pip-install-with-retry.py --no-cache-dir --user awsiotsdk==$CURRENT_TAG_VERSION
       # Run PubSub sample
-      - python3 samples/pubsub/pubsub.py --endpoint ${ENDPOINT} --cert /tmp/certificate.pem --key /tmp/privatekey.pem --ca_file /tmp/AmazonRootCA1.pem --verbosity Trace
+      - python3 samples/pubsub.py --endpoint ${ENDPOINT} --cert /tmp/certificate.pem --key /tmp/privatekey.pem --ca_file /tmp/AmazonRootCA1.pem --verbosity Trace
 
   post_build:
     commands:
