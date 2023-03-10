@@ -10,7 +10,6 @@
 * [MQTT5 Custom Authorizer Connect](./mqtt5_custom_authorizer_connect.md)
 * [Custom Authorizer Connect](./custom_authorizer_connect.md)
 * [Cognito Connect](./cognito_connect.md)
-* [Operation Queue](./operation_queue.md)
 * [Shadow](./shadow.md)
 * [Jobs](./jobs.md)
 * [Fleet Provisioning](./fleetprovisioning.md)
