@@ -7,7 +7,7 @@ from uuid import uuid4
 # This sample is intended to be used as a reference for making MQTT connections.
 
 # Parse arguments
-import command_line_utils
+import utils.command_line_utils as command_line_utils
 cmdUtils = command_line_utils.CommandLineUtils("Cognito Connect - Make a Cognito MQTT connection.")
 cmdUtils.add_common_mqtt_commands()
 cmdUtils.add_common_proxy_commands()

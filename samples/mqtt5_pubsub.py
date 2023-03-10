@@ -1,8 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-import command_line_utils
-from awscrt import mqtt5, exceptions
+from awscrt import mqtt5
 from uuid import uuid4
 import threading
 from concurrent.futures import Future
@@ -12,6 +11,7 @@ TIMEOUT = 100
 topic_filter = "test/topic"
 
 # Parse arguments
+import utils.command_line_utils as command_line_utils
 cmdUtils = command_line_utils.CommandLineUtils("PubSub - Send and receive messages through an MQTT5 connection.")
 cmdUtils.add_common_mqtt5_commands()
 cmdUtils.add_common_topic_message_commands()
