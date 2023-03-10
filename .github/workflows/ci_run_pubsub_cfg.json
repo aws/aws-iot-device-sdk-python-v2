@@ -1,6 +1,6 @@
 {
     "language": "Python",
-    "sample_file": "./aws-iot-device-sdk-python-v2/samples/pubsub.py",
+    "sample_file": "./aws-iot-device-sdk-python-v2/samples/pubsub/pubsub.py",
     "sample_region": "us-east-1",
     "sample_main_class": "",
     "arguments": [

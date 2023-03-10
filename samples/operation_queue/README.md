@@ -4,7 +4,7 @@
 
 This sample uses the
 [Message Broker](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html)
-for AWS IoT to send and receive messages through an MQTT connection. It then subscribes and begins publishing messages to a topic, like in the [PubSub sample](../PubSub/README.md).
+for AWS IoT to send and receive messages through an MQTT connection. It then subscribes and begins publishing messages to a topic, like in the [PubSub sample](../pubsub/README.md).
 
 However, this sample uses a operation queue to handle the processing of operations, rather than directly using the MQTT311 connection. This gives an extreme level of control over how operations are processed, the order they are processed in, limiting how many operations can exist waiting to be sent, what happens when a new operation is added when the queue is full, and ensuring the MQTT311 connection is never overwhelmed with too many messages at once.
 
@@ -133,4 +133,4 @@ For the operation queue, this means that QoS0 operations are stored in the queue
 
 ### Service Clients (Shadow, Jobs, etc)
 
-The operation queue should work fully alongside service clients like [Shadow](../Shadow/README.md), [Jobs](../Jobs/README.md), and [Fleet Provisioning](../Identity/README.md). These service clients ultimately subscribe, publish, and unsubscribe to MQTT topics, and as such they are compatible with the operation queue. That said though, they will **not** be added to the operation queue, instead they will function like if operations were made manually outside of the queue, as noted in the [Operations outside of the queue section](#operations-outside-of-the-queue).
+The operation queue should work fully alongside service clients like [Shadow](../shadow/README.md), [Jobs](../jobs/README.md), and [Fleet Provisioning](../identity/README.md). These service clients ultimately subscribe, publish, and unsubscribe to MQTT topics, and as such they are compatible with the operation queue. That said though, they will **not** be added to the operation queue, instead they will function like if operations were made manually outside of the queue, as noted in the [Operations outside of the queue section](#operations-outside-of-the-queue).

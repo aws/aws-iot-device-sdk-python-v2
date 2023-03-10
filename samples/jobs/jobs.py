@@ -11,6 +11,33 @@ import traceback
 import time
 from uuid import uuid4
 
+def link_command_line_utils():
+    """
+    An unfortunate necessary evil: We need to share the command_line_utils.py file across samples
+    but also need each sample in its own folder while still being directly executable. Python does
+    not like relative imports with non package/module python files, so we make a symlink if possible.
+    If it is not possible, we error out and direct where to find the file
+    """
+    import os, pathlib
+    script_folder = pathlib.Path(os.path.abspath(__file__)).parent
+    command_line_utils_file = script_folder.joinpath("./command_line_utils.py")
+    # Do not create a symlink if the file already exists
+    if (command_line_utils_file.exists() and command_line_utils_file.is_file()):
+        return
+    # If the file does not exist, try to create a symlink to it
+    utils_command_line_utils_file = script_folder.parent.joinpath("./utils/command_line_utils.py")
+    if (utils_command_line_utils_file.exists() and utils_command_line_utils_file.is_file()):
+        command_line_utils_file.symlink_to(utils_command_line_utils_file, False)
+        print ("Created symlink to command_line_utils.py for sample to work correctly...")
+    else:
+        print("Error: Cannot find command_line_utils.py next to script nor in [../utils/command_line_utils.py]!")
+        print ("The sample cannot parse command line arguments without this file and therefore cannot run")
+        print ("Please place command_line_utils.py next to this script so it can run. You can find command_line_utils.py")
+        print ("at the following URL: https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/utils/command_line_utils.py")
+        os._exit(1)
+link_command_line_utils()
+import command_line_utils
+
 # - Overview -
 # This sample uses the AWS IoT Jobs Service to get a list of pending jobs and
 # then execution operations on these pending jobs until there are no more
@@ -38,7 +65,6 @@ from uuid import uuid4
 is_sample_done = threading.Event()
 
 # Parse arguments
-import command_line_utils;
 cmdUtils = command_line_utils.CommandLineUtils("Jobs - Recieve and execute operations on the device.")
 cmdUtils.add_common_mqtt_commands()
 cmdUtils.add_common_proxy_commands()

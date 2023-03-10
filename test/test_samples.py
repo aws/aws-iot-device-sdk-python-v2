@@ -90,7 +90,7 @@ class SamplesTest(unittest.TestCase):
         config = Config.get()
         args = [
             sys.executable,
-            "samples/pubsub.py",
+            "samples/pubsub/pubsub.py",
             "--endpoint", config.endpoint,
             "--cert", config.cert_filepath,
             "--key", config.key_filepath,
@@ -110,7 +110,7 @@ class SamplesTest(unittest.TestCase):
         config = Config.get()
         args = [
             sys.executable,
-            "samples/basic_discovery.py",
+            "samples/discovery_greengrass/basic_discovery.py",
             "--print_discover_resp_only",
             "--region", config.region,
             "--cert", config.cert_filepath,
