@@ -1,7 +1,6 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-import command_line_utils
 import time
 import json
 from concurrent.futures import Future
@@ -13,6 +12,7 @@ from awsiot import mqtt_connection_builder
 allowed_actions = ['both', 'publish', 'subscribe']
 
 # Parse arguments
+import utils.command_line_utils as command_line_utils
 cmdUtils = command_line_utils.CommandLineUtils("Basic Discovery - Greengrass discovery example.")
 cmdUtils.add_common_mqtt_commands()
 cmdUtils.add_common_topic_message_commands()

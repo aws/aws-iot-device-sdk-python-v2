@@ -40,7 +40,7 @@ Please note that on Mac, once a private key is used with a certificate, that cer
 static: certificate has an existing certificate-key pair that was previously imported into the Keychain.  Using key from Keychain instead of the one provided.
 ```
 
-### How do debug in VSCode? 
+### How do debug in VSCode?
 
 Here is an example launch.json file to run the pubsub sample
  ``` json
@@ -79,13 +79,13 @@ Here is an example launch.json file to run the pubsub sample
     * Device certificate
         * Intermediate device certificate that is used to generate the key below
         * When using samples it can look like this: `--cert abcde12345-certificate.pem.crt`
-    * Key files 
+    * Key files
         * You should have generated/downloaded private and public keys that will be used to verify that communications are coming from you
         * When using samples you only need the private key and it will look like this: `--key abcde12345-private.pem.key`
 
 ### I still have more questions about the this sdk?
 
 * [Here](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html) are the AWS IoT Core docs for more details about IoT Core
-* [Here](https://docs.aws.amazon.com/greengrass/v2/developerguide/what-is-iot-greengrass.html) are the AWS IoT Greengrass v2 docs for more details about greengrass 
+* [Here](https://docs.aws.amazon.com/greengrass/v2/developerguide/what-is-iot-greengrass.html) are the AWS IoT Greengrass v2 docs for more details about greengrass
 * [Discussion](https://github.com/aws/aws-iot-device-sdk-python-v2/discussions) questions are also a great way to ask other questions about this sdk.
 * [Open an issue](https://github.com/aws/aws-iot-device-sdk-python-v2/issues) if you find a bug or have a feature request

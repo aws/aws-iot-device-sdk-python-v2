@@ -25,7 +25,7 @@ import json
 # publishes the request to corresponding topic and calls RegisterThing.
 
 # Parse arguments
-import command_line_utils;
+import utils.command_line_utils as command_line_utils
 cmdUtils = command_line_utils.CommandLineUtils("Fleet Provisioning - Provision device using either the keys or CSR.")
 cmdUtils.add_common_mqtt_commands()
 cmdUtils.add_common_proxy_commands()

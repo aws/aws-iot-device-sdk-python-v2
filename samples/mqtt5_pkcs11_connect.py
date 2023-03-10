@@ -1,7 +1,6 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-import command_line_utils
 from awscrt import mqtt5
 from uuid import uuid4
 from concurrent.futures import Future
@@ -9,6 +8,7 @@ from concurrent.futures import Future
 TIMEOUT = 100
 
 # Parse arguments
+import utils.command_line_utils as command_line_utils
 cmdUtils = command_line_utils.CommandLineUtils("MQTT5 PKCS11 Connect - Make a MQTT5 Client connection using PKCS11.")
 cmdUtils.add_common_mqtt5_commands()
 cmdUtils.add_common_proxy_commands()

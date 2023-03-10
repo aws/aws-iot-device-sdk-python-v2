@@ -30,7 +30,7 @@ from uuid import uuid4
 # value.
 
 # Parse arguments
-import command_line_utils;
+import utils.command_line_utils as command_line_utils
 cmdUtils = command_line_utils.CommandLineUtils("Shadow - Keep a property in sync between device and server.")
 cmdUtils.add_common_mqtt_commands()
 cmdUtils.add_common_proxy_commands()

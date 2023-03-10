@@ -8,7 +8,7 @@ from uuid import uuid4
 # through a custom authorizer rather than using a key and certificate.
 
 # Parse arguments
-import command_line_utils
+import utils.command_line_utils as command_line_utils
 cmdUtils = command_line_utils.CommandLineUtils(
     "Custom Authorizer Connect - Make a MQTT connection using a custom authorizer.")
 cmdUtils.add_common_mqtt_commands()

@@ -15,7 +15,7 @@ import json
 # since it is subscribed to that same topic.
 
 # Parse arguments
-import command_line_utils;
+import utils.command_line_utils as command_line_utils
 cmdUtils = command_line_utils.CommandLineUtils("PubSub - Send and recieve messages through an MQTT connection.")
 cmdUtils.add_common_mqtt_commands()
 cmdUtils.add_common_topic_message_commands()

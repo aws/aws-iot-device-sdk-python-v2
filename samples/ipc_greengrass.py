@@ -17,46 +17,6 @@ https://docs.aws.amazon.com/greengrass/v2/developerguide/create-components.html
 See this page for more information on IPC in Greengrass v2:
 https://docs.aws.amazon.com/greengrass/v2/developerguide/interprocess-communication.html
 
-To run the sample, create a new AWS IoT Greengrass component and deploy it to
-your device with the following recipe snippet to allow your device to publish to
-the AWS IoT Core MQTT broker:
-
-```json
-...
-"ComponentConfiguration": {
-  "DefaultConfiguration": {
-    "accessControl": {
-      "aws.greengrass.ipc.mqttproxy": {
-        "Your.Component.Name:mqttproxy:1": {
-          "policyDescription": "Allows access to publish to all AWS IoT Core topics.",
-          "operations": [
-            "aws.greengrass#PublishToIoTCore"
-          ],
-          "resources": [
-            "*"
-          ]
-        }
-      }
-    }
-  }
-},
-...
-```
-(replace `Your.Component.Name` with your component name)
-
-You can use this recipe `Manifest` snippet to install Python and `AWS IoT Device
-SDK v2 for Python` as dependency:
-```json
-...
-"Manifests": [{
-  ...
-  "Lifecycle": {
-    "Install": {
-      "RequiresPrivilege": true,
-      "Script": "apt-get update --quiet && apt-get --yes install python3 python3-pip && pip3 install awsiotsdk"
-    },
-  ...
-```
 """
 
 import json

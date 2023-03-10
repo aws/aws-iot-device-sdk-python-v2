@@ -13,7 +13,7 @@ from uuid import uuid4
 # WARNING: Windows only.
 
 # Parse arguments
-import command_line_utils
+import utils.command_line_utils as command_line_utils
 cmdUtils = command_line_utils.CommandLineUtils("Windows Cert Connect - Make a MQTT connection using Windows Store Certificates.")
 cmdUtils.add_common_mqtt_commands()
 cmdUtils.add_common_logging_commands()

@@ -9,7 +9,7 @@ from concurrent.futures import Future
 TIMEOUT = 100
 
 # Parse arguments
-import command_line_utils
+import utils.command_line_utils as command_line_utils
 cmdUtils = command_line_utils.CommandLineUtils(
     "Custom Authorizer Connect - Make a MQTT5 Client connection using a custom authorizer.")
 cmdUtils.add_common_mqtt_commands()
