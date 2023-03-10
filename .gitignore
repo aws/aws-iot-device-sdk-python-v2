@@ -5,6 +5,11 @@ __pycache__/
 *.egg-info
 build/*
 
+# ignore symlink command_line_utils.py in samples
+samples/**/command_line_utils.py
+# except for the utils folder - we want command_line_utils.py there
+!samples/utils/command_line_utils.py
+
 # docs are updated automatically by .github/workflows/docs.yml
 docs/
 .vscode

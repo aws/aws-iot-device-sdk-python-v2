@@ -7,7 +7,7 @@ from concurrent.futures import Future
 import os
 
 import mqtt_operation_queue
-from command_line_utils import CommandLineUtils
+import command_line_utils
 
 TEST_TOPIC = "test/topic/" + str(uuid4())
 PRINT_QUEUE_LOGS = False
@@ -18,7 +18,7 @@ class tester:
     on_queue_empty_future: Future = Future()
     on_queue_sent_future: Future = Future()
     on_queue_dropped_future: Future = Future()
-    cmdUtils: CommandLineUtils
+    cmdUtils: command_line_utils.CommandLineUtils
 
     def on_application_failure(self, test_name: str, error: Exception):
         print(f"Error in test {test_name}: {error}")
@@ -340,7 +340,7 @@ class tester:
         print("Finished test_add_error test")
 
 
-def perform_tests(cmdUtils: CommandLineUtils):
+def perform_tests(cmdUtils: command_line_utils.CommandLineUtils):
     tests = tester()
     tests.cmdUtils = cmdUtils
     tests.perform_tests()
