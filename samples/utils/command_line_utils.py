@@ -143,6 +143,39 @@ class CommandLineUtils:
             "<str>",
             "The password to send when connecting through a custom authorizer (optional)")
 
+    def add_common_x509_commands(self):
+        self.register_command(
+            self.m_cmd_x509_endpoint,
+            "<str>",
+            "The credentials endpoint to fetch x509 credentials from",
+        )
+        self.register_command(
+            self.m_cmd_x509_thing_name,
+            "<str>",
+            "Thing name to fetch x509 credentials on behalf of"
+        )
+        self.register_command(
+            self.m_cmd_x509_role_alias,
+            "<str>",
+            "Role alias to use with the x509 credentials provider"
+        )
+        self.register_command(
+            self.m_cmd_x509_key,
+            "<path>",
+            "Path to the IoT thing private key used in fetching x509 credentials"
+        )
+        self.register_command(
+            self.m_cmd_x509_cert,
+            "<path>",
+            "Path to the IoT thing certificate used in fetching x509 credentials"
+        )
+
+        self.register_command(
+            self.m_cmd_x509_ca,
+            "<path>",
+            "TODO"
+        )
+
     """
     Returns the command if it exists and has been passed to the console, otherwise it will print the help for the sample and exit the application.
     """
@@ -202,6 +235,34 @@ class CommandLineUtils:
             endpoint=self.get_command_required(self.m_cmd_endpoint),
             region=self.get_command_required(self.m_cmd_signing_region),
             credentials_provider=credentials_provider,
+            http_proxy_options=proxy_options,
+            ca_filepath=self.get_command(self.m_cmd_ca_file),
+            on_connection_interrupted=on_connection_interrupted,
+            on_connection_resumed=on_connection_resumed,
+            client_id=self.get_command_required("client_id"),
+            clean_session=False,
+            keep_alive_secs=30)
+        return mqtt_connection
+
+    def build_websocket_x509_mqtt_connection(self, on_connection_interrupted, on_connection_resumed):
+        proxy_options = self.get_proxy_options_for_mqtt_connection()
+
+        x509_tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(
+                    self.get_command_required(self.m_cmd_x509_cert),
+                    self.get_command_required(self.m_cmd_x509_key))
+        x509_tls_options.ca_dirpath = self.get_command(self.m_cmd_x509_ca, None)
+
+        x509_provider = auth.AwsCredentialsProvider.new_x509(
+            endpoint=self.get_command_required(self.m_cmd_x509_endpoint),
+            thing_name=self.get_command_required(self.m_cmd_x509_thing_name),
+            role_alias=self.get_command_required(self.m_cmd_x509_role_alias),
+            tls_ctx=io.ClientTlsContext(x509_tls_options),
+            http_proxy_options=proxy_options
+        )
+        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
+            endpoint=self.get_command_required(self.m_cmd_endpoint),
+            region=self.get_command_required(self.m_cmd_signing_region),
+            credentials_provider=x509_provider,
             http_proxy_options=proxy_options,
             ca_filepath=self.get_command(self.m_cmd_ca_file),
             on_connection_interrupted=on_connection_interrupted,
@@ -400,3 +461,9 @@ class CommandLineUtils:
     m_cmd_custom_auth_authorizer_signature = "custom_auth_authorizer_signature"
     m_cmd_custom_auth_password = "custom_auth_password"
     m_cmd_cognito_identity = "cognito_identity"
+    m_cmd_x509_endpoint = "x509_endpoint"
+    m_cmd_x509_thing_name = "x509_thing_name"
+    m_cmd_x509_role_alias = "x509_role_alias"
+    m_cmd_x509_cert = "x509_cert"
+    m_cmd_x509_key = "x509_key"
+    m_cmd_x509_ca = "x509_ca"
