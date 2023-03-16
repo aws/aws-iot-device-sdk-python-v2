@@ -1,6 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
+from awscrt import io
 from uuid import uuid4
 
 # This sample shows how to create a MQTT connection using X509 files to connect.
