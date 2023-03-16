@@ -19,11 +19,6 @@
             "filename": "tmp_key.pem"
         },
         {
-            "name": "--x509_ca_file",
-            "secret": "ci/PubSub/ca",
-            "filename": "tmp_ca.pem"
-        },
-        {
             "name": "--x509_endpoint",
             "secret": "ci/X509/endpoint_credentials"
         },

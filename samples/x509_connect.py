@@ -35,9 +35,6 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 
 
 if __name__ == '__main__':
-    # TMP - enable logging
-    io.init_logging(io.LogLevel.Error, 'stderr')
-
     # Create a connection using X509 authentication to connect
     # Note: The data for the connection is gotten from cmdUtils.
     # (see build_websocket_x509_mqtt_connection for implementation)
@@ -52,11 +49,7 @@ if __name__ == '__main__':
     connect_future = mqtt_connection.connect()
 
     # Future.result() waits until a result is available
-    try:
-        connect_future.result()
-    except Exception as e:
-        print (e)
-        raise RuntimeError(e)
+    connect_future.result()
     print("Connected!")
 
     # Disconnect

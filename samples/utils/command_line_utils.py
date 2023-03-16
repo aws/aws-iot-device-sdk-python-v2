@@ -250,7 +250,8 @@ class CommandLineUtils:
         x509_tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(
                     self.get_command_required(self.m_cmd_x509_cert),
                     self.get_command_required(self.m_cmd_x509_key))
-        # x509_tls_options.ca_dirpath = self.get_command(self.m_cmd_x509_ca)
+        if (self.get_command(self.m_cmd_x509_ca) != None):
+            x509_tls_options.ca_dirpath = self.get_command(self.m_cmd_x509_ca)
         x509_tls_context = io.ClientTlsContext(x509_tls_options)
 
         x509_provider = auth.AwsCredentialsProvider.new_x509(
