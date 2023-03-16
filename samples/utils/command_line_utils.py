@@ -173,7 +173,7 @@ class CommandLineUtils:
         self.register_command(
             self.m_cmd_x509_ca,
             "<path>",
-            "TODO"
+            "Path to the root certificate used in fetching x509 credentials"
         )
 
     """
@@ -466,4 +466,4 @@ class CommandLineUtils:
     m_cmd_x509_role_alias = "x509_role_alias"
     m_cmd_x509_cert = "x509_cert"
     m_cmd_x509_key = "x509_key"
-    m_cmd_x509_ca = "x509_ca"
+    m_cmd_x509_ca = "x509_ca_file"

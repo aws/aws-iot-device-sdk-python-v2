@@ -50,3 +50,10 @@ To run the x509 Credentials Provider Connect sample use the following command:
 # For Windows: replace 'python3' with 'python' and '/' with '\'
 python3 x509_connect.py --endpoint <endpoint> --signing_region <region> --x509_cert <path to x509 cert> --x509_endpoint <x509 credentials endpoint> --x509_key <path to x509 key> --x509_role_alias <alias> -x509_thing_name <thing name>
 ```
+
+You can also pass a Certificate Authority file (CA) if your X509 certificate and key combination requires it:
+
+``` sh
+# For Windows: replace 'python3' with 'python' and '/' with '\'
+python3 x509_connect.py --endpoint <endpoint> --signing_region <region> --x509_cert <path to x509 cert> --x509_endpoint <x509 credentials endpoint> --x509_key <path to x509 key> --x509_role_alias <alias> -x509_thing_name <thing name> --x509_ca_file <path to x509 CA file>
+```
