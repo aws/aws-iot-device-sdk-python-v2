@@ -250,13 +250,14 @@ class CommandLineUtils:
         x509_tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(
                     self.get_command_required(self.m_cmd_x509_cert),
                     self.get_command_required(self.m_cmd_x509_key))
-        x509_tls_options.ca_dirpath = self.get_command(self.m_cmd_x509_ca, None)
+        x509_tls_options.ca_dirpath = self.get_command(self.m_cmd_x509_ca)
+        x509_tls_context = io.ClientTlsContext(x509_tls_options)
 
         x509_provider = auth.AwsCredentialsProvider.new_x509(
             endpoint=self.get_command_required(self.m_cmd_x509_endpoint),
             thing_name=self.get_command_required(self.m_cmd_x509_thing_name),
             role_alias=self.get_command_required(self.m_cmd_x509_role_alias),
-            tls_ctx=io.ClientTlsContext(x509_tls_options),
+            tls_ctx=x509_tls_context,
             http_proxy_options=proxy_options
         )
         mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
