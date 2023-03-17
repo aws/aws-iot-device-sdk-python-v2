@@ -84,16 +84,12 @@
     "build": [
         ["{python}", "-c", "print('ignore this fake build step')"]
     ],
-    "test": [
-        ["{python}", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
-        ["{python}", "-m", "pip", "install", ".", "--verbose"],
-        ["{python}", "-m", "pip", "install", "boto3", "autopep8"],
-        "ci-test"
-    ],
     "build_steps": [
         "python3 -m pip install ."
     ],
     "test_steps": [
+        ["python3", "-m", "pip", "install", "boto3", "autopep8"],
+        "ci-test"
     ],
     "env": {
     }
