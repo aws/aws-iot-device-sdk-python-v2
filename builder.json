@@ -88,7 +88,6 @@
         "python3 -m pip install ."
     ],
     "test_steps": [
-        ["python3", "-m", "pip", "install", "boto3", "autopep8"],
         "ci-test"
     ],
     "env": {
