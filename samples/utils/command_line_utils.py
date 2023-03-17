@@ -143,6 +143,39 @@ class CommandLineUtils:
             "<str>",
             "The password to send when connecting through a custom authorizer (optional)")
 
+    def add_common_x509_commands(self):
+        self.register_command(
+            self.m_cmd_x509_endpoint,
+            "<str>",
+            "The credentials endpoint to fetch x509 credentials from",
+        )
+        self.register_command(
+            self.m_cmd_x509_thing_name,
+            "<str>",
+            "Thing name to fetch x509 credentials on behalf of"
+        )
+        self.register_command(
+            self.m_cmd_x509_role_alias,
+            "<str>",
+            "Role alias to use with the x509 credentials provider"
+        )
+        self.register_command(
+            self.m_cmd_x509_key,
+            "<path>",
+            "Path to the IoT thing private key used in fetching x509 credentials"
+        )
+        self.register_command(
+            self.m_cmd_x509_cert,
+            "<path>",
+            "Path to the IoT thing certificate used in fetching x509 credentials"
+        )
+
+        self.register_command(
+            self.m_cmd_x509_ca,
+            "<path>",
+            "Path to the root certificate used in fetching x509 credentials"
+        )
+
     """
     Returns the command if it exists and has been passed to the console, otherwise it will print the help for the sample and exit the application.
     """
@@ -400,3 +433,9 @@ class CommandLineUtils:
     m_cmd_custom_auth_authorizer_signature = "custom_auth_authorizer_signature"
     m_cmd_custom_auth_password = "custom_auth_password"
     m_cmd_cognito_identity = "cognito_identity"
+    m_cmd_x509_endpoint = "x509_endpoint"
+    m_cmd_x509_thing_name = "x509_thing_name"
+    m_cmd_x509_role_alias = "x509_role_alias"
+    m_cmd_x509_cert = "x509_cert"
+    m_cmd_x509_key = "x509_key"
+    m_cmd_x509_ca = "x509_ca_file"
