@@ -1,0 +1,38 @@
+{
+    "language": "Python",
+    "sample_file": "./aws-iot-device-sdk-python-v2/samples/x509_connect.py",
+    "sample_region": "us-east-1",
+    "sample_main_class": "",
+    "arguments": [
+        {
+            "name": "--endpoint",
+            "secret": "ci/endpoint"
+        },
+        {
+            "name": "--x509_cert",
+            "secret": "ci/PubSub/cert",
+            "filename": "tmp_certificate.pem"
+        },
+        {
+            "name": "--x509_key",
+            "secret": "ci/PubSub/key",
+            "filename": "tmp_key.pem"
+        },
+        {
+            "name": "--x509_endpoint",
+            "secret": "ci/X509/endpoint_credentials"
+        },
+        {
+            "name": "--x509_role_alias",
+            "secret": "ci/X509/alias"
+        },
+        {
+            "name": "--signing_region",
+            "data": "us-east-1"
+        },
+        {
+            "name": "--x509_thing_name",
+            "data": "CI_PubSub_Thing"
+        }
+    ]
+}
