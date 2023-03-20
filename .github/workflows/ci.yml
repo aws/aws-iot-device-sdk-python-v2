@@ -96,11 +96,6 @@ jobs:
     permissions:
       id-token: write # This is required for requesting the JWT
     steps:
-    - name: configure AWS credentials (Builder + Unit Tests - CRT)
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: ${{ env.CI_CRT_BUILDER_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
       run: |
         python -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder.pyz')"
@@ -181,6 +176,11 @@ jobs:
     permissions:
       id-token: write # This is required for requesting the JWT
     steps:
+    - name: configure AWS credentials (Builder + Unit Tests - CRT)
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ env.CI_CRT_BUILDER_ROLE }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
       run: |
         python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
