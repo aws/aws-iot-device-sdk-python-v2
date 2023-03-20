@@ -17,12 +17,8 @@ class CiTest(Builder.Action):
     def run(self, env):
 
         actions = []
-        cert_file_name = None
-        key_file_name = None
 
         try:
-            # Unfortunately, we can't use NamedTemporaryFile and a with-block because NamedTemporaryFile is not readable
-            # on Windows.
             self._write_environment_script_secret_to_env(env, "mqtt5-testing/github-ci-environment")
 
             env.shell.exec(["python3", "-m", "unittest", "discover", "--verbose"], check=True)
