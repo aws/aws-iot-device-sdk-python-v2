@@ -48,24 +48,6 @@ jobs:
         aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
         ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-manylinux2014-x64 build -p ${{ env.PACKAGE_NAME }}
 
-
-  al2:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write # This is required for requesting the JWT
-    steps:
-    - name: configure AWS credentials (containers)
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      # We can't use the `uses: docker://image` version yet, GitHub lacks authentication for actions -> packages
-    - name: Build ${{ env.PACKAGE_NAME }}
-      run: |
-        aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
-        ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-al2-x64 build -p ${{ env.PACKAGE_NAME }}
-
-
   raspberry:
     runs-on: ubuntu-latest # latest
     permissions:
@@ -95,6 +77,9 @@ jobs:
     permissions:
       id-token: write # This is required for requesting the JWT
     steps:
+    - name: Install boto3
+      run: |
+        python -m pip install boto3
     - name: Build ${{ env.PACKAGE_NAME }}
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DA_ROLE_KEY }}
@@ -102,9 +87,6 @@ jobs:
       run: |
         python -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder.pyz')"
         python builder.pyz build -p ${{ env.PACKAGE_NAME }}
-    - name: Running samples in CI setup
-      run: |
-        python -m pip install boto3
     - name: configure AWS credentials (PubSub)
       uses: aws-actions/configure-aws-credentials@v1
       with:
