@@ -176,6 +176,9 @@ jobs:
     permissions:
       id-token: write # This is required for requesting the JWT
     steps:
+    - name: Running samples in CI setup
+      run: |
+        python -m pip install boto3
     - name: Build ${{ env.PACKAGE_NAME }}
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DA_ROLE_KEY }}
