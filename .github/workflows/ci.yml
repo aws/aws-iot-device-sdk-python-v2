@@ -31,64 +31,9 @@ env:
   CI_FLEET_PROVISIONING_ROLE: ${{ secrets.AWS_CI_FLEET_PROVISIONING_ROLE }}
   CI_DEVICE_ADVISOR: ${{ secrets.AWS_CI_DEVICE_ADVISOR_ROLE }}
   CI_MQTT5_ROLE: ${{ secrets.AWS_CI_MQTT5_ROLE }}
+  CI_BUILD_AND_TEST_ROLE: arn:aws:iam::180635532705:role/V2_SDK_Unit_Testing
 
 jobs:
-  all-python-versions:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write # This is required for requesting the JWT
-    steps:
-    - name: configure AWS credentials (containers)
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: Build ${{ env.PACKAGE_NAME }}
-      # There's hackery in builder.json so that when we run on manylinux
-      # we build and test using every version of python that we support.
-      run: |
-        aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
-        ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-manylinux2014-x64 build -p ${{ env.PACKAGE_NAME }}
-
-  al2:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write # This is required for requesting the JWT
-    steps:
-    - name: configure AWS credentials (containers)
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      # We can't use the `uses: docker://image` version yet, GitHub lacks authentication for actions -> packages
-    - name: Build ${{ env.PACKAGE_NAME }}
-      run: |
-        aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
-        ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-al2-x64 build -p ${{ env.PACKAGE_NAME }}
-
-  raspberry:
-    runs-on: ubuntu-latest # latest
-    permissions:
-      id-token: write # This is required for requesting the JWT
-    strategy:
-      fail-fast: false
-      matrix:
-        image:
-          - raspbian-bullseye
-    steps:
-    - name: configure AWS credentials (containers)
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    # set arm arch
-    - name: Install qemu/docker
-      run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-    - name: Build ${{ env.PACKAGE_NAME }}
-      run: |
-        aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
-        ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-${{ matrix.image }} build -p ${{ env.PACKAGE_NAME }}
-
 
   windows:
     runs-on: windows-latest
@@ -101,7 +46,7 @@ jobs:
     - name: configure AWS credentials (containers)
       uses: aws-actions/configure-aws-credentials@v2
       with:
-        role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
+        role-to-assume: ${{ env.CI_BUILD_AND_TEST_ROLE }}
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
       run: |
@@ -147,7 +92,7 @@ jobs:
     - name: configure AWS credentials (containers)
       uses: aws-actions/configure-aws-credentials@v2
       with:
-        role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
+        role-to-assume: ${{ env.CI_BUILD_AND_TEST_ROLE }}
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
       run: |
@@ -194,7 +139,7 @@ jobs:
     - name: configure AWS credentials (containers)
       uses: aws-actions/configure-aws-credentials@v2
       with:
-        role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
+        role-to-assume: ${{ env.CI_BUILD_AND_TEST_ROLE }}
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
       run: |
@@ -245,7 +190,7 @@ jobs:
       - name: configure AWS credentials (containers)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
+          role-to-assume: ${{ env.CI_BUILD_AND_TEST_ROLE }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
       - name: Build ${{ env.PACKAGE_NAME }}
         run: |
