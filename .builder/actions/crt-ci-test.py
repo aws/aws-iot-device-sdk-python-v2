@@ -19,7 +19,7 @@ class CiTest(Builder.Action):
         actions = []
 
         try:
-            self._write_environment_script_secret_to_env(env, "mqtt5-testing/github-ci-environment")
+            self._write_environment_script_secret_to_env(env, "ci/sdk-unit-testing")
 
             env.shell.exec(["python3", "-m", "unittest", "discover", "--verbose"], check=True)
         except:

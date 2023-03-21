@@ -599,7 +599,7 @@ def _with_custom_authorizer(auth_username=None,
             username_string, auth_authorizer_signature, "x-amz-customauthorizer-signature=")
 
     if auth_token_key_name is not None and auth_token_value is not None:
-        username_string = _add_to_username_parameter(username_string, auth_token_value, auth_token_key_name)
+        username_string = _add_to_username_parameter(username_string, auth_token_value, auth_token_key_name + "=")
 
     kwargs["username"] = username_string
     kwargs["password"] = auth_password

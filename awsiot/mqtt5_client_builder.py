@@ -627,7 +627,7 @@ def direct_with_custom_authorizer(
             username_string, auth_authorizer_signature, "x-amz-customauthorizer-signature=")
 
     if auth_token_key_name is not None and auth_token_value is not None:
-        username_string = _add_to_username_parameter(username_string, auth_token_value, auth_token_key_name)
+        username_string = _add_to_username_parameter(username_string, auth_token_value, auth_token_key_name + "=")
 
     kwargs["username"] = username_string
     kwargs["password"] = auth_password
@@ -646,9 +646,9 @@ def websockets_with_custom_authorizer(
         auth_authorizer_name=None,
         auth_authorizer_signature=None,
         auth_password=None,
+        websocket_proxy_options=None,
         auth_token_key_name=None,
         auth_token_value=None,
-        websocket_proxy_options=None,
         **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an MQTT5 Client using a custom
