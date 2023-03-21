@@ -504,8 +504,8 @@ def direct_with_custom_authorizer(
         **kwargs)
 
 def websockets_with_custom_authorizer(
-        region,
-        credentials_provider,
+        region=None,
+        credentials_provider=None,
         auth_username=None,
         auth_authorizer_name=None,
         auth_authorizer_signature=None,
@@ -612,17 +612,7 @@ def _with_custom_authorizer(auth_username=None,
     def _sign_websocket_handshake_request(transform_args, **kwargs):
         # transform_args need to know when transform is done
         try:
-            signing_config = awscrt.auth.AwsSigningConfig(
-                algorithm=awscrt.auth.AwsSigningAlgorithm.V4,
-                signature_type=awscrt.auth.AwsSignatureType.HTTP_REQUEST_QUERY_PARAMS,
-                credentials_provider=websockets_credentials_provider,
-                region=websockets_region,
-                service='iotdevicegateway',
-                omit_session_token=True,  # IoT is weird and does not sign X-Amz-Security-Token
-            )
-
-            signing_future = awscrt.auth.aws_sign_request(transform_args.http_request, signing_config)
-            signing_future.add_done_callback(lambda x: transform_args.set_done(x.exception()))
+            transform_args.set_done()
         except Exception as e:
             transform_args.set_done(e)
 
