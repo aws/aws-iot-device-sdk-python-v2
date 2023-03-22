@@ -21,7 +21,7 @@
 
 First, install the `aws-iot-devices-sdk-python-v2` with following the instructions from [Installation](../README.md#Installation).
 
-Then change into the `samples` folder/directory to run the Python commands to execute the samples. Each sample README has instructions on how to run each sample and each sample can be run from the `samples` folder. For example, to run the [PubSub](./pubsub/README.md) sample:
+Each sample README has instructions on how to run each sample with the same name as the sample itself. For example, the [PubSub README](./pubsub.md) is `pubsub.md` and it can be run with the following:
 
 ``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
