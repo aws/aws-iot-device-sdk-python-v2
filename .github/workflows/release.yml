@@ -42,10 +42,35 @@ jobs:
 
         ./utils/publish-release.sh "${{ github.event.inputs.release_type }}" "$Title"
 
+    - name: Generate documentation
+      run: |
+        python3 -m pip install sphinx
+        python3 -m pip install --verbose .
+        ./make-docs.py
+
+    - name: Commit documentation
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add --force docs/
+        current_version=$(git describe --tags --abbrev=0)
+        git commit --message="Update Docs: ${current_version}"
+
+    - name: Push generated documentation to docs branch
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ github.token }}
+        branch: docs
+        # Force push so that `docs` branch always looks like `main`,
+        # but with 1 additional "update docs" commit.
+        # This seems simpler than trying to cleanly merge `main` into
+        # `docs` each time.
+        force: true
+
     - name: configure AWS credentials (Release)
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: ${{ secrets.AWS_CI_RELEASE_ROLE }}
+        role-to-assume: arn:aws:iam::180635532705:role/CI_V2_RELEASE_S3_ROLE
         aws-region: us-east-1
 
     - name: "Create VERSION file and trigger release"
