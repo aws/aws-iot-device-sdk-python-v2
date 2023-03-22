@@ -453,6 +453,8 @@ def direct_with_custom_authorizer(
         auth_authorizer_name=None,
         auth_authorizer_signature=None,
         auth_password=None,
+        auth_token_key_name=None,
+        auth_token_value=None,
         **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an MQTT connection using a custom
@@ -465,17 +467,30 @@ def direct_with_custom_authorizer(
         auth_username (`str`): The username to use with the custom authorizer.
             If provided, the username given will be passed when connecting to the custom authorizer.
             If not provided, it will check to see if a username has already been set (via username="example")
-            and will use that instead.
-            If no username has been set then no username will be sent with the MQTT connection.
-
-        auth_authorizer_name (`str`):  The name of the custom authorizer.
-            If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
-
-        auth_authorizer_signature (`str`):  The signature of the custom authorizer.
-            If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
+            and will use that instead.  Custom authentication parameters will be appended as appropriate
+            to any supplied username value.
 
         auth_password (`str`):  The password to use with the custom authorizer.
-            If not provided, then no passord will be set.
+            If not provided, then no password will be sent in the initial CONNECT packet.
+
+        auth_authorizer_name (`str`):  Name of the custom authorizer to use.
+            Required if the endpoint does not have a default custom authorizer associated with it.  It is strongly
+            suggested to URL-encode this value; the SDK will not do so for you.
+
+        auth_authorizer_signature (`str`):  The digital signature of the token value in the `auth_token_value`
+            parameter. The signature must be based on the private key associated with the custom authorizer.  The
+            signature must be base64 encoded.
+            Required if the custom authorizer has signing enabled.  It is strongly suggested to URL-encode this value;
+            the SDK will not do so for you.
+
+        auth_token_key_name (`str`): Key used to extract the custom authorizer token from MQTT username query-string
+            properties.
+            Required if the custom authorizer has signing enabled.  It is strongly suggested to URL-encode
+            this value; the SDK will not do so for you.
+
+        auth_token_value (`str`): An opaque token value. This value must be signed by the private key associated with
+            the custom authorizer and the result passed in via the `auth_authorizer_signature` parameter.
+            Required if the custom authorizer has signing enabled.
     """
 
     return _with_custom_authorizer(
@@ -483,16 +498,20 @@ def direct_with_custom_authorizer(
         auth_authorizer_name=auth_authorizer_name,
         auth_authorizer_signature=auth_authorizer_signature,
         auth_password=auth_password,
+        auth_token_key_name=auth_token_key_name,
+        auth_token_value=auth_token_value,
         use_websockets=False,
         **kwargs)
 
 def websockets_with_custom_authorizer(
-        region,
-        credentials_provider,
+        region=None,
+        credentials_provider=None,
         auth_username=None,
         auth_authorizer_name=None,
         auth_authorizer_signature=None,
         auth_password=None,
+        auth_token_key_name=None,
+        auth_token_value=None,
         **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an MQTT connection using a custom
@@ -509,17 +528,30 @@ def websockets_with_custom_authorizer(
         auth_username (`str`): The username to use with the custom authorizer.
             If provided, the username given will be passed when connecting to the custom authorizer.
             If not provided, it will check to see if a username has already been set (via username="example")
-            and will use that instead.
-            If no username has been set then no username will be sent with the MQTT connection.
-
-        auth_authorizer_name (`str`):  The name of the custom authorizer.
-            If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
-
-        auth_authorizer_signature (`str`):  The signature of the custom authorizer.
-            If not provided, then "x-amz-customauthorizer-name" will not be added with the MQTT connection.
+            and will use that instead.  Custom authentication parameters will be appended as appropriate
+            to any supplied username value.
 
         auth_password (`str`):  The password to use with the custom authorizer.
-            If not provided, then no passord will be set.
+            If not provided, then no password will be sent in the initial CONNECT packet.
+
+        auth_authorizer_name (`str`):  Name of the custom authorizer to use.
+            Required if the endpoint does not have a default custom authorizer associated with it.  It is strongly
+            suggested to URL-encode this value; the SDK will not do so for you.
+
+        auth_authorizer_signature (`str`):  The digital signature of the token value in the `auth_token_value`
+            parameter. The signature must be based on the private key associated with the custom authorizer.  The
+            signature must be base64 encoded.
+            Required if the custom authorizer has signing enabled.  It is strongly suggested to URL-encode this value;
+            the SDK will not do so for you.
+
+        auth_token_key_name (`str`): Key used to extract the custom authorizer token from MQTT username query-string
+            properties.
+            Required if the custom authorizer has signing enabled.  It is strongly suggested to URL-encode
+            this value; the SDK will not do so for you.
+
+        auth_token_value (`str`): An opaque token value. This value must be signed by the private key associated with
+            the custom authorizer and the result passed in via the `auth_authorizer_signature` parameter.
+            Required if the custom authorizer has signing enabled.
     """
 
     return _with_custom_authorizer(
@@ -527,6 +559,8 @@ def websockets_with_custom_authorizer(
         auth_authorizer_name=auth_authorizer_name,
         auth_authorizer_signature=auth_authorizer_signature,
         auth_password=auth_password,
+        auth_token_key_name=auth_token_key_name,
+        auth_token_value=auth_token_value,
         use_websockets=True,
         websockets_region=region,
         websockets_credentials_provider=credentials_provider,
@@ -537,6 +571,8 @@ def _with_custom_authorizer(auth_username=None,
         auth_authorizer_name=None,
         auth_authorizer_signature=None,
         auth_password=None,
+        auth_token_key_name=None,
+        auth_token_value=None,
         use_websockets=False,
         websockets_credentials_provider=None,
         websockets_region=None,
@@ -557,9 +593,13 @@ def _with_custom_authorizer(auth_username=None,
     if auth_authorizer_name is not None:
         username_string = _add_to_username_parameter(
             username_string, auth_authorizer_name, "x-amz-customauthorizer-name=")
+
     if auth_authorizer_signature is not None:
         username_string = _add_to_username_parameter(
             username_string, auth_authorizer_signature, "x-amz-customauthorizer-signature=")
+
+    if auth_token_key_name is not None and auth_token_value is not None:
+        username_string = _add_to_username_parameter(username_string, auth_token_value, auth_token_key_name + "=")
 
     kwargs["username"] = username_string
     kwargs["password"] = auth_password
@@ -572,17 +612,7 @@ def _with_custom_authorizer(auth_username=None,
     def _sign_websocket_handshake_request(transform_args, **kwargs):
         # transform_args need to know when transform is done
         try:
-            signing_config = awscrt.auth.AwsSigningConfig(
-                algorithm=awscrt.auth.AwsSigningAlgorithm.V4,
-                signature_type=awscrt.auth.AwsSignatureType.HTTP_REQUEST_QUERY_PARAMS,
-                credentials_provider=websockets_credentials_provider,
-                region=websockets_region,
-                service='iotdevicegateway',
-                omit_session_token=True,  # IoT is weird and does not sign X-Amz-Security-Token
-            )
-
-            signing_future = awscrt.auth.aws_sign_request(transform_args.http_request, signing_config)
-            signing_future.add_done_callback(lambda x: transform_args.set_done(x.exception()))
+            transform_args.set_done()
         except Exception as e:
             transform_args.set_done(e)
 

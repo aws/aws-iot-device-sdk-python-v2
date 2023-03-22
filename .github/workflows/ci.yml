@@ -21,7 +21,6 @@ env:
   CI_UTILS_FOLDER: "./aws-iot-device-sdk-python-v2/utils"
   CI_SAMPLES_CFG_FOLDER: "./aws-iot-device-sdk-python-v2/.github/workflows"
   CI_SAMPLES_FOLDER: "./aws-iot-device-sdk-python-v2/samples"
-  CI_IOT_CONTAINERS_ROLE: ${{ secrets.AWS_CI_IOT_CONTAINERS }}
   CI_PUBSUB_ROLE: ${{ secrets.AWS_CI_PUBSUB_ROLE }}
   CI_COGNITO_ROLE: ${{ secrets.AWS_CI_COGNITO_ROLE }}
   CI_X509_ROLE: ${{ secrets.AWS_CI_X509_ROLE }}
@@ -31,77 +30,27 @@ env:
   CI_FLEET_PROVISIONING_ROLE: ${{ secrets.AWS_CI_FLEET_PROVISIONING_ROLE }}
   CI_DEVICE_ADVISOR: ${{ secrets.AWS_CI_DEVICE_ADVISOR_ROLE }}
   CI_MQTT5_ROLE: ${{ secrets.AWS_CI_MQTT5_ROLE }}
+  CI_BUILD_AND_TEST_ROLE: arn:aws:iam::180635532705:role/V2_SDK_Unit_Testing
 
 jobs:
-  all-python-versions:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write # This is required for requesting the JWT
-    steps:
-    - name: Build ${{ env.PACKAGE_NAME }}
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DA_ROLE_KEY }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_DA_ROLE_PRIVATE_KEY }}
-      # There's hackery in builder.json so that when we run on manylinux
-      # we build and test using every version of python that we support.
-      run: |
-        aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
-        ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-manylinux2014-x64 build -p ${{ env.PACKAGE_NAME }}
-
-
-  al2:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write # This is required for requesting the JWT
-    steps:
-    - name: configure AWS credentials (containers)
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      # We can't use the `uses: docker://image` version yet, GitHub lacks authentication for actions -> packages
-    - name: Build ${{ env.PACKAGE_NAME }}
-      run: |
-        aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
-        ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-al2-x64 build -p ${{ env.PACKAGE_NAME }}
-
-
-  raspberry:
-    runs-on: ubuntu-latest # latest
-    permissions:
-      id-token: write # This is required for requesting the JWT
-    strategy:
-      fail-fast: false
-      matrix:
-        image:
-          - raspbian-bullseye
-    steps:
-    - name: configure AWS credentials (containers)
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: ${{ env.CI_IOT_CONTAINERS_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    # set arm arch
-    - name: Install qemu/docker
-      run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-    - name: Build ${{ env.PACKAGE_NAME }}
-      run: |
-        aws s3 cp s3://aws-crt-test-stuff/ci/${{ env.BUILDER_VERSION }}/linux-container-ci.sh ./linux-container-ci.sh && chmod a+x ./linux-container-ci.sh
-        ./linux-container-ci.sh ${{ env.BUILDER_VERSION }} aws-crt-${{ matrix.image }} build -p ${{ env.PACKAGE_NAME }}
-
 
   windows:
     runs-on: windows-latest
     permissions:
       id-token: write # This is required for requesting the JWT
     steps:
+    - name: Install boto3
+      run: |
+        python -m pip install boto3
+    - name: configure AWS credentials (containers)
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: ${{ env.CI_BUILD_AND_TEST_ROLE }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
       run: |
         python -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder.pyz')"
         python builder.pyz build -p ${{ env.PACKAGE_NAME }}
-    - name: Running samples in CI setup
-      run: |
-        python -m pip install boto3
     - name: configure AWS credentials (PubSub)
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -136,6 +85,14 @@ jobs:
     permissions:
       id-token: write # This is required for requesting the JWT
     steps:
+    - name: Install boto3
+      run: |
+        python3 -m pip install boto3
+    - name: configure AWS credentials (containers)
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: ${{ env.CI_BUILD_AND_TEST_ROLE }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
       run: |
         python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
@@ -175,6 +132,14 @@ jobs:
     permissions:
       id-token: write # This is required for requesting the JWT
     steps:
+    - name: Running samples in CI setup
+      run: |
+        python -m pip install boto3
+    - name: configure AWS credentials (containers)
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: ${{ env.CI_BUILD_AND_TEST_ROLE }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
       run: |
         python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
@@ -215,17 +180,22 @@ jobs:
     permissions:
       id-token: write # This is required for requesting the JWT
     steps:
-      - name: Build ${{ env.PACKAGE_NAME }}
-        run: |
-          python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
-          chmod a+x builder
-          ./builder build -p ${{ env.PACKAGE_NAME }}
       - name: Running samples in CI setup
         run: |
           python3 -m pip install boto3
           sudo apt-get update -y
           sudo apt-get install softhsm -y
           softhsm2-util --version
+      - name: configure AWS credentials (containers)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ env.CI_BUILD_AND_TEST_ROLE }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      - name: Build ${{ env.PACKAGE_NAME }}
+        run: |
+          python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
+          chmod a+x builder
+          ./builder build -p ${{ env.PACKAGE_NAME }}
       - name: configure AWS credentials (Connect and PubSub)
         uses: aws-actions/configure-aws-credentials@v1
         with:
