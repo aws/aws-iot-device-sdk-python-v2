@@ -21,15 +21,15 @@ env:
   CI_UTILS_FOLDER: "./aws-iot-device-sdk-python-v2/utils"
   CI_SAMPLES_CFG_FOLDER: "./aws-iot-device-sdk-python-v2/.github/workflows"
   CI_SAMPLES_FOLDER: "./aws-iot-device-sdk-python-v2/samples"
-  CI_PUBSUB_ROLE: ${{ secrets.AWS_CI_PUBSUB_ROLE }}
-  CI_COGNITO_ROLE: ${{ secrets.AWS_CI_COGNITO_ROLE }}
-  CI_X509_ROLE: ${{ secrets.AWS_CI_X509_ROLE }}
-  CI_CUSTOM_AUTHORIZER_ROLE: ${{ secrets.AWS_CI_CUSTOM_AUTHORIZER_ROLE }}
-  CI_SHADOW_ROLE: ${{ secrets.AWS_CI_SHADOW_ROLE }}
-  CI_JOBS_ROLE: ${{ secrets.AWS_CI_JOBS_ROLE }}
-  CI_FLEET_PROVISIONING_ROLE: ${{ secrets.AWS_CI_FLEET_PROVISIONING_ROLE }}
-  CI_DEVICE_ADVISOR: ${{ secrets.AWS_CI_DEVICE_ADVISOR_ROLE }}
-  CI_MQTT5_ROLE: ${{ secrets.AWS_CI_MQTT5_ROLE }}
+  CI_PUBSUB_ROLE: arn:aws:iam::180635532705:role/CI_PubSub_Role
+  CI_COGNITO_ROLE: arn:aws:iam::180635532705:role/CI_Cognito_Role
+  CI_X509_ROLE: arn:aws:iam::180635532705:role/CI_X509_Role
+  CI_CUSTOM_AUTHORIZER_ROLE: arn:aws:iam::180635532705:role/CI_CustomAuthorizer_Role
+  CI_SHADOW_ROLE: arn:aws:iam::180635532705:role/CI_Shadow_Role
+  CI_JOBS_ROLE: arn:aws:iam::180635532705:role/CI_Jobs_Role
+  CI_FLEET_PROVISIONING_ROLE: arn:aws:iam::180635532705:role/service-role/CI_FleetProvisioning_Role
+  CI_DEVICE_ADVISOR: arn:aws:iam::180635532705:role/CI_DeviceAdvisor_Role
+  CI_MQTT5_ROLE: arn:aws:iam::180635532705:role/CI_MQTT5_Role
   CI_BUILD_AND_TEST_ROLE: arn:aws:iam::180635532705:role/V2_SDK_Unit_Testing
 
 jobs:
