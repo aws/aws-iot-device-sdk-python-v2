@@ -46,7 +46,7 @@ def main():
                     highest = i_version_tuple
                     continue
 
-        if (highest[0] != 0 and highest[1] != 0 and highest[2] != 0):
+        if (highest[0] != 0 or highest[1] != 0 or highest[2] != 0):
             print(f"v{highest[0]}.{highest[1]}.{highest[2]}")
             sys.exit(0)
         else:
