@@ -4,7 +4,7 @@
 
 This sample uses the
 [Message Broker](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html)
-for AWS IoT to send and receive messages through an MQTT connection using MQTT5 using a [Shared Subscription](#TODO-Link-Here).
+for AWS IoT to send and receive messages through an MQTT connection using MQTT5 using a Shared Subscription.
 
 MQTT5 introduces additional features and enhancements that improve the development experience with MQTT. You can read more about MQTT5 in the Python V2 SDK by checking out the [MQTT5 user guide](../documents/MQTT5_Userguide.md).
 
