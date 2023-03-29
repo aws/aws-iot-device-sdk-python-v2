@@ -75,14 +75,14 @@ There are many different ways to run the Fleet Provisioning sample because of ho
 
 ``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 fleet_provisioning.py --endpoint <endpoint> --cert <file> --key <file> --template_name <name> --template_parameters <parameters>
+python3 fleetprovisioning.py --endpoint <endpoint> --cert <file> --key <file> --template_name <name> --template_parameters <parameters>
 ```
 
 You can also pass a Certificate Authority file (CA) if your certificate and key combination requires it:
 
 ``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 fleet_provisioning.py --endpoint <endpoint> --cert <file> --key <file> --template_name <name> --template_parameters <parameters> --ca_file <file>
+python3 fleetprovisioning.py --endpoint <endpoint> --cert <file> --key <file> --template_name <name> --template_parameters <parameters> --ca_file <file>
 ```
 
 However, this is just one way using the `CreateKeysAndCertificate` workflow. Below are a detailed list of instructions with the different ways to connect. While the detailed instructions do not show it, you can pass `--ca_file` as needed no matter which way you connect via Fleet Provisioning.
@@ -271,7 +271,7 @@ To run the sample with your certificate and private key, use the following comma
 
 ``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 fleet_provisioning.py --endpoint <endpoint> --cert <file> --key <file> --template_name <name> --template_parameters '{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}'
+python3 fleetprovisioning.py --endpoint <endpoint> --cert <file> --key <file> --template_name <name> --template_parameters '{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}'
 ```
 
 As per normal, replace the `<>` parameters with the proper values. Notice that we provided substitution values for the two parameters in the template body, `DeviceLocation` and `SerialNumber`.
@@ -307,5 +307,5 @@ Finally, you can also pass the certificate signing request while invoking the Fl
 
 ``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 fleet_provisioning.py --endpoint <endpoint> --cert <file> --key <file> --template_name <name> --template_parameters '{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}' --csr <path to csr file>
+python3 fleetprovisioning.py --endpoint <endpoint> --cert <file> --key <file> --template_name <name> --template_parameters '{\"SerialNumber\":\"1\",\"DeviceLocation\":\"Seattle\"}' --csr <path to csr file>
 ```
