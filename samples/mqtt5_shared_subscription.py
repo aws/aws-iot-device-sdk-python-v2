@@ -109,7 +109,8 @@ cmdUtils.register_command(
 cmdUtils.register_command(
     "client_id",
     "<str>",
-    "Client ID to use for MQTT5 connection (optional, default=None).",
+    "Client ID to use for MQTT5 connection (optional, default=None)."
+    "Note that '1', '2', and '3' will be added for to the given clientIDs since this sample uses 3 clients.",
     default="test-" + str(uuid4()))
 cmdUtils.register_command(
     "count",
@@ -120,7 +121,7 @@ cmdUtils.register_command(
 cmdUtils.register_command(
     "group_identifier",
     "<str>",
-    "The group identifier to use in the shared subscription (optional, default='java-sample')",
+    "The group identifier to use in the shared subscription (optional, default='python-sample')",
     default="python-sample",
     type=str)
 cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
@@ -146,6 +147,10 @@ if (input_is_ci_boolean):
 
 # Construct the shared topic
 input_shared_topic = f"$share/{input_group_identifier}/{input_topic}"
+
+# Make sure the message count is even
+if (input_count % 2 > 0):
+    exit(ValueError("Error: '--count' is an odd number. '--count' must be even or zero for this sample."))
 
 if __name__ == '__main__':
     try:
