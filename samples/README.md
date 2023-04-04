@@ -2,6 +2,7 @@
 
 * [MQTT5 PubSub](./mqtt5_pubsub.md)
 * [PubSub](./pubsub.md)
+* [MQTT5 Shared Subscription](./mqtt5_shared_subscription.md)
 * [Basic Connect](./basic_connect.md)
 * [Websocket Connect](./websocket_connect.md)
 * [MQTT5 PKCS#11 Connect](./mqtt5_pkcs11_connect.md)
