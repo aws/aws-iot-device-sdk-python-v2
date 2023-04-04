@@ -8,10 +8,6 @@ import threading
 from concurrent.futures import Future
 import time
 
-# MQTT5 support is currently in <b>developer preview</b>.  We encourage feedback at all times, but feedback during the
-# preview window is especially valuable in shaping the final product.  During the preview period we may make
-# backwards-incompatible changes to the public API, but in general, this is something we will try our best to avoid.
-
 # For the purposes of this sample, we need to associate certain variables with a particular MQTT5 client
 # and to do so we use this class to hold all the data for a particular client used in the sample.
 class sample_mqtt5_client:
