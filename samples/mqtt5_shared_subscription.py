@@ -7,6 +7,7 @@ from uuid import uuid4
 import threading
 from concurrent.futures import Future
 import time
+import json
 
 # For the purposes of this sample, we need to associate certain variables with a particular MQTT5 client
 # and to do so we use this class to hold all the data for a particular client used in the sample.
@@ -199,7 +200,7 @@ if __name__ == '__main__':
                 publish_message = f"{input_message} [{publish_count}]"
                 publish_future = publisher.client.publish(mqtt5.PublishPacket(
                     topic=input_topic,
-                    payload=publish_message,
+                    payload=json.dumps(publish_message),
                     qos=mqtt5.QoS.AT_LEAST_ONCE
                 ))
                 publish_completion_data = publish_future.result(60)
