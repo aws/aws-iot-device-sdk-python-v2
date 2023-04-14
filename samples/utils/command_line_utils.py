@@ -135,7 +135,7 @@ class CommandLineUtils:
             "<str>",
             "The name of the custom authorizer to connect to (optional but required for everything but custom domains)")
         self.register_command(
-            self.m_cmd_custom_auth_username,
+            self.m_cmd_custom_auth_authorizer_signature,
             "<str>",
             "The signature to send when connecting through a custom authorizer (optional)")
         self.register_command(
