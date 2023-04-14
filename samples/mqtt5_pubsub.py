@@ -6,6 +6,7 @@ from uuid import uuid4
 import threading
 from concurrent.futures import Future
 import time
+import json
 
 TIMEOUT = 100
 topic_filter = "test/topic"
@@ -131,7 +132,7 @@ if __name__ == '__main__':
             print("Publishing message to topic '{}': {}".format(message_topic, message))
             publish_future = client.publish(mqtt5.PublishPacket(
                 topic=message_topic,
-                payload=message_string,
+                payload=json.dumps(message_string),
                 qos=mqtt5.QoS.AT_LEAST_ONCE
             ))
 
