@@ -733,6 +733,45 @@ class CommandLineUtils:
         cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
         return cmdData
 
+    def parse_sample_input_mqtt5_pubsub():
+        cmdUtils = CommandLineUtils("PubSub - Send and receive messages through an MQTT5 connection.")
+        cmdUtils.add_common_mqtt5_commands()
+        cmdUtils.add_common_topic_message_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_port,
+            "<int>",
+            "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).",
+            type=int)
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_client_id,
+            "<str>",
+            "Client ID to use for MQTT5 connection (optional, default=None).",
+            default="test-" + str(uuid4()))
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_count,
+            "<int>",
+            "The number of messages to send (optional, default='10').",
+            default=10,
+            type=int)
+        # Needs to be called so the command utils parse the commands
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, "8883"))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxyHost = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxyPort = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
+        cmdData.input_topic = cmdUtils.get_command(CommandLineUtils.m_cmd_topic, "test/topic")
+        return cmdData
+
 
     # Constants for commonly used/needed commands
     m_cmd_endpoint = "endpoint"
@@ -774,3 +813,4 @@ class CommandLineUtils:
     m_cmd_template_parameters = "template_parameters"
     m_cmd_job_time = "job_time"
     m_cmd_use_websockets = "use_websockets"
+    m_cmd_count = "count"
