@@ -2,13 +2,14 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 from time import sleep
-from awscrt import mqtt
-from awsiot import iotshadow
+from awscrt import mqtt, http
+from awsiot import iotshadow, mqtt_connection_builder
 from concurrent.futures import Future
 import sys
 import threading
 import traceback
 from uuid import uuid4
+from utils.command_line_utils import CommandLineUtils
 
 # - Overview -
 # This sample uses the AWS IoT Device Shadow Service to keep a property in
@@ -29,28 +30,16 @@ from uuid import uuid4
 # on the device and an update is sent to the server with the new "reported"
 # value.
 
-# Parse arguments
-import utils.command_line_utils as command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils("Shadow - Keep a property in sync between device and server.")
-cmdUtils.add_common_mqtt_commands()
-cmdUtils.add_common_proxy_commands()
-cmdUtils.add_common_logging_commands()
-cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
-cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
-cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
-cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
-cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
-cmdUtils.register_command("shadow_property", "<str>", "The name of the shadow property you want to change (optional, default='color'", default="color")
-cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None'. Will publish shadow automatically if set)")
-# Needs to be called so the command utils parse the commands
-cmdUtils.get_args()
+# cmdData is the arguments/input from the command line placed into a single struct for
+# use in this sample. This handles all of the command line parsing, validating, etc.
+# See the Utils/CommandLineUtils for more information.
+cmdData = CommandLineUtils.parse_sample_input_shadow()
 
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
 mqtt_connection = None
-shadow_thing_name = cmdUtils.get_command_required("thing_name")
-shadow_property = cmdUtils.get_command("shadow_property")
-is_ci = cmdUtils.get_command("is_ci", None) != None
+shadow_thing_name = cmdData.input_thingName
+shadow_property = cmdData.input_shadowProperty
 
 SHADOW_VALUE_DEFAULT = "off"
 
@@ -272,7 +261,7 @@ def change_shadow_value(value):
 
 def user_input_thread_fn():
     # If we are not in CI, then take terminal input
-    if is_ci == False:
+    if cmdData.input_isCI == False:
         while True:
             try:
                 # Read user input
@@ -305,11 +294,27 @@ def user_input_thread_fn():
             exit(e)
 
 if __name__ == '__main__':
-    mqtt_connection = cmdUtils.build_mqtt_connection(None, None)
+    # Create the proxy options if the data is present in cmdData
+    proxy_options = None
+    if cmdData.input_proxyHost is not None and cmdData.input_proxyPort != 0:
+        proxy_options = http.HttpProxyOptions(
+            host_name=cmdData.input_proxyHost,
+            port=cmdData.input_proxyPort)
 
-    if is_ci == False:
-        print("Connecting to {} with client ID '{}'...".format(
-            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    # Create a MQTT connection from the command line data
+    mqtt_connection = mqtt_connection_builder.mtls_from_path(
+        endpoint=cmdData.input_endpoint,
+        port=cmdData.input_port,
+        cert_filepath=cmdData.input_cert,
+        pri_key_filepath=cmdData.input_key,
+        ca_filepath=cmdData.input_ca,
+        client_id=cmdData.input_clientId,
+        clean_session=False,
+        keep_alive_secs=30,
+        http_proxy_options=proxy_options)
+
+    if cmdData.input_isCI == False:
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
 

@@ -17,7 +17,7 @@ from utils.command_line_utils import CommandLineUtils
 # cmdData is the arguments/input from the command line placed into a single struct for
 # use in this sample. This handles all of the command line parsing, validating, etc.
 # See the Utils/CommandLineUtils for more information.
-cmdData = CommandLineUtils.parse_sample_input_mqtt5_pkcs11_connect()
+cmdData = CommandLineUtils.parse_sample_input_pkcs11_connect()
 
 # Callback when connection is accidentally lost.
 def on_connection_interrupted(connection, error, **kwargs):
