@@ -8,6 +8,7 @@ import threading
 from concurrent.futures import Future
 import time
 import json
+from utils.command_line_utils import CommandLineUtils
 
 # For the purposes of this sample, we need to associate certain variables with a particular MQTT5 client
 # and to do so we use this class to hold all the data for a particular client used in the sample.
@@ -89,78 +90,34 @@ class sample_mqtt5_client:
                 # Stop the client, which will interrupt the subscription and stop the sample
                 self.client.stop()
 
-# Register arguments that can be parsed from the command line
-import utils.command_line_utils as command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils("SharedSubscription - Send and receive messages through a MQTT5 shared subscription")
-cmdUtils.add_common_mqtt5_commands()
-cmdUtils.add_common_topic_message_commands()
-cmdUtils.add_common_proxy_commands()
-cmdUtils.add_common_logging_commands()
-cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
-cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
-cmdUtils.register_command(
-    "port",
-    "<int>",
-    "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).",
-    type=int)
-cmdUtils.register_command(
-    "client_id",
-    "<str>",
-    "Client ID to use for MQTT5 connection (optional, default=None)."
-    "Note that '1', '2', and '3' will be added for to the given clientIDs since this sample uses 3 clients.",
-    default="test-" + str(uuid4()))
-cmdUtils.register_command(
-    "count",
-    "<int>",
-    "The number of messages to send (optional, default='10').",
-    default=10,
-    type=int)
-cmdUtils.register_command(
-    "group_identifier",
-    "<str>",
-    "The group identifier to use in the shared subscription (optional, default='python-sample')",
-    default="python-sample",
-    type=str)
-cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
-# Needs to be called so the command utils parse the commands
-cmdUtils.get_args()
-
-# Pull all the data from the command line
-input_endpoint = cmdUtils.get_command_required("endpoint")
-input_cert = cmdUtils.get_command_required("cert")
-input_key = cmdUtils.get_command_required("key")
-input_ca = cmdUtils.get_command("ca_file")
-input_client_id = cmdUtils.get_command("client_id", "test-" + str(uuid4()))
-input_count = cmdUtils.get_command("count", 10)
-input_topic = cmdUtils.get_command("topic", "test/topic")
-input_message = cmdUtils.get_command("message", "Hello World!")
-input_group_identifier = cmdUtils.get_command("group_identifier", "python-sample")
-input_is_ci = cmdUtils.get_command("is_ci", None)
-input_is_ci_boolean = (input_is_ci != None and input_is_ci != "None")
+# cmdData is the arguments/input from the command line placed into a single struct for
+# use in this sample. This handles all of the command line parsing, validating, etc.
+# See the Utils/CommandLineUtils for more information.
+cmdData = CommandLineUtils.parse_sample_input_mqtt5_shared_subscription()
 
 # If this is CI, append a UUID to the topic
-if (input_is_ci_boolean):
-    input_topic += "/" + str(uuid4())
+if (cmdData.input_isCI):
+    cmdData.input_topic += "/" + str(uuid4())
 
 # Construct the shared topic
-input_shared_topic = f"$share/{input_group_identifier}/{input_topic}"
+input_shared_topic = f"$share/{cmdData.input_groupIdentifier}/{cmdData.input_topic}"
 
 # Make sure the message count is even
-if (input_count % 2 > 0):
+if (cmdData.input_count % 2 > 0):
     exit(ValueError("Error: '--count' is an odd number. '--count' must be even or zero for this sample."))
 
 if __name__ == '__main__':
     try:
         # Create the MQTT5 clients: one publisher and two subscribers
         publisher = sample_mqtt5_client(
-            input_endpoint, input_cert, input_key, input_ca,
-            input_client_id + "1", input_count/2, "Publisher")
+            cmdData.input_endpoint, cmdData.input_cert, cmdData.input_key, cmdData.input_ca,
+            cmdData.input_clientId + "1", cmdData.input_count/2, "Publisher")
         subscriber_one = sample_mqtt5_client(
-            input_endpoint, input_cert, input_key, input_ca,
-            input_client_id + "2", input_count/2, "Subscriber One")
+            cmdData.input_endpoint, cmdData.input_cert, cmdData.input_key, cmdData.input_ca,
+            cmdData.input_clientId + "2", cmdData.input_count/2, "Subscriber One")
         subscriber_two = sample_mqtt5_client(
-            input_endpoint, input_cert, input_key, input_ca,
-            input_client_id + "3", input_count, "Subscriber Two")
+            cmdData.input_endpoint, cmdData.input_cert, cmdData.input_key, cmdData.input_ca,
+            cmdData.input_clientId + "3", cmdData.input_count, "Subscriber Two")
 
         # Connect all the clients
         publisher.client.start()
@@ -188,18 +145,18 @@ if __name__ == '__main__':
             print(f"[{subscriber_two.name}]: Subscribed with: {suback_two.reason_codes}")
         except Exception as ex:
             # TMP: If this fails subscribing in CI, just exit the sample gracefully.
-            if (input_is_ci != None and input_is_ci != "None"):
+            if (cmdData.input_isCI != None and cmdData.input_isCI != "None"):
                 exit(0)
             else:
                 raise ex
 
         # Publish using the publisher client
-        if (input_count > 0):
+        if (cmdData.input_count > 0):
             publish_count = 1
-            while (publish_count <= input_count):
-                publish_message = f"{input_message} [{publish_count}]"
+            while (publish_count <= cmdData.input_count):
+                publish_message = f"{cmdData.input_message} [{publish_count}]"
                 publish_future = publisher.client.publish(mqtt5.PublishPacket(
-                    topic=input_topic,
+                    topic=cmdData.input_topic,
                     payload=json.dumps(publish_message),
                     qos=mqtt5.QoS.AT_LEAST_ONCE
                 ))
