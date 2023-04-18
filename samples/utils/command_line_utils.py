@@ -608,6 +608,7 @@ class CommandLineUtils:
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
         cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
         cmdData.parse_input_topic(cmdUtils)
+        cmdData.input_count = cmdUtils.get_command(CommandLineUtils.m_cmd_count, 10)
         cmdData.input_group_identifier = cmdUtils.get_command(CommandLineUtils.m_cmd_group_identifier, "python-sample")
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
