@@ -511,11 +511,11 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
         cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_pkcs11_lib_path = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_lib)
         cmdData.input_pkcs11_user_pin = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_pin)
@@ -633,11 +633,11 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
         cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_pkcs11_lib_path = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_lib)
         cmdData.input_pkcs11_user_pin = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_pin)
@@ -739,6 +739,7 @@ class CommandLineUtils:
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 

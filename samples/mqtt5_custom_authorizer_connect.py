@@ -49,7 +49,6 @@ if __name__ == '__main__':
     else:
         client = mqtt5_client_builder.websockets_with_custom_authorizer(
             endpoint=cmdData.input_endpoint,
-            ca_filepath=cmdData.input_ca,
             region=cmdData.input_signing_region,
             auth_username=cmdData.input_custom_auth_username,
             auth_authorizer_name=cmdData.input_custom_authorizer_name,

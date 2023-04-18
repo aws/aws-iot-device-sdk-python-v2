@@ -55,7 +55,6 @@ if __name__ == '__main__':
         region=cmdData.input_signing_region,
         credentials_provider=x509_provider,
         http_proxy_options=proxy_options,
-        ca_filepath=cmdData.input_ca,
         on_connection_interrupted=on_connection_interrupted,
         on_connection_resumed=on_connection_resumed,
         client_id=cmdData.input_clientId,

@@ -27,7 +27,6 @@ if __name__ == '__main__':
     # Create MQTT connection with a custom authorizer
     mqtt_connection = mqtt_connection_builder.direct_with_custom_authorizer(
         endpoint=cmdData.input_endpoint,
-        ca_filepath=cmdData.input_ca,
         auth_username=cmdData.input_custom_auth_username,
         auth_authorizer_name=cmdData.input_custom_authorizer_name,
         auth_authorizer_signature=cmdData.input_custom_authorizer_signature,
