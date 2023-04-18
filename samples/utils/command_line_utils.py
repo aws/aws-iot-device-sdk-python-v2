@@ -4,6 +4,7 @@
 import argparse
 from awscrt import io, http, auth
 from awsiot import mqtt_connection_builder, mqtt5_client_builder
+from uuid import uuid4
 
 class CommandLineUtils:
     def __init__(self, description) -> None:
@@ -64,27 +65,33 @@ class CommandLineUtils:
 
     def add_common_mqtt_commands(self):
         self.register_command(
-            self.m_cmd_endpoint,
+            CommandLineUtils.m_cmd_endpoint,
             "<str>",
             "The endpoint of the mqtt server not including a port.",
             True,
             str)
         self.register_command(
-            self.m_cmd_ca_file,
+            CommandLineUtils.m_cmd_ca_file,
             "<path>",
             "Path to AmazonRootCA1.pem (optional, system trust store used by default)",
+            False,
+            str)
+        self.register_command(
+            CommandLineUtils.m_cmd_is_ci,
+            "<str>",
+            "If present the sample will run in CI mode (optional, default='None')",
             False,
             str)
 
     def add_common_mqtt5_commands(self):
         self.register_command(
-            self.m_cmd_endpoint,
+            CommandLineUtils.m_cmd_endpoint,
             "<str>",
             "The endpoint of the mqtt server not including a port.",
             True,
             str)
         self.register_command(
-            self.m_cmd_ca_file,
+            CommandLineUtils.m_cmd_ca_file,
             "<path>",
             "Path to AmazonRootCA1.pem (optional, system trust store used by default)",
             False,
@@ -92,13 +99,13 @@ class CommandLineUtils:
 
     def add_common_proxy_commands(self):
         self.register_command(
-            self.m_cmd_proxy_host,
+            CommandLineUtils.m_cmd_proxy_host,
             "<str>",
             "Host name of the proxy server to connect through (optional)",
             False,
             str)
         self.register_command(
-            self.m_cmd_proxy_port,
+            CommandLineUtils.m_cmd_proxy_port,
             "<int>",
             "Port of the http proxy to use (optional, default='8080')",
             type=int,
@@ -106,72 +113,76 @@ class CommandLineUtils:
 
     def add_common_topic_message_commands(self):
         self.register_command(
-            self.m_cmd_topic,
+            CommandLineUtils.m_cmd_topic,
             "<str>",
             "Topic to publish, subscribe to (optional, default='test/topic').",
             default="test/topic")
         self.register_command(
-            self.m_cmd_message,
+            CommandLineUtils.m_cmd_message,
             "<str>",
             "The message to send in the payload (optional, default='Hello World!').",
             default="Hello World!")
 
     def add_common_logging_commands(self):
         self.register_command(
-            self.m_cmd_verbosity,
+            CommandLineUtils.m_cmd_verbosity,
             "<Log Level>",
             "Logging level.",
             default=io.LogLevel.NoLogs.name,
             choices=[
                 x.name for x in io.LogLevel])
 
+    def add_common_key_cert_commands(self):
+        self.register_command(CommandLineUtils.m_cmd_key_file, "<path>", "Path to your key in PEM format.", True, str)
+        self.register_command(CommandLineUtils.m_cmd_cert_file, "<path>", "Path to your client certificate in PEM format.", True, str)
+
     def add_common_custom_authorizer_commands(self):
         self.register_command(
-            self.m_cmd_custom_auth_username,
+            CommandLineUtils.m_cmd_custom_auth_username,
             "<str>",
             "The name to send when connecting through the custom authorizer (optional)")
         self.register_command(
-            self.m_cmd_custom_auth_authorizer_name,
+            CommandLineUtils.m_cmd_custom_auth_authorizer_name,
             "<str>",
             "The name of the custom authorizer to connect to (optional but required for everything but custom domains)")
         self.register_command(
-            self.m_cmd_custom_auth_authorizer_signature,
+            CommandLineUtils.m_cmd_custom_auth_authorizer_signature,
             "<str>",
             "The signature to send when connecting through a custom authorizer (optional)")
         self.register_command(
-            self.m_cmd_custom_auth_password,
+            CommandLineUtils.m_cmd_custom_auth_password,
             "<str>",
             "The password to send when connecting through a custom authorizer (optional)")
 
     def add_common_x509_commands(self):
         self.register_command(
-            self.m_cmd_x509_endpoint,
+            CommandLineUtils.m_cmd_x509_endpoint,
             "<str>",
             "The credentials endpoint to fetch x509 credentials from",
         )
         self.register_command(
-            self.m_cmd_x509_thing_name,
+            CommandLineUtils.m_cmd_x509_thing_name,
             "<str>",
             "Thing name to fetch x509 credentials on behalf of"
         )
         self.register_command(
-            self.m_cmd_x509_role_alias,
+            CommandLineUtils.m_cmd_x509_role_alias,
             "<str>",
             "Role alias to use with the x509 credentials provider"
         )
         self.register_command(
-            self.m_cmd_x509_key,
+            CommandLineUtils.m_cmd_x509_key,
             "<path>",
             "Path to the IoT thing private key used in fetching x509 credentials"
         )
         self.register_command(
-            self.m_cmd_x509_cert,
+            CommandLineUtils.m_cmd_x509_cert,
             "<path>",
             "Path to the IoT thing certificate used in fetching x509 credentials"
         )
 
         self.register_command(
-            self.m_cmd_x509_ca,
+            CommandLineUtils.m_cmd_x509_ca,
             "<path>",
             "Path to the root certificate used in fetching x509 credentials"
         )
@@ -411,6 +422,94 @@ class CommandLineUtils:
                                                   on_lifecycle_connection_failure=on_lifecycle_connection_failure,
                                                   on_lifecycle_disconnection=on_lifecycle_disconnection)
 
+    ########################################################################
+    # cmdData utils/functions
+    ########################################################################
+
+    class CmdData:
+        # General use
+        input_endpoint : str
+        input_cert : str
+        input_key : str
+        input_ca : str
+        input_clientId : str
+        input_port : int
+        input_isCI : bool
+        # Proxy
+        input_proxyHost : str
+        input_proxyPort : int
+        # PubSub
+        input_topic : str
+        input_message : str
+        input_count : int
+        # Websockets
+        input_signingRegion : str
+        # Cognito
+        input_cognitoIdentity : str
+        # Custom auth
+        input_customAuthUsername : str
+        input_customAuthorizerName : str
+        input_customAuthorizerSignature : str
+        input_customAuthPassword : str
+        # Fleet provisioning
+        input_templateName : str
+        input_templateParameters : str
+        input_csrPath : str
+        # Services (Shadow, Jobs, Greengrass, etc)
+        input_thingName : str
+        input_mode : str
+        # Shared Subscription
+        input_groupIdentifier : str
+        # PKCS#11
+        input_pkcs11LibPath : str
+        input_pkcs11UserPin : str
+        input_pkcs11TokenLabel : str
+        input_pkcs11SlotId : int
+        input_pkcs11KeyLabel : str
+        # X509
+        input_x509Endpoint : str
+        input_x509Role : str
+        input_x509ThingName : str
+        input_x509Cert : str
+        input_x509Key : str
+        input_x509Ca : str
+        # PKCS12
+        input_pkcs12File : str
+        input_pkcs12Password : str
+
+        def __init__(self) -> None:
+            pass
+
+    def parse_sample_input_basic_connect():
+        # Parse arguments
+        cmdUtils = CommandLineUtils("Basic Connect - Make a MQTT connection.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>",
+                                "Connection port for direct connection. " +
+                                "AWS IoT supports 443 and 8883 (optional, default=8883).",
+                                False, int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        # Needs to be called so the command utils parse the commands
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, "8883"))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        cmdData.input_proxyHost = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxyPort = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        return cmdData
+
+
     # Constants for commonly used/needed commands
     m_cmd_endpoint = "endpoint"
     m_cmd_ca_file = "ca_file"
@@ -439,3 +538,6 @@ class CommandLineUtils:
     m_cmd_x509_cert = "x509_cert"
     m_cmd_x509_key = "x509_key"
     m_cmd_x509_ca = "x509_ca_file"
+    m_cmd_port = "port"
+    m_cmd_client_id = "client_id"
+    m_cmd_is_ci = "is_ci"
