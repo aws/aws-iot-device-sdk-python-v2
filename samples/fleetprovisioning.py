@@ -36,7 +36,6 @@ identity_client = None
 createKeysAndCertificateResponse = None
 createCertificateFromCsrResponse = None
 registerThingResponse = None
-is_ci = cmdData.input_isCI
 
 
 class LockedData:
@@ -109,7 +108,7 @@ def createkeysandcertificate_execution_accepted(response):
     try:
         global createKeysAndCertificateResponse
         createKeysAndCertificateResponse = response
-        if (is_ci == False):
+        if (cmdData.input_is_ci == False):
             print("Received a new message {}".format(createKeysAndCertificateResponse))
 
         return
@@ -129,7 +128,7 @@ def createcertificatefromcsr_execution_accepted(response):
     try:
         global createCertificateFromCsrResponse
         createCertificateFromCsrResponse = response
-        if (is_ci == False):
+        if (cmdData.input_is_ci == False):
             print("Received a new message {}".format(createCertificateFromCsrResponse))
         global certificateOwnershipToken
         certificateOwnershipToken = response.certificate_ownership_token
@@ -151,7 +150,7 @@ def registerthing_execution_accepted(response):
     try:
         global registerThingResponse
         registerThingResponse = response
-        if (is_ci == False):
+        if (cmdData.input_is_ci == False):
             print("Received a new message {} ".format(registerThingResponse))
         return
 
@@ -197,7 +196,7 @@ def waitForCreateKeysAndCertificateResponse():
     while loopCount < 10 and createKeysAndCertificateResponse is None:
         if createKeysAndCertificateResponse is not None:
             break
-        if not is_ci:
+        if not cmdData.input_is_ci:
             print('Waiting... CreateKeysAndCertificateResponse: ' + json.dumps(createKeysAndCertificateResponse))
         else:
             print("Waiting... CreateKeysAndCertificateResponse: ...")
@@ -211,7 +210,7 @@ def waitForCreateCertificateFromCsrResponse():
     while loopCount < 10 and createCertificateFromCsrResponse is None:
         if createCertificateFromCsrResponse is not None:
             break
-        if not is_ci:
+        if not cmdData.input_is_ci:
             print('Waiting...CreateCertificateFromCsrResponse: ' + json.dumps(createCertificateFromCsrResponse))
         else:
             print("Waiting... CreateCertificateFromCsrResponse: ...")
@@ -226,7 +225,7 @@ def waitForRegisterThingResponse():
         if registerThingResponse is not None:
             break
         loopCount += 1
-        if not is_ci:
+        if not cmdData.input_is_ci:
             print('Waiting... RegisterThingResponse: ' + json.dumps(registerThingResponse))
         else:
             print('Waiting... RegisterThingResponse: ...')
@@ -255,7 +254,7 @@ if __name__ == '__main__':
         keep_alive_secs=30,
         http_proxy_options=proxy_options)
 
-    if not is_ci:
+    if not cmdData.input_is_ci:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")

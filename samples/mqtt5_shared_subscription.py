@@ -151,7 +151,7 @@ if __name__ == '__main__':
             print(f"[{subscriber_two.name}]: Subscribed with: {suback_two.reason_codes}")
         except Exception as ex:
             # TMP: If this fails subscribing in CI, just exit the sample gracefully.
-            if (cmdData.input_isCI is not None and cmdData.input_isCI != "None"):
+            if (cmdData.input_is_ci is not None):
                 exit(0)
             else:
                 raise ex

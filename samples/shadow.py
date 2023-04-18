@@ -279,7 +279,7 @@ def change_shadow_value(value):
 
 def user_input_thread_fn():
     # If we are not in CI, then take terminal input
-    if not cmdData.input_isCI:
+    if not cmdData.input_is_ci:
         while True:
             try:
                 # Read user input
@@ -332,7 +332,7 @@ if __name__ == '__main__':
         keep_alive_secs=30,
         http_proxy_options=proxy_options)
 
-    if not cmdData.input_isCI:
+    if not cmdData.input_is_ci:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")

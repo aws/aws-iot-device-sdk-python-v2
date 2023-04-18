@@ -227,7 +227,7 @@ class CommandLineUtils:
         input_ca : str
         input_clientId : str
         input_port : int
-        input_isCI : bool
+        input_is_ci : bool
         input_use_websockets : bool
         # Proxy
         input_proxy_host : str
@@ -309,7 +309,7 @@ class CommandLineUtils:
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
-        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_basic_discovery():
@@ -350,7 +350,7 @@ class CommandLineUtils:
         cmdData.input_print_discovery_resp_only = bool(cmdUtils.get_command(CommandLineUtils.m_cmd_print_discovery_resp_only, False))
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
-        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_cognito_connect():
@@ -376,7 +376,7 @@ class CommandLineUtils:
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
-        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_custom_authorizer_connect():
@@ -401,7 +401,7 @@ class CommandLineUtils:
         cmdData.input_custom_auth_password = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_password)
         cmdData.input_custom_auth_username = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_username)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
-        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
 
@@ -430,7 +430,7 @@ class CommandLineUtils:
         cmdData.input_csr_path = cmdUtils.get_command(CommandLineUtils.m_cmd_csr, None)
         cmdData.input_template_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_template_name)
         cmdData.input_template_parameters = cmdUtils.get_command_required(CommandLineUtils.m_cmd_template_parameters)
-        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_jobs():
@@ -456,6 +456,7 @@ class CommandLineUtils:
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
         cmdData.input_thing_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_thing_name)
         cmdData.input_job_time = int(cmdUtils.get_command(CommandLineUtils.m_cmd_job_time, 5))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_mqtt5_custom_authorizer_connect():
@@ -482,7 +483,7 @@ class CommandLineUtils:
         cmdData.input_custom_auth_username = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_username)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_use_websockets = bool(cmdUtils.get_command(CommandLineUtils.m_cmd_use_websockets, False))
-        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_mqtt5_pkcs11_connect():
@@ -521,7 +522,7 @@ class CommandLineUtils:
         cmdData.input_pkcs11_token_label = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_token)
         cmdData.input_pkcs11_slot_id = cmdUtils.get_command(CommandLineUtils.m_cmd_pkcs11_slot, None)
         cmdData.input_pkcs11_key_label = cmdUtils.get_command(CommandLineUtils.m_cmd_pkcs11_key, None)
-        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_mqtt5_pubsub():
@@ -561,6 +562,7 @@ class CommandLineUtils:
         cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
         cmdData.parse_input_topic(cmdUtils)
         cmdData.input_count = int(cmdUtils.get_command(CommandLineUtils.m_cmd_count, 10))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_mqtt5_shared_subscription():
@@ -607,6 +609,7 @@ class CommandLineUtils:
         cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
         cmdData.parse_input_topic(cmdUtils)
         cmdData.input_group_identifier = cmdUtils.get_command(CommandLineUtils.m_cmd_group_identifier, "python-sample")
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_pkcs11_connect():
@@ -641,7 +644,7 @@ class CommandLineUtils:
         cmdData.input_pkcs11_token_label = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_token)
         cmdData.input_pkcs11_slot_id = cmdUtils.get_command(CommandLineUtils.m_cmd_pkcs11_slot, None)
         cmdData.input_pkcs11_key_label = cmdUtils.get_command(CommandLineUtils.m_cmd_pkcs11_key, None)
-        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_pubsub():
@@ -668,6 +671,7 @@ class CommandLineUtils:
         cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
         cmdData.parse_input_topic(cmdUtils)
         cmdData.input_count = int(cmdUtils.get_command(CommandLineUtils.m_cmd_count, 10))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_shadow():
@@ -693,6 +697,7 @@ class CommandLineUtils:
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
         cmdData.input_thing_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_thing_name)
         cmdData.input_shadow_property = cmdUtils.get_command_required(CommandLineUtils.m_cmd_shadow_property)
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_websocket_connect():
@@ -714,7 +719,7 @@ class CommandLineUtils:
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
-        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_windows_cert_connect():
@@ -734,7 +739,7 @@ class CommandLineUtils:
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
-        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
     def parse_sample_input_x509_connect():
@@ -743,13 +748,12 @@ class CommandLineUtils:
         cmdUtils.add_common_proxy_commands()
         cmdUtils.add_common_logging_commands()
         cmdUtils.add_common_x509_commands()
-        cmdUtils.register_command("signing_region", "<str>",
+        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
                                 "The signing region used for the websocket signer",
                                 True, str)
-        cmdUtils.register_command("client_id", "<str>",
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
                                 "Client ID to use for MQTT connection (optional, default='test-*').",
                                 default="test-" + str(uuid4()))
-        cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
         cmdUtils.get_args()
 
         cmdData = CommandLineUtils.CmdData()
@@ -764,7 +768,7 @@ class CommandLineUtils:
         cmdData.input_x509_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_x509_cert)
         cmdData.input_x509_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_x509_key)
         cmdData.input_x509_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_x509_ca, None)
-        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
 

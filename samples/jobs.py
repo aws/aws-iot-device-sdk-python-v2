@@ -265,7 +265,7 @@ if __name__ == '__main__':
         keep_alive_secs=30,
         http_proxy_options=proxy_options)
 
-    if not cmdData.input_isCI:
+    if not cmdData.input_is_ci:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
@@ -312,7 +312,7 @@ if __name__ == '__main__':
         exit(e)
 
     # If we are running in CI, then we want to check how many jobs were reported and stop
-    if (cmdData.input_isCI):
+    if (cmdData.input_is_ci):
         # Wait until we get a response. If we do not get a response after 50 tries, then abort
         got_job_response_tries = 0
         while (locked_data.got_job_response == False):

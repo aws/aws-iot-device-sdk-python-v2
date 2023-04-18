@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     print("MQTT5 Client Created")
 
-    if not cmdData.input_isCI:
+    if not cmdData.input_is_ci:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
