@@ -769,6 +769,7 @@ class CommandLineUtils:
         cmdData.input_proxyPort = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
         cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
         cmdData.input_topic = cmdUtils.get_command(CommandLineUtils.m_cmd_topic, "test/topic")
+        cmdData.input_count = int(cmdUtils.get_command(CommandLineUtils.m_cmd_count, 10))
         return cmdData
 
     def parse_sample_input_mqtt5_shared_subscription():
@@ -852,6 +853,33 @@ class CommandLineUtils:
         cmdData.input_pkcs11SlotId = cmdUtils.get_command(CommandLineUtils.m_cmd_pkcs11_slot, None)
         cmdData.input_pkcs11KeyLabel = cmdUtils.get_command(CommandLineUtils.m_cmd_pkcs11_key, None)
         cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        return cmdData
+
+    def parse_sample_input_pubsub():
+        cmdUtils = CommandLineUtils("PubSub - Send and receive messages through an MQTT connection.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_topic_message_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_count, "<int>", "The number of messages to send (optional, default='10').", default=10, type=int)
+        # Needs to be called so the command utils parse the commands
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, "8883"))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxyHost = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxyPort = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
+        cmdData.input_topic = cmdUtils.get_command(CommandLineUtils.m_cmd_topic, "test/topic")
+        cmdData.input_count = int(cmdUtils.get_command(CommandLineUtils.m_cmd_count, 10))
         return cmdData
 
 
