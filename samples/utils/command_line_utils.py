@@ -27,6 +27,29 @@ class CommandLineUtils:
         if command_name in self.commands.keys():
             self.commands.pop(command_name)
 
+    """
+    Returns the command if it exists and has been passed to the console, otherwise it will print the help for the sample and exit the application.
+    """
+    def get_command_required(self, command_name, message=None):
+        if hasattr(self.parsed_commands, command_name):
+            return getattr(self.parsed_commands, command_name)
+        else:
+            self.parser.print_help()
+            print("Command --" + command_name + " required.")
+            if message is not None:
+                print(message)
+            exit()
+
+    """
+    Returns the command if it exists, has been passed to the console, and is not None. Otherwise it returns whatever is passed as the default.
+    """
+    def get_command(self, command_name, default=None):
+        if hasattr(self.parsed_commands, command_name):
+            result = getattr(self.parsed_commands, command_name)
+            if (result != None):
+                return result
+        return default
+
     def get_args(self):
         # if we have already parsed, then return the cached parsed commands
         if self.parsed_commands is not None:
@@ -192,27 +215,6 @@ class CommandLineUtils:
             "Path to the root certificate used in fetching x509 credentials"
         )
 
-    """
-    Returns the command if it exists and has been passed to the console, otherwise it will print the help for the sample and exit the application.
-    """
-    def get_command_required(self, command_name, message=None):
-        if hasattr(self.parsed_commands, command_name):
-            return getattr(self.parsed_commands, command_name)
-        else:
-            self.parser.print_help()
-            print("Command --" + command_name + " required.")
-            if message is not None:
-                print(message)
-            exit()
-
-    """
-    Returns the command if it exists and has been passed to the console, otherwise it returns whatever is passed as the default.
-    """
-    def get_command(self, command_name, default=None):
-        if hasattr(self.parsed_commands, command_name):
-            return getattr(self.parsed_commands, command_name)
-        return default
-
     ########################################################################
     # cmdData utils/functions
     ########################################################################
@@ -300,7 +302,7 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, "8883"))
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
         cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
@@ -410,7 +412,7 @@ class CommandLineUtils:
         cmdUtils.add_common_logging_commands()
         cmdUtils.add_common_key_cert_commands()
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
-        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).", type=int)
         cmdUtils.register_command(CommandLineUtils.m_cmd_csr, "<path>", "Path to CSR in Pem format (optional).")
         cmdUtils.register_command(CommandLineUtils.m_cmd_template_name, "<str>", "The name of your provisioning template.")
         cmdUtils.register_command(CommandLineUtils.m_cmd_template_parameters, "<json>", "Template parameters json.")
@@ -418,7 +420,7 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, "8883"))
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
         cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
@@ -438,14 +440,14 @@ class CommandLineUtils:
         cmdUtils.add_common_logging_commands()
         cmdUtils.add_common_key_cert_commands()
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
-        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).", type=int)
         cmdUtils.register_command(CommandLineUtils.m_cmd_thing_name, "<str>", "The name assigned to your IoT Thing", required=True)
         cmdUtils.register_command(CommandLineUtils.m_cmd_job_time, "<int>", "Emulate working on a job by sleeping this many seconds (optional, default='5')", default=5, type=int)
         cmdUtils.get_args()
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, "8883"))
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
         cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
@@ -492,7 +494,7 @@ class CommandLineUtils:
         cmdUtils.register_command(
             CommandLineUtils.m_cmd_port,
             "<int>",
-            "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).",
+            "Connection port. AWS IoT supports 433 and 8883 (optional, default=8883).",
             type=int)
         cmdUtils.register_command(
             CommandLineUtils.m_cmd_client_id,
@@ -512,7 +514,7 @@ class CommandLineUtils:
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
-        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, None))
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_pkcs11_lib_path = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_lib)
         cmdData.input_pkcs11_user_pin = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_pin)
@@ -532,7 +534,7 @@ class CommandLineUtils:
         cmdUtils.register_command(
             CommandLineUtils.m_cmd_port,
             "<int>",
-            "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).",
+            "Connection port. AWS IoT supports 433 and 8883 (optional, default=8883).",
             type=int)
         cmdUtils.register_command(
             CommandLineUtils.m_cmd_client_id,
@@ -549,7 +551,7 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, "8883"))
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
         cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
@@ -571,7 +573,7 @@ class CommandLineUtils:
         cmdUtils.register_command(
             CommandLineUtils.m_cmd_port,
             "<int>",
-            "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).",
+            "Connection port. AWS IoT supports 433 and 8883 (optional, default=8883).",
             type=int)
         cmdUtils.register_command(
             CommandLineUtils.m_cmd_client_id,
@@ -595,7 +597,7 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, "8883"))
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
         cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
@@ -617,7 +619,7 @@ class CommandLineUtils:
                                 "Client ID to use for MQTT connection (optional, default='test-*').",
                                 default="test-" + str(uuid4()))
         cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<port>",
-                                "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).",
+                                "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).",
                                 type=int)
         cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_lib, "<path>", "Path to PKCS#11 Library", required=True)
         cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_pin, "<str>", "User PIN for logging into PKCS#11 token.", required=True)
@@ -632,7 +634,7 @@ class CommandLineUtils:
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
-        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, None))
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_pkcs11_lib_path = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_lib)
         cmdData.input_pkcs11_user_pin = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_pin)
@@ -649,14 +651,14 @@ class CommandLineUtils:
         cmdUtils.add_common_proxy_commands()
         cmdUtils.add_common_logging_commands()
         cmdUtils.add_common_key_cert_commands()
-        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).", type=int)
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
         cmdUtils.register_command(CommandLineUtils.m_cmd_count, "<int>", "The number of messages to send (optional, default='10').", default=10, type=int)
         cmdUtils.get_args()
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, "8883"))
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
         cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
@@ -674,7 +676,7 @@ class CommandLineUtils:
         cmdUtils.add_common_proxy_commands()
         cmdUtils.add_common_logging_commands()
         cmdUtils.add_common_key_cert_commands()
-        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).", type=int)
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
         cmdUtils.register_command(CommandLineUtils.m_cmd_thing_name, "<str>", "The name assigned to your IoT Thing", required=True)
         cmdUtils.register_command(CommandLineUtils.m_cmd_shadow_property, "<str>", "The name of the shadow property you want to change (optional, default='color'", default="color")
@@ -682,7 +684,7 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, "8883"))
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
         cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
