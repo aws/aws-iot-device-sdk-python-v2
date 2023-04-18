@@ -1,15 +1,15 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import mqtt
-from awsiot import iotjobs
+from awscrt import mqtt, http
+from awsiot import iotjobs, mqtt_connection_builder
 from concurrent.futures import Future
 import sys
 import threading
 import time
 import traceback
 import time
-from uuid import uuid4
+from utils.command_line_utils import CommandLineUtils
 
 # - Overview -
 # This sample uses the AWS IoT Jobs Service to get a list of pending jobs and
@@ -37,26 +37,14 @@ from uuid import uuid4
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
 
-# Parse arguments
-import utils.command_line_utils as command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils("Jobs - Recieve and execute operations on the device.")
-cmdUtils.add_common_mqtt_commands()
-cmdUtils.add_common_proxy_commands()
-cmdUtils.add_common_logging_commands()
-cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
-cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
-cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
-cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
-cmdUtils.register_command("thing_name", "<str>", "The name assigned to your IoT Thing", required=True)
-cmdUtils.register_command("job_time", "<int>", "Emulate working on a job by sleeping this many seconds (optional, default='5')", default=5, type=int)
-cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None'. Will just describe job if set)")
-# Needs to be called so the command utils parse the commands
-cmdUtils.get_args()
+# cmdData is the arguments/input from the command line placed into a single struct for
+# use in this sample. This handles all of the command line parsing, validating, etc.
+# See the Utils/CommandLineUtils for more information.
+cmdData = CommandLineUtils.parse_sample_input_custom_authorizer_connect()
 
 mqtt_connection = None
 jobs_client = None
-jobs_thing_name = cmdUtils.get_command_required("thing_name")
-is_ci = cmdUtils.get_command("is_ci", None) != None
+jobs_thing_name = cmdData.input_thingName
 
 class LockedData:
     def __init__(self):
@@ -203,7 +191,7 @@ def on_start_next_pending_job_execution_rejected(rejected):
 def job_thread_fn(job_id, job_document):
     try:
         print("Starting local work on job...")
-        time.sleep(cmdUtils.get_command("job_time"))
+        time.sleep(cmdData.input_jobTime)
         print("Done working on job.")
 
         print("Publishing request to update job status to SUCCEEDED...")
@@ -240,10 +228,28 @@ def on_update_job_execution_rejected(rejected):
         rejected.code, rejected.message))
 
 if __name__ == '__main__':
-    mqtt_connection = cmdUtils.build_mqtt_connection(None, None)
-    if is_ci == False:
-        print("Connecting to {} with client ID '{}'...".format(
-            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+
+    # Create the proxy options if the data is present in cmdData
+    proxy_options = None
+    if cmdData.input_proxyHost is not None and cmdData.input_proxyPort != 0:
+        proxy_options = http.HttpProxyOptions(
+            host_name=cmdData.input_proxyHost,
+            port=cmdData.input_proxyPort)
+
+    # Create a MQTT connection from the command line data
+    mqtt_connection = mqtt_connection_builder.mtls_from_path(
+        endpoint=cmdData.input_endpoint,
+        port=cmdData.input_port,
+        cert_filepath=cmdData.input_cert,
+        pri_key_filepath=cmdData.input_key,
+        ca_filepath=cmdData.input_ca,
+        client_id=cmdData.input_clientId,
+        clean_session=False,
+        keep_alive_secs=30,
+        http_proxy_options=proxy_options)
+
+    if cmdData.input_isCI == False:
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'")
     else:
         print("Connecting to endpoint with client ID")
 
@@ -289,7 +295,7 @@ if __name__ == '__main__':
         exit(e)
 
     # If we are running in CI, then we want to check how many jobs were reported and stop
-    if (is_ci):
+    if (cmdData.input_isCI):
         # Wait until we get a response. If we do not get a response after 50 tries, then abort
         got_job_response_tries = 0
         while (locked_data.got_job_response == False):
