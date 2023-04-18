@@ -67,7 +67,7 @@ if __name__ == '__main__':
             port=cmdData.input_proxy_port)
 
     # Create MQTT5 client
-    mqtt5_client = mqtt5_client_builder.mtls_from_path(
+    client = mqtt5_client_builder.mtls_from_path(
         endpoint=cmdData.input_endpoint,
         port=cmdData.input_port,
         cert_filepath=cmdData.input_cert,
