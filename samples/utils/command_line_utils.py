@@ -554,6 +554,34 @@ class CommandLineUtils:
         cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
         return cmdData
 
+    def parse_sample_input_cognito_connect():
+        # Parse arguments
+        cmdUtils = CommandLineUtils("Cognito Connect - Make a Cognito MQTT connection.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
+                                "The signing region used for the websocket signer",
+                                True, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_cognito_identity, "<str>",
+                                "The Cognito identity ID to use to connect via Cognito",
+                                True, str)
+        # Needs to be called so the command utils parse the commands
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_signingRegion = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_cognitoIdentity = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cognito_identity)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxyHost = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxyPort = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        return cmdData
+
 
     # Constants for commonly used/needed commands
     m_cmd_endpoint = "endpoint"

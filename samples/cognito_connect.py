@@ -1,30 +1,18 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from uuid import uuid4
+from awscrt import http, auth, io
+from awsiot import mqtt_connection_builder
+
+from utils.command_line_utils import CommandLineUtils
 
 # This sample shows how to create a MQTT connection using Cognito.
 # This sample is intended to be used as a reference for making MQTT connections.
 
-# Parse arguments
-import utils.command_line_utils as command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils("Cognito Connect - Make a Cognito MQTT connection.")
-cmdUtils.add_common_mqtt_commands()
-cmdUtils.add_common_proxy_commands()
-cmdUtils.add_common_logging_commands()
-cmdUtils.register_command("signing_region", "<str>",
-                          "The signing region used for the websocket signer",
-                          True, str)
-cmdUtils.register_command("client_id", "<str>",
-                          "Client ID to use for MQTT connection (optional, default='test-*').",
-                          default="test-" + str(uuid4()))
-cmdUtils.register_command("cognito_identity", "<str>",
-                          "The Cognito identity ID to use to connect via Cognito",
-                          True, str)
-cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
-# Needs to be called so the command utils parse the commands
-cmdUtils.get_args()
-is_ci = cmdUtils.get_command("is_ci", None) is not None
+# cmdData is the arguments/input from the command line placed into a single struct for
+# use in this sample. This handles all of the command line parsing, validating, etc.
+# See the Utils/CommandLineUtils for more information.
+cmdData = CommandLineUtils.parse_sample_input_basic_connect()
 
 # Callback when connection is accidentally lost.
 def on_connection_interrupted(connection, error, **kwargs):
@@ -36,20 +24,40 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 
 
 if __name__ == '__main__':
-    # Create a connection using Cognito.
-    # Note: The data for the connection is gotten from cmdUtils.
-    # (see build_cognito_mqtt_connection for implementation)
-    #
+    # Create the proxy options if the data is present in cmdData
+    proxy_options = None
+    if cmdData.input_proxyHost is not None and cmdData.input_proxyPort != 0:
+        proxy_options = http.HttpProxyOptions(
+            host_name=cmdData.input_proxyHost,
+            port=cmdData.input_proxyPort)
+
+    # Create the cognito credentials provider
     # Note: This sample and code assumes that you are using a Cognito identity
     # in the same region as you pass to "--signing_region".
     # If not, you may need to adjust the Cognito endpoint in the cmdUtils.
     # See https://docs.aws.amazon.com/general/latest/gr/cognito_identity.html
     # for all Cognito endpoints.
-    mqtt_connection = cmdUtils.build_cognito_mqtt_connection(on_connection_interrupted, on_connection_resumed)
+    cognito_endpoint = f"cognito-identity.{cmdData.input_signingRegion}.amazonaws.com"
+    credentials_provider = auth.AwsCredentialsProvider.new_cognito(
+        endpoint=cognito_endpoint,
+        identity=cmdData.input_cognitoIdentity,
+        tls_ctx=io.ClientTlsContext(io.TlsContextOptions()))
 
-    if not is_ci:
-        print("Connecting to {} with client ID '{}'...".format(
-            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    # Create a MQTT connection from the command line data
+    mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
+        endpoint=cmdData.input_endpoint,
+        region=cmdData.input_signingRegion,
+        credentials_provider=credentials_provider,
+        http_proxy_options=proxy_options,
+        ca_filepath=cmdData.input_ca,
+        on_connection_interrupted=on_connection_interrupted,
+        on_connection_resumed=on_connection_resumed,
+        client_id=cmdData.input_clientId,
+        clean_session=False,
+        keep_alive_secs=30)
+
+    if not cmdData.input_isCI:
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}")
     else:
         print("Connecting to endpoint with client ID...")
 

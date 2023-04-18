@@ -3,7 +3,6 @@
 
 from awscrt import http
 from awsiot import mqtt_connection_builder
-from uuid import uuid4
 
 from utils.command_line_utils import CommandLineUtils
 
