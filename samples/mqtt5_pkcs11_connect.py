@@ -44,7 +44,7 @@ if __name__ == '__main__':
         pkcs11_slot_id = int(cmdData.input_pkcs11_slot_id)
 
     # Create MQTT5 client
-    mqtt5_client = mqtt5_client_builder.mtls_with_pkcs11(
+    client = mqtt5_client_builder.mtls_with_pkcs11(
         pkcs11_lib=pkcs11_lib,
         user_pin=cmdData.input_pkcs11_user_pin,
         slot_id=pkcs11_slot_id,
