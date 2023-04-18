@@ -781,7 +781,7 @@ class CommandLineUtils:
     m_cmd_key_file = "key"
     m_cmd_proxy_host = "proxy_host"
     m_cmd_proxy_port = "proxy_port"
-    m_cmd_signing_region = "region"
+    m_cmd_signing_region = "signing_region"
     m_cmd_pkcs11_lib = "pkcs11_lib"
     m_cmd_pkcs11_cert = "cert"
     m_cmd_pkcs11_pin = "pin"

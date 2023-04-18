@@ -19,6 +19,10 @@
         {
             "name": "--use_websockets",
             "data": "true"
+        },
+        {
+            "name": "--signing_region",
+            "data": "us-east-1"
         }
     ]
 }
