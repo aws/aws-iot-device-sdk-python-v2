@@ -602,6 +602,36 @@ class CommandLineUtils:
         return cmdData
 
 
+    def parse_sample_input_fleet_provisioning():
+        cmdUtils = CommandLineUtils("Fleet Provisioning - Provision device using either the keys or CSR.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_csr, "<path>", "Path to CSR in Pem format (optional).")
+        cmdUtils.register_command(CommandLineUtils.m_cmd_template_name, "<str>", "The name of your provisioning template.")
+        cmdUtils.register_command(CommandLineUtils.m_cmd_template_parameters, "<json>", "Template parameters json.")
+        # Needs to be called so the command utils parse the commands
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, "8883"))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxyHost = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxyPort = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_csrPath = cmdUtils.get_command(CommandLineUtils.m_cmd_csr, None)
+        cmdData.input_templateName = cmdUtils.get_command_required(CommandLineUtils.m_cmd_template_name)
+        cmdData.input_templateParameters = cmdUtils.get_command_required(CommandLineUtils.m_cmd_template_parameters)
+        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        return cmdData
+
+
     # Constants for commonly used/needed commands
     m_cmd_endpoint = "endpoint"
     m_cmd_ca_file = "ca_file"
@@ -637,3 +667,6 @@ class CommandLineUtils:
     m_cmd_mode = "mode"
     m_cmd_max_pub_ops = "max_pub_ops"
     m_cmd_print_discovery_resp_only = "print_discover_resp_only"
+    m_cmd_csr = "csr"
+    m_cmd_template_name = "template_name"
+    m_cmd_template_parameters = "template_parameters"

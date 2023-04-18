@@ -1,15 +1,15 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import mqtt
-from awsiot import iotidentity
+from awscrt import mqtt, http
+from awsiot import iotidentity, mqtt_connection_builder
 from concurrent.futures import Future
 import sys
 import threading
 import time
 import traceback
-from uuid import uuid4
 import json
+from utils.command_line_utils import CommandLineUtils
 
 # - Overview -
 # This sample uses the AWS IoT Fleet Provisioning to provision device using either the keys
@@ -24,22 +24,10 @@ import json
 # On startup, the script subscribes to topics based on the request type of either CSR or Keys
 # publishes the request to corresponding topic and calls RegisterThing.
 
-# Parse arguments
-import utils.command_line_utils as command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils("Fleet Provisioning - Provision device using either the keys or CSR.")
-cmdUtils.add_common_mqtt_commands()
-cmdUtils.add_common_proxy_commands()
-cmdUtils.add_common_logging_commands()
-cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
-cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
-cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
-cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
-cmdUtils.register_command("csr", "<path>", "Path to CSR in Pem format (optional).")
-cmdUtils.register_command("template_name", "<str>", "The name of your provisioning template.")
-cmdUtils.register_command("template_parameters", "<json>", "Template parameters json.")
-cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
-# Needs to be called so the command utils parse the commands
-cmdUtils.get_args()
+# cmdData is the arguments/input from the command line placed into a single struct for
+# use in this sample. This handles all of the command line parsing, validating, etc.
+# See the Utils/CommandLineUtils for more information.
+cmdData = CommandLineUtils.parse_sample_input_custom_authorizer_connect()
 
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
@@ -48,7 +36,7 @@ identity_client = None
 createKeysAndCertificateResponse = None
 createCertificateFromCsrResponse = None
 registerThingResponse = None
-is_ci = cmdUtils.get_command("is_ci", None) != None
+is_ci = cmdData.input_isCI
 
 class LockedData:
     def __init__(self):
@@ -229,12 +217,29 @@ def waitForRegisterThingResponse():
         time.sleep(1)
 
 if __name__ == '__main__':
+    # Create the proxy options if the data is present in cmdData
     proxy_options = None
-    mqtt_connection = cmdUtils.build_mqtt_connection(on_connection_interrupted, on_connection_resumed)
+    if cmdData.input_proxyHost is not None and cmdData.input_proxyPort != 0:
+        proxy_options = http.HttpProxyOptions(
+            host_name=cmdData.input_proxyHost,
+            port=cmdData.input_proxyPort)
+
+    # Create a MQTT connection from the command line data
+    mqtt_connection = mqtt_connection_builder.mtls_from_path(
+        endpoint=cmdData.input_endpoint,
+        port=cmdData.input_port,
+        cert_filepath=cmdData.input_cert,
+        pri_key_filepath=cmdData.input_key,
+        ca_filepath=cmdData.input_ca,
+        on_connection_interrupted=on_connection_interrupted,
+        on_connection_resumed=on_connection_resumed,
+        client_id=cmdData.input_clientId,
+        clean_session=False,
+        keep_alive_secs=30,
+        http_proxy_options=proxy_options)
 
     if is_ci == False:
-        print("Connecting to {} with client ID '{}'...".format(
-            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'")
     else:
         print("Connecting to endpoint with client ID")
 
@@ -256,7 +261,7 @@ if __name__ == '__main__':
         # to succeed before publishing the corresponding "request".
 
         # Keys workflow if csr is not provided
-        if cmdUtils.get_command("csr") is None:
+        if cmdData.input_csrPath is None:
             createkeysandcertificate_subscription_request = iotidentity.CreateKeysAndCertificateSubscriptionRequest()
 
             print("Subscribing to CreateKeysAndCertificate Accepted topic...")
@@ -298,7 +303,7 @@ if __name__ == '__main__':
             createcertificatefromcsr_subscribed_rejected_future.result()
 
 
-        registerthing_subscription_request = iotidentity.RegisterThingSubscriptionRequest(template_name=cmdUtils.get_command_required("template_name"))
+        registerthing_subscription_request = iotidentity.RegisterThingSubscriptionRequest(template_name= cmdData.input_templateName)
 
         print("Subscribing to RegisterThing Accepted topic...")
         registerthing_subscribed_accepted_future, _ = identity_client.subscribe_to_register_thing_accepted(
@@ -317,9 +322,9 @@ if __name__ == '__main__':
         # Wait for subscription to succeed
         registerthing_subscribed_rejected_future.result()
 
-        fleet_template_name = cmdUtils.get_command_required("template_name")
-        fleet_template_parameters = cmdUtils.get_command_required("template_parameters")
-        if cmdUtils.get_command("csr") is None:
+        fleet_template_name = cmdData.input_templateName
+        fleet_template_parameters = cmdData.input_templateParameters
+        if cmdData.input_csrPath is None:
             print("Publishing to CreateKeysAndCertificate...")
             publish_future = identity_client.publish_create_keys_and_certificate(
                 request=iotidentity.CreateKeysAndCertificateRequest(), qos=mqtt.QoS.AT_LEAST_ONCE)
@@ -336,7 +341,7 @@ if __name__ == '__main__':
                 parameters=json.loads(fleet_template_parameters))
         else:
             print("Publishing to CreateCertificateFromCsr...")
-            csrPath = open(cmdUtils.get_command("csr"), 'r').read()
+            csrPath = open(cmdData.input_csrPath, 'r').read()
             publish_future = identity_client.publish_create_certificate_from_csr(
                 request=iotidentity.CreateCertificateFromCsrRequest(certificate_signing_request=csrPath),
                 qos=mqtt.QoS.AT_LEAST_ONCE)
