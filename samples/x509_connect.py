@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
     # Create the MQTT connection from the configuration
     mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
-        endpoint=cmdData.input_x509_endpoint,
+        endpoint=cmdData.input_endpoint,
         region=cmdData.input_signing_region,
         credentials_provider=x509_provider,
         http_proxy_options=proxy_options,
