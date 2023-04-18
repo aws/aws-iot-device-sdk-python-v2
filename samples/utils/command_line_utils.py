@@ -719,7 +719,6 @@ class CommandLineUtils:
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
         cmdData.input_signingRegion = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
-        cmdData.input_cognitoIdentity = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cognito_identity)
         cmdData.input_proxyHost = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxyPort = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
@@ -817,6 +816,42 @@ class CommandLineUtils:
         cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
         cmdData.input_topic = cmdUtils.get_command(CommandLineUtils.m_cmd_topic, "test/topic")
         cmdData.input_groupIdentifier = cmdUtils.get_command(CommandLineUtils.m_cmd_group_identifier, "python-sample")
+        return cmdData
+
+    def parse_sample_input_pkcs11_connect():
+        cmdUtils = CommandLineUtils("PKCS11 Connect - Make a MQTT connection using PKCS11.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_cert_file, "<path>", "Path to your client certificate in PEM format.", True, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<port>",
+                                "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).",
+                                type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_lib, "<path>", "Path to PKCS#11 Library", required=True)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_pin, "<str>", "User PIN for logging into PKCS#11 token.", required=True)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_token, "<str>", "Label of the PKCS#11 token to use (optional).")
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_slot, "<int>", "Slot ID containing the PKCS#11 token to use (optional).", False, int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_key, "<str>", "Label of private key on the PKCS#11 token (optional).")
+        # Needs to be called so the command utils parse the commands
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_signingRegion = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_proxyHost = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxyPort = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, None))
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_pkcs11LibPath = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_lib)
+        cmdData.input_pkcs11UserPin = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_pin)
+        cmdData.input_pkcs11TokenLabel = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_token)
+        cmdData.input_pkcs11SlotId = cmdUtils.get_command(CommandLineUtils.m_cmd_pkcs11_slot, None)
+        cmdData.input_pkcs11KeyLabel = cmdUtils.get_command(CommandLineUtils.m_cmd_pkcs11_key, None)
+        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
         return cmdData
 
 
