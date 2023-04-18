@@ -435,6 +435,7 @@ class CommandLineUtils:
         input_clientId : str
         input_port : int
         input_isCI : bool
+        input_useWebsockets : bool
         # Proxy
         input_proxyHost : str
         input_proxyPort : int
@@ -660,6 +661,31 @@ class CommandLineUtils:
         cmdData.input_jobTime = int(cmdUtils.get_command(CommandLineUtils.m_cmd_job_time, 5))
         return cmdData
 
+    def parse_sample_input_mqtt5_custom_authorizer_connect():
+        cmdUtils = CommandLineUtils(
+            "Custom Authorizer Connect - Make a MQTT5 Client connection using a custom authorizer.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_custom_authorizer_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_use_websockets, "<str>", "If set, websockets will be used (optional, do not set to use direct MQTT)")
+        # Needs to be called so the command utils parse the commands
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_signingRegion = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_customAuthorizerName = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_name)
+        cmdData.input_customAuthorizerSignature = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_signature)
+        cmdData.input_customAuthPassword = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_password)
+        cmdData.input_customAuthUsername = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_username)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_useWebsockets = bool(cmdUtils.get_command(CommandLineUtils.m_cmd_use_websockets, False))
+        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        return cmdData
+
 
     # Constants for commonly used/needed commands
     m_cmd_endpoint = "endpoint"
@@ -700,3 +726,4 @@ class CommandLineUtils:
     m_cmd_template_name = "template_name"
     m_cmd_template_parameters = "template_parameters"
     m_cmd_job_time = "job_time"
+    m_cmd_use_websockets = "use_websockets"
