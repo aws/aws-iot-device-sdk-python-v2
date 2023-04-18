@@ -40,11 +40,12 @@ is_sample_done = threading.Event()
 # cmdData is the arguments/input from the command line placed into a single struct for
 # use in this sample. This handles all of the command line parsing, validating, etc.
 # See the Utils/CommandLineUtils for more information.
-cmdData = CommandLineUtils.parse_sample_input_custom_authorizer_connect()
+cmdData = CommandLineUtils.parse_sample_input_jobs()
 
 mqtt_connection = None
 jobs_client = None
-jobs_thing_name = cmdData.input_thingName
+jobs_thing_name = cmdData.input_thing_name
+
 
 class LockedData:
     def __init__(self):
@@ -53,6 +54,7 @@ class LockedData:
         self.is_working_on_job = False
         self.is_next_job_waiting = False
         self.got_job_response = False
+
 
 locked_data = LockedData()
 
@@ -70,6 +72,7 @@ def exit(msg_or_exception):
             locked_data.disconnect_called = True
             future = mqtt_connection.disconnect()
             future.add_done_callback(on_disconnected)
+
 
 def try_start_next_job():
     print("Trying to start the next job...")
@@ -90,6 +93,7 @@ def try_start_next_job():
     publish_future = jobs_client.publish_start_next_pending_job_execution(request, mqtt.QoS.AT_LEAST_ONCE)
     publish_future.add_done_callback(on_publish_start_next_pending_job_execution)
 
+
 def done_working_on_job():
     with locked_data.lock:
         locked_data.is_working_on_job = False
@@ -98,6 +102,7 @@ def done_working_on_job():
     if try_again:
         try_start_next_job()
 
+
 def on_disconnected(disconnect_future):
     # type: (Future) -> None
     print("Disconnected.")
@@ -105,26 +110,30 @@ def on_disconnected(disconnect_future):
     # Signal that sample is finished
     is_sample_done.set()
 
+
 # A list to hold all the pending jobs
 available_jobs = []
+
+
 def on_get_pending_job_executions_accepted(response):
     # type: (iotjobs.GetPendingJobExecutionsResponse) -> None
     with locked_data.lock:
         if (len(response.queued_jobs) > 0 or len(response.in_progress_jobs) > 0):
-            print ("Pending Jobs:")
+            print("Pending Jobs:")
             for job in response.in_progress_jobs:
                 available_jobs.append(job)
                 print(f"  In Progress: {job.job_id} @ {job.last_updated_at}")
             for job in response.queued_jobs:
                 available_jobs.append(job)
-                print (f"  {job.job_id} @ {job.last_updated_at}")
+                print(f"  {job.job_id} @ {job.last_updated_at}")
         else:
-            print ("No pending or queued jobs found!")
+            print("No pending or queued jobs found!")
         locked_data.got_job_response = True
+
 
 def on_get_pending_job_executions_rejected(error):
     # type: (iotjobs.RejectedError) -> None
-    print (f"Request rejected: {error.code}: {error.message}")
+    print(f"Request rejected: {error.code}: {error.message}")
     exit("Get pending jobs request rejected!")
 
 
@@ -153,15 +162,17 @@ def on_next_job_execution_changed(event):
     except Exception as e:
         exit(e)
 
+
 def on_publish_start_next_pending_job_execution(future):
     # type: (Future) -> None
     try:
-        future.result() # raises exception if publish failed
+        future.result()  # raises exception if publish failed
 
         print("Published request to start the next job.")
 
     except Exception as e:
         exit(e)
+
 
 def on_start_next_pending_job_execution_accepted(response):
     # type: (iotjobs.StartNextJobExecutionResponse) -> None
@@ -183,15 +194,17 @@ def on_start_next_pending_job_execution_accepted(response):
     except Exception as e:
         exit(e)
 
+
 def on_start_next_pending_job_execution_rejected(rejected):
     # type: (iotjobs.RejectedError) -> None
     exit("Request to start next pending job rejected with code:'{}' message:'{}'".format(
         rejected.code, rejected.message))
 
+
 def job_thread_fn(job_id, job_document):
     try:
         print("Starting local work on job...")
-        time.sleep(cmdData.input_jobTime)
+        time.sleep(cmdData.input_job_time)
         print("Done working on job.")
 
         print("Publishing request to update job status to SUCCEEDED...")
@@ -205,14 +218,16 @@ def job_thread_fn(job_id, job_document):
     except Exception as e:
         exit(e)
 
+
 def on_publish_update_job_execution(future):
     # type: (Future) -> None
     try:
-        future.result() # raises exception if publish failed
+        future.result()  # raises exception if publish failed
         print("Published request to update job.")
 
     except Exception as e:
         exit(e)
+
 
 def on_update_job_execution_accepted(response):
     # type: (iotjobs.UpdateJobExecutionResponse) -> None
@@ -222,19 +237,21 @@ def on_update_job_execution_accepted(response):
     except Exception as e:
         exit(e)
 
+
 def on_update_job_execution_rejected(rejected):
     # type: (iotjobs.RejectedError) -> None
     exit("Request to update job status was rejected. code:'{}' message:'{}'.".format(
         rejected.code, rejected.message))
 
+
 if __name__ == '__main__':
 
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
-    if cmdData.input_proxyHost is not None and cmdData.input_proxyPort != 0:
+    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
         proxy_options = http.HttpProxyOptions(
-            host_name=cmdData.input_proxyHost,
-            port=cmdData.input_proxyPort)
+            host_name=cmdData.input_proxy_host,
+            port=cmdData.input_proxy_port)
 
     # Create a MQTT connection from the command line data
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
@@ -248,8 +265,8 @@ if __name__ == '__main__':
         keep_alive_secs=30,
         http_proxy_options=proxy_options)
 
-    if cmdData.input_isCI == False:
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'")
+    if not cmdData.input_isCI:
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
 
@@ -306,10 +323,10 @@ if __name__ == '__main__':
             time.sleep(0.2)
 
         if (len(available_jobs) > 0):
-            print ("At least one job queued in CI! No further work to do. Exiting sample...")
+            print("At least one job queued in CI! No further work to do. Exiting sample...")
             sys.exit(0)
         else:
-            print ("ERROR: No jobs queued in CI! At least one job should be queued!")
+            print("ERROR: No jobs queued in CI! At least one job should be queued!")
             sys.exit(-1)
 
     try:
@@ -349,8 +366,8 @@ if __name__ == '__main__':
         # Note that we subscribe to "+", the MQTT wildcard, to receive
         # responses about any job-ID.
         update_subscription_request = iotjobs.UpdateJobExecutionSubscriptionRequest(
-                thing_name=jobs_thing_name,
-                job_id='+')
+            thing_name=jobs_thing_name,
+            job_id='+')
 
         subscribed_accepted_future, _ = jobs_client.subscribe_to_update_job_execution_accepted(
             request=update_subscription_request,

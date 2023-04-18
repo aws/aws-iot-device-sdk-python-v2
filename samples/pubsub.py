@@ -42,12 +42,12 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 
 
 def on_resubscribe_complete(resubscribe_future):
-        resubscribe_results = resubscribe_future.result()
-        print("Resubscribe results: {}".format(resubscribe_results))
+    resubscribe_results = resubscribe_future.result()
+    print("Resubscribe results: {}".format(resubscribe_results))
 
-        for topic, qos in resubscribe_results['topics']:
-            if qos is None:
-                sys.exit("Server rejected resubscribe to topic: {}".format(topic))
+    for topic, qos in resubscribe_results['topics']:
+        if qos is None:
+            sys.exit("Server rejected resubscribe to topic: {}".format(topic))
 
 
 # Callback when the subscribed topic receives a message
@@ -58,13 +58,14 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     if received_count == cmdData.input_count:
         received_all_event.set()
 
+
 if __name__ == '__main__':
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
-    if cmdData.input_proxyHost is not None and cmdData.input_proxyPort != 0:
+    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
         proxy_options = http.HttpProxyOptions(
-            host_name=cmdData.input_proxyHost,
-            port=cmdData.input_proxyPort)
+            host_name=cmdData.input_proxy_host,
+            port=cmdData.input_proxy_port)
 
     # Create a MQTT connection from the command line data
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
@@ -80,7 +81,7 @@ if __name__ == '__main__':
         keep_alive_secs=30,
         http_proxy_options=proxy_options)
 
-    if cmdData.input_isCI == False:
+    if not cmdData.input_isCI:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
@@ -109,9 +110,9 @@ if __name__ == '__main__':
     # This step loops forever if count was set to 0.
     if message_string:
         if message_count == 0:
-            print ("Sending messages until program killed")
+            print("Sending messages until program killed")
         else:
-            print ("Sending {} message(s)".format(message_count))
+            print("Sending {} message(s)".format(message_count))
 
         publish_count = 1
         while (publish_count <= message_count) or (message_count == 0):

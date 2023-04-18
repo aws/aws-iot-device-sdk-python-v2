@@ -26,10 +26,10 @@ if __name__ == '__main__':
 
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
-    if cmdData.input_proxyHost is not None and cmdData.input_proxyPort != 0:
+    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
         proxy_options = http.HttpProxyOptions(
-            host_name=cmdData.input_proxyHost,
-            port=cmdData.input_proxyPort)
+            host_name=cmdData.input_proxy_host,
+            port=cmdData.input_proxy_port)
 
     # Create a MQTT connection from the command line data
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
@@ -46,8 +46,7 @@ if __name__ == '__main__':
         http_proxy_options=proxy_options)
 
     if not cmdData.input_isCI:
-        print("Connecting to {} with client ID '{}'...".format(
-            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
 

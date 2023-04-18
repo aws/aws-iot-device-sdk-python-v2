@@ -17,6 +17,7 @@ from utils.command_line_utils import CommandLineUtils
 # See the Utils/CommandLineUtils for more information.
 cmdData = CommandLineUtils.parse_sample_input_windows_cert_connect()
 
+
 def on_connection_interrupted(connection, error, **kwargs):
     # Callback when connection is accidentally lost.
     print("Connection interrupted. error: {}".format(error))
@@ -40,7 +41,7 @@ if __name__ == '__main__':
         clean_session=False,
         keep_alive_secs=30)
 
-    if cmdData.input_isCI == False:
+    if not cmdData.input_isCI:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")

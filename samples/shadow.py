@@ -38,10 +38,11 @@ cmdData = CommandLineUtils.parse_sample_input_shadow()
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
 mqtt_connection = None
-shadow_thing_name = cmdData.input_thingName
-shadow_property = cmdData.input_shadowProperty
+shadow_thing_name = cmdData.input_thing_name
+shadow_property = cmdData.input_shadow_property
 
 SHADOW_VALUE_DEFAULT = "off"
+
 
 class LockedData:
     def __init__(self):
@@ -50,9 +51,12 @@ class LockedData:
         self.disconnect_called = False
         self.request_tokens = set()
 
+
 locked_data = LockedData()
 
 # Function for gracefully quitting this sample
+
+
 def exit(msg_or_exception):
     if isinstance(msg_or_exception, Exception):
         print("Exiting sample due to exception.")
@@ -66,6 +70,7 @@ def exit(msg_or_exception):
             locked_data.disconnect_called = True
             future = mqtt_connection.disconnect()
             future.add_done_callback(on_disconnected)
+
 
 def on_disconnected(disconnect_future):
     # type: (Future) -> None
@@ -113,6 +118,7 @@ def on_get_shadow_accepted(response):
     except Exception as e:
         exit(e)
 
+
 def on_get_shadow_rejected(error):
     # type: (iotshadow.ErrorResponse) -> None
     try:
@@ -134,6 +140,7 @@ def on_get_shadow_rejected(error):
     except Exception as e:
         exit(e)
 
+
 def on_shadow_delta_updated(delta):
     # type: (iotshadow.ShadowDeltaUpdatedEvent) -> None
     try:
@@ -147,7 +154,7 @@ def on_shadow_delta_updated(delta):
             else:
                 print("  Delta reports that desired value is '{}'. Changing local value...".format(value))
                 if (delta.client_token is not None):
-                    print ("  ClientToken is: " + delta.client_token)
+                    print("  ClientToken is: " + delta.client_token)
                 change_shadow_value(value)
         else:
             print("  Delta did not report a change in '{}'".format(shadow_property))
@@ -155,14 +162,16 @@ def on_shadow_delta_updated(delta):
     except Exception as e:
         exit(e)
 
+
 def on_publish_update_shadow(future):
-    #type: (Future) -> None
+    # type: (Future) -> None
     try:
         future.result()
         print("Update request published.")
     except Exception as e:
         print("Failed to publish update request.")
         exit(e)
+
 
 def on_update_shadow_accepted(response):
     # type: (iotshadow.UpdateShadowResponse) -> None
@@ -176,19 +185,21 @@ def on_update_shadow_accepted(response):
                 return
 
         try:
-            if response.state.reported != None:
+            if response.state.reported is not None:
                 if shadow_property in response.state.reported:
-                    print("Finished updating reported shadow value to '{}'.".format(response.state.reported[shadow_property])) # type: ignore
+                    print("Finished updating reported shadow value to '{}'.".format(
+                        response.state.reported[shadow_property]))  # type: ignore
                 else:
-                    print ("Could not find shadow property with name: '{}'.".format(shadow_property)) # type: ignore
+                    print("Could not find shadow property with name: '{}'.".format(shadow_property))  # type: ignore
             else:
-                print("Shadow states cleared.") # when the shadow states are cleared, reported and desired are set to None
-            print("Enter desired value: ") # remind user they can input new values
-        except:
+                print("Shadow states cleared.")  # when the shadow states are cleared, reported and desired are set to None
+            print("Enter desired value: ")  # remind user they can input new values
+        except BaseException:
             exit("Updated shadow is missing the target property")
 
     except Exception as e:
         exit(e)
+
 
 def on_update_shadow_rejected(error):
     # type: (iotshadow.ErrorResponse) -> None
@@ -207,16 +218,18 @@ def on_update_shadow_rejected(error):
     except Exception as e:
         exit(e)
 
+
 def set_local_value_due_to_initial_query(reported_value):
     with locked_data.lock:
         locked_data.shadow_value = reported_value
-    print("Enter desired value: ") # remind user they can input new values
+    print("Enter desired value: ")  # remind user they can input new values
+
 
 def change_shadow_value(value):
     with locked_data.lock:
         if locked_data.shadow_value == value:
             print("Local value is already '{}'.".format(value))
-            print("Enter desired value: ") # remind user they can input new values
+            print("Enter desired value: ")  # remind user they can input new values
             return
 
         print("Changed local shadow value to '{}'.".format(value))
@@ -231,7 +244,11 @@ def change_shadow_value(value):
         # if the value is "clear shadow" then send a UpdateShadowRequest with None
         # for both reported and desired to clear the shadow document completely.
         if value == "clear_shadow":
-            tmp_state = iotshadow.ShadowState(reported=None, desired=None, reported_is_nullable=True, desired_is_nullable=True)
+            tmp_state = iotshadow.ShadowState(
+                reported=None,
+                desired=None,
+                reported_is_nullable=True,
+                desired_is_nullable=True)
             request = iotshadow.UpdateShadowRequest(
                 thing_name=shadow_thing_name,
                 state=tmp_state,
@@ -245,10 +262,10 @@ def change_shadow_value(value):
                 value = None
 
             request = iotshadow.UpdateShadowRequest(
-            thing_name=shadow_thing_name,
-            state=iotshadow.ShadowState(
-                reported={ shadow_property: value },
-                desired={ shadow_property: value },
+                thing_name=shadow_thing_name,
+                state=iotshadow.ShadowState(
+                    reported={shadow_property: value},
+                    desired={shadow_property: value},
                 ),
                 client_token=token,
             )
@@ -259,9 +276,10 @@ def change_shadow_value(value):
 
         future.add_done_callback(on_publish_update_shadow)
 
+
 def user_input_thread_fn():
     # If we are not in CI, then take terminal input
-    if cmdData.input_isCI == False:
+    if not cmdData.input_isCI:
         while True:
             try:
                 # Read user input
@@ -290,16 +308,17 @@ def user_input_thread_fn():
                 messages_sent += 1
             exit("CI has quit")
         except Exception as e:
-            print ("Exception on input thread (CI)")
+            print("Exception on input thread (CI)")
             exit(e)
+
 
 if __name__ == '__main__':
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
-    if cmdData.input_proxyHost is not None and cmdData.input_proxyPort != 0:
+    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
         proxy_options = http.HttpProxyOptions(
-            host_name=cmdData.input_proxyHost,
-            port=cmdData.input_proxyPort)
+            host_name=cmdData.input_proxy_host,
+            port=cmdData.input_proxy_port)
 
     # Create a MQTT connection from the command line data
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
@@ -313,7 +332,7 @@ if __name__ == '__main__':
         keep_alive_secs=30,
         http_proxy_options=proxy_options)
 
-    if cmdData.input_isCI == False:
+    if not cmdData.input_isCI:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")

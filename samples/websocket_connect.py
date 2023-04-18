@@ -25,16 +25,16 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 if __name__ == '__main__':
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
-    if cmdData.input_proxyHost is not None and cmdData.input_proxyPort != 0:
+    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
         proxy_options = http.HttpProxyOptions(
-            host_name=cmdData.input_proxyHost,
-            port=cmdData.input_proxyPort)
+            host_name=cmdData.input_proxy_host,
+            port=cmdData.input_proxy_port)
 
     # Create a default credentials provider and a MQTT connection from the command line data
     credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
     mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
         endpoint=cmdData.input_endpoint,
-        region=cmdData.input_signingRegion,
+        region=cmdData.input_signing_region,
         credentials_provider=credentials_provider,
         http_proxy_options=proxy_options,
         ca_filepath=cmdData.input_ca,
@@ -44,10 +44,10 @@ if __name__ == '__main__':
         clean_session=False,
         keep_alive_secs=30)
 
-    if cmdData.input_isCI == False:
+    if not cmdData.input_isCI:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
-        print ("Connecting to endpoint with client ID...")
+        print("Connecting to endpoint with client ID...")
 
     connect_future = mqtt_connection.connect()
 

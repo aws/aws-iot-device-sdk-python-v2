@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 from awsiot import mqtt5_client_builder
-from awscrt import mqtt5
+from awscrt import mqtt5, http
 import threading
 from concurrent.futures import Future
 import time
@@ -61,10 +61,10 @@ if __name__ == '__main__':
 
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
-    if cmdData.input_proxyHost is not None and cmdData.input_proxyPort != 0:
+    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
         proxy_options = http.HttpProxyOptions(
-            host_name=cmdData.input_proxyHost,
-            port=cmdData.input_proxyPort)
+            host_name=cmdData.input_proxy_host,
+            port=cmdData.input_proxy_port)
 
     # Create MQTT5 client
     mqtt5_client = mqtt5_client_builder.mtls_from_path(
@@ -81,7 +81,7 @@ if __name__ == '__main__':
         client_id=cmdData.input_clientId)
     print("MQTT5 Client Created")
 
-    if cmdData.input_isCI == False:
+    if not cmdData.input_isCI:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
@@ -90,8 +90,9 @@ if __name__ == '__main__':
     lifecycle_connect_success_data = future_connection_success.result(TIMEOUT)
     connack_packet = lifecycle_connect_success_data.connack_packet
     negotiated_settings = lifecycle_connect_success_data.negotiated_settings
-    if cmdData.input_isCI == False:
-        print(f"Connected to endpoint:'{cmdData.input_endpoint}' with Client ID:'{cmdData.input_clientId}' with reason_code:{repr(connack_packet.reason_code)}")
+    if not cmdData.input_isCI:
+        print(
+            f"Connected to endpoint:'{cmdData.input_endpoint}' with Client ID:'{cmdData.input_clientId}' with reason_code:{repr(connack_packet.reason_code)}")
 
     # Subscribe
 

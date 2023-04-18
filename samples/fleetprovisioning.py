@@ -27,7 +27,7 @@ from utils.command_line_utils import CommandLineUtils
 # cmdData is the arguments/input from the command line placed into a single struct for
 # use in this sample. This handles all of the command line parsing, validating, etc.
 # See the Utils/CommandLineUtils for more information.
-cmdData = CommandLineUtils.parse_sample_input_custom_authorizer_connect()
+cmdData = CommandLineUtils.parse_sample_input_fleet_provisioning()
 
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
@@ -38,10 +38,12 @@ createCertificateFromCsrResponse = None
 registerThingResponse = None
 is_ci = cmdData.input_isCI
 
+
 class LockedData:
     def __init__(self):
         self.lock = threading.Lock()
         self.disconnect_called = False
+
 
 locked_data = LockedData()
 
@@ -60,6 +62,7 @@ def exit(msg_or_exception):
             future = mqtt_connection.disconnect()
             future.add_done_callback(on_disconnected)
 
+
 def on_disconnected(disconnect_future):
     # type: (Future) -> None
     print("Disconnected.")
@@ -67,35 +70,39 @@ def on_disconnected(disconnect_future):
     # Signal that sample is finished
     is_sample_done.set()
 
+
 def on_publish_register_thing(future):
     # type: (Future) -> None
     try:
-        future.result() # raises exception if publish failed
+        future.result()  # raises exception if publish failed
         print("Published RegisterThing request..")
 
     except Exception as e:
         print("Failed to publish RegisterThing request.")
         exit(e)
 
+
 def on_publish_create_keys_and_certificate(future):
     # type: (Future) -> None
     try:
-        future.result() # raises exception if publish failed
+        future.result()  # raises exception if publish failed
         print("Published CreateKeysAndCertificate request..")
 
     except Exception as e:
         print("Failed to publish CreateKeysAndCertificate request.")
         exit(e)
 
+
 def on_publish_create_certificate_from_csr(future):
     # type: (Future) -> None
     try:
-        future.result() # raises exception if publish failed
+        future.result()  # raises exception if publish failed
         print("Published CreateCertificateFromCsr request..")
 
     except Exception as e:
         print("Failed to publish CreateCertificateFromCsr request.")
         exit(e)
+
 
 def createkeysandcertificate_execution_accepted(response):
     # type: (iotidentity.CreateKeysAndCertificateResponse) -> None
@@ -110,10 +117,12 @@ def createkeysandcertificate_execution_accepted(response):
     except Exception as e:
         exit(e)
 
+
 def createkeysandcertificate_execution_rejected(rejected):
     # type: (iotidentity.RejectedError) -> None
     exit("CreateKeysAndCertificate Request rejected with code:'{}' message:'{}' statuscode:'{}'".format(
         rejected.error_code, rejected.error_message, rejected.status_code))
+
 
 def createcertificatefromcsr_execution_accepted(response):
     # type: (iotidentity.CreateCertificateFromCsrResponse) -> None
@@ -130,10 +139,12 @@ def createcertificatefromcsr_execution_accepted(response):
     except Exception as e:
         exit(e)
 
+
 def createcertificatefromcsr_execution_rejected(rejected):
     # type: (iotidentity.RejectedError) -> None
     exit("CreateCertificateFromCsr Request rejected with code:'{}' message:'{}' statuscode:'{}'".format(
         rejected.error_code, rejected.error_message, rejected.status_code))
+
 
 def registerthing_execution_accepted(response):
     # type: (iotidentity.RegisterThingResponse) -> None
@@ -146,6 +157,7 @@ def registerthing_execution_accepted(response):
 
     except Exception as e:
         exit(e)
+
 
 def registerthing_execution_rejected(rejected):
     # type: (iotidentity.RejectedError) -> None
@@ -169,6 +181,7 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
         # evaluate result with a callback instead.
         resubscribe_future.add_done_callback(on_resubscribe_complete)
 
+
 def on_resubscribe_complete(resubscribe_future):
     resubscribe_results = resubscribe_future.result()
     print("Resubscribe results: {}".format(resubscribe_results))
@@ -177,18 +190,20 @@ def on_resubscribe_complete(resubscribe_future):
         if qos is None:
             sys.exit("Server rejected resubscribe to topic: {}".format(topic))
 
+
 def waitForCreateKeysAndCertificateResponse():
     # Wait for the response.
     loopCount = 0
     while loopCount < 10 and createKeysAndCertificateResponse is None:
         if createKeysAndCertificateResponse is not None:
             break
-        if is_ci == False:
+        if not is_ci:
             print('Waiting... CreateKeysAndCertificateResponse: ' + json.dumps(createKeysAndCertificateResponse))
         else:
             print("Waiting... CreateKeysAndCertificateResponse: ...")
         loopCount += 1
         time.sleep(1)
+
 
 def waitForCreateCertificateFromCsrResponse():
     # Wait for the response.
@@ -196,12 +211,13 @@ def waitForCreateCertificateFromCsrResponse():
     while loopCount < 10 and createCertificateFromCsrResponse is None:
         if createCertificateFromCsrResponse is not None:
             break
-        if is_ci == False:
+        if not is_ci:
             print('Waiting...CreateCertificateFromCsrResponse: ' + json.dumps(createCertificateFromCsrResponse))
         else:
             print("Waiting... CreateCertificateFromCsrResponse: ...")
         loopCount += 1
         time.sleep(1)
+
 
 def waitForRegisterThingResponse():
     # Wait for the response.
@@ -210,19 +226,20 @@ def waitForRegisterThingResponse():
         if registerThingResponse is not None:
             break
         loopCount += 1
-        if is_ci == False:
+        if not is_ci:
             print('Waiting... RegisterThingResponse: ' + json.dumps(registerThingResponse))
         else:
             print('Waiting... RegisterThingResponse: ...')
         time.sleep(1)
 
+
 if __name__ == '__main__':
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
-    if cmdData.input_proxyHost is not None and cmdData.input_proxyPort != 0:
+    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
         proxy_options = http.HttpProxyOptions(
-            host_name=cmdData.input_proxyHost,
-            port=cmdData.input_proxyPort)
+            host_name=cmdData.input_proxy_host,
+            port=cmdData.input_proxy_port)
 
     # Create a MQTT connection from the command line data
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
@@ -238,8 +255,8 @@ if __name__ == '__main__':
         keep_alive_secs=30,
         http_proxy_options=proxy_options)
 
-    if is_ci == False:
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'")
+    if not is_ci:
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
 
@@ -261,7 +278,7 @@ if __name__ == '__main__':
         # to succeed before publishing the corresponding "request".
 
         # Keys workflow if csr is not provided
-        if cmdData.input_csrPath is None:
+        if cmdData.input_csr_path is None:
             createkeysandcertificate_subscription_request = iotidentity.CreateKeysAndCertificateSubscriptionRequest()
 
             print("Subscribing to CreateKeysAndCertificate Accepted topic...")
@@ -302,8 +319,8 @@ if __name__ == '__main__':
             # Wait for subscription to succeed
             createcertificatefromcsr_subscribed_rejected_future.result()
 
-
-        registerthing_subscription_request = iotidentity.RegisterThingSubscriptionRequest(template_name= cmdData.input_templateName)
+        registerthing_subscription_request = iotidentity.RegisterThingSubscriptionRequest(
+            template_name=cmdData.input_template_name)
 
         print("Subscribing to RegisterThing Accepted topic...")
         registerthing_subscribed_accepted_future, _ = identity_client.subscribe_to_register_thing_accepted(
@@ -322,9 +339,9 @@ if __name__ == '__main__':
         # Wait for subscription to succeed
         registerthing_subscribed_rejected_future.result()
 
-        fleet_template_name = cmdData.input_templateName
-        fleet_template_parameters = cmdData.input_templateParameters
-        if cmdData.input_csrPath is None:
+        fleet_template_name = cmdData.input_template_name
+        fleet_template_parameters = cmdData.input_template_parameters
+        if cmdData.input_csr_path is None:
             print("Publishing to CreateKeysAndCertificate...")
             publish_future = identity_client.publish_create_keys_and_certificate(
                 request=iotidentity.CreateKeysAndCertificateRequest(), qos=mqtt.QoS.AT_LEAST_ONCE)
@@ -341,7 +358,7 @@ if __name__ == '__main__':
                 parameters=json.loads(fleet_template_parameters))
         else:
             print("Publishing to CreateCertificateFromCsr...")
-            csrPath = open(cmdData.input_csrPath, 'r').read()
+            csrPath = open(cmdData.input_csr_path, 'r').read()
             publish_future = identity_client.publish_create_certificate_from_csr(
                 request=iotidentity.CreateCertificateFromCsrRequest(certificate_signing_request=csrPath),
                 qos=mqtt.QoS.AT_LEAST_ONCE)
@@ -358,7 +375,8 @@ if __name__ == '__main__':
                 parameters=json.loads(fleet_template_parameters))
 
         print("Publishing to RegisterThing topic...")
-        registerthing_publish_future = identity_client.publish_register_thing(registerThingRequest, mqtt.QoS.AT_LEAST_ONCE)
+        registerthing_publish_future = identity_client.publish_register_thing(
+            registerThingRequest, mqtt.QoS.AT_LEAST_ONCE)
         registerthing_publish_future.add_done_callback(on_publish_register_thing)
 
         waitForRegisterThingResponse()
@@ -369,4 +387,3 @@ if __name__ == '__main__':
 
     # Wait for the sample to finish
     is_sample_done.wait()
-

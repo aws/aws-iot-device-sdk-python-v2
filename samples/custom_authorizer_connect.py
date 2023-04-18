@@ -28,18 +28,18 @@ if __name__ == '__main__':
     mqtt_connection = mqtt_connection_builder.direct_with_custom_authorizer(
         endpoint=cmdData.input_endpoint,
         ca_filepath=cmdData.input_ca,
-        auth_username=cmdData.input_customAuthUsername,
-        auth_authorizer_name=cmdData.input_customAuthorizerName,
-        auth_authorizer_signature=cmdData.input_customAuthorizerSignature,
-        auth_password=cmdData.input_customAuthPassword,
+        auth_username=cmdData.input_custom_auth_username,
+        auth_authorizer_name=cmdData.input_custom_authorizer_name,
+        auth_authorizer_signature=cmdData.input_custom_authorizer_signature,
+        auth_password=cmdData.input_custom_auth_password,
         on_connection_interrupted=on_connection_interrupted,
         on_connection_resumed=on_connection_resumed,
         client_id=cmdData.input_clientId,
         clean_session=False,
         keep_alive_secs=30)
 
-    if cmdData.input_isCI == False:
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}")
+    if not cmdData.input_isCI:
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
 

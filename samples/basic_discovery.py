@@ -18,27 +18,27 @@ allowed_actions = ['both', 'publish', 'subscribe']
 cmdData = CommandLineUtils.parse_sample_input_basic_discovery()
 
 tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(cmdData.input_cert, cmdData.input_key)
-if (cmdData.input_ca != None):
+if (cmdData.input_ca is not None):
     tls_options.override_default_trust_store_from_path(None, cmdData.input_ca)
 tls_context = io.ClientTlsContext(tls_options)
 
 socket_options = io.SocketOptions()
 
 proxy_options = None
-if cmdData.input_proxyHost != None and cmdData.input_proxyPort != 0:
-    proxy_options = http.HttpProxyOptions(cmdData.input_proxyHost, cmdData.input_proxyPort)
+if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
+    proxy_options = http.HttpProxyOptions(cmdData.input_proxy_host, cmdData.input_proxy_port)
 
 print('Performing greengrass discovery...')
 discovery_client = DiscoveryClient(
     io.ClientBootstrap.get_or_create_static_default(),
     socket_options,
     tls_context,
-    cmdData.input_signingRegion, None, proxy_options)
-resp_future = discovery_client.discover(cmdData.input_thingName)
+    cmdData.input_signing_region, None, proxy_options)
+resp_future = discovery_client.discover(cmdData.input_thing_name)
 discover_response = resp_future.result()
 
 print(discover_response)
-if (cmdData.input_printDiscoveryRespOnly == True):
+if (cmdData.input_print_discovery_resp_only):
     exit(0)
 
 
@@ -56,7 +56,8 @@ def try_iot_endpoints():
         for gg_core in gg_group.cores:
             for connectivity_info in gg_core.connectivity:
                 try:
-                    print (f"Trying core {gg_core.thing_arn} at host {connectivity_info.host_address} port {connectivity_info.port}")
+                    print(
+                        f"Trying core {gg_core.thing_arn} at host {connectivity_info.host_address} port {connectivity_info.port}")
                     mqtt_connection = mqtt_connection_builder.mtls_from_path(
                         endpoint=connectivity_info.host_address,
                         port=connectivity_info.port,
@@ -80,6 +81,7 @@ def try_iot_endpoints():
 
     exit('All connection attempts failed')
 
+
 mqtt_connection = try_iot_endpoints()
 
 if cmdData.input_mode == 'both' or cmdData.input_mode == 'subscribe':
@@ -90,7 +92,7 @@ if cmdData.input_mode == 'both' or cmdData.input_mode == 'subscribe':
     subscribe_result = subscribe_future.result()
 
 loop_count = 0
-while loop_count < cmdData.input_maxPubOps:
+while loop_count < cmdData.input_max_pub_ops:
     if cmdData.input_mode == 'both' or cmdData.input_mode == 'publish':
         message = {}
         message['message'] = cmdData.input_message

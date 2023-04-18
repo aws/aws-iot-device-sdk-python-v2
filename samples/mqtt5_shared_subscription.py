@@ -13,16 +13,24 @@ from utils.command_line_utils import CommandLineUtils
 # For the purposes of this sample, we need to associate certain variables with a particular MQTT5 client
 # and to do so we use this class to hold all the data for a particular client used in the sample.
 class sample_mqtt5_client:
-    client : mqtt5.Client
-    name : str
-    count : int
-    received_count : int
+    client: mqtt5.Client
+    name: str
+    count: int
+    received_count: int
     received_all_event = threading.Event()
-    future_stopped : Future
-    future_connection_success : Future
+    future_stopped: Future
+    future_connection_success: Future
 
     # Creates a MQTT5 client using direct MQTT5 via mTLS with the passed input data.
-    def __init__(self, input_endpoint, input_cert, input_key, input_ca, input_client_id, input_count, input_client_name) -> None:
+    def __init__(
+            self,
+            input_endpoint,
+            input_cert,
+            input_key,
+            input_ca,
+            input_client_id,
+            input_count,
+            input_client_name) -> None:
         try:
             self.count = input_count
             self.received_count = 0
@@ -42,7 +50,7 @@ class sample_mqtt5_client:
                 on_lifecycle_disconnection=self.on_lifecycle_disconnection,
             )
         except Exception as ex:
-            print (f"Client creation failed with exception: {ex}")
+            print(f"Client creation failed with exception: {ex}")
             raise ex
 
     # Callback when any publish is received
@@ -54,7 +62,7 @@ class sample_mqtt5_client:
         print(f"\tPublish received message on topic: {publish_packet.topic}")
         print(f"\tMessage: {publish_packet.payload}")
 
-        if (publish_packet.user_properties != None):
+        if (publish_packet.user_properties is not None):
             if (publish_packet.user_properties.count > 0):
                 for i in range(0, publish_packet.user_properties.count):
                     user_property = publish_packet.user_properties[i]
@@ -83,24 +91,22 @@ class sample_mqtt5_client:
     def on_lifecycle_disconnection(self, disconnect_data: mqtt5.LifecycleDisconnectData):
         print(f"{self.name}]: Lifecycle Disconnected")
 
-        if (disconnect_data.disconnect_packet != None):
+        if (disconnect_data.disconnect_packet is not None):
             print(f"\tDisconnection packet code: {disconnect_data.disconnect_packet.reason_code}")
             print(f"\tDisconnection packet reason: {disconnect_data.disconnect_packet.reason_string}")
-            if (disconnect_data.disconnect_packet.reason_code == mqtt5.DisconnectReasonCode.SHARED_SUBSCRIPTIONS_NOT_SUPPORTED):
+            if (disconnect_data.disconnect_packet.reason_code ==
+                    mqtt5.DisconnectReasonCode.SHARED_SUBSCRIPTIONS_NOT_SUPPORTED):
                 # Stop the client, which will interrupt the subscription and stop the sample
                 self.client.stop()
+
 
 # cmdData is the arguments/input from the command line placed into a single struct for
 # use in this sample. This handles all of the command line parsing, validating, etc.
 # See the Utils/CommandLineUtils for more information.
 cmdData = CommandLineUtils.parse_sample_input_mqtt5_shared_subscription()
 
-# If this is CI, append a UUID to the topic
-if (cmdData.input_isCI):
-    cmdData.input_topic += "/" + str(uuid4())
-
 # Construct the shared topic
-input_shared_topic = f"$share/{cmdData.input_groupIdentifier}/{cmdData.input_topic}"
+input_shared_topic = f"$share/{cmdData.input_group_identifier}/{cmdData.input_topic}"
 
 # Make sure the message count is even
 if (cmdData.input_count % 2 > 0):
@@ -111,10 +117,10 @@ if __name__ == '__main__':
         # Create the MQTT5 clients: one publisher and two subscribers
         publisher = sample_mqtt5_client(
             cmdData.input_endpoint, cmdData.input_cert, cmdData.input_key, cmdData.input_ca,
-            cmdData.input_clientId + "1", cmdData.input_count/2, "Publisher")
+            cmdData.input_clientId + "1", cmdData.input_count / 2, "Publisher")
         subscriber_one = sample_mqtt5_client(
             cmdData.input_endpoint, cmdData.input_cert, cmdData.input_key, cmdData.input_ca,
-            cmdData.input_clientId + "2", cmdData.input_count/2, "Subscriber One")
+            cmdData.input_clientId + "2", cmdData.input_count / 2, "Subscriber One")
         subscriber_two = sample_mqtt5_client(
             cmdData.input_endpoint, cmdData.input_cert, cmdData.input_key, cmdData.input_ca,
             cmdData.input_clientId + "3", cmdData.input_count, "Subscriber Two")
@@ -122,13 +128,13 @@ if __name__ == '__main__':
         # Connect all the clients
         publisher.client.start()
         publisher.future_connection_success.result(60)
-        print (f"[{publisher.name}]: Connected")
+        print(f"[{publisher.name}]: Connected")
         subscriber_one.client.start()
         subscriber_one.future_connection_success.result(60)
-        print (f"[{subscriber_one.name}]: Connected")
+        print(f"[{subscriber_one.name}]: Connected")
         subscriber_two.client.start()
         subscriber_two.future_connection_success.result(60)
-        print (f"[{subscriber_two.name}]: Connected")
+        print(f"[{subscriber_two.name}]: Connected")
 
         # Subscribe to the shared topic on the two subscribers
         subscribe_packet = mqtt5.SubscribePacket(
@@ -145,7 +151,7 @@ if __name__ == '__main__':
             print(f"[{subscriber_two.name}]: Subscribed with: {suback_two.reason_codes}")
         except Exception as ex:
             # TMP: If this fails subscribing in CI, just exit the sample gracefully.
-            if (cmdData.input_isCI != None and cmdData.input_isCI != "None"):
+            if (cmdData.input_isCI is not None and cmdData.input_isCI != "None"):
                 exit(0)
             else:
                 raise ex
@@ -192,7 +198,7 @@ if __name__ == '__main__':
         print(f"[{subscriber_two.name}]: Fully stopped")
 
     except Exception as ex:
-        print (f"An exception ocurred while running sample! Exception: {ex}")
+        print(f"An exception ocurred while running sample! Exception: {ex}")
         exit(ex)
 
-    print ("Complete!")
+    print("Complete!")

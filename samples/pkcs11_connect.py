@@ -30,23 +30,23 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 
 if __name__ == '__main__':
 
-    print(f"Loading PKCS#11 library '{cmdData.input_pkcs11LibPath}' ...")
+    print(f"Loading PKCS#11 library '{cmdData.input_pkcs11_lib_path}' ...")
     pkcs11_lib = io.Pkcs11Lib(
-        file=cmdData.input_pkcs11LibPath,
+        file=cmdData.input_pkcs11_lib_path,
         behavior=io.Pkcs11Lib.InitializeFinalizeBehavior.STRICT)
     print("Loaded!")
 
     pkcs11_slot_id = None
-    if (cmdData.input_pkcs11SlotId):
-        pkcs11_slot_id = int(cmdData.input_pkcs11SlotId)
+    if (cmdData.input_pkcs11_slot_id):
+        pkcs11_slot_id = int(cmdData.input_pkcs11_slot_id)
 
     # Create MQTT connection
     mqtt_connection = mqtt_connection_builder.mtls_with_pkcs11(
         pkcs11_lib=pkcs11_lib,
-        user_pin=cmdData.input_pkcs11UserPin,
+        user_pin=cmdData.input_pkcs11_user_pin,
         slot_id=pkcs11_slot_id,
-        token_label=cmdData.input_pkcs11TokenLabel,
-        private_key_label=cmdData.input_pkcs11KeyLabel,
+        token_label=cmdData.input_pkcs11_token_label,
+        private_key_label=cmdData.input_pkcs11_key_label,
         cert_filepath=cmdData.input_cert,
         endpoint=cmdData.input_endpoint,
         port=cmdData.input_port,
@@ -57,7 +57,7 @@ if __name__ == '__main__':
         clean_session=False,
         keep_alive_secs=30)
 
-    if cmdData.input_isCI == False:
+    if not cmdData.input_isCI:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")

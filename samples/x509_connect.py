@@ -31,28 +31,28 @@ if __name__ == '__main__':
     # Set up the config needed to make a MQTT connection
 
     proxy_options = None
-    if cmdData.input_proxyHost != None and cmdData.input_proxyPort != 0:
+    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
         proxy_options = http.HttpProxyOptions(
-            host_name=cmdData.input_proxyHost,
-            port=cmdData.input_proxyPort)
+            host_name=cmdData.input_proxy_host,
+            port=cmdData.input_proxy_port)
 
-    x509_tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(cmdData.input_x509Cert, cmdData.input_x509Key)
-    x509_tls_options.ca_dirpath = cmdData.input_x509Ca
+    x509_tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(
+        cmdData.input_x509_cert, cmdData.input_x509_key)
+    x509_tls_options.ca_dirpath = cmdData.input_x509_ca
     x509_tls_context = io.ClientTlsContext(x509_tls_options)
 
     x509_provider = auth.AwsCredentialsProvider.new_x509(
-        endpoint=cmdData.input_x509Endpoint,
-        thing_name=cmdData.input_x509ThingName,
-        role_alias=cmdData.input_x509Role,
+        endpoint=cmdData.input_x509_endpoint,
+        thing_name=cmdData.input_x509_thing_name,
+        role_alias=cmdData.input_x509_role,
         tls_ctx=x509_tls_context,
         http_proxy_options=proxy_options
     )
 
     # Create the MQTT connection from the configuration
-
     mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
-        endpoint=cmdData.input_x509Endpoint,
-        region=cmdData.input_signingRegion,
+        endpoint=cmdData.input_x509_endpoint,
+        region=cmdData.input_signing_region,
         credentials_provider=x509_provider,
         http_proxy_options=proxy_options,
         ca_filepath=cmdData.input_ca,
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     ############################################################
 
     if not cmdData.input_isCI:
-        print (f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
 
