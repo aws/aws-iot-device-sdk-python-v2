@@ -3,7 +3,6 @@
 
 from awscrt import http
 from awsiot import mqtt_connection_builder
-
 from utils.command_line_utils import CommandLineUtils
 
 # This sample shows how to create a MQTT connection using a certificate file and key file.

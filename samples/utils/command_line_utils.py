@@ -514,7 +514,7 @@ class CommandLineUtils:
 
     def parse_sample_input_basic_discovery():
         allowed_actions = ['both', 'publish', 'subscribe']
-        # Parse arguments
+
         cmdUtils = CommandLineUtils("Basic Discovery - Greengrass discovery example.")
         cmdUtils.add_common_mqtt_commands()
         cmdUtils.add_common_topic_message_commands()
@@ -534,7 +534,6 @@ class CommandLineUtils:
             CommandLineUtils.m_cmd_print_discovery_resp_only, "", "(optional, default='False').",
             default=False, type=bool, action="store_true")
         cmdUtils.add_common_proxy_commands()
-        # Needs to be called so the command utils parse the commands
         cmdUtils.get_args()
 
         cmdData = CommandLineUtils.CmdData()
@@ -555,7 +554,6 @@ class CommandLineUtils:
         return cmdData
 
     def parse_sample_input_cognito_connect():
-        # Parse arguments
         cmdUtils = CommandLineUtils("Cognito Connect - Make a Cognito MQTT connection.")
         cmdUtils.add_common_mqtt_commands()
         cmdUtils.add_common_proxy_commands()
@@ -569,7 +567,6 @@ class CommandLineUtils:
         cmdUtils.register_command(CommandLineUtils.m_cmd_cognito_identity, "<str>",
                                 "The Cognito identity ID to use to connect via Cognito",
                                 True, str)
-        # Needs to be called so the command utils parse the commands
         cmdUtils.get_args()
 
         cmdData = CommandLineUtils.CmdData()
@@ -579,6 +576,28 @@ class CommandLineUtils:
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_proxyHost = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxyPort = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        return cmdData
+
+    def parse_sample_input_custom_authorizer_connect():
+        cmdUtils = CommandLineUtils(
+            "Custom Authorizer Connect - Make a MQTT connection using a custom authorizer.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_custom_authorizer_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_signingRegion = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_customAuthorizerName = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_name)
+        cmdData.input_customAuthorizerSignature = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_signature)
+        cmdData.input_customAuthPassword = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_password)
+        cmdData.input_customAuthUsername = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_username)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
         return cmdData
 
