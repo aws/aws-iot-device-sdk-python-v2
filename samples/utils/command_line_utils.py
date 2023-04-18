@@ -121,7 +121,7 @@ class CommandLineUtils:
             CommandLineUtils.m_cmd_message,
             "<str>",
             "The message to send in the payload (optional, default='Hello World!').",
-            default="Hello World!")
+            default="Hello World! ")
 
     def add_common_logging_commands(self):
         self.register_command(
@@ -476,6 +476,9 @@ class CommandLineUtils:
         # PKCS12
         input_pkcs12File : str
         input_pkcs12Password : str
+        # Basic discovery
+        input_maxPubOps : int
+        input_printDiscoveryRespOnly : bool
 
         def __init__(self) -> None:
             pass
@@ -504,9 +507,51 @@ class CommandLineUtils:
         cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
-        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
         cmdData.input_proxyHost = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxyPort = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
+        return cmdData
+
+    def parse_sample_input_basic_discovery():
+        allowed_actions = ['both', 'publish', 'subscribe']
+        # Parse arguments
+        cmdUtils = CommandLineUtils("Basic Discovery - Greengrass discovery example.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_topic_message_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.remove_command(CommandLineUtils.m_cmd_endpoint)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_thing_name, "<str>", "The name assigned to your IoT Thing", required=True)
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_mode, "<mode>",
+            f"The operation mode (optional, default='both').\nModes:{allowed_actions}", default='both')
+        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>", "The region to connect through.", required=True)
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_max_pub_ops, "<int>",
+            "The maximum number of publish operations (optional, default='10').",
+            default=10, type=int)
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_print_discovery_resp_only, "", "(optional, default='False').",
+            default=False, type=bool, action="store_true")
+        cmdUtils.add_common_proxy_commands()
+        # Needs to be called so the command utils parse the commands
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_topic = cmdUtils.get_command(CommandLineUtils.m_cmd_topic, "test/topic")
+        cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_thingName = cmdUtils.get_command_required(CommandLineUtils.m_cmd_thing_name)
+        cmdData.input_mode = cmdUtils.get_command(CommandLineUtils.m_cmd_mode, "both")
+        cmdData.input_signingRegion = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_maxPubOps = int(cmdUtils.get_command(CommandLineUtils.m_cmd_max_pub_ops, 10))
+        cmdData.input_printDiscoveryRespOnly = bool(cmdUtils.get_command(CommandLineUtils.m_cmd_print_discovery_resp_only, False))
+        cmdData.input_proxyHost = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxyPort = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_isCI = cmdUtils.get_command("is_ci", None) != None
         return cmdData
 
 
@@ -541,3 +586,7 @@ class CommandLineUtils:
     m_cmd_port = "port"
     m_cmd_client_id = "client_id"
     m_cmd_is_ci = "is_ci"
+    m_cmd_thing_name = "thing_name"
+    m_cmd_mode = "mode"
+    m_cmd_max_pub_ops = "max_pub_ops"
+    m_cmd_print_discovery_resp_only = "print_discover_resp_only"

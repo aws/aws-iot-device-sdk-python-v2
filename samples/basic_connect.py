@@ -5,28 +5,10 @@ from awscrt import http
 from awsiot import mqtt_connection_builder
 from uuid import uuid4
 
+from utils.command_line_utils import CommandLineUtils
+
 # This sample shows how to create a MQTT connection using a certificate file and key file.
 # This sample is intended to be used as a reference for making MQTT connections.
-
-# Parse arguments
-import utils.command_line_utils as command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils("Basic Connect - Make a MQTT connection.")
-cmdUtils.add_common_mqtt_commands()
-cmdUtils.add_common_proxy_commands()
-cmdUtils.add_common_logging_commands()
-cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
-cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
-cmdUtils.register_command("port", "<int>",
-                          "Connection port for direct connection. " +
-                          "AWS IoT supports 443 and 8883 (optional, default=8883).",
-                          False, int)
-cmdUtils.register_command("client_id", "<str>",
-                          "Client ID to use for MQTT connection (optional, default='test-*').",
-                          default="test-" + str(uuid4()))
-cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
-# Needs to be called so the command utils parse the commands
-cmdUtils.get_args()
-is_ci = cmdUtils.get_command("is_ci", None) is not None
 
 # Callback when connection is accidentally lost.
 def on_connection_interrupted(connection, error, **kwargs):
@@ -42,7 +24,7 @@ if __name__ == '__main__':
     # cmdData is the arguments/input from the command line placed into a single struct for
     # use in this sample. This handles all of the command line parsing, validating, etc.
     # See the Utils/CommandLineUtils for more information.
-    cmdData = cmdUtils.parse_sample_input_basic_connect()
+    cmdData = CommandLineUtils.parse_sample_input_basic_connect()
 
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
