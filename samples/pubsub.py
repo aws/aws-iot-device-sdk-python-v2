@@ -1,12 +1,13 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import mqtt
+from awscrt import mqtt, http
+from awsiot import mqtt_connection_builder
 import sys
 import threading
 import time
-from uuid import uuid4
 import json
+from utils.command_line_utils import CommandLineUtils
 
 # This sample uses the Message Broker for AWS IoT to send and receive messages
 # through an MQTT connection. On startup, the device connects to the server,
@@ -14,25 +15,13 @@ import json
 # The device should receive those same messages back from the message broker,
 # since it is subscribed to that same topic.
 
-# Parse arguments
-import utils.command_line_utils as command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils("PubSub - Send and recieve messages through an MQTT connection.")
-cmdUtils.add_common_mqtt_commands()
-cmdUtils.add_common_topic_message_commands()
-cmdUtils.add_common_proxy_commands()
-cmdUtils.add_common_logging_commands()
-cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
-cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
-cmdUtils.register_command("port", "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
-cmdUtils.register_command("client_id", "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
-cmdUtils.register_command("count", "<int>", "The number of messages to send (optional, default='10').", default=10, type=int)
-cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
-# Needs to be called so the command utils parse the commands
-cmdUtils.get_args()
+# cmdData is the arguments/input from the command line placed into a single struct for
+# use in this sample. This handles all of the command line parsing, validating, etc.
+# See the Utils/CommandLineUtils for more information.
+cmdData = CommandLineUtils.parse_sample_input_pubsub()
 
 received_count = 0
 received_all_event = threading.Event()
-is_ci = cmdUtils.get_command("is_ci", None) != None
 
 # Callback when connection is accidentally lost.
 def on_connection_interrupted(connection, error, **kwargs):
@@ -53,12 +42,12 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 
 
 def on_resubscribe_complete(resubscribe_future):
-        resubscribe_results = resubscribe_future.result()
-        print("Resubscribe results: {}".format(resubscribe_results))
+    resubscribe_results = resubscribe_future.result()
+    print("Resubscribe results: {}".format(resubscribe_results))
 
-        for topic, qos in resubscribe_results['topics']:
-            if qos is None:
-                sys.exit("Server rejected resubscribe to topic: {}".format(topic))
+    for topic, qos in resubscribe_results['topics']:
+        if qos is None:
+            sys.exit("Server rejected resubscribe to topic: {}".format(topic))
 
 
 # Callback when the subscribed topic receives a message
@@ -66,15 +55,34 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     print("Received message from topic '{}': {}".format(topic, payload))
     global received_count
     received_count += 1
-    if received_count == cmdUtils.get_command("count"):
+    if received_count == cmdData.input_count:
         received_all_event.set()
 
-if __name__ == '__main__':
-    mqtt_connection = cmdUtils.build_mqtt_connection(on_connection_interrupted, on_connection_resumed)
 
-    if is_ci == False:
-        print("Connecting to {} with client ID '{}'...".format(
-            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+if __name__ == '__main__':
+    # Create the proxy options if the data is present in cmdData
+    proxy_options = None
+    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
+        proxy_options = http.HttpProxyOptions(
+            host_name=cmdData.input_proxy_host,
+            port=cmdData.input_proxy_port)
+
+    # Create a MQTT connection from the command line data
+    mqtt_connection = mqtt_connection_builder.mtls_from_path(
+        endpoint=cmdData.input_endpoint,
+        port=cmdData.input_port,
+        cert_filepath=cmdData.input_cert,
+        pri_key_filepath=cmdData.input_key,
+        ca_filepath=cmdData.input_ca,
+        on_connection_interrupted=on_connection_interrupted,
+        on_connection_resumed=on_connection_resumed,
+        client_id=cmdData.input_clientId,
+        clean_session=False,
+        keep_alive_secs=30,
+        http_proxy_options=proxy_options)
+
+    if not cmdData.input_is_ci:
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
     connect_future = mqtt_connection.connect()
@@ -83,9 +91,9 @@ if __name__ == '__main__':
     connect_future.result()
     print("Connected!")
 
-    message_count = cmdUtils.get_command("count")
-    message_topic = cmdUtils.get_command(cmdUtils.m_cmd_topic)
-    message_string = cmdUtils.get_command(cmdUtils.m_cmd_message)
+    message_count = cmdData.input_count
+    message_topic = cmdData.input_topic
+    message_string = cmdData.input_message
 
     # Subscribe
     print("Subscribing to topic '{}'...".format(message_topic))
@@ -102,9 +110,9 @@ if __name__ == '__main__':
     # This step loops forever if count was set to 0.
     if message_string:
         if message_count == 0:
-            print ("Sending messages until program killed")
+            print("Sending messages until program killed")
         else:
-            print ("Sending {} message(s)".format(message_count))
+            print("Sending {} message(s)".format(message_count))
 
         publish_count = 1
         while (publish_count <= message_count) or (message_count == 0):

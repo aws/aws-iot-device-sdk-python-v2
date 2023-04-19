@@ -1,41 +1,20 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import mqtt5
-from uuid import uuid4
+from awscrt import mqtt5, io
+from awsiot import mqtt5_client_builder
 from concurrent.futures import Future
+from utils.command_line_utils import CommandLineUtils
 
 TIMEOUT = 100
 
-# Parse arguments
-import utils.command_line_utils as command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils("MQTT5 PKCS11 Connect - Make a MQTT5 Client connection using PKCS11.")
-cmdUtils.add_common_mqtt5_commands()
-cmdUtils.add_common_proxy_commands()
-cmdUtils.add_common_logging_commands()
-cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
-cmdUtils.register_command(
-    "port",
-    "<int>",
-    "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).",
-    type=int)
-cmdUtils.register_command(
-    "client_id",
-    "<str>",
-    "Client ID to use for MQTT5 connection (optional, default=None).",
-    default="test-" + str(uuid4()))
-cmdUtils.register_command("pkcs11_lib", "<path>", "Path to PKCS#11 Library", required=True)
-cmdUtils.register_command("pin", "<str>", "User PIN for logging into PKCS#11 token.", required=True)
-cmdUtils.register_command("token_label", "<str>", "Label of the PKCS#11 token to use (optional).")
-cmdUtils.register_command("slot_id", "<int>", "Slot ID containing the PKCS#11 token to use (optional).", False, int)
-cmdUtils.register_command("key_label", "<str>", "Label of private key on the PKCS#11 token (optional).")
-cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
-# Needs to be called so the command utils parse the commands
-cmdUtils.get_args()
+# cmdData is the arguments/input from the command line placed into a single struct for
+# use in this sample. This handles all of the command line parsing, validating, etc.
+# See the Utils/CommandLineUtils for more information.
+cmdData = CommandLineUtils.parse_sample_input_mqtt5_pkcs11_connect()
 
 future_stopped = Future()
 future_connection_success = Future()
-is_ci = cmdUtils.get_command("is_ci", None) != None
 
 # Callback for the lifecycle event Stopped
 def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
@@ -54,15 +33,35 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 if __name__ == '__main__':
     print("\nStarting MQTT5 pkcs11 connect Sample\n")
 
-    # Create MQTT5 Client with using PKCS11
-    client = cmdUtils.build_pkcs11_mqtt5_client(
+    print(f"Loading PKCS#11 library '{cmdData.input_pkcs11_lib_path}' ...")
+    pkcs11_lib = io.Pkcs11Lib(
+        file=cmdData.input_pkcs11_lib_path,
+        behavior=io.Pkcs11Lib.InitializeFinalizeBehavior.STRICT)
+    print("Loaded!")
+
+    pkcs11_slot_id = None
+    if (cmdData.input_pkcs11_slot_id is not None):
+        pkcs11_slot_id = int(cmdData.input_pkcs11_slot_id)
+
+    # Create MQTT5 client
+    client = mqtt5_client_builder.mtls_with_pkcs11(
+        pkcs11_lib=pkcs11_lib,
+        user_pin=cmdData.input_pkcs11_user_pin,
+        slot_id=pkcs11_slot_id,
+        token_label=cmdData.input_pkcs11_token_label,
+        private_key_label=cmdData.input_pkcs11_key_label,
+        cert_filepath=cmdData.input_cert,
+        endpoint=cmdData.input_endpoint,
+        port=cmdData.input_port,
+        ca_filepath=cmdData.input_ca,
         on_lifecycle_stopped=on_lifecycle_stopped,
-        on_lifecycle_connection_success=on_lifecycle_connection_success)
+        on_lifecycle_connection_success=on_lifecycle_connection_success,
+        client_id=cmdData.input_clientId)
+
     print("MQTT5 Client Created")
 
-    if is_ci == False:
-        print("Connecting to {} with client ID '{}'...".format(
-            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    if not cmdData.input_is_ci:
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
 

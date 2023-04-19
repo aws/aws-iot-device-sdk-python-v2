@@ -3,30 +3,18 @@
 
 from awsiot import mqtt5_client_builder
 from awscrt import mqtt5
-from uuid import uuid4
 from concurrent.futures import Future
+from utils.command_line_utils import CommandLineUtils
 
 TIMEOUT = 100
 
-# Parse arguments
-import utils.command_line_utils as command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils(
-    "Custom Authorizer Connect - Make a MQTT5 Client connection using a custom authorizer.")
-cmdUtils.add_common_mqtt_commands()
-cmdUtils.add_common_logging_commands()
-cmdUtils.add_common_custom_authorizer_commands()
-cmdUtils.register_command("client_id", "<str>",
-                          "Client ID to use for MQTT connection (optional, default='test-*').",
-                          default="test-" + str(uuid4()))
-cmdUtils.register_command("use_websockets", "<str>", "If set, websockets will be used (optional, do not set to use direct MQTT)")
-cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
-# Needs to be called so the command utils parse the commands
-cmdUtils.get_args()
+# cmdData is the arguments/input from the command line placed into a single struct for
+# use in this sample. This handles all of the command line parsing, validating, etc.
+# See the Utils/CommandLineUtils for more information.
+cmdData = CommandLineUtils.parse_sample_input_mqtt5_custom_authorizer_connect()
 
 future_stopped = Future()
 future_connection_success = Future()
-is_ci = cmdUtils.get_command("is_ci", None) != None
-use_websockets = cmdUtils.get_command("use_websockets", None) != None
 
 # Callback for the lifecycle event Stopped
 def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
@@ -41,35 +29,37 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
     global future_connection_success
     future_connection_success.set_result(lifecycle_connect_success_data)
 
+
 if __name__ == '__main__':
 
     # Create MQTT5 Client with a custom authorizer
-    if use_websockets == None:
+    if cmdData.input_use_websockets is None:
         client = mqtt5_client_builder.direct_with_custom_authorizer(
-            endpoint=cmdUtils.get_command_required(cmdUtils.m_cmd_endpoint),
-            ca_filepath=cmdUtils.get_command(cmdUtils.m_cmd_ca_file),
-            auth_username=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_username),
-            auth_authorizer_name=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_authorizer_name),
-            auth_authorizer_signature=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_authorizer_signature),
-            auth_password=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_password),
+            endpoint=cmdData.input_endpoint,
+            ca_filepath=cmdData.input_ca,
+            cert_filepath=cmdData.input_cert,
+            pri_key_filepath=cmdData.input_key,
+            auth_username=cmdData.input_custom_auth_username,
+            auth_authorizer_name=cmdData.input_custom_authorizer_name,
+            auth_authorizer_signature=cmdData.input_custom_authorizer_signature,
+            auth_password=cmdData.input_custom_auth_password,
             on_lifecycle_stopped=on_lifecycle_stopped,
             on_lifecycle_connection_success=on_lifecycle_connection_success,
-            client_id=cmdUtils.get_command("client_id"))
+            client_id=cmdData.input_clientId)
     else:
         client = mqtt5_client_builder.websockets_with_custom_authorizer(
-            endpoint=cmdUtils.get_command_required(cmdUtils.m_cmd_endpoint),
-            ca_filepath=cmdUtils.get_command(cmdUtils.m_cmd_ca_file),
-            auth_username=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_username),
-            auth_authorizer_name=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_authorizer_name),
-            auth_authorizer_signature=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_authorizer_signature),
-            auth_password=cmdUtils.get_command(cmdUtils.m_cmd_custom_auth_password),
+            endpoint=cmdData.input_endpoint,
+            region=cmdData.input_signing_region,
+            auth_username=cmdData.input_custom_auth_username,
+            auth_authorizer_name=cmdData.input_custom_authorizer_name,
+            auth_authorizer_signature=cmdData.input_custom_authorizer_signature,
+            auth_password=cmdData.input_custom_auth_password,
             on_lifecycle_stopped=on_lifecycle_stopped,
             on_lifecycle_connection_success=on_lifecycle_connection_success,
-            client_id=cmdUtils.get_command("client_id"))
+            client_id=cmdData.input_clientId)
 
-    if is_ci == False:
-        print("Connecting to {} with client ID '{}'...".format(
-            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    if not cmdData.input_is_ci:
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
 

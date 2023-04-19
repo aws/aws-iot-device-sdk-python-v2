@@ -17,6 +17,10 @@
             "name": "--key",
             "secret": "ci/mqtt5/us/mqtt5_thing/key",
             "filename": "tmp_key.pem"
+        },
+        {
+            "name": "--is_ci",
+            "data": "true"
         }
     ]
 }

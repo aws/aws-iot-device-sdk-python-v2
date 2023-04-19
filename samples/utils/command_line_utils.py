@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 import argparse
-from awscrt import io, http, auth
-from awsiot import mqtt_connection_builder, mqtt5_client_builder
+from awscrt import io
+from uuid import uuid4
 
 class CommandLineUtils:
     def __init__(self, description) -> None:
@@ -26,6 +26,29 @@ class CommandLineUtils:
     def remove_command(self, command_name):
         if command_name in self.commands.keys():
             self.commands.pop(command_name)
+
+    """
+    Returns the command if it exists and has been passed to the console, otherwise it will print the help for the sample and exit the application.
+    """
+    def get_command_required(self, command_name, message=None):
+        if hasattr(self.parsed_commands, command_name):
+            return getattr(self.parsed_commands, command_name)
+        else:
+            self.parser.print_help()
+            print("Command --" + command_name + " required.")
+            if message is not None:
+                print(message)
+            exit()
+
+    """
+    Returns the command if it exists, has been passed to the console, and is not None. Otherwise it returns whatever is passed as the default.
+    """
+    def get_command(self, command_name, default=None):
+        if hasattr(self.parsed_commands, command_name):
+            result = getattr(self.parsed_commands, command_name)
+            if (result != None):
+                return result
+        return default
 
     def get_args(self):
         # if we have already parsed, then return the cached parsed commands
@@ -64,41 +87,53 @@ class CommandLineUtils:
 
     def add_common_mqtt_commands(self):
         self.register_command(
-            self.m_cmd_endpoint,
+            CommandLineUtils.m_cmd_endpoint,
             "<str>",
             "The endpoint of the mqtt server not including a port.",
             True,
             str)
         self.register_command(
-            self.m_cmd_ca_file,
+            CommandLineUtils.m_cmd_ca_file,
             "<path>",
             "Path to AmazonRootCA1.pem (optional, system trust store used by default)",
+            False,
+            str)
+        self.register_command(
+            CommandLineUtils.m_cmd_is_ci,
+            "<str>",
+            "If present the sample will run in CI mode (optional, default='None')",
             False,
             str)
 
     def add_common_mqtt5_commands(self):
         self.register_command(
-            self.m_cmd_endpoint,
+            CommandLineUtils.m_cmd_endpoint,
             "<str>",
             "The endpoint of the mqtt server not including a port.",
             True,
             str)
         self.register_command(
-            self.m_cmd_ca_file,
+            CommandLineUtils.m_cmd_ca_file,
             "<path>",
             "Path to AmazonRootCA1.pem (optional, system trust store used by default)",
+            False,
+            str)
+        self.register_command(
+            CommandLineUtils.m_cmd_is_ci,
+            "<str>",
+            "If present the sample will run in CI mode (optional, default='None')",
             False,
             str)
 
     def add_common_proxy_commands(self):
         self.register_command(
-            self.m_cmd_proxy_host,
+            CommandLineUtils.m_cmd_proxy_host,
             "<str>",
             "Host name of the proxy server to connect through (optional)",
             False,
             str)
         self.register_command(
-            self.m_cmd_proxy_port,
+            CommandLineUtils.m_cmd_proxy_port,
             "<int>",
             "Port of the http proxy to use (optional, default='8080')",
             type=int,
@@ -106,310 +141,645 @@ class CommandLineUtils:
 
     def add_common_topic_message_commands(self):
         self.register_command(
-            self.m_cmd_topic,
+            CommandLineUtils.m_cmd_topic,
             "<str>",
             "Topic to publish, subscribe to (optional, default='test/topic').",
             default="test/topic")
         self.register_command(
-            self.m_cmd_message,
+            CommandLineUtils.m_cmd_message,
             "<str>",
             "The message to send in the payload (optional, default='Hello World!').",
-            default="Hello World!")
+            default="Hello World! ")
 
     def add_common_logging_commands(self):
         self.register_command(
-            self.m_cmd_verbosity,
+            CommandLineUtils.m_cmd_verbosity,
             "<Log Level>",
             "Logging level.",
             default=io.LogLevel.NoLogs.name,
             choices=[
                 x.name for x in io.LogLevel])
 
+    def add_common_key_cert_commands(self):
+        self.register_command(CommandLineUtils.m_cmd_key_file, "<path>", "Path to your key in PEM format.", True, str)
+        self.register_command(CommandLineUtils.m_cmd_cert_file, "<path>", "Path to your client certificate in PEM format.", True, str)
+
     def add_common_custom_authorizer_commands(self):
         self.register_command(
-            self.m_cmd_custom_auth_username,
+            CommandLineUtils.m_cmd_custom_auth_username,
             "<str>",
             "The name to send when connecting through the custom authorizer (optional)")
         self.register_command(
-            self.m_cmd_custom_auth_authorizer_name,
+            CommandLineUtils.m_cmd_custom_auth_authorizer_name,
             "<str>",
             "The name of the custom authorizer to connect to (optional but required for everything but custom domains)")
         self.register_command(
-            self.m_cmd_custom_auth_authorizer_signature,
+            CommandLineUtils.m_cmd_custom_auth_authorizer_signature,
             "<str>",
             "The signature to send when connecting through a custom authorizer (optional)")
         self.register_command(
-            self.m_cmd_custom_auth_password,
+            CommandLineUtils.m_cmd_custom_auth_password,
             "<str>",
             "The password to send when connecting through a custom authorizer (optional)")
 
     def add_common_x509_commands(self):
         self.register_command(
-            self.m_cmd_x509_endpoint,
+            CommandLineUtils.m_cmd_x509_endpoint,
             "<str>",
             "The credentials endpoint to fetch x509 credentials from",
         )
         self.register_command(
-            self.m_cmd_x509_thing_name,
+            CommandLineUtils.m_cmd_x509_thing_name,
             "<str>",
             "Thing name to fetch x509 credentials on behalf of"
         )
         self.register_command(
-            self.m_cmd_x509_role_alias,
+            CommandLineUtils.m_cmd_x509_role_alias,
             "<str>",
             "Role alias to use with the x509 credentials provider"
         )
         self.register_command(
-            self.m_cmd_x509_key,
+            CommandLineUtils.m_cmd_x509_key,
             "<path>",
             "Path to the IoT thing private key used in fetching x509 credentials"
         )
         self.register_command(
-            self.m_cmd_x509_cert,
+            CommandLineUtils.m_cmd_x509_cert,
             "<path>",
             "Path to the IoT thing certificate used in fetching x509 credentials"
         )
 
         self.register_command(
-            self.m_cmd_x509_ca,
+            CommandLineUtils.m_cmd_x509_ca,
             "<path>",
             "Path to the root certificate used in fetching x509 credentials"
         )
 
-    """
-    Returns the command if it exists and has been passed to the console, otherwise it will print the help for the sample and exit the application.
-    """
-    def get_command_required(self, command_name, message=None):
-        if hasattr(self.parsed_commands, command_name):
-            return getattr(self.parsed_commands, command_name)
-        else:
-            self.parser.print_help()
-            print("Command --" + command_name + " required.")
-            if message is not None:
-                print(message)
-            exit()
-
-    """
-    Returns the command if it exists and has been passed to the console, otherwise it returns whatever is passed as the default.
-    """
-    def get_command(self, command_name, default=None):
-        if hasattr(self.parsed_commands, command_name):
-            return getattr(self.parsed_commands, command_name)
-        return default
-
-    def build_pkcs11_mqtt_connection(self, on_connection_interrupted, on_connection_resumed):
-
-        pkcs11_lib_path = self.get_command_required(self.m_cmd_pkcs11_lib)
-        print(f"Loading PKCS#11 library '{pkcs11_lib_path}' ...")
-        pkcs11_lib = io.Pkcs11Lib(
-            file=pkcs11_lib_path,
-            behavior=io.Pkcs11Lib.InitializeFinalizeBehavior.STRICT)
-        print("Loaded!")
-
-        pkcs11_slot_id = None
-        if (self.get_command(self.m_cmd_pkcs11_slot) != None):
-            pkcs11_slot_id = int(self.get_command(self.m_cmd_pkcs11_slot))
-
-        # Create MQTT connection
-        mqtt_connection = mqtt_connection_builder.mtls_with_pkcs11(
-            pkcs11_lib=pkcs11_lib,
-            user_pin=self.get_command_required(self.m_cmd_pkcs11_pin),
-            slot_id=pkcs11_slot_id,
-            token_label=self.get_command_required(self.m_cmd_pkcs11_token),
-            private_key_label=self.get_command_required(self.m_cmd_pkcs11_key),
-            cert_filepath=self.get_command_required(self.m_cmd_pkcs11_cert),
-            endpoint=self.get_command_required(self.m_cmd_endpoint),
-            port=self.get_command("port"),
-            ca_filepath=self.get_command(self.m_cmd_ca_file),
-            on_connection_interrupted=on_connection_interrupted,
-            on_connection_resumed=on_connection_resumed,
-            client_id=self.get_command_required("client_id"),
-            clean_session=False,
-            keep_alive_secs=30)
-        return mqtt_connection
-
-    def build_websocket_mqtt_connection(self, on_connection_interrupted, on_connection_resumed):
-        proxy_options = self.get_proxy_options_for_mqtt_connection()
-        credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
-        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
-            endpoint=self.get_command_required(self.m_cmd_endpoint),
-            region=self.get_command_required(self.m_cmd_signing_region),
-            credentials_provider=credentials_provider,
-            http_proxy_options=proxy_options,
-            ca_filepath=self.get_command(self.m_cmd_ca_file),
-            on_connection_interrupted=on_connection_interrupted,
-            on_connection_resumed=on_connection_resumed,
-            client_id=self.get_command_required("client_id"),
-            clean_session=False,
-            keep_alive_secs=30)
-        return mqtt_connection
-
-    def build_cognito_mqtt_connection(self, on_connection_interrupted, on_connection_resumed):
-        proxy_options = self.get_proxy_options_for_mqtt_connection()
-
-        cognito_endpoint = "cognito-identity." + self.get_command_required(self.m_cmd_signing_region) + ".amazonaws.com"
-        credentials_provider = auth.AwsCredentialsProvider.new_cognito(
-            endpoint=cognito_endpoint,
-            identity=self.get_command_required(self.m_cmd_cognito_identity),
-            tls_ctx=io.ClientTlsContext(io.TlsContextOptions()))
-
-        mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
-            endpoint=self.get_command_required(self.m_cmd_endpoint),
-            region=self.get_command_required(self.m_cmd_signing_region),
-            credentials_provider=credentials_provider,
-            http_proxy_options=proxy_options,
-            ca_filepath=self.get_command(self.m_cmd_ca_file),
-            on_connection_interrupted=on_connection_interrupted,
-            on_connection_resumed=on_connection_resumed,
-            client_id=self.get_command_required("client_id"),
-            clean_session=False,
-            keep_alive_secs=30)
-        return mqtt_connection
-
-    def build_direct_mqtt_connection(self, on_connection_interrupted, on_connection_resumed):
-        proxy_options = self.get_proxy_options_for_mqtt_connection()
-        mqtt_connection = mqtt_connection_builder.mtls_from_path(
-            endpoint=self.get_command_required(self.m_cmd_endpoint),
-            port=self.get_command_required("port"),
-            cert_filepath=self.get_command_required(self.m_cmd_cert_file),
-            pri_key_filepath=self.get_command_required(self.m_cmd_key_file),
-            ca_filepath=self.get_command(self.m_cmd_ca_file),
-            on_connection_interrupted=on_connection_interrupted,
-            on_connection_resumed=on_connection_resumed,
-            client_id=self.get_command_required("client_id"),
-            clean_session=False,
-            keep_alive_secs=30,
-            http_proxy_options=proxy_options)
-        return mqtt_connection
-
-    def build_mqtt_connection(self, on_connection_interrupted, on_connection_resumed):
-        if self.get_command(self.m_cmd_signing_region) is not None:
-            return self.build_websocket_mqtt_connection(on_connection_interrupted, on_connection_resumed)
-        else:
-            return self.build_direct_mqtt_connection(on_connection_interrupted, on_connection_resumed)
-
-    def get_proxy_options_for_mqtt_connection(self):
-        proxy_options = None
-        if self.parsed_commands.proxy_host and self.parsed_commands.proxy_port:
-            proxy_options = http.HttpProxyOptions(
-                host_name=self.parsed_commands.proxy_host,
-                port=self.parsed_commands.proxy_port)
-        return proxy_options
-
     ########################################################################
-    # MQTT5
+    # cmdData utils/functions
     ########################################################################
 
-    def build_pkcs11_mqtt5_client(self,
-                                  on_publish_received=None,
-                                  on_lifecycle_stopped=None,
-                                  on_lifecycle_attempting_connect=None,
-                                  on_lifecycle_connection_success=None,
-                                  on_lifecycle_connection_failure=None,
-                                  on_lifecycle_disconnection=None):
+    class CmdData:
+        # General use
+        input_endpoint : str
+        input_cert : str
+        input_key : str
+        input_ca : str
+        input_clientId : str
+        input_port : int
+        input_is_ci : bool
+        input_use_websockets : bool
+        # Proxy
+        input_proxy_host : str
+        input_proxy_port : int
+        # PubSub
+        input_topic : str
+        input_message : str
+        input_count : int
+        # Websockets
+        input_signing_region : str
+        # Cognito
+        input_cognito_identity : str
+        # Custom auth
+        input_custom_auth_username : str
+        input_custom_authorizer_name : str
+        input_custom_authorizer_signature : str
+        input_custom_auth_password : str
+        # Fleet provisioning
+        input_template_name : str
+        input_template_parameters : str
+        input_csr_path : str
+        # Services (Shadow, Jobs, Greengrass, etc)
+        input_thing_name : str
+        input_mode : str
+        # Shared Subscription
+        input_group_identifier : str
+        # PKCS#11
+        input_pkcs11_lib_path : str
+        input_pkcs11_user_pin : str
+        input_pkcs11_token_label : str
+        input_pkcs11_slot_id : int
+        input_pkcs11_key_label : str
+        # X509
+        input_x509_endpoint : str
+        input_x509_role : str
+        input_x509_thing_name : str
+        input_x509_cert : str
+        input_x509_key : str
+        input_x509_ca : str
+        # Basic discovery
+        input_max_pub_ops : int
+        input_print_discovery_resp_only : bool
+        # Jobs
+        input_job_time : int
+        # Shadow
+        input_shadow_property : str
 
-        pkcs11_lib_path = self.get_command_required(self.m_cmd_pkcs11_lib)
-        print(f"Loading PKCS#11 library '{pkcs11_lib_path}' ...")
-        pkcs11_lib = io.Pkcs11Lib(
-            file=pkcs11_lib_path,
-            behavior=io.Pkcs11Lib.InitializeFinalizeBehavior.STRICT)
-        print("Loaded!")
+        def __init__(self) -> None:
+            pass
 
-        pkcs11_slot_id = None
-        if (self.get_command(self.m_cmd_pkcs11_slot) is not None):
-            pkcs11_slot_id = int(self.get_command(self.m_cmd_pkcs11_slot))
+        def parse_input_topic(self, cmdUtils):
+            self.input_topic = cmdUtils.get_command(CommandLineUtils.m_cmd_topic, "test/topic")
+            if (cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci) != None):
+                self.input_topic += "/" + str(uuid4())
 
-        # Create MQTT5 client
-        mqtt5_client = mqtt5_client_builder.mtls_with_pkcs11(
-            pkcs11_lib=pkcs11_lib,
-            user_pin=self.get_command_required(self.m_cmd_pkcs11_pin),
-            slot_id=pkcs11_slot_id,
-            token_label=self.get_command_required(self.m_cmd_pkcs11_token),
-            private_key_label=self.get_command_required(self.m_cmd_pkcs11_key),
-            cert_filepath=self.get_command_required(self.m_cmd_pkcs11_cert),
-            endpoint=self.get_command_required(self.m_cmd_endpoint),
-            port=self.get_command("port"),
-            ca_filepath=self.get_command(self.m_cmd_ca_file),
-            on_publish_received=on_publish_received,
-            on_lifecycle_stopped=on_lifecycle_stopped,
-            on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,
-            on_lifecycle_connection_success=on_lifecycle_connection_success,
-            on_lifecycle_connection_failure=on_lifecycle_connection_failure,
-            on_lifecycle_disconnection=on_lifecycle_disconnection,
-            client_id=self.get_command("client_id"))
+    def parse_sample_input_basic_connect():
+        # Parse arguments
+        cmdUtils = CommandLineUtils("Basic Connect - Make a MQTT connection.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>",
+                                "Connection port for direct connection. " +
+                                "AWS IoT supports 443 and 8883 (optional, default=8883).",
+                                False, int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        # Needs to be called so the command utils parse the commands
+        cmdUtils.get_args()
 
-        return mqtt5_client
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
 
-    def build_websocket_mqtt5_client(self,
-                                     on_publish_received=None,
-                                     on_lifecycle_stopped=None,
-                                     on_lifecycle_attempting_connect=None,
-                                     on_lifecycle_connection_success=None,
-                                     on_lifecycle_connection_failure=None,
-                                     on_lifecycle_disconnection=None):
-        proxy_options = self.get_proxy_options_for_mqtt_connection()
-        credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
-        mqtt5_client = mqtt5_client_builder.websockets_with_default_aws_signing(
-            endpoint=self.get_command_required(self.m_cmd_endpoint),
-            region=self.get_command_required(self.m_cmd_signing_region),
-            credentials_provider=credentials_provider,
-            http_proxy_options=proxy_options,
-            ca_filepath=self.get_command(self.m_cmd_ca_file),
-            on_publish_received=on_publish_received,
-            on_lifecycle_stopped=on_lifecycle_stopped,
-            on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,
-            on_lifecycle_connection_success=on_lifecycle_connection_success,
-            on_lifecycle_connection_failure=on_lifecycle_connection_failure,
-            on_lifecycle_disconnection=on_lifecycle_disconnection,
-            client_id=self.get_command_required("client_id"))
-        return mqtt5_client
+    def parse_sample_input_basic_discovery():
+        allowed_actions = ['both', 'publish', 'subscribe']
 
-    def build_direct_mqtt5_client(self,
-                                  on_publish_received=None,
-                                  on_lifecycle_stopped=None,
-                                  on_lifecycle_attempting_connect=None,
-                                  on_lifecycle_connection_success=None,
-                                  on_lifecycle_connection_failure=None,
-                                  on_lifecycle_disconnection=None):
-        proxy_options = self.get_proxy_options_for_mqtt_connection()
-        mqtt5_client = mqtt5_client_builder.mtls_from_path(
-            endpoint=self.get_command_required(self.m_cmd_endpoint),
-            port=self.get_command_required("port"),
-            cert_filepath=self.get_command_required(self.m_cmd_cert_file),
-            pri_key_filepath=self.get_command_required(self.m_cmd_key_file),
-            ca_filepath=self.get_command(self.m_cmd_ca_file),
-            http_proxy_options=proxy_options,
-            on_publish_received=on_publish_received,
-            on_lifecycle_stopped=on_lifecycle_stopped,
-            on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,
-            on_lifecycle_connection_success=on_lifecycle_connection_success,
-            on_lifecycle_connection_failure=on_lifecycle_connection_failure,
-            on_lifecycle_disconnection=on_lifecycle_disconnection,
-            client_id=self.get_command_required("client_id"))
-        return mqtt5_client
+        cmdUtils = CommandLineUtils("Basic Discovery - Greengrass discovery example.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_topic_message_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.remove_command(CommandLineUtils.m_cmd_endpoint)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_thing_name, "<str>", "The name assigned to your IoT Thing", required=True)
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_mode, "<mode>",
+            f"The operation mode (optional, default='both').\nModes:{allowed_actions}", default='both')
+        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>", "The region to connect through.", required=True)
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_max_pub_ops, "<int>",
+            "The maximum number of publish operations (optional, default='10').",
+            default=10, type=int)
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_print_discovery_resp_only, "", "(optional, default='False').",
+            default=False, type=bool, action="store_true")
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.get_args()
 
-    def build_mqtt5_client(self,
-                           on_publish_received=None,
-                           on_lifecycle_stopped=None,
-                           on_lifecycle_attempting_connect=None,
-                           on_lifecycle_connection_success=None,
-                           on_lifecycle_connection_failure=None,
-                           on_lifecycle_disconnection=None):
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.parse_input_topic(cmdUtils)
+        cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_thing_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_thing_name)
+        cmdData.input_mode = cmdUtils.get_command(CommandLineUtils.m_cmd_mode, "both")
+        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_max_pub_ops = int(cmdUtils.get_command(CommandLineUtils.m_cmd_max_pub_ops, 10))
+        cmdData.input_print_discovery_resp_only = bool(cmdUtils.get_command(CommandLineUtils.m_cmd_print_discovery_resp_only, False))
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
 
-        if self.get_command(self.m_cmd_signing_region) is not None:
-            return self.build_websocket_mqtt5_client(on_publish_received=on_publish_received,
-                                                     on_lifecycle_stopped=on_lifecycle_stopped,
-                                                     on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,
-                                                     on_lifecycle_connection_success=on_lifecycle_connection_success,
-                                                     on_lifecycle_connection_failure=on_lifecycle_connection_failure,
-                                                     on_lifecycle_disconnection=on_lifecycle_disconnection)
-        else:
-            return self.build_direct_mqtt5_client(on_publish_received=on_publish_received,
-                                                  on_lifecycle_stopped=on_lifecycle_stopped,
-                                                  on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,
-                                                  on_lifecycle_connection_success=on_lifecycle_connection_success,
-                                                  on_lifecycle_connection_failure=on_lifecycle_connection_failure,
-                                                  on_lifecycle_disconnection=on_lifecycle_disconnection)
+    def parse_sample_input_cognito_connect():
+        cmdUtils = CommandLineUtils("Cognito Connect - Make a Cognito MQTT connection.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
+                                "The signing region used for the websocket signer",
+                                True, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_cognito_identity, "<str>",
+                                "The Cognito identity ID to use to connect via Cognito",
+                                True, str)
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_cognito_identity = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cognito_identity)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+    def parse_sample_input_custom_authorizer_connect():
+        cmdUtils = CommandLineUtils(
+            "Custom Authorizer Connect - Make a MQTT connection using a custom authorizer.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_custom_authorizer_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
+                                "The signing region used for the websocket signer",
+                                True, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_custom_authorizer_name = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_name)
+        cmdData.input_custom_authorizer_signature = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_signature)
+        cmdData.input_custom_auth_password = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_password)
+        cmdData.input_custom_auth_username = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_username)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+
+    def parse_sample_input_fleet_provisioning():
+        cmdUtils = CommandLineUtils("Fleet Provisioning - Provision device using either the keys or CSR.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_csr, "<path>", "Path to CSR in Pem format (optional).")
+        cmdUtils.register_command(CommandLineUtils.m_cmd_template_name, "<str>", "The name of your provisioning template.")
+        cmdUtils.register_command(CommandLineUtils.m_cmd_template_parameters, "<json>", "Template parameters json.")
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_csr_path = cmdUtils.get_command(CommandLineUtils.m_cmd_csr, None)
+        cmdData.input_template_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_template_name)
+        cmdData.input_template_parameters = cmdUtils.get_command_required(CommandLineUtils.m_cmd_template_parameters)
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+    def parse_sample_input_jobs():
+        cmdUtils = CommandLineUtils("Jobs - Receive and execute operations on the device.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_thing_name, "<str>", "The name assigned to your IoT Thing", required=True)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_job_time, "<int>", "Emulate working on a job by sleeping this many seconds (optional, default='5')", default=5, type=int)
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_thing_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_thing_name)
+        cmdData.input_job_time = int(cmdUtils.get_command(CommandLineUtils.m_cmd_job_time, 5))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+    def parse_sample_input_mqtt5_custom_authorizer_connect():
+        cmdUtils = CommandLineUtils(
+            "Custom Authorizer Connect - Make a MQTT5 Client connection using a custom authorizer.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_key_file, "<path>",
+                                "Path to your key in PEM format.", False, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_cert_file, "<path>",
+                                "Path to your client certificate in PEM format.", False, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
+                                "The signing region used for the websocket signer",
+                                False, str)
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_custom_authorizer_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_use_websockets, "<str>", "If set, websockets will be used (optional, do not set to use direct MQTT)")
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_signing_region = cmdUtils.get_command(CommandLineUtils.m_cmd_signing_region, None)
+        cmdData.input_cert = cmdUtils.get_command(CommandLineUtils.m_cmd_cert_file, None)
+        cmdData.input_key = cmdUtils.get_command(CommandLineUtils.m_cmd_key_file, None)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_custom_authorizer_name = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_name)
+        cmdData.input_custom_authorizer_signature = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_signature)
+        cmdData.input_custom_auth_password = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_password)
+        cmdData.input_custom_auth_username = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_username)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_use_websockets = bool(cmdUtils.get_command(CommandLineUtils.m_cmd_use_websockets, False))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+    def parse_sample_input_mqtt5_pkcs11_connect():
+        cmdUtils = CommandLineUtils("MQTT5 PKCS11 Connect - Make a MQTT5 Client connection using PKCS11.")
+        cmdUtils.add_common_mqtt5_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_cert_file, "<path>", "Path to your client certificate in PEM format.", True, str)
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_port,
+            "<int>",
+            "Connection port. AWS IoT supports 433 and 8883 (optional, default=8883).",
+            type=int)
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_client_id,
+            "<str>",
+            "Client ID to use for MQTT5 connection (optional, default=None).",
+            default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_lib, "<path>", "Path to PKCS#11 Library", required=True)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_pin, "<str>", "User PIN for logging into PKCS#11 token.", required=True)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_token, "<str>", "Label of the PKCS#11 token to use (optional).")
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_slot, "<int>", "Slot ID containing the PKCS#11 token to use (optional).", False, int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_key, "<str>", "Label of private key on the PKCS#11 token (optional).")
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_pkcs11_lib_path = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_lib)
+        cmdData.input_pkcs11_user_pin = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_pin)
+        cmdData.input_pkcs11_token_label = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_token)
+        cmdData.input_pkcs11_slot_id = cmdUtils.get_command(CommandLineUtils.m_cmd_pkcs11_slot, None)
+        cmdData.input_pkcs11_key_label = cmdUtils.get_command(CommandLineUtils.m_cmd_pkcs11_key, None)
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+    def parse_sample_input_mqtt5_pubsub():
+        cmdUtils = CommandLineUtils("PubSub - Send and receive messages through an MQTT5 connection.")
+        cmdUtils.add_common_mqtt5_commands()
+        cmdUtils.add_common_topic_message_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_port,
+            "<int>",
+            "Connection port. AWS IoT supports 433 and 8883 (optional, default=8883).",
+            type=int)
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_client_id,
+            "<str>",
+            "Client ID to use for MQTT5 connection (optional, default=None).",
+            default="test-" + str(uuid4()))
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_count,
+            "<int>",
+            "The number of messages to send (optional, default='10').",
+            default=10,
+            type=int)
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
+        cmdData.parse_input_topic(cmdUtils)
+        cmdData.input_count = int(cmdUtils.get_command(CommandLineUtils.m_cmd_count, 10))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+    def parse_sample_input_mqtt5_shared_subscription():
+        cmdUtils = CommandLineUtils("SharedSubscription - Send and receive messages through a MQTT5 shared subscription")
+        cmdUtils.add_common_mqtt5_commands()
+        cmdUtils.add_common_topic_message_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_port,
+            "<int>",
+            "Connection port. AWS IoT supports 433 and 8883 (optional, default=8883).",
+            type=int)
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_client_id,
+            "<str>",
+            "Client ID to use for MQTT5 connection (optional, default=None)."
+            "Note that '1', '2', and '3' will be added for to the given clientIDs since this sample uses 3 clients.",
+            default="test-" + str(uuid4()))
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_count,
+            "<int>",
+            "The number of messages to send (optional, default='10').",
+            default=10,
+            type=int)
+        cmdUtils.register_command(
+            CommandLineUtils.m_cmd_group_identifier,
+            "<str>",
+            "The group identifier to use in the shared subscription (optional, default='python-sample')",
+            default="python-sample",
+            type=str)
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
+        cmdData.parse_input_topic(cmdUtils)
+        cmdData.input_count = cmdUtils.get_command(CommandLineUtils.m_cmd_count, 10)
+        cmdData.input_group_identifier = cmdUtils.get_command(CommandLineUtils.m_cmd_group_identifier, "python-sample")
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+    def parse_sample_input_pkcs11_connect():
+        cmdUtils = CommandLineUtils("PKCS11 Connect - Make a MQTT connection using PKCS11.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_cert_file, "<path>", "Path to your client certificate in PEM format.", True, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<port>",
+                                "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).",
+                                type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_lib, "<path>", "Path to PKCS#11 Library", required=True)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_pin, "<str>", "User PIN for logging into PKCS#11 token.", required=True)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_token, "<str>", "Label of the PKCS#11 token to use (optional).")
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_slot, "<int>", "Slot ID containing the PKCS#11 token to use (optional).", False, int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs11_key, "<str>", "Label of private key on the PKCS#11 token (optional).")
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_pkcs11_lib_path = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_lib)
+        cmdData.input_pkcs11_user_pin = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_pin)
+        cmdData.input_pkcs11_token_label = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs11_token)
+        cmdData.input_pkcs11_slot_id = cmdUtils.get_command(CommandLineUtils.m_cmd_pkcs11_slot, None)
+        cmdData.input_pkcs11_key_label = cmdUtils.get_command(CommandLineUtils.m_cmd_pkcs11_key, None)
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+    def parse_sample_input_pubsub():
+        cmdUtils = CommandLineUtils("PubSub - Send and receive messages through an MQTT connection.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_topic_message_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_count, "<int>", "The number of messages to send (optional, default='10').", default=10, type=int)
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
+        cmdData.parse_input_topic(cmdUtils)
+        cmdData.input_count = int(cmdUtils.get_command(CommandLineUtils.m_cmd_count, 10))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+    def parse_sample_input_shadow():
+        cmdUtils = CommandLineUtils("Shadow - Keep a property in sync between device and server.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_key_cert_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_thing_name, "<str>", "The name assigned to your IoT Thing", required=True)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_shadow_property, "<str>", "The name of the shadow property you want to change (optional, default='color'", default="color")
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_key_file)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_thing_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_thing_name)
+        cmdData.input_shadow_property = cmdUtils.get_command_required(CommandLineUtils.m_cmd_shadow_property)
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+    def parse_sample_input_websocket_connect():
+        cmdUtils = CommandLineUtils("Websocket Connect - Make a websocket MQTT connection.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
+                                "The signing region used for the websocket signer",
+                                True, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+    def parse_sample_input_windows_cert_connect():
+        cmdUtils = CommandLineUtils("Windows Cert Connect - Make a MQTT connection using Windows Store Certificates.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_cert_file, "<path>", "Path to certificate in Windows cert store. "
+                                    "e.g. \"CurrentUser\\MY\\6ac133ac58f0a88b83e9c794eba156a98da39b4c\"", True, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=auto).", type=int)
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
+    def parse_sample_input_x509_connect():
+        cmdUtils = CommandLineUtils("X509 Connect - Make a MQTT connection using X509.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.add_common_x509_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
+                                "The signing region used for the websocket signer",
+                                True, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_x509_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_x509_endpoint)
+        cmdData.input_x509_thing_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_x509_thing_name)
+        cmdData.input_x509_role = cmdUtils.get_command_required(CommandLineUtils.m_cmd_x509_role_alias)
+        cmdData.input_x509_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_x509_cert)
+        cmdData.input_x509_key = cmdUtils.get_command_required(CommandLineUtils.m_cmd_x509_key)
+        cmdData.input_x509_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_x509_ca, None)
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
 
     # Constants for commonly used/needed commands
     m_cmd_endpoint = "endpoint"
@@ -439,3 +809,18 @@ class CommandLineUtils:
     m_cmd_x509_cert = "x509_cert"
     m_cmd_x509_key = "x509_key"
     m_cmd_x509_ca = "x509_ca_file"
+    m_cmd_port = "port"
+    m_cmd_client_id = "client_id"
+    m_cmd_is_ci = "is_ci"
+    m_cmd_thing_name = "thing_name"
+    m_cmd_mode = "mode"
+    m_cmd_max_pub_ops = "max_pub_ops"
+    m_cmd_print_discovery_resp_only = "print_discover_resp_only"
+    m_cmd_csr = "csr"
+    m_cmd_template_name = "template_name"
+    m_cmd_template_parameters = "template_parameters"
+    m_cmd_job_time = "job_time"
+    m_cmd_use_websockets = "use_websockets"
+    m_cmd_count = "count"
+    m_cmd_group_identifier = "group_identifier"
+    m_cmd_shadow_property = "shadow_property"

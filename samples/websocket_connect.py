@@ -1,27 +1,17 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from uuid import uuid4
+from awscrt import http, auth
+from awsiot import mqtt_connection_builder
+from utils.command_line_utils import CommandLineUtils
 
 # This sample shows how to create a MQTT connection using websockets.
 # This sample is intended to be used as a reference for making MQTT connections.
 
-# Parse arguments
-import utils.command_line_utils as command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils("Websocket Connect - Make a websocket MQTT connection.")
-cmdUtils.add_common_mqtt_commands()
-cmdUtils.add_common_proxy_commands()
-cmdUtils.add_common_logging_commands()
-cmdUtils.register_command("signing_region", "<str>",
-                          "The signing region used for the websocket signer",
-                          True, str)
-cmdUtils.register_command("client_id", "<str>",
-                          "Client ID to use for MQTT connection (optional, default='test-*').",
-                          default="test-" + str(uuid4()))
-cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
-# Needs to be called so the command utils parse the commands
-cmdUtils.get_args()
-is_ci = cmdUtils.get_command("is_ci", None) != None
+# cmdData is the arguments/input from the command line placed into a single struct for
+# use in this sample. This handles all of the command line parsing, validating, etc.
+# See the Utils/CommandLineUtils for more information.
+cmdData = CommandLineUtils.parse_sample_input_websocket_connect()
 
 # Callback when connection is accidentally lost.
 def on_connection_interrupted(connection, error, **kwargs):
@@ -33,16 +23,30 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 
 
 if __name__ == '__main__':
-    # Create a connection using websockets.
-    # Note: The data for the connection is gotten from cmdUtils.
-    # (see build_websocket_mqtt_connection for implementation)
-    mqtt_connection = cmdUtils.build_websocket_mqtt_connection(on_connection_interrupted, on_connection_resumed)
+    # Create the proxy options if the data is present in cmdData
+    proxy_options = None
+    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
+        proxy_options = http.HttpProxyOptions(
+            host_name=cmdData.input_proxy_host,
+            port=cmdData.input_proxy_port)
 
-    if is_ci == False:
-        print("Connecting to {} with client ID '{}'...".format(
-            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    # Create a default credentials provider and a MQTT connection from the command line data
+    credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
+    mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
+        endpoint=cmdData.input_endpoint,
+        region=cmdData.input_signing_region,
+        credentials_provider=credentials_provider,
+        http_proxy_options=proxy_options,
+        on_connection_interrupted=on_connection_interrupted,
+        on_connection_resumed=on_connection_resumed,
+        client_id=cmdData.input_clientId,
+        clean_session=False,
+        keep_alive_secs=30)
+
+    if not cmdData.input_is_ci:
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
-        print ("Connecting to endpoint with client ID...")
+        print("Connecting to endpoint with client ID...")
 
     connect_future = mqtt_connection.connect()
 

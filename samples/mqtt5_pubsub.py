@@ -1,50 +1,26 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import mqtt5
-from uuid import uuid4
+from awsiot import mqtt5_client_builder
+from awscrt import mqtt5, http
 import threading
 from concurrent.futures import Future
 import time
 import json
+from utils.command_line_utils import CommandLineUtils
 
 TIMEOUT = 100
 topic_filter = "test/topic"
 
-# Parse arguments
-import utils.command_line_utils as command_line_utils
-cmdUtils = command_line_utils.CommandLineUtils("PubSub - Send and receive messages through an MQTT5 connection.")
-cmdUtils.add_common_mqtt5_commands()
-cmdUtils.add_common_topic_message_commands()
-cmdUtils.add_common_proxy_commands()
-cmdUtils.add_common_logging_commands()
-cmdUtils.register_command("key", "<path>", "Path to your key in PEM format.", True, str)
-cmdUtils.register_command("cert", "<path>", "Path to your client certificate in PEM format.", True, str)
-cmdUtils.register_command(
-    "port",
-    "<int>",
-    "Connection port. AWS IoT supports 433 and 8883 (optional, default=auto).",
-    type=int)
-cmdUtils.register_command(
-    "client_id",
-    "<str>",
-    "Client ID to use for MQTT5 connection (optional, default=None).",
-    default="test-" + str(uuid4()))
-cmdUtils.register_command(
-    "count",
-    "<int>",
-    "The number of messages to send (optional, default='10').",
-    default=10,
-    type=int)
-cmdUtils.register_command("is_ci", "<str>", "If present the sample will run in CI mode (optional, default='None')")
-# Needs to be called so the command utils parse the commands
-cmdUtils.get_args()
+# cmdData is the arguments/input from the command line placed into a single struct for
+# use in this sample. This handles all of the command line parsing, validating, etc.
+# See the Utils/CommandLineUtils for more information.
+cmdData = CommandLineUtils.parse_sample_input_mqtt5_pubsub()
 
 received_count = 0
 received_all_event = threading.Event()
 future_stopped = Future()
 future_connection_success = Future()
-is_ci = cmdUtils.get_command("is_ci", None) != None
 
 # Callback when any publish is received
 def on_publish_received(publish_packet_data):
@@ -53,7 +29,7 @@ def on_publish_received(publish_packet_data):
     print("Received message from topic'{}':{}".format(publish_packet.topic, publish_packet.payload))
     global received_count
     received_count += 1
-    if received_count == cmdUtils.get_command("count"):
+    if received_count == cmdData.input_count:
         received_all_event.set()
 
 
@@ -79,20 +55,34 @@ def on_lifecycle_connection_failure(lifecycle_connection_failure: mqtt5.Lifecycl
 
 if __name__ == '__main__':
     print("\nStarting MQTT5 PubSub Sample\n")
-    message_count = cmdUtils.get_command("count")
-    message_topic = cmdUtils.get_command(cmdUtils.m_cmd_topic)
-    message_string = cmdUtils.get_command(cmdUtils.m_cmd_message)
+    message_count = cmdData.input_count
+    message_topic = cmdData.input_topic
+    message_string = cmdData.input_message
 
-    client = cmdUtils.build_mqtt5_client(
+    # Create the proxy options if the data is present in cmdData
+    proxy_options = None
+    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
+        proxy_options = http.HttpProxyOptions(
+            host_name=cmdData.input_proxy_host,
+            port=cmdData.input_proxy_port)
+
+    # Create MQTT5 client
+    client = mqtt5_client_builder.mtls_from_path(
+        endpoint=cmdData.input_endpoint,
+        port=cmdData.input_port,
+        cert_filepath=cmdData.input_cert,
+        pri_key_filepath=cmdData.input_key,
+        ca_filepath=cmdData.input_ca,
+        http_proxy_options=proxy_options,
         on_publish_received=on_publish_received,
         on_lifecycle_stopped=on_lifecycle_stopped,
         on_lifecycle_connection_success=on_lifecycle_connection_success,
-        on_lifecycle_connection_failure=on_lifecycle_connection_failure)
+        on_lifecycle_connection_failure=on_lifecycle_connection_failure,
+        client_id=cmdData.input_clientId)
     print("MQTT5 Client Created")
 
-    if is_ci == False:
-        print("Connecting to {} with client ID '{}'...".format(
-            cmdUtils.get_command(cmdUtils.m_cmd_endpoint), cmdUtils.get_command("client_id")))
+    if not cmdData.input_is_ci:
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
 
@@ -100,11 +90,9 @@ if __name__ == '__main__':
     lifecycle_connect_success_data = future_connection_success.result(TIMEOUT)
     connack_packet = lifecycle_connect_success_data.connack_packet
     negotiated_settings = lifecycle_connect_success_data.negotiated_settings
-    if is_ci == False:
-        print("Connected to endpoint:'{}' with Client ID:'{}' with reason_code:{}".format(
-            cmdUtils.get_command(cmdUtils.m_cmd_endpoint),
-            connack_packet.assigned_client_identifier,
-            repr(connack_packet.reason_code)))
+    if not cmdData.input_is_ci:
+        print(
+            f"Connected to endpoint:'{cmdData.input_endpoint}' with Client ID:'{cmdData.input_clientId}' with reason_code:{repr(connack_packet.reason_code)}")
 
     # Subscribe
 
