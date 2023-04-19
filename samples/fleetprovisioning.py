@@ -119,7 +119,7 @@ def createkeysandcertificate_execution_accepted(response):
 
 def createkeysandcertificate_execution_rejected(rejected):
     # type: (iotidentity.RejectedError) -> None
-    exit("CreateKeysAndCertificate Request rejected with code:'{}' message:'{}' statuscode:'{}'".format(
+    exit("CreateKeysAndCertificate Request rejected with code:'{}' message:'{}' status code:'{}'".format(
         rejected.error_code, rejected.error_message, rejected.status_code))
 
 
@@ -141,7 +141,7 @@ def createcertificatefromcsr_execution_accepted(response):
 
 def createcertificatefromcsr_execution_rejected(rejected):
     # type: (iotidentity.RejectedError) -> None
-    exit("CreateCertificateFromCsr Request rejected with code:'{}' message:'{}' statuscode:'{}'".format(
+    exit("CreateCertificateFromCsr Request rejected with code:'{}' message:'{}' status code:'{}'".format(
         rejected.error_code, rejected.error_message, rejected.status_code))
 
 
@@ -160,7 +160,7 @@ def registerthing_execution_accepted(response):
 
 def registerthing_execution_rejected(rejected):
     # type: (iotidentity.RejectedError) -> None
-    exit("RegisterThing Request rejected with code:'{}' message:'{}' statuscode:'{}'".format(
+    exit("RegisterThing Request rejected with code:'{}' message:'{}' status code:'{}'".format(
         rejected.error_code, rejected.error_message, rejected.status_code))
 
 # Callback when connection is accidentally lost.

@@ -61,7 +61,7 @@ def try_iot_endpoints():
                     mqtt_connection = mqtt_connection_builder.mtls_from_path(
                         endpoint=connectivity_info.host_address,
                         port=connectivity_info.port,
-                        cert_filepath=Data.input_cert,
+                        cert_filepath=cmdData.input_cert,
                         pri_key_filepath=cmdData.input_key,
                         ca_bytes=gg_group.certificate_authorities[0].encode('utf-8'),
                         on_connection_interrupted=on_connection_interupted,
