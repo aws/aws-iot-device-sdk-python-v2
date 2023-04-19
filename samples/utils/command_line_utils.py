@@ -463,8 +463,13 @@ class CommandLineUtils:
         cmdUtils = CommandLineUtils(
             "Custom Authorizer Connect - Make a MQTT5 Client connection using a custom authorizer.")
         cmdUtils.add_common_mqtt_commands()
-        cmdUtils.register_command(CommandLineUtils.m_cmd_key_file, "<path>", "Path to your key in PEM format.", False, str)
-        cmdUtils.register_command(CommandLineUtils.m_cmd_cert_file, "<path>", "Path to your client certificate in PEM format.", False, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_key_file, "<path>",
+                                "Path to your key in PEM format.", False, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_cert_file, "<path>",
+                                "Path to your client certificate in PEM format.", False, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
+                                "The signing region used for the websocket signer",
+                                False, str)
         cmdUtils.add_common_logging_commands()
         cmdUtils.add_common_custom_authorizer_commands()
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
