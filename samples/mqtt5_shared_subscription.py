@@ -139,11 +139,11 @@ if __name__ == '__main__':
         )
         subscribe_one_future = subscriber_one.client.subscribe(subscribe_packet)
         suback_one = subscribe_one_future.result(60)
-        print(f"[{subscriber_one.name}]: Subscribed to topic {cmdData.input_topic} in shared subscription group {cmdData.input_group_identifier}.")
+        print(f"[{subscriber_one.name}]: Subscribed to topic '{cmdData.input_topic}' in shared subscription group '{cmdData.input_group_identifier}'.")
         print(f"[{subscriber_one.name}]: Full subscribed topic is: '{input_shared_topic}' with SubAck code: {suback_one.reason_codes}")
         subscribe_two_future = subscriber_two.client.subscribe(subscribe_packet)
         suback_two = subscribe_two_future.result(60)
-        print(f"[{subscriber_two.name}]: Subscribed to topic {cmdData.input_topic} in shared subscription group {cmdData.input_group_identifier}.")
+        print(f"[{subscriber_two.name}]: Subscribed to topic '{cmdData.input_topic}' in shared subscription group '{cmdData.input_group_identifier}'.")
         print(f"[{subscriber_two.name}]: Full subscribed topic is: '{input_shared_topic}' with SubAck code: {suback_two.reason_codes}")
 
         # Publish using the publisher client
@@ -170,10 +170,12 @@ if __name__ == '__main__':
         unsubscribe_packet = mqtt5.UnsubscribePacket(topic_filters=[input_shared_topic])
         unsubscribe_one_future = subscriber_one.client.unsubscribe(unsubscribe_packet)
         unsuback_one = unsubscribe_one_future.result(60)
-        print(f"[{subscriber_one.name}]: Unsubscribed to topic {input_shared_topic} with UnsubAck code: {unsuback_one.reason_codes}")
+        print(f"[{subscriber_one.name}]: Unsubscribed to topic '{cmdData.input_topic}' in shared subscription group '{cmdData.input_group_identifier}'.")
+        print(f"[{subscriber_one.name}]: Full unsubscribed topic is: '{input_shared_topic}' with UnsubAck code: {unsuback_one.reason_codes}")
         unsubscribe_two_future = subscriber_two.client.unsubscribe(unsubscribe_packet)
         unsuback_two = unsubscribe_two_future.result(60)
-        print(f"[{subscriber_two.name}]: Unsubscribed to topic {input_shared_topic} with UnsubAck code {unsuback_two.reason_codes}")
+        print(f"[{subscriber_two.name}]: Unsubscribed to topic '{cmdData.input_topic}' in shared subscription group '{cmdData.input_group_identifier}'.")
+        print(f"[{subscriber_two.name}]: Full unsubscribed topic is: '{input_shared_topic}' with UnsubAck code {unsuback_two.reason_codes}")
 
         # Disconnect all the clients
         publisher.client.stop()
