@@ -3,7 +3,6 @@
 
 from awscrt import mqtt5
 from awsiot import mqtt5_client_builder
-from uuid import uuid4
 import threading
 from concurrent.futures import Future
 import time
@@ -108,10 +107,6 @@ cmdData = CommandLineUtils.parse_sample_input_mqtt5_shared_subscription()
 # Construct the shared topic
 input_shared_topic = f"$share/{cmdData.input_group_identifier}/{cmdData.input_topic}"
 
-# Make sure the message count is even
-if (cmdData.input_count % 2 > 0):
-    exit(ValueError("Error: '--count' is an odd number. '--count' must be even or zero for this sample."))
-
 if __name__ == '__main__':
     try:
         # Create the MQTT5 clients: one publisher and two subscribers
@@ -136,25 +131,20 @@ if __name__ == '__main__':
         subscriber_two.future_connection_success.result(60)
         print(f"[{subscriber_two.name}]: Connected")
 
-        # Subscribe to the shared topic on the two subscribers
+        # Subscribe to the shared topic on both subscribers
         subscribe_packet = mqtt5.SubscribePacket(
             subscriptions=[mqtt5.Subscription(
                 topic_filter=input_shared_topic,
                 qos=mqtt5.QoS.AT_LEAST_ONCE)]
         )
-        try:
-            subscribe_one_future = subscriber_one.client.subscribe(subscribe_packet)
-            suback_one = subscribe_one_future.result(60)
-            print(f"[{subscriber_one.name}]: Subscribed with: {suback_one.reason_codes}")
-            subscribe_two_future = subscriber_two.client.subscribe(subscribe_packet)
-            suback_two = subscribe_two_future.result(60)
-            print(f"[{subscriber_two.name}]: Subscribed with: {suback_two.reason_codes}")
-        except Exception as ex:
-            # TMP: If this fails subscribing in CI, just exit the sample gracefully.
-            if (cmdData.input_is_ci is not None):
-                exit(0)
-            else:
-                raise ex
+        subscribe_one_future = subscriber_one.client.subscribe(subscribe_packet)
+        suback_one = subscribe_one_future.result(60)
+        print(f"[{subscriber_one.name}]: Subscribed to topic {cmdData.input_topic} in shared subscription group {cmdData.input_group_identifier}.")
+        print(f"[{subscriber_one.name}]: Full subscribed topic is: '{input_shared_topic}' with SubAck code: {suback_one.reason_codes}")
+        subscribe_two_future = subscriber_two.client.subscribe(subscribe_packet)
+        suback_two = subscribe_two_future.result(60)
+        print(f"[{subscriber_two.name}]: Subscribed to topic {cmdData.input_topic} in shared subscription group {cmdData.input_group_identifier}.")
+        print(f"[{subscriber_two.name}]: Full subscribed topic is: '{input_shared_topic}' with SubAck code: {suback_two.reason_codes}")
 
         # Publish using the publisher client
         if (cmdData.input_count > 0):
@@ -167,13 +157,12 @@ if __name__ == '__main__':
                     qos=mqtt5.QoS.AT_LEAST_ONCE
                 ))
                 publish_completion_data = publish_future.result(60)
-                print(f"[{publisher.name}]: Sent publish and got PubAck with {repr(publish_completion_data.puback.reason_code)}")
+                print(f"[{publisher.name}]: Sent publish and got PubAck code: {repr(publish_completion_data.puback.reason_code)}")
                 time.sleep(1)
                 publish_count += 1
 
-            # Make sure all the messages were gotten on the subscribers
-            subscriber_one.received_all_event.wait(60)
-            subscriber_two.received_all_event.wait(60)
+            # Wait 5 seconds to let the last publish go out before unsubscribing
+            time.sleep(5)
         else:
             print("Skipping publishing messages due to message count being zero...")
 
@@ -181,10 +170,10 @@ if __name__ == '__main__':
         unsubscribe_packet = mqtt5.UnsubscribePacket(topic_filters=[input_shared_topic])
         unsubscribe_one_future = subscriber_one.client.unsubscribe(unsubscribe_packet)
         unsuback_one = unsubscribe_one_future.result(60)
-        print(f"[{subscriber_one.name}]: Unsubscribed with {unsuback_one.reason_codes}")
+        print(f"[{subscriber_one.name}]: Unsubscribed to topic {input_shared_topic} with UnsubAck code: {unsuback_one.reason_codes}")
         unsubscribe_two_future = subscriber_two.client.unsubscribe(unsubscribe_packet)
         unsuback_two = unsubscribe_two_future.result(60)
-        print(f"[{subscriber_two.name}]: Unsubscribed with {unsuback_two.reason_codes}")
+        print(f"[{subscriber_two.name}]: Unsubscribed to topic {input_shared_topic} with UnsubAck code {unsuback_two.reason_codes}")
 
         # Disconnect all the clients
         publisher.client.stop()
