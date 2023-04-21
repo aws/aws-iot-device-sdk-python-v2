@@ -15,8 +15,6 @@ class sample_mqtt5_client:
     client: mqtt5.Client
     name: str
     count: int
-    received_count: int
-    received_all_event = threading.Event()
     future_stopped: Future
     future_connection_success: Future
 
@@ -28,11 +26,8 @@ class sample_mqtt5_client:
             input_key,
             input_ca,
             input_client_id,
-            input_count,
             input_client_name) -> None:
         try:
-            self.count = input_count
-            self.received_count = 0
             self.name = input_client_name
             self.future_stopped = Future()
             self.future_connection_success = Future()
@@ -66,10 +61,6 @@ class sample_mqtt5_client:
                 for i in range(0, publish_packet.user_properties.count):
                     user_property = publish_packet.user_properties[i]
                     print(f"\t\twith UserProperty ({user_property.name}, {user_property.value})")
-
-        self.received_count += 1
-        if self.received_count == self.count:
-            self.received_all_event.set()
 
     # Callback for the lifecycle event Stopped
     def on_lifecycle_stopped(self, lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
@@ -112,13 +103,13 @@ if __name__ == '__main__':
         # Create the MQTT5 clients: one publisher and two subscribers
         publisher = sample_mqtt5_client(
             cmdData.input_endpoint, cmdData.input_cert, cmdData.input_key, cmdData.input_ca,
-            cmdData.input_clientId + "1", cmdData.input_count / 2, "Publisher")
+            cmdData.input_clientId + "1", "Publisher")
         subscriber_one = sample_mqtt5_client(
             cmdData.input_endpoint, cmdData.input_cert, cmdData.input_key, cmdData.input_ca,
-            cmdData.input_clientId + "2", cmdData.input_count / 2, "Subscriber One")
+            cmdData.input_clientId + "2", "Subscriber One")
         subscriber_two = sample_mqtt5_client(
             cmdData.input_endpoint, cmdData.input_cert, cmdData.input_key, cmdData.input_ca,
-            cmdData.input_clientId + "3", cmdData.input_count, "Subscriber Two")
+            cmdData.input_clientId + "3", "Subscriber Two")
 
         # Connect all the clients
         publisher.client.start()
