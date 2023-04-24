@@ -31,6 +31,8 @@ if __name__ == '__main__':
         auth_authorizer_name=cmdData.input_custom_authorizer_name,
         auth_authorizer_signature=cmdData.input_custom_authorizer_signature,
         auth_password=cmdData.input_custom_auth_password,
+        auth_token_key_name=cmdData.input_custom_authorizer_token_key_name,
+        auth_token_value=cmdData.input_custom_authorizer_token_value,
         on_connection_interrupted=on_connection_interrupted,
         on_connection_resumed=on_connection_resumed,
         client_id=cmdData.input_clientId,
