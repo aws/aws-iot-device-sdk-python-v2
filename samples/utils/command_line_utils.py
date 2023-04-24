@@ -500,6 +500,8 @@ class CommandLineUtils:
         cmdData.input_custom_authorizer_signature = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_signature)
         cmdData.input_custom_auth_password = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_password)
         cmdData.input_custom_auth_username = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_username)
+        cmdData.input_custom_authorizer_token_key_name = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_token_key_name)
+        cmdData.input_custom_authorizer_token_value = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_token_value)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_use_websockets = bool(cmdUtils.get_command(CommandLineUtils.m_cmd_use_websockets, False))
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
