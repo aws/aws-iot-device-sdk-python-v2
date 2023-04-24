@@ -172,7 +172,7 @@ A MQTT5 direct connection can be made using a PKCS11 device rather than using a 
 
 **Note**: Currently, TLS integration with PKCS#11 is only available on Unix devices.
 
-#### **Direct MQTT with PKCS11 Method**
+#### **Direct MQTT with PKCS12 Method**
 
 A MQTT5 direct connection can be made using a PKCS12 file rather than using a PEM encoded private key. To create a MQTT5 builder configured for this connection, see the following code:
 
