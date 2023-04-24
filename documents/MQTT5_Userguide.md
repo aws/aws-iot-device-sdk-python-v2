@@ -185,7 +185,7 @@ A MQTT5 direct connection can be made using a PKCS12 file rather than using a PE
         endpoint = "<account-specific endpoint>")
 ```
 
-**Note**: Currently, TLS integration with PKCS#11 is only available on MacOS devices.
+**Note**: Currently, TLS integration with PKCS#12 is only available on MacOS devices.
 
 #### **MQTT over Websockets with Cognito authentication**
 
