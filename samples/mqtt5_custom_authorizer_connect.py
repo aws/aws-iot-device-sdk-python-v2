@@ -43,6 +43,8 @@ if __name__ == '__main__':
             auth_authorizer_name=cmdData.input_custom_authorizer_name,
             auth_authorizer_signature=cmdData.input_custom_authorizer_signature,
             auth_password=cmdData.input_custom_auth_password,
+            auth_token_key_name=cmdData.input_custom_authorizer_token_key_name,
+            auth_token_value=cmdData.input_custom_authorizer_token_value,
             on_lifecycle_stopped=on_lifecycle_stopped,
             on_lifecycle_connection_success=on_lifecycle_connection_success,
             client_id=cmdData.input_clientId)
@@ -54,6 +56,8 @@ if __name__ == '__main__':
             auth_authorizer_name=cmdData.input_custom_authorizer_name,
             auth_authorizer_signature=cmdData.input_custom_authorizer_signature,
             auth_password=cmdData.input_custom_auth_password,
+            auth_token_key_name=cmdData.input_custom_authorizer_token_key_name,
+            auth_token_value=cmdData.input_custom_authorizer_token_value,
             on_lifecycle_stopped=on_lifecycle_stopped,
             on_lifecycle_connection_success=on_lifecycle_connection_success,
             client_id=cmdData.input_clientId)
