@@ -442,6 +442,31 @@ def mtls_with_pkcs11(*,
         cert_file_contents=cert_bytes)
     return _builder(tls_ctx_options, **kwargs)
 
+def mtls_with_pkcs12(*,
+                     pkcs12_filepath: str,
+                     pkcs12_password: str,
+                     **kwargs) -> awscrt.mqtt.Connection:
+    """
+    This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT,
+    using a PKCS#12 certificate.
+
+    NOTE: MacOS only
+
+    This function takes all :mod:`common arguments<awsiot.mqtt_connection_builder>`
+    described at the top of this doc, as well as...
+
+    Args:
+        pkcs12_filepath: Path to the PKCS12 file to use
+
+        pkcs12_password: The password for the PKCS12 file.
+    """
+    _check_required_kwargs(**kwargs)
+
+    tls_ctx_options = awscrt.io.TlsContextOptions.create_client_with_mtls_pkcs12(
+        pkcs12_filepath=pkcs12_filepath,
+        pkcs12_password=pkcs12_password)
+    return _builder(tls_ctx_options, **kwargs)
+
 
 def mtls_with_windows_cert_store_path(*,
                                       cert_store_path: str,

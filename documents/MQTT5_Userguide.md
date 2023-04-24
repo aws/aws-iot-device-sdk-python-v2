@@ -14,6 +14,7 @@
         * [MQTT over Websockets with Sigv4 authentication](#mqtt-over-websockets-with-sigv4-authentication)
         * [Direct MQTT with Custom Authentication](#direct-mqtt-with-custom-authentication)
         * [Direct MQTT with PKCS11 Method](#direct-mqtt-with-pkcs11-method)
+        * [Direct MQTT with PKCS12 Method](#direct-mqtt-with-pkcs12-method)
         * [MQTT over Websockets with Cognito authentication](#mqtt-over-websockets-with-cognito-authentication)
         * [HTTP Proxy](#http-proxy)
     * [Client Lifecycle Management](#client-lifecycle-management)
@@ -170,6 +171,21 @@ A MQTT5 direct connection can be made using a PKCS11 device rather than using a 
 ```
 
 **Note**: Currently, TLS integration with PKCS#11 is only available on Unix devices.
+
+#### **Direct MQTT with PKCS12 Method**
+
+A MQTT5 direct connection can be made using a PKCS12 file rather than using a PEM encoded private key. To create a MQTT5 builder configured for this connection, see the following code:
+
+```python
+    # other builder configurations can be added using **kwargs in the builder
+
+    client = mqtt5_client_builder.mtls_with_pkcs12(
+        pkcs12_filepath = "<PKCS12 file path>,
+        pkcs12_password = "<PKCS12 password>
+        endpoint = "<account-specific endpoint>")
+```
+
+**Note**: Currently, TLS integration with PKCS#12 is only available on MacOS devices.
 
 #### **MQTT over Websockets with Cognito authentication**
 

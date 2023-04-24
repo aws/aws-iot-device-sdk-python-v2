@@ -284,6 +284,9 @@ class CommandLineUtils:
         input_job_time : int
         # Shadow
         input_shadow_property : str
+        # PKCS12
+        input_pkcs12_file : str
+        input_pkcs12_password : str
 
         def __init__(self) -> None:
             pass
@@ -794,6 +797,38 @@ class CommandLineUtils:
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
+    def parse_sample_input_pkcs12_connect():
+        # Parse arguments
+        cmdUtils = CommandLineUtils("PKCS12 Connect - Make a MQTT connection.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_proxy_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs12_file, "<path>",
+                                "Path to the PKCS12 file to use.", True, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_pkcs12_password, "<str>",
+                                "The password for the PKCS12 file.", False, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>",
+                                "Connection port for direct connection. " +
+                                "AWS IoT supports 443 and 8883 (optional, default=8883).",
+                                False, int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        # Needs to be called so the command utils parse the commands
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_port, 8883))
+        cmdData.input_pkcs12_file = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs12_file)
+        cmdData.input_pkcs12_password = cmdUtils.get_command_required(CommandLineUtils.m_cmd_pkcs12_password)
+        cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
+        cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
+
 
     # Constants for commonly used/needed commands
     m_cmd_endpoint = "endpoint"
@@ -840,3 +875,5 @@ class CommandLineUtils:
     m_cmd_count = "count"
     m_cmd_group_identifier = "group_identifier"
     m_cmd_shadow_property = "shadow_property"
+    m_cmd_pkcs12_file = "pkcs12_file"
+    m_cmd_pkcs12_password = "pkcs12_password"
