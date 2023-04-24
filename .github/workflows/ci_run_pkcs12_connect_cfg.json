@@ -1,0 +1,20 @@
+{
+"language": "Python",
+"sample_file": "./aws-iot-device-sdk-python-v2/samples/pkcs12_connect.py",
+"sample_region": "us-east-1",
+"sample_main_class": "",
+"arguments": [
+    {
+        "name": "--endpoint",
+        "secret": "ci/endpoint"
+    },
+    {
+        "name": "--pkcs12_file",
+        "data": "./pkcs12-key.p12"
+    },
+    {
+        "name": "--pkcs12_password",
+        "secret": "ci/PubSub/key_pkcs12_password"
+    }
+]
+}
