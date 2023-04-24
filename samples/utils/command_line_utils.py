@@ -181,6 +181,14 @@ class CommandLineUtils:
             CommandLineUtils.m_cmd_custom_auth_password,
             "<str>",
             "The password to send when connecting through a custom authorizer (optional)")
+        self.register_command(
+            CommandLineUtils.m_cmd_custom_auth_token_key_name,
+            "<str>",
+            "Key used to extract the custom authorizer token (optional)")
+        self.register_command(
+            CommandLineUtils.m_cmd_custom_auth_token_value,
+            "<str>",
+            "The opaque token value for the custom authorizer (optional)")
 
     def add_common_x509_commands(self):
         self.register_command(
@@ -245,6 +253,8 @@ class CommandLineUtils:
         input_custom_authorizer_name : str
         input_custom_authorizer_signature : str
         input_custom_auth_password : str
+        input_custom_authorizer_token_key_name : str
+        input_custom_authorizer_token_value : str
         # Fleet provisioning
         input_template_name : str
         input_template_parameters : str
@@ -403,6 +413,8 @@ class CommandLineUtils:
         cmdData.input_custom_authorizer_signature = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_signature)
         cmdData.input_custom_auth_password = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_password)
         cmdData.input_custom_auth_username = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_username)
+        cmdData.input_custom_authorizer_token_key_name = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_token_key_name)
+        cmdData.input_custom_authorizer_token_value = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_token_value)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
@@ -491,6 +503,8 @@ class CommandLineUtils:
         cmdData.input_custom_authorizer_signature = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_signature)
         cmdData.input_custom_auth_password = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_password)
         cmdData.input_custom_auth_username = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_username)
+        cmdData.input_custom_authorizer_token_key_name = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_token_key_name)
+        cmdData.input_custom_authorizer_token_value = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_token_value)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_use_websockets = bool(cmdUtils.get_command(CommandLineUtils.m_cmd_use_websockets, False))
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
@@ -837,6 +851,8 @@ class CommandLineUtils:
     m_cmd_custom_auth_authorizer_name = "custom_auth_authorizer_name"
     m_cmd_custom_auth_authorizer_signature = "custom_auth_authorizer_signature"
     m_cmd_custom_auth_password = "custom_auth_password"
+    m_cmd_custom_auth_token_key_name = "custom_auth_token_key_name"
+    m_cmd_custom_auth_token_value = "custom_auth_token_value"
     m_cmd_cognito_identity = "cognito_identity"
     m_cmd_x509_endpoint = "x509_endpoint"
     m_cmd_x509_thing_name = "x509_thing_name"
