@@ -257,7 +257,7 @@ class MessageData(rpc.Shape):
         boolean_message: 
         time_message: 
         document_message: 
-        enum_message: FruitEnum enum value
+        enum_message: FruitEnum enum value. 
         blob_message: 
         string_list_message: 
         key_value_pair_list: 
@@ -268,7 +268,7 @@ class MessageData(rpc.Shape):
         boolean_message: 
         time_message: 
         document_message: 
-        enum_message: FruitEnum enum value
+        enum_message: FruitEnum enum value. 
         blob_message: 
         string_list_message: 
         key_value_pair_list: 
@@ -452,6 +452,74 @@ class EchoStreamingMessage(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'awstest#EchoStreamingMessage'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class ServiceError(EchoTestRPCError):
+    """
+    ServiceError
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message: 
+        value: 
+
+    Attributes:
+        message: 
+        value: 
+    """
+
+    def __init__(self, *,
+                 message: typing.Optional[str] = None,
+                 value: typing.Optional[str] = None):
+        super().__init__()
+        self.message = message  # type: typing.Optional[str]
+        self.value = value  # type: typing.Optional[str]
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+    def set_value(self, value: str):
+        self.value = value
+        return self
+
+
+    def _get_error_type_string(self):
+        return 'server'
+
+    def _to_payload(self):
+        payload = {}
+        if self.message is not None:
+            payload['message'] = self.message
+        if self.value is not None:
+            payload['value'] = self.value
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'message' in payload:
+            new.message = payload['message']
+        if 'value' in payload:
+            new.value = payload['value']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'awstest#ServiceError'
 
     def __repr__(self):
         attrs = []
@@ -800,74 +868,6 @@ class CauseServiceErrorRequest(rpc.Shape):
         return False
 
 
-class ServiceError(EchoTestRPCError):
-    """
-    ServiceError
-
-    All attributes are None by default, and may be set by keyword in the constructor.
-
-    Keyword Args:
-        message: 
-        value: 
-
-    Attributes:
-        message: 
-        value: 
-    """
-
-    def __init__(self, *,
-                 message: typing.Optional[str] = None,
-                 value: typing.Optional[str] = None):
-        super().__init__()
-        self.message = message  # type: typing.Optional[str]
-        self.value = value  # type: typing.Optional[str]
-
-    def set_message(self, message: str):
-        self.message = message
-        return self
-
-    def set_value(self, value: str):
-        self.value = value
-        return self
-
-
-    def _get_error_type_string(self):
-        return 'server'
-
-    def _to_payload(self):
-        payload = {}
-        if self.message is not None:
-            payload['message'] = self.message
-        if self.value is not None:
-            payload['value'] = self.value
-        return payload
-
-    @classmethod
-    def _from_payload(cls, payload):
-        new = cls()
-        if 'message' in payload:
-            new.message = payload['message']
-        if 'value' in payload:
-            new.value = payload['value']
-        return new
-
-    @classmethod
-    def _model_name(cls):
-        return 'awstest#ServiceError'
-
-    def __repr__(self):
-        attrs = []
-        for attr, val in self.__dict__.items():
-            if val is not None:
-                attrs.append('%s=%r' % (attr, val))
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
-
-
 class GetAllProductsResponse(rpc.Shape):
     """
     GetAllProductsResponse
@@ -961,6 +961,7 @@ SHAPE_INDEX = rpc.ShapeIndex([
     Pair,
     Customer,
     MessageData,
+    ServiceError,
     GetAllCustomersResponse,
     GetAllCustomersRequest,
     EchoMessageResponse,
@@ -969,7 +970,6 @@ SHAPE_INDEX = rpc.ShapeIndex([
     EchoStreamingRequest,
     CauseServiceErrorResponse,
     CauseServiceErrorRequest,
-    ServiceError,
     GetAllProductsResponse,
     GetAllProductsRequest,
 ])
