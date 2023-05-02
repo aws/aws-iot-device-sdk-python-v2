@@ -338,7 +338,7 @@ class CommandLineUtils:
         cmdUtils.register_command(
             CommandLineUtils.m_cmd_mode, "<mode>",
             f"The operation mode (optional, default='both').\nModes:{allowed_actions}", default='both')
-        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>", "The region to connect through.", required=True)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_region, "<str>", "The region to connect through.", required=True)
         cmdUtils.register_command(
             CommandLineUtils.m_cmd_max_pub_ops, "<int>",
             "The maximum number of publish operations (optional, default='10').",
@@ -350,7 +350,6 @@ class CommandLineUtils:
         cmdUtils.get_args()
 
         cmdData = CommandLineUtils.CmdData()
-        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
         cmdData.parse_input_topic(cmdUtils)
         cmdData.input_message = cmdUtils.get_command(CommandLineUtils.m_cmd_message, "Hello World! ")
         cmdData.input_cert = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cert_file)
@@ -358,7 +357,7 @@ class CommandLineUtils:
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
         cmdData.input_thing_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_thing_name)
         cmdData.input_mode = cmdUtils.get_command(CommandLineUtils.m_cmd_mode, "both")
-        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_region)
         cmdData.input_max_pub_ops = int(cmdUtils.get_command(CommandLineUtils.m_cmd_max_pub_ops, 10))
         cmdData.input_print_discovery_resp_only = bool(cmdUtils.get_command(CommandLineUtils.m_cmd_print_discovery_resp_only, False))
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
@@ -877,3 +876,4 @@ class CommandLineUtils:
     m_cmd_shadow_property = "shadow_property"
     m_cmd_pkcs12_file = "pkcs12_file"
     m_cmd_pkcs12_password = "pkcs12_password"
+    m_cmd_region = "region"
