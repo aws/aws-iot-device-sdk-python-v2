@@ -346,6 +346,9 @@ class CommandLineUtils:
         cmdUtils.register_command(
             CommandLineUtils.m_cmd_print_discovery_resp_only, "", "(optional, default='False').",
             default=False, type=bool, action="store_true")
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
         cmdUtils.add_common_proxy_commands()
         cmdUtils.get_args()
 
