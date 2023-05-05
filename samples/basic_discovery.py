@@ -66,7 +66,7 @@ def try_iot_endpoints():
                         ca_bytes=gg_group.certificate_authorities[0].encode('utf-8'),
                         on_connection_interrupted=on_connection_interupted,
                         on_connection_resumed=on_connection_resumed,
-                        client_id=cmdData.input_clientId,
+                        client_id=cmdData.input_thing_name,
                         clean_session=False,
                         keep_alive_secs=30)
 
