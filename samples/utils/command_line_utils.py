@@ -33,15 +33,12 @@ class CommandLineUtils:
     def get_command_required(self, command_name, command_name_alt = None):
         if(command_name_alt != None):
             if hasattr(self.parsed_commands, command_name_alt):
-                command_value = getattr(self.parsed_commands, command_name_alt)
-                print(command_value)
-                if(command_value != None):
-                    return command_value
+                if(getattr(self.parsed_commands, command_name_alt) != None):
+                    return getattr(self.parsed_commands, command_name_alt)
 
         if hasattr(self.parsed_commands, command_name):
-            command_value = getattr(self.parsed_commands, command_name)
-            if(command_value != None):
-                return command_value
+            if(getattr(self.parsed_commands, command_name) != None):
+                return getattr(self.parsed_commands, command_name)
 
         self.parser.print_help()
         print("Command --" + command_name + " required.")
