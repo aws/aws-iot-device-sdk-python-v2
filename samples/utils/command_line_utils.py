@@ -30,15 +30,22 @@ class CommandLineUtils:
     """
     Returns the command if it exists and has been passed to the console, otherwise it will print the help for the sample and exit the application.
     """
-    def get_command_required(self, command_name, message=None):
+    def get_command_required(self, command_name, command_name_alt = None):
+        if(command_name_alt != None):
+            if hasattr(self.parsed_commands, command_name_alt):
+                command_value = getattr(self.parsed_commands, command_name_alt)
+                print(command_value)
+                if(command_value != None):
+                    return command_value
+
         if hasattr(self.parsed_commands, command_name):
-            return getattr(self.parsed_commands, command_name)
-        else:
-            self.parser.print_help()
-            print("Command --" + command_name + " required.")
-            if message is not None:
-                print(message)
-            exit()
+            command_value = getattr(self.parsed_commands, command_name)
+            if(command_value != None):
+                return command_value
+
+        self.parser.print_help()
+        print("Command --" + command_name + " required.")
+        exit()
 
     """
     Returns the command if it exists, has been passed to the console, and is not None. Otherwise it returns whatever is passed as the default.
@@ -51,6 +58,7 @@ class CommandLineUtils:
         return default
 
     def get_args(self):
+        print("Starting get_args")
         # if we have already parsed, then return the cached parsed commands
         if self.parsed_commands is not None:
             return self.parsed_commands
@@ -64,10 +72,14 @@ class CommandLineUtils:
                 self.parser.add_argument("--" + command["name"], metavar=command["example_input"], help=command["help_output"],
                     required=command["required"], type=command["type"], default=command["default"], choices=command["choices"])
 
+        print("Commands added")
         self.parsed_commands = self.parser.parse_args()
+        print("self.parsed_commands = self.parser.parse_args()")
         # Automatically start logging if it is set
         if self.parsed_commands.verbosity:
             io.init_logging(getattr(io.LogLevel, self.parsed_commands.verbosity), 'stderr')
+
+        print("Finished get_args")
         return self.parsed_commands
 
     def update_command(self, command_name, new_example_input=None, new_help_output=None, new_required=None, new_type=None, new_default=None, new_action=None):
@@ -357,7 +369,7 @@ class CommandLineUtils:
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
         cmdData.input_thing_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_thing_name)
         cmdData.input_mode = cmdUtils.get_command(CommandLineUtils.m_cmd_mode, "both")
-        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_region)
+        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_region, CommandLineUtils.m_cmd_signing_region)
         cmdData.input_max_pub_ops = int(cmdUtils.get_command(CommandLineUtils.m_cmd_max_pub_ops, 10))
         cmdData.input_print_discovery_resp_only = bool(cmdUtils.get_command(CommandLineUtils.m_cmd_print_discovery_resp_only, False))
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
@@ -372,7 +384,10 @@ class CommandLineUtils:
         cmdUtils.add_common_logging_commands()
         cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
                                 "The signing region used for the websocket signer",
-                                True, str)
+                                False, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_region, "<str>",
+                                "The signing region used for the websocket signer",
+                                False, str)
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
                                 "Client ID to use for MQTT connection (optional, default='test-*').",
                                 default="test-" + str(uuid4()))
@@ -383,7 +398,7 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region, CommandLineUtils.m_cmd_region)
         cmdData.input_cognito_identity = cmdUtils.get_command_required(CommandLineUtils.m_cmd_cognito_identity)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
@@ -399,7 +414,10 @@ class CommandLineUtils:
         cmdUtils.add_common_custom_authorizer_commands()
         cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
                                 "The signing region used for the websocket signer",
-                                True, str)
+                                False, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_region, "<str>",
+                                "The signing region used for the websocket signer",
+                                False, str)
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
                                 "Client ID to use for MQTT connection (optional, default='test-*').",
                                 default="test-" + str(uuid4()))
@@ -407,7 +425,7 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region, CommandLineUtils.m_cmd_region)
         cmdData.input_custom_authorizer_name = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_name)
         cmdData.input_custom_authorizer_signature = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_signature)
         cmdData.input_custom_auth_password = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_password)
@@ -731,7 +749,10 @@ class CommandLineUtils:
         cmdUtils.add_common_logging_commands()
         cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
                                 "The signing region used for the websocket signer",
-                                True, str)
+                                False, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_region, "<str>",
+                                "The signing region used for the websocket signer",
+                                False, str)
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
                                 "Client ID to use for MQTT connection (optional, default='test-*').",
                                 default="test-" + str(uuid4()))
@@ -739,7 +760,7 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region, CommandLineUtils.m_cmd_region)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
@@ -775,7 +796,10 @@ class CommandLineUtils:
         cmdUtils.add_common_x509_commands()
         cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
                                 "The signing region used for the websocket signer",
-                                True, str)
+                                False, str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_region, "<str>",
+                                "The signing region used for the websocket signer",
+                                False, str)
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
                                 "Client ID to use for MQTT connection (optional, default='test-*').",
                                 default="test-" + str(uuid4()))
@@ -783,7 +807,7 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region)
+        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region, CommandLineUtils.m_cmd_region)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_proxy_host = cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_host)
         cmdData.input_proxy_port = int(cmdUtils.get_command(CommandLineUtils.m_cmd_proxy_port))
