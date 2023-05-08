@@ -55,7 +55,6 @@ class CommandLineUtils:
         return default
 
     def get_args(self):
-        print("Starting get_args")
         # if we have already parsed, then return the cached parsed commands
         if self.parsed_commands is not None:
             return self.parsed_commands
@@ -69,14 +68,11 @@ class CommandLineUtils:
                 self.parser.add_argument("--" + command["name"], metavar=command["example_input"], help=command["help_output"],
                     required=command["required"], type=command["type"], default=command["default"], choices=command["choices"])
 
-        print("Commands added")
         self.parsed_commands = self.parser.parse_args()
-        print("self.parsed_commands = self.parser.parse_args()")
         # Automatically start logging if it is set
         if self.parsed_commands.verbosity:
             io.init_logging(getattr(io.LogLevel, self.parsed_commands.verbosity), 'stderr')
 
-        print("Finished get_args")
         return self.parsed_commands
 
     def update_command(self, command_name, new_example_input=None, new_help_output=None, new_required=None, new_type=None, new_default=None, new_action=None):
