@@ -511,7 +511,14 @@ class GreengrassCoreIPCClientV2:
     def publish_to_iot_core(self, *,
         topic_name: typing.Optional[str] = None,
         qos: typing.Optional[str] = None,
-        payload: typing.Optional[typing.Union[bytes, str]] = None) -> model.PublishToIoTCoreResponse:
+        payload: typing.Optional[typing.Union[bytes, str]] = None,
+        retain: typing.Optional[bool] = None,
+        user_properties: typing.Optional[typing.List[model.UserProperty]] = None,
+        message_expiry_interval_seconds: typing.Optional[int] = None,
+        correlation_data: typing.Optional[typing.Union[bytes, str]] = None,
+        response_topic: typing.Optional[str] = None,
+        payload_format: typing.Optional[str] = None,
+        content_type: typing.Optional[str] = None) -> model.PublishToIoTCoreResponse:
         """
         Perform the PublishToIoTCore operation synchronously.
 
@@ -519,13 +526,27 @@ class GreengrassCoreIPCClientV2:
             topic_name: 
             qos: QOS enum value
             payload: 
+            retain: 
+            user_properties: 
+            message_expiry_interval_seconds: 
+            correlation_data: 
+            response_topic: 
+            payload_format: PayloadFormat enum value
+            content_type: 
         """
-        return self.publish_to_iot_core_async(topic_name=topic_name, qos=qos, payload=payload).result()
+        return self.publish_to_iot_core_async(topic_name=topic_name, qos=qos, payload=payload, retain=retain, user_properties=user_properties, message_expiry_interval_seconds=message_expiry_interval_seconds, correlation_data=correlation_data, response_topic=response_topic, payload_format=payload_format, content_type=content_type).result()
 
     def publish_to_iot_core_async(self, *,
         topic_name: typing.Optional[str] = None,
         qos: typing.Optional[str] = None,
-        payload: typing.Optional[typing.Union[bytes, str]] = None):  # type: (...) -> concurrent.futures.Future[model.PublishToIoTCoreResponse]
+        payload: typing.Optional[typing.Union[bytes, str]] = None,
+        retain: typing.Optional[bool] = None,
+        user_properties: typing.Optional[typing.List[model.UserProperty]] = None,
+        message_expiry_interval_seconds: typing.Optional[int] = None,
+        correlation_data: typing.Optional[typing.Union[bytes, str]] = None,
+        response_topic: typing.Optional[str] = None,
+        payload_format: typing.Optional[str] = None,
+        content_type: typing.Optional[str] = None):  # type: (...) -> concurrent.futures.Future[model.PublishToIoTCoreResponse]
         """
         Perform the PublishToIoTCore operation asynchronously.
 
@@ -533,8 +554,15 @@ class GreengrassCoreIPCClientV2:
             topic_name: 
             qos: QOS enum value
             payload: 
+            retain: 
+            user_properties: 
+            message_expiry_interval_seconds: 
+            correlation_data: 
+            response_topic: 
+            payload_format: PayloadFormat enum value
+            content_type: 
         """
-        request = model.PublishToIoTCoreRequest(topic_name=topic_name, qos=qos, payload=payload)
+        request = model.PublishToIoTCoreRequest(topic_name=topic_name, qos=qos, payload=payload, retain=retain, user_properties=user_properties, message_expiry_interval_seconds=message_expiry_interval_seconds, correlation_data=correlation_data, response_topic=response_topic, payload_format=payload_format, content_type=content_type)
         operation = self.client.new_publish_to_iot_core()
         write_future = operation.activate(request)
         return self.__combine_futures(write_future, operation.get_response())
