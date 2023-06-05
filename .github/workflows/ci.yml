@@ -305,7 +305,7 @@ jobs:
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
       - name: run Greengrass Discovery sample
         run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_greengrass_discovery.json
+          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_greengrass_discovery_cfg.json
 
   # check that docs can still build
   check-docs:
