@@ -28,7 +28,7 @@
             "data": "CI_GreenGrass_Thing"
         },
         {
-            "name": "--print_discovery_resp_only",
+            "name": "--print_discover_resp_only",
             "data": ""
         }
     ]
