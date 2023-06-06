@@ -25,7 +25,7 @@
         },
         {
             "name": "--thing_name",
-            "data": "CI_GreenGrass_Thing"
+            "data": "CI_GreenGrass_Thing_Test"
         },
         {
             "name": "--print_discover_resp_only",
