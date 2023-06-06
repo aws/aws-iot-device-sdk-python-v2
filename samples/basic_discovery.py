@@ -37,7 +37,11 @@ discovery_client = DiscoveryClient(
 resp_future = discovery_client.discover(cmdData.input_thing_name)
 discover_response = resp_future.result()
 
-print(discover_response)
+if (cmdData.input_is_ci):
+    print("Received a greengrass discovery result! Not showing result in CI for possible data sensitivity.")
+else:
+    print(discover_response)
+
 if (cmdData.input_print_discovery_resp_only):
     exit(0)
 

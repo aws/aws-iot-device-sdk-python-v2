@@ -1,0 +1,39 @@
+{
+    "language": "Python",
+    "sample_file": "./aws-iot-device-sdk-python-v2/samples/basic_discovery.py",
+    "sample_region": "us-east-1",
+    "sample_main_class": "",
+    "arguments": [
+        {
+            "name": "--cert",
+            "secret": "ci/Greengrass/cert",
+            "filename": "tmp_certificate.pem"
+        },
+        {
+            "name": "--key",
+            "secret": "ci/Greengrass/key",
+            "filename": "tmp_key.pem"
+        },
+        {
+            "name": "--ca_file",
+            "secret": "ci/Greengrass/ca",
+            "filename": "tmp_ca.pem"
+        },
+        {
+            "name": "--region",
+            "data": "us-east-1"
+        },
+        {
+            "name": "--thing_name",
+            "data": "CI_GreenGrass_Thing"
+        },
+        {
+            "name": "--is_ci",
+            "data": "true"
+        },
+        {
+            "name": "--print_discover_resp_only",
+            "data": ""
+        }
+    ]
+}
