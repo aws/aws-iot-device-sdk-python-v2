@@ -56,15 +56,32 @@ python -m pip install awsiotsdk
 # Create a workspace directory to hold all the SDK files
 mkdir sdk-workspace
 cd sdk-workspace
-# Clone the repository
-git clone https://github.com/aws/aws-iot-device-sdk-python-v2.git
+# Clone the repository, making sure to select the version of the SDK you desire.
+git clone -b v1.15.2 --single-branch --depth 1 https://github.com/aws/aws-iot-device-sdk-python-v2.git
+# The following step is required so that the package is installed with the correct version number.
+sed -i "s/__version__ = '1.0.0-dev'/__version__ = '1.15.2'/" aws-iot-device-sdk-python-v2/awsiot/__init__.py
 # Install using Pip (use 'python' instead of 'python3' on Windows)
 python3 -m pip install ./aws-iot-device-sdk-python-v2
 ```
 
 ### Installation Issues
 
-`awsiotsdk` depends on [awscrt](https://github.com/awslabs/aws-crt-python), which makes use of C extensions. Precompiled wheels are downloaded when installing on major platforms (Mac, Windows, Linux, Raspberry Pi OS). If wheels are unavailable for your platform, your machine must compile some C libraries.
+`awsiotsdk` depends on [awscrt](https://github.com/awslabs/aws-crt-python), which makes use of C extensions. Precompiled wheels are downloaded when installing on major platforms (Mac, Windows, Linux, Raspberry Pi OS). If wheels are unavailable for your platform, your machine must compile some C libraries. For example:
+
+```bash
+# Create a workspace directory to hold all the CRT files
+mkdir crt-workspace
+cd crt-workspace
+# Clone the repository, making sure to select the version required by the version of the SDK you want to use.
+git clone -b v0.16.19 --single-branch https://github.com/awslabs/aws-crt-python.git
+cd aws-crt-python
+git submodule update --init
+# This step is required so that Pip finds the correct version of the CRT when later installing the SDK.
+sed -i "s/__version__ = '1.0.0.dev0'/__version__ = '0.16.19'/" awscrt/__init__.py
+# Install using Pip
+# Note that in this example, the system's libcrypto is used.
+AWS_CRT_BUILD_USE_SYSTEM_LIBCRYPTO=1 python3 -m pip install --no-binary :all: --verbose .
+```
 
 If you encounter issues, see [Installation Issues](./documents/PREREQUISITES.md#installation-issues) and try again.
 
