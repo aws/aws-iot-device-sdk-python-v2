@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/pypi/v/awsiotsdk.svg?style=flat)](https://pypi.org/project/awsiotsdk/)
 
-This document provides information about the AWS IoT Device SDK v2 for Python.
+This document provides information about the AWS IoT Device SDK v2 for Python..
 
 If you have any issues or feature requests, please file an issue or pull request.
 
