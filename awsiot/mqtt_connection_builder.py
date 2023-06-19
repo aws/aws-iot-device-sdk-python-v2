@@ -39,30 +39,29 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
             *   `**kwargs` (dict): Forward-compatibility kwargs.
 
-    **on_connection_success** (`Callable`): Callback invoked whenever the MQTT connection
-        successfully connects. Function should take the following argumenta and return nothing:
+    **on_connection_success** (`Callable`): Callback invoked whenever the MQTT connection is lost.
+        The MQTT client will automatically attempt to reconnect.
+        The function should take the following arguments return nothing:
 
-            *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection
+            *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection.
 
-            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionSuccessData): The data returned from the
-                connection success.
+            *   `error` (:class:`awscrt.exceptions.AwsCrtError`): Exception which caused connection loss.
 
-    **on_connection_failure** (`Callable`): Callback invoked whenever the MQTT connection
-        attempt fails. Function should take the following argumenta and return nothing:
+    **on_connection_failure** (`Callable`): Callback invoked whenever the MQTT connection is lost.
+        The MQTT client will automatically attempt to reconnect.
+        The function should take the following arguments return nothing:
 
-            *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection
+            *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection.
 
-            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionFailureData): The data returned from the
-                connection failure.
+            *   `error` (:class:`awscrt.exceptions.AwsCrtError`): Exception which caused connection loss.
 
-    **on_connection_closed** (`Callable`): Callback invoked whenever the MQTT connection
-        has been disconnected and shutdown successfully. Function should take the following argumenta
-        and return nothing:
+    **on_connection_closed** (`Callable`): Callback invoked whenever the MQTT connection is lost.
+        The MQTT client will automatically attempt to reconnect.
+        The function should take the following arguments return nothing:
 
-            *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection
+            *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection.
 
-            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionClosedData): The data returned from the
-                connection close.
+            *   `error` (:class:`awscrt.exceptions.AwsCrtError`): Exception which caused connection loss.
 
     **clean_session** (`bool`): Whether or not to start a clean session with each reconnect.
         If True, the server will forget all subscriptions with each reconnect.
