@@ -39,6 +39,28 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
             *   `**kwargs` (dict): Forward-compatibility kwargs.
 
+    **on_connection_success** (`Callable`): Callback invoked whenever the MQTT connection
+        successfully connects. Function should take the following argumenta and return nothing:
+
+            *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection
+
+            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionSuccessData)
+
+    **on_connection_failure** (`Callable`): Callback invoked whenever the MQTT connection
+        attempt fails. Function should take the following argumenta and return nothing:
+
+            *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection
+
+            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionFailureData)
+
+    **on_connection_closed** (`Callable`): Callback invoked whenever the MQTT connection
+        has been disconnected and shutdown successfully. Function should take the following argumenta
+        and return nothing:
+
+            *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection
+
+            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionClosedData)
+
     **clean_session** (`bool`): Whether or not to start a clean session with each reconnect.
         If True, the server will forget all subscriptions with each reconnect.
         Set False to request that the server resume an existing session
