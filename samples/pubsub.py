@@ -58,6 +58,19 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     if received_count == cmdData.input_count:
         received_all_event.set()
 
+# Callback when the connection successfully connects
+def on_connection_success(connection, callback_data):
+    assert isinstance(callback_data, mqtt.OnConnectionSuccessData)
+    print("Connection Successfull with return code: {} session present: {}".format(callback_data.return_code, callback_data.session_present))
+
+# Callback when a connection attempt fails
+def on_connection_failure(connection, callback_data):
+    assert isinstance(callback_data, mqtt.OnConnectionFailuredata)
+    print("Connection failed with error code: {}".format(callback_data.error))
+
+# Callback when a connection has been disconnected or shutdown successfully
+def on_connection_closed(connection, callback_data):
+    print("Connection closed")
 
 if __name__ == '__main__':
     # Create the proxy options if the data is present in cmdData
@@ -79,7 +92,10 @@ if __name__ == '__main__':
         client_id=cmdData.input_clientId,
         clean_session=False,
         keep_alive_secs=30,
-        http_proxy_options=proxy_options)
+        http_proxy_options=proxy_options,
+        on_connection_success=on_connection_success,
+        on_connection_failure=on_connection_failure,
+        on_connection_closed=on_connection_closed)
 
     if not cmdData.input_is_ci:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")

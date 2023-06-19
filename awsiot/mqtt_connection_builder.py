@@ -230,6 +230,9 @@ def _builder(
         use_websockets=use_websockets,
         websocket_handshake_transform=websocket_handshake_transform,
         proxy_options=proxy_options,
+        on_connection_success=_get(kwargs, 'on_connection_success'),
+        on_connection_failure=_get(kwargs, 'on_connection_failure'),
+        on_connection_closed=_get(kwargs, 'on_connection_closed'),
     )
 
 
