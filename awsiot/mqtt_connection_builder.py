@@ -45,7 +45,7 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
             *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection.
 
-            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionSuccessData`): Exception which caused connection loss.
+            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionSuccessData`): The data returned from the connection success.
 
     **on_connection_failure** (`Callable`): Callback invoked whenever the MQTT connection is lost.
         The MQTT client will automatically attempt to reconnect.
@@ -53,7 +53,7 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
             *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection.
 
-            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionFailureData`): Exception which caused connection loss.
+            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionFailureData`): The data returned from the connection failure.
 
     **on_connection_closed** (`Callable`): Callback invoked whenever the MQTT connection is lost.
         The MQTT client will automatically attempt to reconnect.
@@ -61,7 +61,7 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
             *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection.
 
-            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionClosedData`): Exception which caused connection loss.
+            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionClosedData`): The data returned from the connection close.
 
     **clean_session** (`bool`): Whether or not to start a clean session with each reconnect.
         If True, the server will forget all subscriptions with each reconnect.
