@@ -61,7 +61,7 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
 # Callback when the connection successfully connects
 def on_connection_success(connection, callback_data):
     assert isinstance(callback_data, mqtt.OnConnectionSuccessData)
-    print("Connection Successfull with return code: {} session present: {}".format(callback_data.return_code, callback_data.session_present))
+    print("Connection Successful with return code: {} session present: {}".format(callback_data.return_code, callback_data.session_present))
 
 # Callback when a connection attempt fails
 def on_connection_failure(connection, callback_data):
