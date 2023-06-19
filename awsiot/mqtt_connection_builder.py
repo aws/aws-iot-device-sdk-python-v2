@@ -39,7 +39,7 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
             *   `**kwargs` (dict): Forward-compatibility kwargs.
 
-    **on_connection_success** (`Callable`): Callback invoked whenever the MQTT connection is lost.
+    **on_connection_success** (`Callable`): Optional callback invoked whenever the connection successfully connects.
         The MQTT client will automatically attempt to reconnect.
         The function should take the following arguments return nothing:
 
@@ -47,7 +47,7 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
             *   `callback_data` (:class:`awscrt.mqtt.OnConnectionSuccessData`): The data returned from the connection success.
 
-    **on_connection_failure** (`Callable`): Callback invoked whenever the MQTT connection is lost.
+    **on_connection_failure** (`Callable`): Optional callback invoked whenever the connection fails to connect.
         The MQTT client will automatically attempt to reconnect.
         The function should take the following arguments return nothing:
 
@@ -55,7 +55,7 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
             *   `callback_data` (:class:`awscrt.mqtt.OnConnectionFailureData`): The data returned from the connection failure.
 
-    **on_connection_closed** (`Callable`): Callback invoked whenever the MQTT connection is lost.
+    **on_connection_closed** (`Callable`): Optional callback invoked whenever the connection has been disconnected and shutdown successfully.
         The MQTT client will automatically attempt to reconnect.
         The function should take the following arguments return nothing:
 
