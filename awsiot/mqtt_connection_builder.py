@@ -39,6 +39,27 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
             *   `**kwargs` (dict): Forward-compatibility kwargs.
 
+    **on_connection_success** (`Callable`): Optional callback invoked whenever the connection successfully connects.
+        The function should take the following arguments and return nothing:
+
+            *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection.
+
+            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionSuccessData`): The data returned from the connection success.
+
+    **on_connection_failure** (`Callable`): Optional callback invoked whenever the connection fails to connect.
+        The function should take the following arguments and return nothing:
+
+            *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection.
+
+            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionFailureData`): The data returned from the connection failure.
+
+    **on_connection_closed** (`Callable`): Optional callback invoked whenever the connection has been disconnected and shutdown successfully.
+        The function should take the following arguments and return nothing:
+
+            *   `connection` (:class:`awscrt.mqtt.Connection`): This MQTT Connection.
+
+            *   `callback_data` (:class:`awscrt.mqtt.OnConnectionClosedData`): The data returned from the connection close.
+
     **clean_session** (`bool`): Whether or not to start a clean session with each reconnect.
         If True, the server will forget all subscriptions with each reconnect.
         Set False to request that the server resume an existing session
@@ -230,6 +251,9 @@ def _builder(
         use_websockets=use_websockets,
         websocket_handshake_transform=websocket_handshake_transform,
         proxy_options=proxy_options,
+        on_connection_success=_get(kwargs, 'on_connection_success'),
+        on_connection_failure=_get(kwargs, 'on_connection_failure'),
+        on_connection_closed=_get(kwargs, 'on_connection_closed'),
     )
 
 
