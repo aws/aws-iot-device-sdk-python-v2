@@ -52,36 +52,49 @@ python -m pip install awsiotsdk
 
 ### Install from source
 
-```
-# Create a workspace directory to hold all the SDK files
+```bash
+# 1. Create a workspace directory to hold all the SDK files
 mkdir sdk-workspace
 cd sdk-workspace
-# Clone the repository, making sure to select the version of the SDK you desire.
-git clone -b v1.15.2 --single-branch --depth 1 https://github.com/aws/aws-iot-device-sdk-python-v2.git
-# The following step is required so that the package is installed with the correct version number.
-sed -i "s/__version__ = '1.0.0-dev'/__version__ = '1.15.2'/" aws-iot-device-sdk-python-v2/awsiot/__init__.py
-# Install using Pip (use 'python' instead of 'python3' on Windows)
+
+# 2. Clone the repository. You could select the version of the SDK you desire to use.
+git clone -b <SDK_VERSION> https://github.com/aws/aws-iot-device-sdk-python-v2.git
+
+# 3. (Optional) Setup the version number of your local build. The default version for awsiotsdk is set to "1.0.0-dev", you can set the version number of the local build in "aws-iot-device-sdk-python-v2/awsiot/__init__.py"
+sed -i "s/__version__ = '1.0.0-dev'/__version__ = '<SDK_VERSION>'/" aws-iot-device-sdk-python-v2/awsiot/__init__.py
+
+# 4. Install using Pip (use 'python' instead of 'python3' on Windows)
 python3 -m pip install ./aws-iot-device-sdk-python-v2
 ```
+
 
 ### Installation Issues
 
 `awsiotsdk` depends on [awscrt](https://github.com/awslabs/aws-crt-python), which makes use of C extensions. Precompiled wheels are downloaded when installing on major platforms (Mac, Windows, Linux, Raspberry Pi OS). If wheels are unavailable for your platform, your machine must compile some C libraries. For example:
 
 ```bash
-# Create a workspace directory to hold all the CRT files
+# 1. Create a workspace directory to hold all the CRT files
 mkdir crt-workspace
 cd crt-workspace
-# Clone the repository, making sure to select the version required by the version of the SDK you want to use.
-git clone -b v0.16.19 --single-branch https://github.com/awslabs/aws-crt-python.git
+
+# 2. Clone the repository, you could select the version you would like to use. You can find the awscrt version used by the current SDK from the file "./aws-iot-device-sdk-python-v2/setup.py". Update the version number in "./aws-iot-device-sdk-python-v2/setup.py" can change the awscrt version you would like to use in awsiotsdk
+git clone -b <CRT_VERSION> https://github.com/awslabs/aws-crt-python.git
+
+# 3. Update the submodules
 cd aws-crt-python
-git submodule update --init
-# This step is required so that Pip finds the correct version of the CRT when later installing the SDK.
-sed -i "s/__version__ = '1.0.0.dev0'/__version__ = '0.16.19'/" awscrt/__init__.py
-# Install using Pip
-# Note that in this example, the system's libcrypto is used.
-AWS_CRT_BUILD_USE_SYSTEM_LIBCRYPTO=1 python3 -m pip install --no-binary :all: --verbose .
+git submodule update --init --recursive
+
+# 4. (Optional) Setup the version number of your local build. Similar to the awsiotsdk, the default version for awscrt is set to "1.0.0-dev", you can set the version number of the local build in "./aws-crt-python/awscrt/__init__.py". The awscrt version set here need to match the version specified in "./aws-iot-device-sdk-python-v2/setup.py" so that the awsiotsdk could locate the correct awscrt library.
+sed -i "s/__version__ = '1.0.0.dev0'/__version__ = '<CRT_VERSION>'/" awscrt/__init__.py
+
+# 5. Install using Pip
+python3 -m pip install .
 ```
+If you need aws-crt-python to use the libcrypto included on your system, set environment variable AWS_CRT_BUILD_USE_SYSTEM_LIBCRYPTO=1 while building from source:
+```
+AWS_CRT_BUILD_USE_SYSTEM_LIBCRYPTO=1 python3 -m pip install --no-binary :all: --verbose awscrt
+```
+( --no-binary :all: ensures you do not use the precompiled wheel from PyPI)
 
 If you encounter issues, see [Installation Issues](./documents/PREREQUISITES.md#installation-issues) and try again.
 
