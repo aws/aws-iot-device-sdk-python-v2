@@ -234,64 +234,64 @@ class CommandLineUtils:
 
     class CmdData:
         # General use
-        input_endpoint : str
-        input_cert : str
-        input_key : str
-        input_ca : str
-        input_clientId : str
-        input_port : int
-        input_is_ci : bool
-        input_use_websockets : bool
+        input_endpoint = str
+        input_cert = str
+        input_key = str
+        input_ca = str
+        input_clientId = str
+        input_port = int
+        input_is_ci = bool
+        input_use_websockets = bool
         # Proxy
-        input_proxy_host : str
-        input_proxy_port : int
+        input_proxy_host = str
+        input_proxy_port = int
         # PubSub
-        input_topic : str
-        input_message : str
-        input_count : int
+        input_topic = str
+        input_message = str
+        input_count = int
         # Websockets
-        input_signing_region : str
+        input_signing_region = str
         # Cognito
-        input_cognito_identity : str
+        input_cognito_identity = str
         # Custom auth
-        input_custom_auth_username : str
-        input_custom_authorizer_name : str
-        input_custom_authorizer_signature : str
-        input_custom_auth_password : str
-        input_custom_authorizer_token_key_name : str
-        input_custom_authorizer_token_value : str
+        input_custom_auth_username = str
+        input_custom_authorizer_name = str
+        input_custom_authorizer_signature = str
+        input_custom_auth_password = str
+        input_custom_authorizer_token_key_name = str
+        input_custom_authorizer_token_value = str
         # Fleet provisioning
-        input_template_name : str
-        input_template_parameters : str
-        input_csr_path : str
+        input_template_name = str
+        input_template_parameters = str
+        input_csr_path = str
         # Services (Shadow, Jobs, Greengrass, etc)
-        input_thing_name : str
-        input_mode : str
+        input_thing_name = str
+        input_mode = str
         # Shared Subscription
-        input_group_identifier : str
+        input_group_identifier = str
         # PKCS#11
-        input_pkcs11_lib_path : str
-        input_pkcs11_user_pin : str
-        input_pkcs11_token_label : str
-        input_pkcs11_slot_id : int
-        input_pkcs11_key_label : str
+        input_pkcs11_lib_path = str
+        input_pkcs11_user_pin = str
+        input_pkcs11_token_label = str
+        input_pkcs11_slot_id = int
+        input_pkcs11_key_label = str
         # X509
-        input_x509_endpoint : str
-        input_x509_role : str
-        input_x509_thing_name : str
-        input_x509_cert : str
-        input_x509_key : str
-        input_x509_ca : str
+        input_x509_endpoint = str
+        input_x509_role = str
+        input_x509_thing_name = str
+        input_x509_cert = str
+        input_x509_key = str
+        input_x509_ca = str
         # Basic discovery
-        input_max_pub_ops : int
-        input_print_discovery_resp_only : bool
+        input_max_pub_ops = int
+        input_print_discovery_resp_only = bool
         # Jobs
-        input_job_time : int
+        input_job_time = int
         # Shadow
-        input_shadow_property : str
+        input_shadow_property = str
         # PKCS12
-        input_pkcs12_file : str
-        input_pkcs12_password : str
+        input_pkcs12_file = str
+        input_pkcs12_password = str
 
         def __init__(self) -> None:
             pass
@@ -342,7 +342,7 @@ class CommandLineUtils:
         cmdUtils.register_command(CommandLineUtils.m_cmd_thing_name, "<str>", "The name assigned to your IoT Thing", required=True)
         cmdUtils.register_command(
             CommandLineUtils.m_cmd_mode, "<mode>",
-            f"The operation mode (optional, default='both').\nModes:{allowed_actions}", default='both')
+            "The operation mode (optional, default='both').\nModes:{allowed_actions}", default='both')
         cmdUtils.register_command(CommandLineUtils.m_cmd_region, "<str>", "The region to connect through.", required=True)
         cmdUtils.register_command(
             CommandLineUtils.m_cmd_max_pub_ops, "<int>",
