@@ -33,6 +33,7 @@ class GreengrassCoreIPCClientV2:
         if executor is True:
             executor = concurrent.futures.ThreadPoolExecutor()
         self.executor = executor
+        self.ignore_executor_exceptions = False
 
     def close(self, *, executor_wait=True) -> concurrent.futures.Future:
         """
@@ -49,6 +50,9 @@ class GreengrassCoreIPCClientV2:
             of None if the shutdown was clean and user-initiated.
         """
         fut = self.client.close()
+
+        # events that arrive during the shutdown process will generate executor exceptions, ignore them
+        self.ignore_executor_exceptions	= True
         if self.executor is not None:
             self.executor.shutdown(wait=executor_wait)
         return fut
@@ -84,7 +88,11 @@ class GreengrassCoreIPCClientV2:
             on_stream_event = real_self.__wrap_error(on_stream_event)
             def handler(self, event):
                 if real_self.executor is not None:
-                    real_self.executor.submit(on_stream_event, event)
+                    try:
+                        real_self.executor.submit(on_stream_event, event)
+                    except RuntimeError:
+                        if not real_self.ignore_executor_exceptions:
+                            raise
                 else:
                     on_stream_event(event)
             setattr(stream_handler_type, "on_stream_event", handler)
@@ -97,7 +105,11 @@ class GreengrassCoreIPCClientV2:
             on_stream_closed = real_self.__wrap_error(on_stream_closed)
             def handler(self):
                 if real_self.executor is not None:
-                    real_self.executor.submit(on_stream_closed)
+                    try:
+                        real_self.executor.submit(on_stream_closed)
+                    except RuntimeError:
+                        if real_self.ignore_executor_exceptions:
+                            raise
                 else:
                     on_stream_closed()
             setattr(stream_handler_type, "on_stream_closed", handler)
@@ -144,6 +156,29 @@ class GreengrassCoreIPCClientV2:
         write_future = operation.activate(request)
         return self.__combine_futures(write_future, operation.get_response())
 
+    def cancel_local_deployment(self, *,
+        deployment_id: typing.Optional[str] = None) -> model.CancelLocalDeploymentResponse:
+        """
+        Perform the CancelLocalDeployment operation synchronously.
+
+        Args:
+            deployment_id: 
+        """
+        return self.cancel_local_deployment_async(deployment_id=deployment_id).result()
+
+    def cancel_local_deployment_async(self, *,
+        deployment_id: typing.Optional[str] = None):  # type: (...) -> concurrent.futures.Future[model.CancelLocalDeploymentResponse]
+        """
+        Perform the CancelLocalDeployment operation asynchronously.
+
+        Args:
+            deployment_id: 
+        """
+        request = model.CancelLocalDeploymentRequest(deployment_id=deployment_id)
+        operation = self.client.new_cancel_local_deployment()
+        write_future = operation.activate(request)
+        return self.__combine_futures(write_future, operation.get_response())
+
     def create_debug_password(self) -> model.CreateDebugPasswordResponse:
         """
         Perform the CreateDebugPassword operation synchronously.
@@ -168,7 +203,8 @@ class GreengrassCoreIPCClientV2:
         component_to_configuration: typing.Optional[typing.Dict[str, typing.Dict[str, typing.Any]]] = None,
         component_to_run_with_info: typing.Optional[typing.Dict[str, model.RunWithInfo]] = None,
         recipe_directory_path: typing.Optional[str] = None,
-        artifacts_directory_path: typing.Optional[str] = None) -> model.CreateLocalDeploymentResponse:
+        artifacts_directory_path: typing.Optional[str] = None,
+        failure_handling_policy: typing.Optional[str] = None) -> model.CreateLocalDeploymentResponse:
         """
         Perform the CreateLocalDeployment operation synchronously.
 
@@ -180,8 +216,9 @@ class GreengrassCoreIPCClientV2:
             component_to_run_with_info: 
             recipe_directory_path: 
             artifacts_directory_path: 
+            failure_handling_policy: FailureHandlingPolicy enum value
         """
-        return self.create_local_deployment_async(group_name=group_name, root_component_versions_to_add=root_component_versions_to_add, root_components_to_remove=root_components_to_remove, component_to_configuration=component_to_configuration, component_to_run_with_info=component_to_run_with_info, recipe_directory_path=recipe_directory_path, artifacts_directory_path=artifacts_directory_path).result()
+        return self.create_local_deployment_async(group_name=group_name, root_component_versions_to_add=root_component_versions_to_add, root_components_to_remove=root_components_to_remove, component_to_configuration=component_to_configuration, component_to_run_with_info=component_to_run_with_info, recipe_directory_path=recipe_directory_path, artifacts_directory_path=artifacts_directory_path, failure_handling_policy=failure_handling_policy).result()
 
     def create_local_deployment_async(self, *,
         group_name: typing.Optional[str] = None,
@@ -190,7 +227,8 @@ class GreengrassCoreIPCClientV2:
         component_to_configuration: typing.Optional[typing.Dict[str, typing.Dict[str, typing.Any]]] = None,
         component_to_run_with_info: typing.Optional[typing.Dict[str, model.RunWithInfo]] = None,
         recipe_directory_path: typing.Optional[str] = None,
-        artifacts_directory_path: typing.Optional[str] = None):  # type: (...) -> concurrent.futures.Future[model.CreateLocalDeploymentResponse]
+        artifacts_directory_path: typing.Optional[str] = None,
+        failure_handling_policy: typing.Optional[str] = None):  # type: (...) -> concurrent.futures.Future[model.CreateLocalDeploymentResponse]
         """
         Perform the CreateLocalDeployment operation asynchronously.
 
@@ -202,8 +240,9 @@ class GreengrassCoreIPCClientV2:
             component_to_run_with_info: 
             recipe_directory_path: 
             artifacts_directory_path: 
+            failure_handling_policy: FailureHandlingPolicy enum value
         """
-        request = model.CreateLocalDeploymentRequest(group_name=group_name, root_component_versions_to_add=root_component_versions_to_add, root_components_to_remove=root_components_to_remove, component_to_configuration=component_to_configuration, component_to_run_with_info=component_to_run_with_info, recipe_directory_path=recipe_directory_path, artifacts_directory_path=artifacts_directory_path)
+        request = model.CreateLocalDeploymentRequest(group_name=group_name, root_component_versions_to_add=root_component_versions_to_add, root_components_to_remove=root_components_to_remove, component_to_configuration=component_to_configuration, component_to_run_with_info=component_to_run_with_info, recipe_directory_path=recipe_directory_path, artifacts_directory_path=artifacts_directory_path, failure_handling_policy=failure_handling_policy)
         operation = self.client.new_create_local_deployment()
         write_future = operation.activate(request)
         return self.__combine_futures(write_future, operation.get_response())
