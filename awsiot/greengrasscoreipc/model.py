@@ -28,6 +28,18 @@ class GreengrassCoreIPCError(rpc.ErrorShape):
         return self._get_error_type_string() == 'client'
 
 
+class DetailedDeploymentStatus:
+    """
+    DetailedDeploymentStatus enum
+    """
+
+    SUCCESSFUL = 'SUCCESSFUL'
+    FAILED_NO_STATE_CHANGE = 'FAILED_NO_STATE_CHANGE'
+    FAILED_ROLLBACK_NOT_REQUESTED = 'FAILED_ROLLBACK_NOT_REQUESTED'
+    FAILED_ROLLBACK_COMPLETE = 'FAILED_ROLLBACK_COMPLETE'
+    REJECTED = 'REJECTED'
+
+
 class UserProperty(rpc.Shape):
     """
     UserProperty
@@ -158,6 +170,95 @@ class SystemResourceLimits(rpc.Shape):
         return False
 
 
+class DeploymentStatusDetails(rpc.Shape):
+    """
+    DeploymentStatusDetails
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        detailed_deployment_status: DetailedDeploymentStatus enum value. The detailed deployment status of the local deployment.
+        deployment_error_stack: (Optional) The list of local deployment errors
+        deployment_error_types: (Optional) The list of local deployment error types
+        deployment_failure_cause: (Optional) The cause of local deployment failure
+
+    Attributes:
+        detailed_deployment_status: DetailedDeploymentStatus enum value. The detailed deployment status of the local deployment.
+        deployment_error_stack: (Optional) The list of local deployment errors
+        deployment_error_types: (Optional) The list of local deployment error types
+        deployment_failure_cause: (Optional) The cause of local deployment failure
+    """
+
+    def __init__(self, *,
+                 detailed_deployment_status: typing.Optional[str] = None,
+                 deployment_error_stack: typing.Optional[typing.List[str]] = None,
+                 deployment_error_types: typing.Optional[typing.List[str]] = None,
+                 deployment_failure_cause: typing.Optional[str] = None):
+        super().__init__()
+        self.detailed_deployment_status = detailed_deployment_status  # type: typing.Optional[str]
+        self.deployment_error_stack = deployment_error_stack  # type: typing.Optional[typing.List[str]]
+        self.deployment_error_types = deployment_error_types  # type: typing.Optional[typing.List[str]]
+        self.deployment_failure_cause = deployment_failure_cause  # type: typing.Optional[str]
+
+    def set_detailed_deployment_status(self, detailed_deployment_status: str):
+        self.detailed_deployment_status = detailed_deployment_status
+        return self
+
+    def set_deployment_error_stack(self, deployment_error_stack: typing.List[str]):
+        self.deployment_error_stack = deployment_error_stack
+        return self
+
+    def set_deployment_error_types(self, deployment_error_types: typing.List[str]):
+        self.deployment_error_types = deployment_error_types
+        return self
+
+    def set_deployment_failure_cause(self, deployment_failure_cause: str):
+        self.deployment_failure_cause = deployment_failure_cause
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.detailed_deployment_status is not None:
+            payload['detailedDeploymentStatus'] = self.detailed_deployment_status
+        if self.deployment_error_stack is not None:
+            payload['deploymentErrorStack'] = self.deployment_error_stack
+        if self.deployment_error_types is not None:
+            payload['deploymentErrorTypes'] = self.deployment_error_types
+        if self.deployment_failure_cause is not None:
+            payload['deploymentFailureCause'] = self.deployment_failure_cause
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'detailedDeploymentStatus' in payload:
+            new.detailed_deployment_status = payload['detailedDeploymentStatus']
+        if 'deploymentErrorStack' in payload:
+            new.deployment_error_stack = payload['deploymentErrorStack']
+        if 'deploymentErrorTypes' in payload:
+            new.deployment_error_types = payload['deploymentErrorTypes']
+        if 'deploymentFailureCause' in payload:
+            new.deployment_failure_cause = payload['deploymentFailureCause']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#DeploymentStatusDetails'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
 class DeploymentStatus:
     """
     DeploymentStatus enum
@@ -167,6 +268,7 @@ class DeploymentStatus:
     IN_PROGRESS = 'IN_PROGRESS'
     SUCCEEDED = 'SUCCEEDED'
     FAILED = 'FAILED'
+    CANCELED = 'CANCELED'
 
 
 class LifecycleState:
@@ -345,18 +447,26 @@ class LocalDeployment(rpc.Shape):
     Keyword Args:
         deployment_id: The ID of the local deployment.
         status: DeploymentStatus enum value. The status of the local deployment.
+        created_on: (Optional) The timestamp at which the local deployment was created in MM/dd/yyyy hh:mm:ss format
+        deployment_status_details: (Optional) The status details of the local deployment.
 
     Attributes:
         deployment_id: The ID of the local deployment.
         status: DeploymentStatus enum value. The status of the local deployment.
+        created_on: (Optional) The timestamp at which the local deployment was created in MM/dd/yyyy hh:mm:ss format
+        deployment_status_details: (Optional) The status details of the local deployment.
     """
 
     def __init__(self, *,
                  deployment_id: typing.Optional[str] = None,
-                 status: typing.Optional[str] = None):
+                 status: typing.Optional[str] = None,
+                 created_on: typing.Optional[str] = None,
+                 deployment_status_details: typing.Optional[DeploymentStatusDetails] = None):
         super().__init__()
         self.deployment_id = deployment_id  # type: typing.Optional[str]
         self.status = status  # type: typing.Optional[str]
+        self.created_on = created_on  # type: typing.Optional[str]
+        self.deployment_status_details = deployment_status_details  # type: typing.Optional[DeploymentStatusDetails]
 
     def set_deployment_id(self, deployment_id: str):
         self.deployment_id = deployment_id
@@ -366,6 +476,14 @@ class LocalDeployment(rpc.Shape):
         self.status = status
         return self
 
+    def set_created_on(self, created_on: str):
+        self.created_on = created_on
+        return self
+
+    def set_deployment_status_details(self, deployment_status_details: DeploymentStatusDetails):
+        self.deployment_status_details = deployment_status_details
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -373,6 +491,10 @@ class LocalDeployment(rpc.Shape):
             payload['deploymentId'] = self.deployment_id
         if self.status is not None:
             payload['status'] = self.status
+        if self.created_on is not None:
+            payload['createdOn'] = self.created_on
+        if self.deployment_status_details is not None:
+            payload['deploymentStatusDetails'] = self.deployment_status_details._to_payload()
         return payload
 
     @classmethod
@@ -382,6 +504,10 @@ class LocalDeployment(rpc.Shape):
             new.deployment_id = payload['deploymentId']
         if 'status' in payload:
             new.status = payload['status']
+        if 'createdOn' in payload:
+            new.created_on = payload['createdOn']
+        if 'deploymentStatusDetails' in payload:
+            new.deployment_status_details = DeploymentStatusDetails._from_payload(payload['deploymentStatusDetails'])
         return new
 
     @classmethod
@@ -1299,6 +1425,15 @@ class MQTTMessage(rpc.Shape):
         if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
+
+
+class FailureHandlingPolicy:
+    """
+    FailureHandlingPolicy enum
+    """
+
+    ROLLBACK = 'ROLLBACK'
+    DO_NOTHING = 'DO_NOTHING'
 
 
 class RequestStatus:
@@ -2372,6 +2507,7 @@ class CreateLocalDeploymentRequest(rpc.Shape):
         component_to_run_with_info: Map of component names to component run as info.
         recipe_directory_path: All recipes files in this directory will be copied over to the Greengrass package store.
         artifacts_directory_path: All artifact files in this directory will be copied over to the Greengrass package store.
+        failure_handling_policy: FailureHandlingPolicy enum value. Deployment failure handling policy.
 
     Attributes:
         group_name: The thing group name the deployment is targeting. If the group name is not specified, "LOCAL_DEPLOYMENT" will be used.
@@ -2381,6 +2517,7 @@ class CreateLocalDeploymentRequest(rpc.Shape):
         component_to_run_with_info: Map of component names to component run as info.
         recipe_directory_path: All recipes files in this directory will be copied over to the Greengrass package store.
         artifacts_directory_path: All artifact files in this directory will be copied over to the Greengrass package store.
+        failure_handling_policy: FailureHandlingPolicy enum value. Deployment failure handling policy.
     """
 
     def __init__(self, *,
@@ -2390,7 +2527,8 @@ class CreateLocalDeploymentRequest(rpc.Shape):
                  component_to_configuration: typing.Optional[typing.Dict[str, typing.Dict[str, typing.Any]]] = None,
                  component_to_run_with_info: typing.Optional[typing.Dict[str, RunWithInfo]] = None,
                  recipe_directory_path: typing.Optional[str] = None,
-                 artifacts_directory_path: typing.Optional[str] = None):
+                 artifacts_directory_path: typing.Optional[str] = None,
+                 failure_handling_policy: typing.Optional[str] = None):
         super().__init__()
         self.group_name = group_name  # type: typing.Optional[str]
         self.root_component_versions_to_add = root_component_versions_to_add  # type: typing.Optional[typing.Dict[str, str]]
@@ -2399,6 +2537,7 @@ class CreateLocalDeploymentRequest(rpc.Shape):
         self.component_to_run_with_info = component_to_run_with_info  # type: typing.Optional[typing.Dict[str, RunWithInfo]]
         self.recipe_directory_path = recipe_directory_path  # type: typing.Optional[str]
         self.artifacts_directory_path = artifacts_directory_path  # type: typing.Optional[str]
+        self.failure_handling_policy = failure_handling_policy  # type: typing.Optional[str]
 
     def set_group_name(self, group_name: str):
         self.group_name = group_name
@@ -2428,6 +2567,10 @@ class CreateLocalDeploymentRequest(rpc.Shape):
         self.artifacts_directory_path = artifacts_directory_path
         return self
 
+    def set_failure_handling_policy(self, failure_handling_policy: str):
+        self.failure_handling_policy = failure_handling_policy
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -2445,6 +2588,8 @@ class CreateLocalDeploymentRequest(rpc.Shape):
             payload['recipeDirectoryPath'] = self.recipe_directory_path
         if self.artifacts_directory_path is not None:
             payload['artifactsDirectoryPath'] = self.artifacts_directory_path
+        if self.failure_handling_policy is not None:
+            payload['failureHandlingPolicy'] = self.failure_handling_policy
         return payload
 
     @classmethod
@@ -2464,6 +2609,8 @@ class CreateLocalDeploymentRequest(rpc.Shape):
             new.recipe_directory_path = payload['recipeDirectoryPath']
         if 'artifactsDirectoryPath' in payload:
             new.artifacts_directory_path = payload['artifactsDirectoryPath']
+        if 'failureHandlingPolicy' in payload:
+            new.failure_handling_policy = payload['failureHandlingPolicy']
         return new
 
     @classmethod
@@ -3179,6 +3326,112 @@ class ListNamedShadowsForThingRequest(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#ListNamedShadowsForThingRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class CancelLocalDeploymentResponse(rpc.Shape):
+    """
+    CancelLocalDeploymentResponse
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        message: 
+
+    Attributes:
+        message: 
+    """
+
+    def __init__(self, *,
+                 message: typing.Optional[str] = None):
+        super().__init__()
+        self.message = message  # type: typing.Optional[str]
+
+    def set_message(self, message: str):
+        self.message = message
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.message is not None:
+            payload['message'] = self.message
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'message' in payload:
+            new.message = payload['message']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#CancelLocalDeploymentResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class CancelLocalDeploymentRequest(rpc.Shape):
+    """
+    CancelLocalDeploymentRequest
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        deployment_id: (Optional) The ID of the local deployment to cancel.
+
+    Attributes:
+        deployment_id: (Optional) The ID of the local deployment to cancel.
+    """
+
+    def __init__(self, *,
+                 deployment_id: typing.Optional[str] = None):
+        super().__init__()
+        self.deployment_id = deployment_id  # type: typing.Optional[str]
+
+    def set_deployment_id(self, deployment_id: str):
+        self.deployment_id = deployment_id
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.deployment_id is not None:
+            payload['deploymentId'] = self.deployment_id
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'deploymentId' in payload:
+            new.deployment_id = payload['deploymentId']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#CancelLocalDeploymentRequest'
 
     def __repr__(self):
         attrs = []
@@ -6512,6 +6765,7 @@ class SubscribeToIoTCoreRequest(rpc.Shape):
 SHAPE_INDEX = rpc.ShapeIndex([
     UserProperty,
     SystemResourceLimits,
+    DeploymentStatusDetails,
     MessageContext,
     RunWithInfo,
     LocalDeployment,
@@ -6547,6 +6801,8 @@ SHAPE_INDEX = rpc.ShapeIndex([
     SubscribeToComponentUpdatesRequest,
     ListNamedShadowsForThingResponse,
     ListNamedShadowsForThingRequest,
+    CancelLocalDeploymentResponse,
+    CancelLocalDeploymentRequest,
     UpdateStateResponse,
     UpdateStateRequest,
     GetSecretValueResponse,
@@ -6625,6 +6881,28 @@ class _AuthorizeClientDeviceActionOperation(rpc.ClientOperation):
     @classmethod
     def _response_type(cls):
         return AuthorizeClientDeviceActionResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return None
+
+
+class _CancelLocalDeploymentOperation(rpc.ClientOperation):
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#CancelLocalDeployment'
+
+    @classmethod
+    def _request_type(cls):
+        return CancelLocalDeploymentRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return CancelLocalDeploymentResponse
 
     @classmethod
     def _response_stream_type(cls):

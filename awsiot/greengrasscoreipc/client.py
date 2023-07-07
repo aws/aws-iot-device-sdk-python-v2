@@ -42,6 +42,40 @@ class AuthorizeClientDeviceActionOperation(model._AuthorizeClientDeviceActionOpe
         return super().close()
 
 
+class CancelLocalDeploymentOperation(model._CancelLocalDeploymentOperation):
+    """
+    CancelLocalDeploymentOperation
+
+    Create with GreengrassCoreIPCClient.new_cancel_local_deployment()
+    """
+
+    def activate(self, request: model.CancelLocalDeploymentRequest):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Activate this operation by sending the initial CancelLocalDeploymentRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.CancelLocalDeploymentResponse]
+        """
+        Returns a Future which completes with a result of CancelLocalDeploymentResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
 class CreateDebugPasswordOperation(model._CreateDebugPasswordOperation):
     """
     CreateDebugPasswordOperation
@@ -1326,6 +1360,16 @@ class GreengrassCoreIPCClient(rpc.Client):
         events to fire.
         """
         return self._new_operation(AuthorizeClientDeviceActionOperation)
+
+    def new_cancel_local_deployment(self) -> CancelLocalDeploymentOperation:
+        """
+        Create a new CancelLocalDeploymentOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+        """
+        return self._new_operation(CancelLocalDeploymentOperation)
 
     def new_create_debug_password(self) -> CreateDebugPasswordOperation:
         """
