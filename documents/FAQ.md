@@ -1,5 +1,15 @@
 # Frequently Asked Questions
 
+*__Jump To:__*
+* [Where should I start](#where-should-i-start)
+* [How do I enable logging](#how-do-i-enable-logging)
+* [I keep getting AWS_ERROR_MQTT_UNEXPECTED_HANGUP](#i-keep-getting-aws_error_mqtt_unexpected_hangup)
+* [I am experiencing deadlocks](#i-am-experiencing-deadlocks)
+* [Mac-Only TLS Behavior](#mac-only-tls-behavior)
+* [How do debug in VSCode?](#how-do-debug-in-vscode)
+* [What certificates do I need?](#what-certificates-do-i-need)
+* [I still have more questions about this sdk?](#i-still-have-more-questions-about-this-sdk)
+
 ### Where should I start?
 
 If you are just getting started make sure you [install this sdk](https://github.com/aws/aws-iot-device-sdk-python-v2#installation) and then build and run the [basic PubSub](https://github.com/aws/aws-iot-device-sdk-python-v2/tree/main/samples#pubsub)
