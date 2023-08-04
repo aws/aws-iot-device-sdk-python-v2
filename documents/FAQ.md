@@ -96,7 +96,7 @@ Here is an example launch.json file to run the pubsub sample
         * You should have generated/downloaded private and public keys that will be used to verify that communications are coming from you
         * When using samples you only need the private key and it will look like this: `--key abcde12345-private.pem.key`
 
-### I still have more questions about the this sdk?
+### I still have more questions about this sdk?
 
 * [Here](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html) are the AWS IoT Core docs for more details about IoT Core
 * [Here](https://docs.aws.amazon.com/greengrass/v2/developerguide/what-is-iot-greengrass.html) are the AWS IoT Greengrass v2 docs for more details about greengrass
