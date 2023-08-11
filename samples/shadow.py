@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 from time import sleep
-from awscrt import mqtt, http
-from awsiot import iotshadow, mqtt_connection_builder
+from awscrt import mqtt5, http
+from awsiot import iotshadow, mqtt5_client_builder
 from concurrent.futures import Future
 import sys
 import threading
@@ -37,10 +37,13 @@ cmdData = CommandLineUtils.parse_sample_input_shadow()
 
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
-mqtt_connection = None
+mqtt5_client = None
+future_stopped = Future()
+future_connection_success = Future()
 shadow_thing_name = cmdData.input_thing_name
 shadow_property = cmdData.input_shadow_property
 
+TIMEOUT = 100
 SHADOW_VALUE_DEFAULT = "off"
 
 
@@ -66,19 +69,27 @@ def exit(msg_or_exception):
 
     with locked_data.lock:
         if not locked_data.disconnect_called:
-            print("Disconnecting...")
+            print("Stop the client...")
             locked_data.disconnect_called = True
-            future = mqtt_connection.disconnect()
-            future.add_done_callback(on_disconnected)
+            mqtt5_client.stop()
+            # Signal that sample is finished
+            future_stopped.result(TIMEOUT)
 
+# Callback for the lifecycle event Connection Success
+def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.LifecycleConnectSuccessData):
+    print("Lifecycle Connection Success")
+    global future_connection_success
+    future_connection_success.set_result(lifecycle_connect_success_data)
 
-def on_disconnected(disconnect_future):
+# Callback for the lifecycle event on Client Stopped
+def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
     # type: (Future) -> None
-    print("Disconnected.")
+    print("Client Stopped.")
+    global future_stopped
+    future_stopped.set_result(lifecycle_stopped_data)
 
     # Signal that sample is finished
     is_sample_done.set()
-
 
 def on_get_shadow_accepted(response):
     # type: (iotshadow.GetShadowResponse) -> None
@@ -270,7 +281,7 @@ def change_shadow_value(value):
                 client_token=token,
             )
 
-        future = shadow_client.publish_update_shadow(request, mqtt.QoS.AT_LEAST_ONCE)
+        future = shadow_client.publish_update_shadow(request, mqtt5.QoS.AT_LEAST_ONCE)
 
         locked_data.request_tokens.add(token)
 
@@ -320,8 +331,8 @@ if __name__ == '__main__':
             host_name=cmdData.input_proxy_host,
             port=cmdData.input_proxy_port)
 
-    # Create a MQTT connection from the command line data
-    mqtt_connection = mqtt_connection_builder.mtls_from_path(
+    # Create a mqtt5 connection from the command line data
+    mqtt5_client = mqtt5_client_builder.mtls_from_path(
         endpoint=cmdData.input_endpoint,
         port=cmdData.input_port,
         cert_filepath=cmdData.input_cert,
@@ -330,23 +341,25 @@ if __name__ == '__main__':
         client_id=cmdData.input_clientId,
         clean_session=False,
         keep_alive_secs=30,
-        http_proxy_options=proxy_options)
+        http_proxy_options=proxy_options,
+        on_lifecycle_connection_success=on_lifecycle_connection_success,
+        on_lifecycle_stopped=on_lifecycle_stopped)
 
     if not cmdData.input_is_ci:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
 
-    connected_future = mqtt_connection.connect()
+    mqtt5_client.start()
 
-    shadow_client = iotshadow.IotShadowClient(mqtt_connection)
+    shadow_client = iotshadow.IotShadowClient(mqtt5_client)
 
     # Wait for connection to be fully established.
     # Note that it's not necessary to wait, commands issued to the
-    # mqtt_connection before its fully connected will simply be queued.
+    # mqtt55_client before its fully connected will simply be queued.
     # But this sample waits here so it's obvious when a connection
     # fails or succeeds.
-    connected_future.result()
+    future_connection_success.result(TIMEOUT)
     print("Connected!")
 
     try:
@@ -356,12 +369,12 @@ if __name__ == '__main__':
         print("Subscribing to Update responses...")
         update_accepted_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_accepted(
             request=iotshadow.UpdateShadowSubscriptionRequest(thing_name=shadow_thing_name),
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt5.QoS.AT_LEAST_ONCE,
             callback=on_update_shadow_accepted)
 
         update_rejected_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_rejected(
             request=iotshadow.UpdateShadowSubscriptionRequest(thing_name=shadow_thing_name),
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt5.QoS.AT_LEAST_ONCE,
             callback=on_update_shadow_rejected)
 
         # Wait for subscriptions to succeed
@@ -371,12 +384,12 @@ if __name__ == '__main__':
         print("Subscribing to Get responses...")
         get_accepted_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_accepted(
             request=iotshadow.GetShadowSubscriptionRequest(thing_name=shadow_thing_name),
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt5.QoS.AT_LEAST_ONCE,
             callback=on_get_shadow_accepted)
 
         get_rejected_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_rejected(
             request=iotshadow.GetShadowSubscriptionRequest(thing_name=shadow_thing_name),
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt5.QoS.AT_LEAST_ONCE,
             callback=on_get_shadow_rejected)
 
         # Wait for subscriptions to succeed
@@ -386,7 +399,7 @@ if __name__ == '__main__':
         print("Subscribing to Delta events...")
         delta_subscribed_future, _ = shadow_client.subscribe_to_shadow_delta_updated_events(
             request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(thing_name=shadow_thing_name),
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt5.QoS.AT_LEAST_ONCE,
             callback=on_shadow_delta_updated)
 
         # Wait for subscription to succeed
@@ -405,7 +418,7 @@ if __name__ == '__main__':
 
             publish_get_future = shadow_client.publish_get_shadow(
                 request=iotshadow.GetShadowRequest(thing_name=shadow_thing_name, client_token=token),
-                qos=mqtt.QoS.AT_LEAST_ONCE)
+                qos=mqtt5.QoS.AT_LEAST_ONCE)
 
             locked_data.request_tokens.add(token)
 

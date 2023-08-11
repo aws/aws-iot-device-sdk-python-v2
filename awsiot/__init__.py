@@ -11,7 +11,7 @@ __all__ = [
     'mqtt5_client_builder',
 ]
 
-from awscrt import mqtt
+from awscrt import mqtt, mqtt5
 from concurrent.futures import Future
 import json
 from typing import Any, Callable, Dict, Optional, Tuple, TypeVar
@@ -32,8 +32,13 @@ class MqttServiceClient:
         mqtt_connection: MQTT connection to use
     """
 
-    def __init__(self, mqtt_connection: mqtt.Connection):
-        self._mqtt_connection = mqtt_connection  # type: mqtt.Connection
+    def __init__(self, mqtt_connection: mqtt.Connection | mqtt5.Client):
+        if isinstance(mqtt_connection, mqtt.Connection):
+            self._mqtt_connection = mqtt_connection  # type: mqtt.Connection
+        elif isinstance(mqtt_connection, mqtt5.Client):
+            self._mqtt_connection = mqtt_connection.new_connection()
+        else:
+            assert("The service client could only take mqtt.Connection and mqtt5.Client as argument")
 
     @property
     def mqtt_connection(self) -> mqtt.Connection:
