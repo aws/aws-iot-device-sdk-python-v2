@@ -132,4 +132,4 @@ We need your help in making this SDK great. Please participate in the community 
 
 This library is licensed under the [Apache 2.0 License](./documents/LICENSE).
 
-Latest released version: v1.17.0
+Latest released version: v1.18.0
