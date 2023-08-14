@@ -48,8 +48,6 @@ future_connection_success = Future()
 jobs_client = None
 jobs_thing_name = cmdData.input_thing_name
 
-TIMEOUT = 100
-
 
 class LockedData:
     def __init__(self):
@@ -76,7 +74,7 @@ def exit(msg_or_exception):
             locked_data.disconnect_called = True
             mqtt5_client.stop()
             # Signal that sample is finished
-            future_stopped.result(TIMEOUT)
+            future_stopped.result()
 
 
 def try_start_next_job():
@@ -296,7 +294,7 @@ if __name__ == '__main__':
     # mqtt5_client before its fully connected will simply be queued.
     # But this sample waits here so it's obvious when a connection
     # fails or succeeds.
-    future_connection_success.result(TIMEOUT)
+    future_connection_success.result()
     print("Connected!")
 
     try:
