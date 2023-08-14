@@ -1,8 +1,8 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import mqtt, http
-from awsiot import iotidentity, mqtt_connection_builder
+from awscrt import mqtt5, http
+from awsiot import iotidentity, mqtt5_client_builder
 from concurrent.futures import Future
 import sys
 import threading
@@ -31,12 +31,13 @@ cmdData = CommandLineUtils.parse_sample_input_fleet_provisioning()
 
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
-mqtt_connection = None
+mqtt5_client = None
 identity_client = None
 createKeysAndCertificateResponse = None
 createCertificateFromCsrResponse = None
 registerThingResponse = None
-
+future_stopped = Future()
+future_connection_success = Future()
 
 class LockedData:
     def __init__(self):
@@ -56,18 +57,28 @@ def exit(msg_or_exception):
 
     with locked_data.lock:
         if not locked_data.disconnect_called:
-            print("Disconnecting...")
+            print("Stop the Client...")
             locked_data.disconnect_called = True
-            future = mqtt_connection.disconnect()
-            future.add_done_callback(on_disconnected)
+            mqtt5_client.stop()
+            future_stopped.result()
 
 
-def on_disconnected(disconnect_future):
+# Callback for the lifecycle event Connection Success
+def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.LifecycleConnectSuccessData):
+    print("Lifecycle Connection Success")
+    global future_connection_success
+    future_connection_success.set_result(lifecycle_connect_success_data)
+
+
+# Callback for the lifecycle event on Client Stopped
+def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
     # type: (Future) -> None
-    print("Disconnected.")
-
+    print("Client Stopped.")
+    global future_stopped
     # Signal that sample is finished
     is_sample_done.set()
+    future_stopped.set_result(lifecycle_stopped_data)
+
 
 
 def on_publish_register_thing(future):
@@ -163,24 +174,6 @@ def registerthing_execution_rejected(rejected):
     exit("RegisterThing Request rejected with code:'{}' message:'{}' status code:'{}'".format(
         rejected.error_code, rejected.error_message, rejected.status_code))
 
-# Callback when connection is accidentally lost.
-def on_connection_interrupted(connection, error, **kwargs):
-    print("Connection interrupted. error: {}".format(error))
-
-
-# Callback when an interrupted connection is re-established.
-def on_connection_resumed(connection, return_code, session_present, **kwargs):
-    print("Connection resumed. return_code: {} session_present: {}".format(return_code, session_present))
-
-    if return_code == mqtt.ConnectReturnCode.ACCEPTED and not session_present:
-        print("Session did not persist. Resubscribing to existing topics...")
-        resubscribe_future, _ = connection.resubscribe_existing_topics()
-
-        # Cannot synchronously wait for resubscribe result because we're on the connection's event-loop thread,
-        # evaluate result with a callback instead.
-        resubscribe_future.add_done_callback(on_resubscribe_complete)
-
-
 def on_resubscribe_complete(resubscribe_future):
     resubscribe_results = resubscribe_future.result()
     print("Resubscribe results: {}".format(resubscribe_results))
@@ -241,34 +234,34 @@ if __name__ == '__main__':
             port=cmdData.input_proxy_port)
 
     # Create a MQTT connection from the command line data
-    mqtt_connection = mqtt_connection_builder.mtls_from_path(
+    mqtt5_client = mqtt5_client_builder.mtls_from_path(
         endpoint=cmdData.input_endpoint,
         port=cmdData.input_port,
         cert_filepath=cmdData.input_cert,
         pri_key_filepath=cmdData.input_key,
         ca_filepath=cmdData.input_ca,
-        on_connection_interrupted=on_connection_interrupted,
-        on_connection_resumed=on_connection_resumed,
         client_id=cmdData.input_clientId,
         clean_session=False,
         keep_alive_secs=30,
-        http_proxy_options=proxy_options)
+        http_proxy_options=proxy_options,
+        on_lifecycle_connection_success=on_lifecycle_connection_success,
+        on_lifecycle_stopped=on_lifecycle_stopped)
 
     if not cmdData.input_is_ci:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
 
-    connected_future = mqtt_connection.connect()
+    mqtt5_client.start()
 
-    identity_client = iotidentity.IotIdentityClient(mqtt_connection)
+    identity_client = iotidentity.IotIdentityClient(mqtt5_client)
 
     # Wait for connection to be fully established.
     # Note that it's not necessary to wait, commands issued to the
-    # mqtt_connection before its fully connected will simply be queued.
+    # mqtt5_client before its fully connected will simply be queued.
     # But this sample waits here so it's obvious when a connection
     # fails or succeeds.
-    connected_future.result()
+    future_connection_success.result()
     print("Connected!")
 
     try:
@@ -283,7 +276,7 @@ if __name__ == '__main__':
             print("Subscribing to CreateKeysAndCertificate Accepted topic...")
             createkeysandcertificate_subscribed_accepted_future, _ = identity_client.subscribe_to_create_keys_and_certificate_accepted(
                 request=createkeysandcertificate_subscription_request,
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt5.QoS.AT_LEAST_ONCE,
                 callback=createkeysandcertificate_execution_accepted)
 
             # Wait for subscription to succeed
@@ -292,7 +285,7 @@ if __name__ == '__main__':
             print("Subscribing to CreateKeysAndCertificate Rejected topic...")
             createkeysandcertificate_subscribed_rejected_future, _ = identity_client.subscribe_to_create_keys_and_certificate_rejected(
                 request=createkeysandcertificate_subscription_request,
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt5.QoS.AT_LEAST_ONCE,
                 callback=createkeysandcertificate_execution_rejected)
 
             # Wait for subscription to succeed
@@ -303,7 +296,7 @@ if __name__ == '__main__':
             print("Subscribing to CreateCertificateFromCsr Accepted topic...")
             createcertificatefromcsr_subscribed_accepted_future, _ = identity_client.subscribe_to_create_certificate_from_csr_accepted(
                 request=createcertificatefromcsr_subscription_request,
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt5.QoS.AT_LEAST_ONCE,
                 callback=createcertificatefromcsr_execution_accepted)
 
             # Wait for subscription to succeed
@@ -312,7 +305,7 @@ if __name__ == '__main__':
             print("Subscribing to CreateCertificateFromCsr Rejected topic...")
             createcertificatefromcsr_subscribed_rejected_future, _ = identity_client.subscribe_to_create_certificate_from_csr_rejected(
                 request=createcertificatefromcsr_subscription_request,
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt5.QoS.AT_LEAST_ONCE,
                 callback=createcertificatefromcsr_execution_rejected)
 
             # Wait for subscription to succeed
@@ -324,7 +317,7 @@ if __name__ == '__main__':
         print("Subscribing to RegisterThing Accepted topic...")
         registerthing_subscribed_accepted_future, _ = identity_client.subscribe_to_register_thing_accepted(
             request=registerthing_subscription_request,
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt5.QoS.AT_LEAST_ONCE,
             callback=registerthing_execution_accepted)
 
         # Wait for subscription to succeed
@@ -333,7 +326,7 @@ if __name__ == '__main__':
         print("Subscribing to RegisterThing Rejected topic...")
         registerthing_subscribed_rejected_future, _ = identity_client.subscribe_to_register_thing_rejected(
             request=registerthing_subscription_request,
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt5.QoS.AT_LEAST_ONCE,
             callback=registerthing_execution_rejected)
         # Wait for subscription to succeed
         registerthing_subscribed_rejected_future.result()
@@ -343,7 +336,7 @@ if __name__ == '__main__':
         if cmdData.input_csr_path is None:
             print("Publishing to CreateKeysAndCertificate...")
             publish_future = identity_client.publish_create_keys_and_certificate(
-                request=iotidentity.CreateKeysAndCertificateRequest(), qos=mqtt.QoS.AT_LEAST_ONCE)
+                request=iotidentity.CreateKeysAndCertificateRequest(), qos=mqtt5.QoS.AT_LEAST_ONCE)
             publish_future.add_done_callback(on_publish_create_keys_and_certificate)
 
             waitForCreateKeysAndCertificateResponse()
@@ -360,7 +353,7 @@ if __name__ == '__main__':
             csrPath = open(cmdData.input_csr_path, 'r').read()
             publish_future = identity_client.publish_create_certificate_from_csr(
                 request=iotidentity.CreateCertificateFromCsrRequest(certificate_signing_request=csrPath),
-                qos=mqtt.QoS.AT_LEAST_ONCE)
+                qos=mqtt5.QoS.AT_LEAST_ONCE)
             publish_future.add_done_callback(on_publish_create_certificate_from_csr)
 
             waitForCreateCertificateFromCsrResponse()
@@ -375,7 +368,7 @@ if __name__ == '__main__':
 
         print("Publishing to RegisterThing topic...")
         registerthing_publish_future = identity_client.publish_register_thing(
-            registerThingRequest, mqtt.QoS.AT_LEAST_ONCE)
+            registerThingRequest, mqtt5.QoS.AT_LEAST_ONCE)
         registerthing_publish_future.add_done_callback(on_publish_register_thing)
 
         waitForRegisterThingResponse()

@@ -1,4 +1,4 @@
-# Jobs
+# Jobs MQTT5
 
 [**Return to main sample list**](./README.md)
 
@@ -73,12 +73,72 @@ Use the following command to run the Jobs sample from the `samples` folder:
 
 ``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 jobs.py --endpoint <endpoint> --cert <file> --key <file> --thing_name <name>
+python3 jobs_mqtt5.py --endpoint <endpoint> --cert <file> --key <file> --thing_name <name>
 ```
 
 You can also pass a Certificate Authority file (CA) if your certificate and key combination requires it:
 
 ``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 jobs.py --endpoint <endpoint> --cert <file> --key <file> --thing_name <name> --ca_file <file>
+python3 jobs_mqtt5.py --endpoint <endpoint> --cert <file> --key <file> --thing_name <name> --ca_file <file>
 ```
+
+
+## Service Client Notes
+### Difference relative to MQTT311 IotJobsClient
+The IotJobsClient with mqtt5 client is almost identical to the mqtt3 one. The only difference is that you would need setup up a Mqtt5 Client and pass it to the IotJobsClient.
+For how to setup a Mqtt5 Client, please refer to [MQTT5 UserGuide](../documents/MQTT5_Userguide.md) and [MQTT5 PubSub Sample](./mqtt5_pubsub.py)
+
+<table>
+<tr>
+<th>Create a IotJobsClient with Mqtt5</th>
+<th>Create a IotJobsClient with Mqtt311</th>
+</tr>
+<tr>
+<td>
+
+```python
+  # Create a Mqtt5 Client
+  mqtt5_client = mqtt5_client_builder.mtls_from_path(
+          endpoint,
+          port,
+          cert_filepath,
+          pri_key_filepath,
+          ca_filepath,
+          client_id,
+          clean_session,
+          keep_alive_secs,
+          http_proxy_options,
+          on_lifecycle_connection_success,
+          on_lifecycle_stopped)
+
+  # Create the Jobs client from Mqtt5 Client
+  jobs_client = iotjobs.IotJobsClient(mqtt5_client)
+```
+
+</td>
+<td>
+
+```python
+    # Create a Mqtt311 Connection from the command line data
+    mqtt_connection = mqtt_connection_builder.mtls_from_path(
+        endpoint,
+        port,
+        cert_filepath,
+        pri_key_filepath,
+        ca_filepath,
+        client_id,
+        clean_session,
+        keep_alive_secs,
+        http_proxy_options)
+
+    # Create the Jobs client from Mqtt311 Connection
+    jobs_client = iotjobs.IotJobsClient(mqtt_connection)
+```
+
+</td>
+</tr>
+</table>
+
+### Mqtt5.QoS v.s. Mqtt3.QoS
+As the service client interface is unchanged for both Mqtt3 Connection and Mqtt5 Client,the IotJobsClient will use Mqtt3.QoS instead of Mqtt5.QoS even with a Mqtt5 Client. You could use mqtt3.QoS.to_mqtt5() and mqtt5.QoS.to_mqtt3() to convert the value.

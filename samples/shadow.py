@@ -43,7 +43,6 @@ future_connection_success = Future()
 shadow_thing_name = cmdData.input_thing_name
 shadow_property = cmdData.input_shadow_property
 
-TIMEOUT = 100
 SHADOW_VALUE_DEFAULT = "off"
 
 
@@ -73,7 +72,7 @@ def exit(msg_or_exception):
             locked_data.disconnect_called = True
             mqtt5_client.stop()
             # Signal that sample is finished
-            future_stopped.result(TIMEOUT)
+            future_stopped.result()
 
 # Callback for the lifecycle event Connection Success
 def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.LifecycleConnectSuccessData):
@@ -356,10 +355,10 @@ if __name__ == '__main__':
 
     # Wait for connection to be fully established.
     # Note that it's not necessary to wait, commands issued to the
-    # mqtt55_client before its fully connected will simply be queued.
+    # mqtt5_client before its fully connected will simply be queued.
     # But this sample waits here so it's obvious when a connection
     # fails or succeeds.
-    future_connection_success.result(TIMEOUT)
+    future_connection_success.result()
     print("Connected!")
 
     try:
@@ -378,7 +377,8 @@ if __name__ == '__main__':
             callback=on_update_shadow_rejected)
 
         # Wait for subscriptions to succeed
-        update_accepted_subscribed_future.result()
+        result = update_accepted_subscribed_future.result()
+        print("The type is : ",type(result))
         update_rejected_subscribed_future.result()
 
         print("Subscribing to Get responses...")
