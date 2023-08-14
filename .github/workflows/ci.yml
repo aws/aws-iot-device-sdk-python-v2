@@ -281,6 +281,7 @@ jobs:
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_shadow_cfg.json
       - name: run MQTT5 Shadow sample
         run: |
+          export PYTHONDEVMODE=1
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_shadow_cfg.json
       - name: configure AWS credentials (Jobs)
         uses: aws-actions/configure-aws-credentials@v1
