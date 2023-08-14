@@ -189,6 +189,8 @@ jobs:
       id-token: write # This is required for requesting the JWT
     steps:
       - name: Running samples in CI setup
+        with:
+          python-version: 3.9
         run: |
           python3 -m pip install boto3
           sudo apt-get update -y
@@ -281,7 +283,6 @@ jobs:
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_shadow_cfg.json
       - name: run MQTT5 Shadow sample
         run: |
-          export PYTHONDEVMODE=1
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_shadow_cfg.json
       - name: configure AWS credentials (Jobs)
         uses: aws-actions/configure-aws-credentials@v1
