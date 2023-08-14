@@ -43,7 +43,6 @@ is_sample_done = threading.Event()
 cmdData = CommandLineUtils.parse_sample_input_jobs()
 
 mqtt5_client = None
-future_stopped = Future()
 future_connection_success = Future()
 jobs_client = None
 jobs_thing_name = cmdData.input_thing_name
@@ -73,8 +72,6 @@ def exit(msg_or_exception):
             print("Disconnecting...")
             locked_data.disconnect_called = True
             mqtt5_client.stop()
-            # Signal that sample is finished
-            future_stopped.result()
 
 
 def try_start_next_job():
@@ -114,10 +111,7 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 
 # Callback for the lifecycle event on Client Stopped
 def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
-    # type: (Future) -> None
     print("Client Stopped.")
-    global future_stopped
-    future_stopped.set_result(lifecycle_stopped_data)
 
     # Signal that sample is finished
     is_sample_done.set()

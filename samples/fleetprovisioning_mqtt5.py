@@ -36,7 +36,6 @@ identity_client = None
 createKeysAndCertificateResponse = None
 createCertificateFromCsrResponse = None
 registerThingResponse = None
-future_stopped = Future()
 future_connection_success = Future()
 
 class LockedData:
@@ -60,7 +59,6 @@ def exit(msg_or_exception):
             print("Stop the Client...")
             locked_data.disconnect_called = True
             mqtt5_client.stop()
-            future_stopped.result()
 
 
 # Callback for the lifecycle event Connection Success
@@ -74,11 +72,8 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
     # type: (Future) -> None
     print("Client Stopped.")
-    global future_stopped
     # Signal that sample is finished
     is_sample_done.set()
-    future_stopped.set_result(lifecycle_stopped_data)
-
 
 
 def on_publish_register_thing(future):

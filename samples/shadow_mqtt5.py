@@ -57,8 +57,6 @@ class LockedData:
 locked_data = LockedData()
 
 # Function for gracefully quitting this sample
-
-
 def exit(msg_or_exception):
     if isinstance(msg_or_exception, Exception):
         print("Exiting sample due to exception.")
@@ -71,8 +69,6 @@ def exit(msg_or_exception):
             print("Stop the client...")
             locked_data.disconnect_called = True
             mqtt5_client.stop()
-            # Signal that sample is finished
-            future_stopped.result()
 
 # Callback for the lifecycle event Connection Success
 def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.LifecycleConnectSuccessData):
@@ -84,8 +80,6 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
     # type: (Future) -> None
     print("Client Stopped.")
-    global future_stopped
-    future_stopped.set_result(lifecycle_stopped_data)
 
     # Signal that sample is finished
     is_sample_done.set()
@@ -380,7 +374,6 @@ if __name__ == '__main__':
 
         # Wait for subscriptions to succeed
         result = update_accepted_subscribed_future.result()
-        print("The type is : ",type(result))
         update_rejected_subscribed_future.result()
 
         print("Subscribing to Get responses...")
