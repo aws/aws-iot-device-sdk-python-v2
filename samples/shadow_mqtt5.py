@@ -38,7 +38,6 @@ cmdData = CommandLineUtils.parse_sample_input_shadow()
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
 mqtt5_client = None
-future_stopped = Future()
 future_connection_success = Future()
 shadow_thing_name = cmdData.input_thing_name
 shadow_property = cmdData.input_shadow_property
