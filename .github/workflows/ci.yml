@@ -189,8 +189,6 @@ jobs:
       id-token: write # This is required for requesting the JWT
     steps:
       - name: Running samples in CI setup
-        with:
-          python-version: 3.9
         run: |
           python3 -m pip install boto3
           sudo apt-get update -y

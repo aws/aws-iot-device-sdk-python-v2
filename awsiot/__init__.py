@@ -37,6 +37,7 @@ class MqttServiceClient:
             self._mqtt_connection = mqtt_connection  # type: mqtt.Connection
         elif isinstance(mqtt_connection, mqtt5.Client):
             self._mqtt_connection = mqtt_connection.new_connection()
+            self._mqtt5_client = mqtt_connection
         else:
             assert("The service client could only take mqtt.Connection and mqtt5.Client as argument")
 
