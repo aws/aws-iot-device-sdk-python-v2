@@ -112,7 +112,10 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
     **on_publish_received** (`Callable`): Callback invoked for all publish packets received by client.
         The function should take the following arguments and return nothing:
 
-        *   `publish_packet` (:class:`awscrt.mqtt5.PublishPacket`): Publish Packet received from the server.
+        *   `publish_received_data` (:class:`awscrt.mqtt5.PublishReceivedData`): Dataclass
+                containing the following:
+
+            *   `publish_packet`: (:class:`awscrt.mqtt5.PublishPacket`): Data model of an `MQTT5 PUBLISH <https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901100>` _ packet.
 
     **on_lifecycle_stopped** (`Callable`): Callback invoked for Lifecycle Event Stopped.
         The function should take the following arguments and return nothing:
