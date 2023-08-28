@@ -14,8 +14,11 @@
 * [Cognito Connect](./cognito_connect.md)
 * [X509 Connect](./x509_connect.md)
 * [Shadow](./shadow.md)
+* [MQTT5 Shadow](./shadow_mqtt5.md)
 * [Jobs](./jobs.md)
+* [MQTT5 Jobs](./jobs_mqtt5.md)
 * [Fleet Provisioning](./fleetprovisioning.md)
+* [MQTT5 Fleet Provisioning](./fleetprovisioning_mqtt5.md)
 * [Greengrass Discovery](./basic_discovery.md)
 * [Greengrass IPC](./ipc_greengrass.md)
 
