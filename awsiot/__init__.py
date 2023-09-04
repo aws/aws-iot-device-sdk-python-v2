@@ -39,7 +39,7 @@ class MqttServiceClient:
             self._mqtt_connection = mqtt_connection.new_connection()
             self._mqtt5_client = mqtt_connection
         else:
-            assert("The service client could only take mqtt.Connection and mqtt5.Client as argument")
+            raise ValueError("The service client could only take mqtt.Connection and mqtt5.Client as argument")
 
     @property
     def mqtt_connection(self) -> mqtt.Connection:
