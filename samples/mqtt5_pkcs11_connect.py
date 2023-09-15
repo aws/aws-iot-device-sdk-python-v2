@@ -13,9 +13,6 @@ TIMEOUT = 100
 # See the Utils/CommandLineUtils for more information.
 cmdData = CommandLineUtils.parse_sample_input_mqtt5_pkcs11_connect()
 
-future_stopped = Future()
-future_connection_success = Future()
-
 # Callback for the lifecycle event Stopped
 def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
     print("Lifecycle Stopped")
@@ -31,6 +28,8 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 
 
 if __name__ == '__main__':
+    global future_stopped, future_connection_success
+
     print("\nStarting MQTT5 pkcs11 connect Sample\n")
 
     print(f"Loading PKCS#11 library '{cmdData.input_pkcs11_lib_path}' ...")
@@ -43,34 +42,44 @@ if __name__ == '__main__':
     if (cmdData.input_pkcs11_slot_id is not None):
         pkcs11_slot_id = int(cmdData.input_pkcs11_slot_id)
 
-    # Create MQTT5 client
-    client = mqtt5_client_builder.mtls_with_pkcs11(
-        pkcs11_lib=pkcs11_lib,
-        user_pin=cmdData.input_pkcs11_user_pin,
-        slot_id=pkcs11_slot_id,
-        token_label=cmdData.input_pkcs11_token_label,
-        private_key_label=cmdData.input_pkcs11_key_label,
-        cert_filepath=cmdData.input_cert,
-        endpoint=cmdData.input_endpoint,
-        port=cmdData.input_port,
-        ca_filepath=cmdData.input_ca,
-        on_lifecycle_stopped=on_lifecycle_stopped,
-        on_lifecycle_connection_success=on_lifecycle_connection_success,
-        client_id=cmdData.input_clientId)
+    while True:
+        future_stopped = Future()
+        future_connection_success = Future()
 
-    print("MQTT5 Client Created")
+        # Create MQTT5 client
+        client = mqtt5_client_builder.mtls_with_pkcs11(
+            pkcs11_lib=pkcs11_lib,
+            user_pin=cmdData.input_pkcs11_user_pin,
+            slot_id=pkcs11_slot_id,
+            token_label=cmdData.input_pkcs11_token_label,
+            private_key_label=cmdData.input_pkcs11_key_label,
+            cert_filepath=cmdData.input_cert,
+            endpoint=cmdData.input_endpoint,
+            port=cmdData.input_port,
+            ca_filepath=cmdData.input_ca,
+            on_lifecycle_stopped=on_lifecycle_stopped,
+            on_lifecycle_connection_success=on_lifecycle_connection_success,
+            client_id=cmdData.input_clientId)
 
-    if not cmdData.input_is_ci:
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
-    else:
-        print("Connecting to endpoint with client ID")
+        print("MQTT5 Client Created")
 
-    client.start()
-    future_connection_success.result(TIMEOUT)
-    print("Clint Connected")
+        if not cmdData.input_is_ci:
+            print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
+        else:
+            print("Connecting to endpoint with client ID")
 
-    print("Stopping Client")
-    client.stop()
+        client.start()
+        future_connection_success.result(TIMEOUT)
+        print("Clint Connected")
 
-    future_stopped.result(TIMEOUT)
-    print("Client Stopped!")
+        print("Stopping Client")
+        client.stop()
+
+        future_stopped.result(TIMEOUT)
+        print("Client Stopped!")
+
+        # The following `client = None` line causes connection timeout on 2nd round of while loop
+        # when providing CA certificate as a command line argument.
+        # If commented out, causes failure after 1024 connections, probably related to:
+        # https://github.com/tpm2-software/tpm2-pkcs11/blob/1b3aab90ee5f7debbce82c7e229aa2950a9e8f0d/src/lib/session.h#L18
+        client = None
