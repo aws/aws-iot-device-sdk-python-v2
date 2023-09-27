@@ -116,6 +116,8 @@ jobs:
         key=$(aws secretsmanager get-secret-value --region us-east-1 --secret-id "ci/PubSub/key" --query "SecretString" | cut -f2 -d":" | cut -f2 -d\") && echo -e "$key" > /tmp/privatekey.pem
         pkcs12_password=$(aws secretsmanager get-secret-value --region us-east-1 --secret-id "ci/PubSub/key_pkcs12_password" --query "SecretString" | cut -f2 -d":" | cut -f2 -d\")
         openssl pkcs12 -export -in /tmp/certificate.pem -inkey /tmp/privatekey.pem -out ./pkcs12-key.p12 -name PubSub_Thing_Alias -password pass:$pkcs12_password
+        security list-keychains
+        security find-identity -p codesigning -v
         python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_pkcs12_connect_cfg.json
     - name: configure AWS credentials (MQTT5 samples)
       uses: aws-actions/configure-aws-credentials@v1
