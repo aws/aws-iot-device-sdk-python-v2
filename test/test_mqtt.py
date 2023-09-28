@@ -201,11 +201,8 @@ class MqttBuilderTest(unittest.TestCase):
 
         connection = mqtt_connection_builder.direct_with_custom_authorizer(
             auth_username="",
-            auth_authorizer_name=CUSTOM_AUTHORIZER_NAME_SIGNED,
-            auth_authorizer_signature=CUSTOM_AUTHORIZER_SIGNATURE,
+            auth_authorizer_name=CUSTOM_AUTHORIZER_NAME_UNSIGNED,
             auth_password=CUSTOM_AUTHORIZER_PASSWORD,
-            auth_token_key_name=CUSTOM_AUTHORIZER_TOKEN_KEY_NAME,
-            auth_token_value=CUSTOM_AUTHORIZER_TOKEN_VALUE,
             endpoint=CUSTOM_AUTHORIZER_ENDPOINT,
             client_id=create_client_id(),
             client_bootstrap=bootstrap)
