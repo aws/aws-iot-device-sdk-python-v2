@@ -31,14 +31,21 @@ You can also enable [CloudWatch logging](https://docs.aws.amazon.com/iot/latest/
 mkdir crt-workspace
 cd crt-workspace
 
-# 2. Clone the repository, you could select the version you would like to use. You can find the awscrt version used by the current SDK from the file "./aws-iot-device-sdk-python-v2/setup.py". Update the version number in "./aws-iot-device-sdk-python-v2/setup.py" can change the awscrt version you would like to use in awsiotsdk
+# 2. Clone the repository, you could select the version you would like to use. You can find the awscrt 
+#    version used by the current SDK from the file "./aws-iot-device-sdk-python-v2/setup.py". Update 
+#    the version number in "./aws-iot-device-sdk-python-v2/setup.py" can change the awscrt version 
+#    you would like to use in awsiotsdk
 git clone -b <CRT_VERSION> https://github.com/awslabs/aws-crt-python.git
 
 # 3. Update the submodules
 cd aws-crt-python
 git submodule update --init --recursive
 
-# 4. (Optional) Setup the version number of your local build. Similar to the awsiotsdk, the default version for awscrt is set to "1.0.0-dev", you can set the version number of the local build in "./aws-crt-python/awscrt/__init__.py". The awscrt version set here need to match the version specified in "./aws-iot-device-sdk-python-v2/setup.py" so that the awsiotsdk could locate the correct awscrt library.
+# 4. (Optional) Setup the version number of your local build. Similar to the awsiotsdk, the default 
+#    version for awscrt is set to "1.0.0-dev", you can set the version number of the local build in 
+#    "./aws-crt-python/awscrt/__init__.py". The awscrt version set here need to match the version 
+#    specified in "./aws-iot-device-sdk-python-v2/setup.py" so that the awsiotsdk could locate the 
+#    correct awscrt library.
 sed -i "s/__version__ = '1.0.0.dev0'/__version__ = '<CRT_VERSION>'/" awscrt/__init__.py
 
 # 5. Install using Pip
