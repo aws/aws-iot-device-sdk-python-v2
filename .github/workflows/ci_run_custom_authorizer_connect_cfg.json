@@ -9,10 +9,6 @@
             "secret": "ci/endpoint"
         },
         {
-            "name": "--signing_region",
-            "data": "us-east-1"
-        },
-        {
             "name": "--custom_auth_authorizer_name",
             "secret": "ci/CustomAuthorizer/name"
         },

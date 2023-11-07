@@ -15,16 +15,6 @@
         {
             "name": "--custom_auth_password",
             "secret": "ci/CustomAuthorizer/password"
-        },
-        {
-            "name": "--cert",
-            "secret": "ci/mqtt5/us/mqtt5_thing/cert",
-            "filename": "tmp_certificate.pem"
-        },
-        {
-            "name": "--key",
-            "secret": "ci/mqtt5/us/mqtt5_thing/key",
-            "filename": "tmp_key.pem"
         }
     ]
 }
