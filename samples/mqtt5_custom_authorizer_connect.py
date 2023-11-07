@@ -37,8 +37,6 @@ if __name__ == '__main__':
         client = mqtt5_client_builder.direct_with_custom_authorizer(
             endpoint=cmdData.input_endpoint,
             ca_filepath=cmdData.input_ca,
-            cert_filepath=cmdData.input_cert,
-            pri_key_filepath=cmdData.input_key,
             auth_username=cmdData.input_custom_auth_username,
             auth_authorizer_name=cmdData.input_custom_authorizer_name,
             auth_authorizer_signature=cmdData.input_custom_authorizer_signature,
@@ -51,7 +49,6 @@ if __name__ == '__main__':
     else:
         client = mqtt5_client_builder.websockets_with_custom_authorizer(
             endpoint=cmdData.input_endpoint,
-            region=cmdData.input_signing_region,
             auth_username=cmdData.input_custom_auth_username,
             auth_authorizer_name=cmdData.input_custom_authorizer_name,
             auth_authorizer_signature=cmdData.input_custom_authorizer_signature,

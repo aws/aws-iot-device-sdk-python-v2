@@ -405,12 +405,6 @@ class CommandLineUtils:
         cmdUtils.add_common_mqtt_commands()
         cmdUtils.add_common_logging_commands()
         cmdUtils.add_common_custom_authorizer_commands()
-        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
-                                "The signing region used for the websocket signer",
-                                False, str)
-        cmdUtils.register_command(CommandLineUtils.m_cmd_region, "<str>",
-                                "The signing region used for the websocket signer",
-                                False, str)
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
                                 "Client ID to use for MQTT connection (optional, default='test-*').",
                                 default="test-" + str(uuid4()))
@@ -418,7 +412,6 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region, CommandLineUtils.m_cmd_region)
         cmdData.input_custom_authorizer_name = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_name)
         cmdData.input_custom_authorizer_signature = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_signature)
         cmdData.input_custom_auth_password = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_password)
@@ -488,13 +481,6 @@ class CommandLineUtils:
         cmdUtils = CommandLineUtils(
             "Custom Authorizer Connect - Make a MQTT5 Client connection using a custom authorizer.")
         cmdUtils.add_common_mqtt_commands()
-        cmdUtils.register_command(CommandLineUtils.m_cmd_key_file, "<path>",
-                                "Path to your key in PEM format.", False, str)
-        cmdUtils.register_command(CommandLineUtils.m_cmd_cert_file, "<path>",
-                                "Path to your client certificate in PEM format.", False, str)
-        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
-                                "The signing region used for the websocket signer",
-                                False, str)
         cmdUtils.add_common_logging_commands()
         cmdUtils.add_common_custom_authorizer_commands()
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
@@ -505,9 +491,6 @@ class CommandLineUtils:
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
-        cmdData.input_signing_region = cmdUtils.get_command(CommandLineUtils.m_cmd_signing_region, None)
-        cmdData.input_cert = cmdUtils.get_command(CommandLineUtils.m_cmd_cert_file, None)
-        cmdData.input_key = cmdUtils.get_command(CommandLineUtils.m_cmd_key_file, None)
         cmdData.input_ca = cmdUtils.get_command(CommandLineUtils.m_cmd_ca_file, None)
         cmdData.input_custom_authorizer_name = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_name)
         cmdData.input_custom_authorizer_signature = cmdUtils.get_command(CommandLineUtils.m_cmd_custom_auth_authorizer_signature)
