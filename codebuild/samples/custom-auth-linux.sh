@@ -12,6 +12,6 @@ AUTH_NAME=$(aws secretsmanager get-secret-value --secret-id "ci/CustomAuthorizer
 AUTH_PASSWORD=$(aws secretsmanager get-secret-value --secret-id "ci/CustomAuthorizer/password" --query "SecretString" | cut -f2 -d":" | sed -e 's/[\\\"\}]//g')
 
 echo "Custom Authorizer test"
-python3 custom_authorizer_connect.py --endpoint $ENDPOINT --custom_auth_authorizer_name $AUTH_NAME --custom_auth_password $AUTH_PASSWORD --signing_region us-east-1
+python3 custom_authorizer_connect.py --endpoint $ENDPOINT --custom_auth_authorizer_name $AUTH_NAME --custom_auth_password $AUTH_PASSWORD
 
 popd
