@@ -86,6 +86,9 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
         handled while the client is not connected.  In particular, if the client is not connected, then any operation
         that would be failed on disconnect (according to these rules) will also be rejected.
 
+    **topic_aliasing_options** (:class:`awscrt.mqtt5.TopicAliasingOptions`): Configuration options for how the client
+        should use the topic aliasing features of MQTT5
+
     **retry_jitter_mode** (:class:`awscrt.mqtt5.ExponentialBackoffJitterMode`): How the reconnect delay is modified
         in order to smooth out the distribution of reconnection attempt timepoints for a large set of reconnecting
         clients.
@@ -288,6 +291,8 @@ def _builder(
         client_options.ack_timeout_sec = _get(kwargs, 'ack_timeout_sec')
     if client_options.websocket_handshake_transform is None:
         client_options.websocket_handshake_transform = websocket_handshake_transform
+    if client_options.topic_aliasing_options is None:
+        client_options.topic_aliasing_options = _get(kwargs, 'topic_aliasing_options')
 
     # Connect Options
     if client_options.connect_options.client_id is None:
