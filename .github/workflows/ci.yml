@@ -32,6 +32,8 @@ env:
   CI_DEVICE_ADVISOR: arn:aws:iam::180635532705:role/CI_DeviceAdvisor_Role
   CI_MQTT5_ROLE: arn:aws:iam::180635532705:role/CI_MQTT5_Role
   CI_BUILD_AND_TEST_ROLE: arn:aws:iam::180635532705:role/V2_SDK_Unit_Testing
+  CI_JOBS_SERVICE_CLIENT_ROLE: arn:aws:iam::180635532705:role/CI_JobsServiceClient_Role
+  CI_SERVICE_ROLE_CFG_FOLDER: "./aws-iot-device-sdk-python-v2/servicetests/test_cases"
 
 jobs:
 
@@ -204,6 +206,19 @@ jobs:
           python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
           chmod a+x builder
           ./builder build -p ${{ env.PACKAGE_NAME }}
+
+      - name: configure AWS credentials (service tests Jobs)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ env.CI_JOBS_SERVICE_CLIENT_ROLE}}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      - name: run MQTT3 Jobs servicetests
+        run: |
+          python3 ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/test_jobs_execution.py --file ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/ci_run_jobs_cfg.json
+      - name: run MQTT5 Jobs servicetests
+        run: |
+          python3 ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/test_jobs_execution.py --file ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/ci_run_mqtt5_jobs_cfg.json
+
       - name: configure AWS credentials (Connect and PubSub)
         uses: aws-actions/configure-aws-credentials@v1
         with:
