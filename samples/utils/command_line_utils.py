@@ -475,6 +475,7 @@ class CommandLineUtils:
         cmdData.input_thing_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_thing_name)
         cmdData.input_job_time = int(cmdUtils.get_command(CommandLineUtils.m_cmd_job_time, 5))
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        cmdData.input_mqtt_version = int(cmdUtils.get_command(CommandLineUtils.m_cmd_mqtt_version, 5)
         return cmdData
 
     def parse_sample_input_mqtt5_custom_authorizer_connect():
@@ -877,3 +878,4 @@ class CommandLineUtils:
     m_cmd_pkcs12_file = "pkcs12_file"
     m_cmd_pkcs12_password = "pkcs12_password"
     m_cmd_region = "region"
+    m_cmd_mqtt_version = "mqtt_version"
