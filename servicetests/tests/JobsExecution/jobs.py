@@ -311,23 +311,21 @@ if __name__ == '__main__':
     except Exception as e:
         exit(e)
 
-    # If we are running in CI, then we want to check how many jobs were reported and stop
-    if (cmdData.input_is_ci):
-        # Wait until we get a response. If we do not get a response after 50 tries, then abort
-        got_job_response_tries = 0
-        while (locked_data.got_job_response == False):
-            got_job_response_tries += 1
-            if (got_job_response_tries > 50):
-                exit("Got job response timeout exceeded")
-                sys.exit(-1)
-            time.sleep(0.2)
-
-        if (len(available_jobs) > 0):
-            print("At least one job queued in CI! No further work to do. Exiting sample...")
-            sys.exit(0)
-        else:
-            print("ERROR: No jobs queued in CI! At least one job should be queued!")
+    # Wait until we get a response. If we do not get a response after 50 tries, then abort
+    got_job_response_tries = 0
+    while (locked_data.got_job_response == False):
+        got_job_response_tries += 1
+        if (got_job_response_tries > 50):
+            exit("Got job response timeout exceeded")
             sys.exit(-1)
+        time.sleep(0.2)
+
+    if (len(available_jobs) > 0):
+        print("At least one job queued in CI! No further work to do. Exiting sample...")
+        sys.exit(0)
+    else:
+        print("ERROR: No jobs queued in CI! At least one job should be queued!")
+        sys.exit(-1)
 
     try:
         # Subscribe to necessary topics.
