@@ -179,6 +179,8 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 import awscrt.auth
 import awscrt.io
 import awscrt.mqtt5
+import urllib.parse
+
 
 DEFAULT_WEBSOCKET_MQTT_PORT = 443
 DEFAULT_DIRECT_MQTT_PORT = 8883
@@ -656,8 +658,12 @@ def direct_with_custom_authorizer(
             username_string, auth_authorizer_name, "x-amz-customauthorizer-name=")
 
     if auth_authorizer_signature is not None:
+        encoded_signature = auth_authorizer_signature
+        if "%" not in encoded_signature:
+            encoded_signature = urllib.parse.quote(encoded_signature)
+
         username_string = _add_to_username_parameter(
-            username_string, auth_authorizer_signature, "x-amz-customauthorizer-signature=")
+            username_string, encoded_signature, "x-amz-customauthorizer-signature=")
 
     if auth_token_key_name is not None and auth_token_value is not None:
         username_string = _add_to_username_parameter(username_string, auth_token_value, auth_token_key_name + "=")
@@ -738,8 +744,12 @@ def websockets_with_custom_authorizer(
             username_string, auth_authorizer_name, "x-amz-customauthorizer-name=")
 
     if auth_authorizer_signature is not None:
+        encoded_signature = auth_authorizer_signature
+        if "%" not in encoded_signature:
+            encoded_signature = urllib.parse.quote(encoded_signature)
+
         username_string = _add_to_username_parameter(
-            username_string, auth_authorizer_signature, "x-amz-customauthorizer-signature=")
+            username_string, encoded_signature, "x-amz-customauthorizer-signature=")
 
     if auth_token_key_name is not None and auth_token_value is not None:
         username_string = _add_to_username_parameter(username_string, auth_token_value, auth_token_key_name + "=")
