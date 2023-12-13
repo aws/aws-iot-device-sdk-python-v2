@@ -95,7 +95,6 @@ def try_start_next_job():
 
 
 def done_working_on_job():
-    exit(0)
     with locked_data.lock:
         locked_data.is_working_on_job = False
         try_again = locked_data.is_next_job_waiting
@@ -170,6 +169,7 @@ def on_publish_start_next_pending_job_execution(future):
         future.result()  # raises exception if publish failed
 
         print("Published request to start the next job.")
+        exit(0)
 
     except Exception as e:
         exit(e)
@@ -392,7 +392,6 @@ if __name__ == '__main__':
     except Exception as e:
         exit(e)
 
-    exit(0)
     #print("waiting on futures...\n");
     # Wait for the sample to finish
     is_sample_done.wait()
