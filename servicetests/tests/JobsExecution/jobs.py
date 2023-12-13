@@ -129,6 +129,7 @@ def on_get_pending_job_executions_accepted(response):
         else:
             print("No pending or queued jobs found!")
         locked_data.got_job_response = True
+        print(f"available jobs : {available_jobs}")
 
 
 def on_get_pending_job_executions_rejected(error):
