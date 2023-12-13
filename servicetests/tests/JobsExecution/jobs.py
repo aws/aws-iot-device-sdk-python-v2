@@ -129,7 +129,6 @@ def on_get_pending_job_executions_accepted(response):
         else:
             print("No pending or queued jobs found!")
         locked_data.got_job_response = True
-        print(f"available jobs : {available_jobs}")
 
 
 def on_get_pending_job_executions_rejected(error):
@@ -266,9 +265,13 @@ if __name__ == '__main__':
         keep_alive_secs=30,
         http_proxy_options=proxy_options)
 
-    print("Connecting to endpoint with client ID")
+    if not cmdData.input_is_ci:
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
+    else:
+        print("Connecting to endpoint with client ID")
 
     connected_future = mqtt_connection.connect()
+
     jobs_client = iotjobs.IotJobsClient(mqtt_connection)
 
     # Wait for connection to be fully established.
@@ -307,6 +310,23 @@ if __name__ == '__main__':
         get_jobs_request_future.result()
     except Exception as e:
         exit(e)
+
+    if (cmdData.input_is_ci):
+        # Wait until we get a response. If we do not get a response after 50 tries, then abort
+        got_job_response_tries = 0
+        while (locked_data.got_job_response == False):
+            got_job_response_tries += 1
+            if (got_job_response_tries > 50):
+                exit("Got job response timeout exceeded")
+                sys.exit(-1)
+            time.sleep(0.2)
+
+        if (len(available_jobs) > 0):
+            print("At least one job queued in CI! No further work to do. Exiting sample...")
+            sys.exit(0)
+        else:
+            print("ERROR: No jobs queued in CI! At least one job should be queued!")
+            sys.exit(-1)
 
     try:
         # Subscribe to necessary topics.
