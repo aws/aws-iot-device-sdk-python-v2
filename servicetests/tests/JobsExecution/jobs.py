@@ -1,8 +1,9 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import mqtt, http
+from awscrt import mqtt, mqtt5, http
 from awsiot import iotjobs, mqtt_connection_builder
+from awsiot import iotjobs, mqtt5_client_builder
 from concurrent.futures import Future
 import sys
 import threading
@@ -45,7 +46,11 @@ cmdData = CommandLineUtils.parse_sample_input_jobs()
 mqtt_connection = None
 jobs_client = None
 jobs_thing_name = cmdData.input_thing_name
+mqtt_qos = None
 
+# MQTT5 specific
+mqtt5_client = None
+future_connection_success = Future()
 
 class LockedData:
     def __init__(self):
@@ -70,8 +75,12 @@ def exit(msg_or_exception):
         if not locked_data.disconnect_called:
             print("Disconnecting...")
             locked_data.disconnect_called = True
-            future = mqtt_connection.disconnect()
-            future.add_done_callback(on_disconnected)
+            if cmdData.input_mqtt_version == 5:
+                locked_data.disconnect_called = True
+                mqtt5_client.stop()
+            else:
+                future = mqtt_connection.disconnect()
+                future.add_done_callback(on_disconnected)
 
 
 def try_start_next_job():
@@ -90,7 +99,7 @@ def try_start_next_job():
 
     print("Publishing request to start next job...")
     request = iotjobs.StartNextPendingJobExecutionRequest(thing_name=jobs_thing_name)
-    publish_future = jobs_client.publish_start_next_pending_job_execution(request, mqtt.QoS.AT_LEAST_ONCE)
+    publish_future = jobs_client.publish_start_next_pending_job_execution(request, mqtt_qos)
     publish_future.add_done_callback(on_publish_start_next_pending_job_execution)
 
 
@@ -213,7 +222,7 @@ def job_thread_fn(job_id, job_document):
             thing_name=jobs_thing_name,
             job_id=job_id,
             status=iotjobs.JobStatus.SUCCEEDED)
-        publish_future = jobs_client.publish_update_job_execution(request, mqtt.QoS.AT_LEAST_ONCE)
+        publish_future = jobs_client.publish_update_job_execution(request, mqtt_qos)
         publish_future.add_done_callback(on_publish_update_job_execution)
 
     except Exception as e:
@@ -244,43 +253,91 @@ def on_update_job_execution_rejected(rejected):
     exit("Request to update job status was rejected. code:'{}' message:'{}'.".format(
         rejected.code, rejected.message))
 
+# MQTT5 specific functions
+# Callback for the lifecycle event Connection Success
+def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.LifecycleConnectSuccessData):
+    print("Lifecycle Connection Success")
+    global future_connection_success
+    future_connection_success.set_result(lifecycle_connect_success_data)
+   # global connected_future
+   # connected_future.set_result(lifecycle_connect_success_data)
+
+# Callback for the lifecycle event on Client Stopped
+def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
+    print("Client Stopped.")
+
+    # Signal that sample is finished
+    is_sample_done.set()
+
+# end MQTT5 specific functions
 
 if __name__ == '__main__':
-    print("starting jobs probrams\n");
     # Create the proxy options if the data is present in cmdData
+
     proxy_options = None
     if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
         proxy_options = http.HttpProxyOptions(
             host_name=cmdData.input_proxy_host,
             port=cmdData.input_proxy_port)
 
-    # Create a MQTT connection from the command line data
-    mqtt_connection = mqtt_connection_builder.mtls_from_path(
-        endpoint=cmdData.input_endpoint,
-        port=cmdData.input_port,
-        cert_filepath=cmdData.input_cert,
-        pri_key_filepath=cmdData.input_key,
-        ca_filepath=cmdData.input_ca,
-        client_id=cmdData.input_clientId,
-        clean_session=False,
-        keep_alive_secs=30,
-        http_proxy_options=proxy_options)
+    if cmdData.input_mqtt_version == 5:
+        mqtt_qos = mqtt5.QoS.AT_LEAST_ONCE
+        # Create a mqtt5 connection from the command line data
+        mqtt5_client = mqtt5_client_builder.mtls_from_path(
+            endpoint=cmdData.input_endpoint,
+            port=cmdData.input_port,
+            cert_filepath=cmdData.input_cert,
+            pri_key_filepath=cmdData.input_key,
+            ca_filepath=cmdData.input_ca,
+            client_id=cmdData.input_clientId,
+            clean_session=False,
+            keep_alive_secs=30,
+            http_proxy_options=proxy_options,
+            on_lifecycle_connection_success=on_lifecycle_connection_success,
+            on_lifecycle_stopped=on_lifecycle_stopped)
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}' with MQTT5...")
 
-    if not cmdData.input_is_ci:
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
+        mqtt5_client.start()
+
+        jobs_client = iotjobs.IotJobsClient(mqtt5_client)
+        future_connection_success.result()
+
+        # Wait for connection to be fully established.
+        # Note that it's not necessary to wait, commands issued to the
+        # mqtt5_client before its fully connected will simply be queued.
+        # But this sample waits here so it's obvious when a connection
+        # fails or succeeds.
+    elif cmdData.input_mqtt_version == 3:
+        mqtt_qos = mqtt.QoS.AT_LEAST_ONCE
+        # Create a MQTT connection from the command line data
+        mqtt_connection = mqtt_connection_builder.mtls_from_path(
+            endpoint=cmdData.input_endpoint,
+            port=cmdData.input_port,
+            cert_filepath=cmdData.input_cert,
+            pri_key_filepath=cmdData.input_key,
+            ca_filepath=cmdData.input_ca,
+            client_id=cmdData.input_clientId,
+            clean_session=False,
+            keep_alive_secs=30,
+            http_proxy_options=proxy_options)
+
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}' with MQTT3...")
+
+        connected_future = mqtt_connection.connect()
+
+        jobs_client = iotjobs.IotJobsClient(mqtt_connection)
+        connected_future.result()
+
+        # Wait for connection to be fully established.
+        # Note that it's not necessary to wait, commands issued to the
+        # mqtt_connection before its fully connected will simply be queued.
+        # But this sample waits here so it's obvious when a connection
+        # fails or succeeds.
     else:
-        print("Connecting to endpoint with client ID")
+        print("Unsopported MQTT version number\n")
+        sys.exit(-1)
 
-    connected_future = mqtt_connection.connect()
 
-    jobs_client = iotjobs.IotJobsClient(mqtt_connection)
-
-    # Wait for connection to be fully established.
-    # Note that it's not necessary to wait, commands issued to the
-    # mqtt_connection before its fully connected will simply be queued.
-    # But this sample waits here so it's obvious when a connection
-    # fails or succeeds.
-    connected_future.result()
     print("Connected!")
 
     try:
@@ -288,7 +345,7 @@ if __name__ == '__main__':
         get_jobs_request = iotjobs.GetPendingJobExecutionsRequest(thing_name=jobs_thing_name)
         jobs_request_future_accepted, _ = jobs_client.subscribe_to_get_pending_job_executions_accepted(
             request=get_jobs_request,
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt_qos,
             callback=on_get_pending_job_executions_accepted
         )
         # Wait for the subscription to succeed
@@ -296,7 +353,7 @@ if __name__ == '__main__':
 
         jobs_request_future_rejected, _ = jobs_client.subscribe_to_get_pending_job_executions_rejected(
             request=get_jobs_request,
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt_qos,
             callback=on_get_pending_job_executions_rejected
         )
         # Wait for the subscription to succeed
@@ -305,30 +362,12 @@ if __name__ == '__main__':
         # Get a list of all the jobs
         get_jobs_request_future = jobs_client.publish_get_pending_job_executions(
             request=get_jobs_request,
-            qos=mqtt.QoS.AT_LEAST_ONCE
+            qos=mqtt_qos
         )
         # Wait for the publish to succeed
         get_jobs_request_future.result()
     except Exception as e:
         exit(e)
-
-#    if (cmdData.input_is_ci):
-#        # Wait until we get a response. If we do not get a response after 50 tries, then abort
-#        got_job_response_tries = 0
-#        while (locked_data.got_job_response == False):
-#            got_job_response_tries += 1
-#            if (got_job_response_tries > 50):
-#                exit("Got job response timeout exceeded")
-#                sys.exit(-1)
-#            time.sleep(0.2)
-#
-#        if (len(available_jobs) > 0):
-#            print("At least one job queued in CI! No further work to do. Exiting sample...")
-#            sys.exit(0)
-#        else:
-#            print("ERROR: No jobs queued in CI! At least one job should be queued!")
-#            sys.exit(-1)
-
     try:
         # Subscribe to necessary topics.
         # Note that is **is** important to wait for "accepted/rejected" subscriptions
@@ -339,7 +378,7 @@ if __name__ == '__main__':
 
         subscribed_future, _ = jobs_client.subscribe_to_next_job_execution_changed_events(
             request=changed_subscription_request,
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt_qos,
             callback=on_next_job_execution_changed)
 
         # Wait for subscription to succeed
@@ -350,12 +389,12 @@ if __name__ == '__main__':
             thing_name=jobs_thing_name)
         subscribed_accepted_future, _ = jobs_client.subscribe_to_start_next_pending_job_execution_accepted(
             request=start_subscription_request,
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt_qos,
             callback=on_start_next_pending_job_execution_accepted)
 
         subscribed_rejected_future, _ = jobs_client.subscribe_to_start_next_pending_job_execution_rejected(
             request=start_subscription_request,
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt_qos,
             callback=on_start_next_pending_job_execution_rejected)
 
         # Wait for subscriptions to succeed
@@ -371,12 +410,12 @@ if __name__ == '__main__':
 
         subscribed_accepted_future, _ = jobs_client.subscribe_to_update_job_execution_accepted(
             request=update_subscription_request,
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt_qos,
             callback=on_update_job_execution_accepted)
 
         subscribed_rejected_future, _ = jobs_client.subscribe_to_update_job_execution_rejected(
             request=update_subscription_request,
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt_qos,
             callback=on_update_job_execution_rejected)
 
         # Wait for subscriptions to succeed
@@ -392,7 +431,5 @@ if __name__ == '__main__':
     except Exception as e:
         exit(e)
 
-    #print("waiting on futures...\n");
     # Wait for the sample to finish
     is_sample_done.wait()
-    #print("futures done...\n");
