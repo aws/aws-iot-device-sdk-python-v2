@@ -215,12 +215,12 @@ jobs:
       - name: run MQTT3 Jobs servicetests
         working-directory: ./aws-iot-device-sdk-python-v2/servicetests
         run: |
-          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples/utils
+          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
           python3 ./test_cases/test_jobs_execution.py --config-file test_cases/mqtt3_jobs_cfg.json
       - name: run MQTT5 Jobs servicetests
         working-directory: ./aws-iot-device-sdk-python-v2/servicetests
         run: |
-          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples/utils
+          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
           python3 ./test_cases/test_jobs_execution.py --config-file tests_cases/mqtt5_jobs_cfg.json
 
       - name: configure AWS credentials (Connect and PubSub)
