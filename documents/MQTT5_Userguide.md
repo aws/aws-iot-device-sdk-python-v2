@@ -1,7 +1,6 @@
 # MQTT 5
 # Table of Contents
 
-* [Developer Preview Disclaimer](#developer-preview-disclaimer)
 * [Introduction](#introduction)
 * [MQTT5 differences relative to MQTT311 implementation](#mqtt5-differences-relative-to-mqtt311-implementation)
     * [Major Changes](#major-changes)
@@ -24,10 +23,6 @@
         * [Unsubscribe](#unsubscribe)
         * [Publish](#publish)
     * [MQTT5 Best Practices](#mqtt5-best-practices)
-## **Developer Preview Disclaimer**
-MQTT5 support is currently in **developer preview**.  We encourage feedback at all times, but feedback during the preview window is especially valuable in shaping the final product.  During the preview period we may make backwards-incompatible changes to the public API, but in general, this is something we will try our best to avoid.
-
-The MQTT5 client cannot yet be used with the AWS IoT MQTT services (Shadow, Jobs, Identity).  This is a shortcoming that we hope to address in the near future.
 
 ## **Introduction**
 
