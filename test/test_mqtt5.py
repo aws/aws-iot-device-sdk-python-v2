@@ -21,6 +21,7 @@ CUSTOM_AUTHORIZER_NAME_SIGNED = os.environ.get("CUSTOM_AUTHORIZER_NAME_SIGNED")
 CUSTOM_AUTHORIZER_NAME_UNSIGNED = os.environ.get("CUSTOM_AUTHORIZER_NAME_UNSIGNED")
 CUSTOM_AUTHORIZER_PASSWORD = os.environ.get("CUSTOM_AUTHORIZER_PASSWORD")
 CUSTOM_AUTHORIZER_SIGNATURE = os.environ.get("CUSTOM_AUTHORIZER_SIGNATURE")
+CUSTOM_AUTHORIZER_SIGNATURE_UNENCODED = os.environ.get("CUSTOM_AUTHORIZER_SIGNATURE_UNENCODED")
 CUSTOM_AUTHORIZER_TOKEN_KEY_NAME = os.environ.get("CUSTOM_AUTHORIZER_TOKEN_KEY_NAME")
 CUSTOM_AUTHORIZER_TOKEN_VALUE = os.environ.get("CUSTOM_AUTHORIZER_TOKEN_VALUE")
 
@@ -29,7 +30,7 @@ def has_custom_auth_environment():
     return (CUSTOM_AUTHORIZER_ENDPOINT is not None) and (CUSTOM_AUTHORIZER_NAME_SIGNED is not None) and \
            (CUSTOM_AUTHORIZER_NAME_UNSIGNED is not None) and (CUSTOM_AUTHORIZER_PASSWORD is not None) and \
            (CUSTOM_AUTHORIZER_SIGNATURE is not None) and (CUSTOM_AUTHORIZER_TOKEN_KEY_NAME is not None) and \
-           (CUSTOM_AUTHORIZER_TOKEN_VALUE is not None)
+           (CUSTOM_AUTHORIZER_TOKEN_VALUE is not None) and (CUSTOM_AUTHORIZER_SIGNATURE_UNENCODED is not None)
 
 class Config:
     cache = None
@@ -237,6 +238,28 @@ class Mqtt5BuilderTest(unittest.TestCase):
         self._test_connection(client, callbacks)
 
     @unittest.skipIf(not has_custom_auth_environment(), 'requires custom authentication env vars')
+    def test_mqtt5_builder_direct_signed_custom_authorizer_unencoded(self):
+        elg = EventLoopGroup()
+        resolver = DefaultHostResolver(elg)
+        bootstrap = ClientBootstrap(elg, resolver)
+        callbacks = Mqtt5TestCallbacks()
+
+        client = mqtt5_client_builder.direct_with_custom_authorizer(
+            auth_username="",
+            auth_authorizer_name=CUSTOM_AUTHORIZER_NAME_SIGNED,
+            auth_authorizer_signature=CUSTOM_AUTHORIZER_SIGNATURE_UNENCODED,
+            auth_password=CUSTOM_AUTHORIZER_PASSWORD,
+            auth_token_key_name=CUSTOM_AUTHORIZER_TOKEN_KEY_NAME,
+            auth_token_value=CUSTOM_AUTHORIZER_TOKEN_VALUE,
+            endpoint=CUSTOM_AUTHORIZER_ENDPOINT,
+            client_id=create_client_id(),
+            client_bootstrap=bootstrap,
+            on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
+            on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
+
+        self._test_connection(client, callbacks)
+
+    @unittest.skipIf(not has_custom_auth_environment(), 'requires custom authentication env vars')
     def test_mqtt5_builder_direct_unsigned_custom_authorizer(self):
         elg = EventLoopGroup()
         resolver = DefaultHostResolver(elg)
@@ -266,6 +289,28 @@ class Mqtt5BuilderTest(unittest.TestCase):
             auth_username="",
             auth_authorizer_name=CUSTOM_AUTHORIZER_NAME_SIGNED,
             auth_authorizer_signature=CUSTOM_AUTHORIZER_SIGNATURE,
+            auth_password=CUSTOM_AUTHORIZER_PASSWORD,
+            auth_token_key_name=CUSTOM_AUTHORIZER_TOKEN_KEY_NAME,
+            auth_token_value=CUSTOM_AUTHORIZER_TOKEN_VALUE,
+            endpoint=CUSTOM_AUTHORIZER_ENDPOINT,
+            client_id=create_client_id(),
+            client_bootstrap=bootstrap,
+            on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
+            on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
+
+        self._test_connection(client, callbacks)
+
+    @unittest.skipIf(not has_custom_auth_environment(), 'requires custom authentication env vars')
+    def test_mqtt5_builder_websocket_signed_custom_authorizer_unencoded(self):
+        elg = EventLoopGroup()
+        resolver = DefaultHostResolver(elg)
+        bootstrap = ClientBootstrap(elg, resolver)
+        callbacks = Mqtt5TestCallbacks()
+
+        client = mqtt5_client_builder.websockets_with_custom_authorizer(
+            auth_username="",
+            auth_authorizer_name=CUSTOM_AUTHORIZER_NAME_SIGNED,
+            auth_authorizer_signature=CUSTOM_AUTHORIZER_SIGNATURE_UNENCODED,
             auth_password=CUSTOM_AUTHORIZER_PASSWORD,
             auth_token_key_name=CUSTOM_AUTHORIZER_TOKEN_KEY_NAME,
             auth_token_value=CUSTOM_AUTHORIZER_TOKEN_VALUE,
