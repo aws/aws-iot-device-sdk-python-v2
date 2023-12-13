@@ -245,7 +245,7 @@ def on_update_job_execution_rejected(rejected):
 
 
 if __name__ == '__main__':
-
+    print("starting jobs probrams\n");
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
     if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
