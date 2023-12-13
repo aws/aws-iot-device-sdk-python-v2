@@ -530,8 +530,7 @@ def direct_with_custom_authorizer(
         auth_authorizer_signature (`str`):  The digital signature of the token value in the `auth_token_value`
             parameter. The signature must be based on the private key associated with the custom authorizer.  The
             signature must be base64 encoded.
-            Required if the custom authorizer has signing enabled.  It is strongly suggested to URL-encode this value;
-            the SDK will not do so for you.
+            Required if the custom authorizer has signing enabled.
 
         auth_token_key_name (`str`): Key used to extract the custom authorizer token from MQTT username query-string
             properties.
@@ -591,8 +590,7 @@ def websockets_with_custom_authorizer(
         auth_authorizer_signature (`str`):  The digital signature of the token value in the `auth_token_value`
             parameter. The signature must be based on the private key associated with the custom authorizer.  The
             signature must be base64 encoded.
-            Required if the custom authorizer has signing enabled.  It is strongly suggested to URL-encode this value;
-            the SDK will not do so for you.
+            Required if the custom authorizer has signing enabled.  
 
         auth_token_key_name (`str`): Key used to extract the custom authorizer token from MQTT username query-string
             properties.
