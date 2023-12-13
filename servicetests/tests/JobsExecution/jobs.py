@@ -265,10 +265,9 @@ if __name__ == '__main__':
         keep_alive_secs=30,
         http_proxy_options=proxy_options)
 
-        print("Connecting to endpoint with client ID")
+    print("Connecting to endpoint with client ID")
 
     connected_future = mqtt_connection.connect()
-
     jobs_client = iotjobs.IotJobsClient(mqtt_connection)
 
     # Wait for connection to be fully established.
