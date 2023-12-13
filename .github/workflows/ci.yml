@@ -213,10 +213,12 @@ jobs:
           role-to-assume: ${{ env.CI_JOBS_SERVICE_CLIENT_ROLE}}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
       - name: run MQTT3 Jobs servicetests
+        working-directory: ./aws-iot-device-sdk-python-v2/servicetests
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils
           python3 ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/test_jobs_execution.py --config-file ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/ci_run_jobs_cfg.json
       - name: run MQTT5 Jobs servicetests
+        working-directory: ./aws-iot-device-sdk-python-v2/servicetests
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils
           python3 ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/test_jobs_execution.py --config-file ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/ci_run_mqtt5_jobs_cfg.json
