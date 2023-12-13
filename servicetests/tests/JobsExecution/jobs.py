@@ -98,7 +98,7 @@ def done_working_on_job():
     with locked_data.lock:
         locked_data.is_working_on_job = False
         try_again = locked_data.is_next_job_waiting
-        exit(0)
+    exit(0)
 
     if try_again:
         try_start_next_job()
