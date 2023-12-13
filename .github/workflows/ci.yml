@@ -215,11 +215,11 @@ jobs:
       - name: run MQTT3 Jobs servicetests
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils
-          python3 ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/test_jobs_execution.py --file ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/ci_run_jobs_cfg.json
+          python3 ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/test_jobs_execution.py --config-file ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/ci_run_jobs_cfg.json
       - name: run MQTT5 Jobs servicetests
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils
-          python3 ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/test_jobs_execution.py --file ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/ci_run_mqtt5_jobs_cfg.json
+          python3 ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/test_jobs_execution.py --config-file ${{ env.CI_SERVICE_ROLE_CFG_FOLDER }}/ci_run_mqtt5_jobs_cfg.json
 
       - name: configure AWS credentials (Connect and PubSub)
         uses: aws-actions/configure-aws-credentials@v1
