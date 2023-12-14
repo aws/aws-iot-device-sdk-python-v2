@@ -123,6 +123,7 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 import awscrt.auth
 import awscrt.io
 import awscrt.mqtt
+import urllib.parse
 
 
 def _check_required_kwargs(**kwargs):
@@ -529,8 +530,7 @@ def direct_with_custom_authorizer(
         auth_authorizer_signature (`str`):  The digital signature of the token value in the `auth_token_value`
             parameter. The signature must be based on the private key associated with the custom authorizer.  The
             signature must be base64 encoded.
-            Required if the custom authorizer has signing enabled.  It is strongly suggested to URL-encode this value;
-            the SDK will not do so for you.
+            Required if the custom authorizer has signing enabled.
 
         auth_token_key_name (`str`): Key used to extract the custom authorizer token from MQTT username query-string
             properties.
@@ -590,8 +590,7 @@ def websockets_with_custom_authorizer(
         auth_authorizer_signature (`str`):  The digital signature of the token value in the `auth_token_value`
             parameter. The signature must be based on the private key associated with the custom authorizer.  The
             signature must be base64 encoded.
-            Required if the custom authorizer has signing enabled.  It is strongly suggested to URL-encode this value;
-            the SDK will not do so for you.
+            Required if the custom authorizer has signing enabled.  
 
         auth_token_key_name (`str`): Key used to extract the custom authorizer token from MQTT username query-string
             properties.
@@ -644,8 +643,12 @@ def _with_custom_authorizer(auth_username=None,
             username_string, auth_authorizer_name, "x-amz-customauthorizer-name=")
 
     if auth_authorizer_signature is not None:
+        encoded_signature = auth_authorizer_signature
+        if "%" not in encoded_signature:
+            encoded_signature = urllib.parse.quote(encoded_signature)
+
         username_string = _add_to_username_parameter(
-            username_string, auth_authorizer_signature, "x-amz-customauthorizer-signature=")
+            username_string, encoded_signature, "x-amz-customauthorizer-signature=")
 
     if auth_token_key_name is not None and auth_token_value is not None:
         username_string = _add_to_username_parameter(username_string, auth_token_value, auth_token_key_name + "=")
