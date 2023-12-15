@@ -707,7 +707,7 @@ class CommandLineUtils:
         cmdUtils.register_command(CommandLineUtils.m_cmd_thing_name, "<str>", "The name assigned to your IoT Thing", required=True)
         cmdUtils.register_command(CommandLineUtils.m_cmd_shadow_property, "<str>", "The name of the shadow property you want to change (optional, default=''", default="")
         cmdUtils.register_command(CommandLineUtils.m_cmd_shadow_value, "<str>", "The desired value of the shadow property you want to set (optional)")
-        cmdUtils.register_command(CommandLineUtils.m_cmd_shadow_name, "<str>", "Shadow name (optional, default='')", default="", type=str)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_shadow_name, "<str>", "Shadow name (optional, default='')", type=str)
         cmdUtils.register_command(CommandLineUtils.m_cmd_mqtt_version, "<int>", "mqtt version (optional, default='5')", default=5, type=int)
         cmdUtils.get_args()
 
