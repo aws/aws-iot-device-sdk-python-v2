@@ -259,8 +259,6 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
     print("Lifecycle Connection Success")
     global future_connection_success
     future_connection_success.set_result(lifecycle_connect_success_data)
-   # global connected_future
-   # connected_future.set_result(lifecycle_connect_success_data)
 
 # Callback for the lifecycle event on Client Stopped
 def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
