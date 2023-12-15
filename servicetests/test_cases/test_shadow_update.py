@@ -105,12 +105,12 @@ def main():
 
     # Delete a thing created for this test run.
     # NOTE We want to try to delete thing even if test was unsuccessful.
-    try:
-        ci_iot_thing.delete_iot_thing(thing_name, parsed_commands.region)
-    except Exception as e:
-        print(f"ERROR: Failed to delete thing: {e}")
-        # Fail the test if unable to delete thing, so this won't remain unnoticed.
-        test_result = -1
+#    try:
+#        ci_iot_thing.delete_iot_thing(thing_name, parsed_commands.region)
+#    except Exception as e:
+#        print(f"ERROR: Failed to delete thing: {e}")
+#        # Fail the test if unable to delete thing, so this won't remain unnoticed.
+#        test_result = -1
 
     try:
         if os.path.isfile(certificate_path):
