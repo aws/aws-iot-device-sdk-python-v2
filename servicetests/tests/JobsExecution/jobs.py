@@ -335,7 +335,6 @@ if __name__ == '__main__':
         print("Unsopported MQTT version number\n")
         sys.exit(-1)
 
-
     print("Connected!")
 
     try:
