@@ -1,6 +1,6 @@
 {
     "language": "Python",
-    "runnable_file": "./tests/JobsExecution/shadow_update.py",
+    "runnable_file": "./tests/ShadowUpdate/shadow_update.py",
     "runnable_region": "us-east-1",
     "runnable_main_class": "",
     "arguments": [
