@@ -227,12 +227,12 @@ jobs:
         working-directory: ./aws-iot-device-sdk-python-v2/servicetests
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
-          python3 ./test_cases/test_named_shadow_update.py --config-file test_cases/mqtt5_named_shadow_cfg.json
+          python3 ./test_cases/test_shadow_update.py --config-file test_cases/mqtt5_named_shadow_cfg.json
       - name: run MQTT3 Named Shadow Update
         working-directory: ./aws-iot-device-sdk-python-v2/servicetests
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
-          python3 ./test_cases/test_named_shadow_update.py --config-file test_cases/mqtt3_named_shadow_cfg.json
+          python3 ./test_cases/test_shadow_update.py --config-file test_cases/mqtt3_named_shadow_cfg.json
 
       - name: configure AWS credentials (service tests Jobs)
         uses: aws-actions/configure-aws-credentials@v2
