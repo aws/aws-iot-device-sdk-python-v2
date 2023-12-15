@@ -1,0 +1,28 @@
+{
+    "language": "Python",
+    "runnable_file": "./tests/JobsExecution/jobs.py",
+    "runnable_region": "us-east-1",
+    "runnable_main_class": "",
+    "arguments": [
+        {
+            "name": "--mqtt_version",
+            "data": "5"
+        },
+        {
+            "name": "--endpoint",
+            "secret": "ci/endpoint"
+        },
+        {
+            "name": "--cert",
+            "data": "tests/JobsExecution/certificate.pem.crt"
+        },
+        {
+            "name": "--key",
+            "data": "tests/JobsExecution/private.pem.key"
+        },
+        {
+            "name": "--thing_name",
+            "data": "ServiceTest_Jobs_$INPUT_UUID"
+        }
+    ]
+}

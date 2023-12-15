@@ -461,6 +461,7 @@ class CommandLineUtils:
         cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).", type=int)
         cmdUtils.register_command(CommandLineUtils.m_cmd_thing_name, "<str>", "The name assigned to your IoT Thing", required=True)
         cmdUtils.register_command(CommandLineUtils.m_cmd_job_time, "<int>", "Emulate working on a job by sleeping this many seconds (optional, default='5')", default=5, type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_mqtt_version, "<int>", "mqtt version (optional, default='5')", default=5, type=int)
         cmdUtils.get_args()
 
         cmdData = CommandLineUtils.CmdData()
@@ -475,6 +476,7 @@ class CommandLineUtils:
         cmdData.input_thing_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_thing_name)
         cmdData.input_job_time = int(cmdUtils.get_command(CommandLineUtils.m_cmd_job_time, 5))
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        cmdData.input_mqtt_version = int(cmdUtils.get_command(CommandLineUtils.m_cmd_mqtt_version, 5))
         return cmdData
 
     def parse_sample_input_mqtt5_custom_authorizer_connect():
@@ -877,3 +879,4 @@ class CommandLineUtils:
     m_cmd_pkcs12_file = "pkcs12_file"
     m_cmd_pkcs12_password = "pkcs12_password"
     m_cmd_region = "region"
+    m_cmd_mqtt_version = "mqtt_version"
