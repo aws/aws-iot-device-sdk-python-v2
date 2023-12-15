@@ -279,43 +279,47 @@ def change_shadow_value(value):
 
 def user_input_thread_fn():
     # If we are not in CI, then take terminal input
-    if not cmdData.input_is_ci:
-        while True:
-            try:
-                # Read user input
-                new_value = input()
+#    if not cmdData.input_is_ci:
+#        while True:
+#            try:
+#                # Read user input
+#                new_value = input()
+#
+#                # If user wants to quit sample, then quit.
+#                # Otherwise change the shadow value.
+#                if new_value in ['exit', 'quit']:
+#                    exit("User has quit")
+#                    break
+#                else:
+#                    change_shadow_value(new_value)
 
-                # If user wants to quit sample, then quit.
-                # Otherwise change the shadow value.
-                if new_value in ['exit', 'quit']:
-                    exit("User has quit")
-                    break
-                else:
-                    change_shadow_value(new_value)
-
-            except Exception as e:
-                print("Exception on input thread.")
-                exit(e)
-                break
-    # Otherwise, send shadow updates automatically
-    else:
-        try:
-            messages_sent = 0
-            while messages_sent < 5:
-                cli_input = "Shadow_Value_" + str(messages_sent)
-                change_shadow_value(cli_input)
-                sleep(1)
-                messages_sent += 1
-            exit("CI has quit")
-        except Exception as e:
-            print("Exception on input thread (CI)")
-            exit(e)
+#            except Exception as e:
+#                print("Exception on input thread.")
+#                exit(e)
+#                break
+#    # Otherwise, send shadow updates automatically
+#    else:
+    try:
+        change_shadow_value(cmdData.input_shadow_value)
+        exit("CI has quit")
+        #message = cmdData.input_shadow_value
+   #     messages_sent = 0
+   #     while messages_sent < 5:
+            #cli_input = "Shadow_Value_" + str(messages_sent)
+    #        change_shadow_value(cli_input)
+    #        sleep(1)
+    #        messages_sent += 1
+    #    exit("CI has quit")
+    except Exception as e:
+        print("Exception on input thread (CI)")
+        exit(e)
 
 
 if __name__ == '__main__':
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
     if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
+
         proxy_options = http.HttpProxyOptions(
             host_name=cmdData.input_proxy_host,
             port=cmdData.input_proxy_port)
