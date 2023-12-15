@@ -290,6 +290,7 @@ class CommandLineUtils:
         # Shadow
         input_shadow_property : str
         input_shadow_value : str
+        input_shadow_name : str
         # PKCS12
         input_pkcs12_file : str
         input_pkcs12_password : str
@@ -704,8 +705,9 @@ class CommandLineUtils:
         cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).", type=int)
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
         cmdUtils.register_command(CommandLineUtils.m_cmd_thing_name, "<str>", "The name assigned to your IoT Thing", required=True)
-        cmdUtils.register_command(CommandLineUtils.m_cmd_shadow_property, "<str>", "The name of the shadow property you want to change (optional, default='color'", default="color")
+        cmdUtils.register_command(CommandLineUtils.m_cmd_shadow_property, "<str>", "The name of the shadow property you want to change (optional, default=''", default="")
         cmdUtils.register_command(CommandLineUtils.m_cmd_shadow_value, "<str>", "The desired value of the shadow property you want to set (optional)")
+        cmdUtils.register_command(CommandLineUtils.m_cmd_shadow_name, "<str>", "Shadow name (optional, default='')", default="", type=str)
         cmdUtils.register_command(CommandLineUtils.m_cmd_mqtt_version, "<int>", "mqtt version (optional, default='5')", default=5, type=int)
         cmdUtils.get_args()
 
@@ -721,6 +723,7 @@ class CommandLineUtils:
         cmdData.input_thing_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_thing_name)
         cmdData.input_shadow_property = cmdUtils.get_command_required(CommandLineUtils.m_cmd_shadow_property)
         cmdData.input_shadow_value = cmdUtils.get_command(CommandLineUtils.m_cmd_shadow_value, None)
+        cmdData.input_shadow_name = cmdUtils.get_command(CommandLineUtils.m_cmd_shadow_name, None)
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         cmdData.input_mqtt_version = int(cmdUtils.get_command(CommandLineUtils.m_cmd_mqtt_version, 5))
         return cmdData
@@ -882,6 +885,7 @@ class CommandLineUtils:
     m_cmd_group_identifier = "group_identifier"
     m_cmd_shadow_property = "shadow_property"
     m_cmd_shadow_value = "shadow_value"
+    m_cmd_shadow_name = "shadow_name"
     m_cmd_pkcs12_file = "pkcs12_file"
     m_cmd_pkcs12_password = "pkcs12_password"
     m_cmd_region = "region"
