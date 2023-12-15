@@ -706,6 +706,7 @@ class CommandLineUtils:
         cmdUtils.register_command(CommandLineUtils.m_cmd_thing_name, "<str>", "The name assigned to your IoT Thing", required=True)
         cmdUtils.register_command(CommandLineUtils.m_cmd_shadow_property, "<str>", "The name of the shadow property you want to change (optional, default='color'", default="color")
         cmdUtils.register_command(CommandLineUtils.m_cmd_shadow_value, "<str>", "The desired value of the shadow property you want to set (optional)")
+        cmdUtils.register_command(CommandLineUtils.m_cmd_mqtt_version, "<int>", "mqtt version (optional, default='5')", default=5, type=int)
         cmdUtils.get_args()
 
         cmdData = CommandLineUtils.CmdData()
@@ -721,6 +722,7 @@ class CommandLineUtils:
         cmdData.input_shadow_property = cmdUtils.get_command_required(CommandLineUtils.m_cmd_shadow_property)
         cmdData.input_shadow_value = cmdUtils.get_command(CommandLineUtils.m_cmd_shadow_value, None)
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        cmdData.input_mqtt_version = int(cmdUtils.get_command(CommandLineUtils.m_cmd_mqtt_version, 5))
         return cmdData
 
     def parse_sample_input_websocket_connect():
