@@ -435,6 +435,16 @@ if __name__ == '__main__':
             # Subscribe to necessary topics.
             # Note that is **is** important to wait for "accepted/rejected" subscriptions
             # to succeed before publishing the corresponding "request".
+            state=iotshadow.ShadowState(
+                reported={shadow_property: cmdData.input_shadow_value},
+                desired={shadow_property: cmdData.input_shadow_value})
+
+            update_thing_update_future =  shadow_client.publish_update_named_shadow(request = iotshadow.UpdateNamedShadowRequest
+                    (shadow_name = named_shadow, thing_name = shadow_thing_name, state=state), qos=mqtt.QoS.AT_LEAST_ONCE)
+
+            # Wait for subscriptions to succeed
+            update_thing_update_future.result()
+
             print("Subscribing to Update responses...")
             update_accepted_subscribed_future, _ = shadow_client.subscribe_to_update_named_shadow_accepted(
                 request=iotshadow.UpdateNamedShadowSubscriptionRequest(shadow_name=named_shadow, thing_name=shadow_thing_name),
