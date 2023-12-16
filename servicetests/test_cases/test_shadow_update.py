@@ -54,6 +54,7 @@ def main():
     policy_name = secrets_client.get_secret_value(
         SecretId="ci/ShadowServiceClientTest/policy_name")["SecretString"]
 
+    #policy_name = 'CI_ShadowServiceTest_Policy'
     # Temporary certificate/key file path.
     certificate_path = os.path.join(os.getcwd(), "tests/ShadowUpdate/certificate.pem.crt")
     key_path = os.path.join(os.getcwd(), "tests/ShadowUpdate/private.pem.key")
@@ -69,11 +70,21 @@ def main():
         print(f"ERROR: Failed to create IoT thing: {e}")
         sys.exit(-1)
 
+    try:
+        print("======= creating named shadow\n")
+        response = iot_data_client.update_thing_shadow(thingName=thing_name,
+            shadowName=shadow_name, payload='{ "state": { "desired": { "welcome": "aws-iot", "color": "off" }, "reported": { "welcome": "aws-iot", "color": "off" } } }')
+       #        shadowname=shadow_name, payload='{ "metadata": { "desired": { "color": { "timestamp": 1702669210 } }, "reported": { "color": { "timestamp": 1702669210 } } } }')
+    except Exception as e:
+        print(f"ERROR: Failed to create named shadow: {e}")
+        test_result = -1
+
+
     # Perform Shadow test. If it's successful, a shadow should appear for a specified thing.
     try:
         test_result = run_in_ci.setup_and_launch(parsed_commands.config_file, input_uuid)
     except Exception as e:
-        print(f"ERROR: Failed to execute Jobs test: {e}")
+        print(f"ERROR: Failed to create shadow test: {e}")
         test_result = -1
 
     # Test reported success, verify that shadow was indeed updated.
