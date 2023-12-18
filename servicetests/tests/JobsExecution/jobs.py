@@ -76,7 +76,6 @@ def exit(msg_or_exception):
             print("Disconnecting...")
             locked_data.disconnect_called = True
             if cmdData.input_mqtt_version == 5:
-                locked_data.disconnect_called = True
                 mqtt5_client.stop()
             else:
                 future = mqtt_connection.disconnect()

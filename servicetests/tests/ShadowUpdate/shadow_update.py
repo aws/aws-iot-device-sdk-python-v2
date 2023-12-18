@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 from time import sleep
-from awscrt import mqtt, http
-from awsiot import iotshadow, mqtt_connection_builder
+from awscrt import mqtt, mqtt5, http
+from awsiot import iotshadow, mqtt_connection_builder, mqtt5_client_builder
 from concurrent.futures import Future
 import sys
 import threading
@@ -40,9 +40,13 @@ is_sample_done = threading.Event()
 mqtt_connection = None
 shadow_thing_name = cmdData.input_thing_name
 shadow_property = cmdData.input_shadow_property
+mqtt_qos = None
+
+# MQTT5 specific
+mqtt5_client = None
+future_connection_success = Future()
 
 SHADOW_VALUE_DEFAULT = "off"
-
 
 class LockedData:
     def __init__(self):
@@ -51,12 +55,9 @@ class LockedData:
         self.disconnect_called = False
         self.request_tokens = set()
 
-
 locked_data = LockedData()
 
 # Function for gracefully quitting this sample
-
-
 def exit(msg_or_exception):
     if isinstance(msg_or_exception, Exception):
         print("Exiting sample due to exception.")
@@ -66,10 +67,16 @@ def exit(msg_or_exception):
 
     with locked_data.lock:
         if not locked_data.disconnect_called:
-            print("Disconnecting...")
             locked_data.disconnect_called = True
-            future = mqtt_connection.disconnect()
-            future.add_done_callback(on_disconnected)
+            if cmdData.input_mqtt_version == 5:
+                print("Stop the client...")
+                mqtt5_client.stop()
+                #future = Future()
+                #future.add_done_callback(on_disconnected)
+            else:
+                print("Disconnecting...")
+                future = mqtt_connection.disconnect()
+                future.add_done_callback(on_disconnected)
 
 
 def on_disconnected(disconnect_future):
@@ -270,11 +277,11 @@ def change_shadow_value(value):
                 client_token=token,
             )
 
-        future = shadow_client.publish_update_shadow(request, mqtt.QoS.AT_LEAST_ONCE)
+        future = shadow_client.publish_update_shadow(request, mqtt_qos)
 
         locked_data.request_tokens.add(token)
 
-        future.add_done_callback(on_publish_update_shadow)
+        #future.add_done_callback(on_publish_update_shadow)
 
 
 def user_input_thread_fn():
@@ -301,7 +308,7 @@ def user_input_thread_fn():
 #    else:
     try:
         change_shadow_value(cmdData.input_shadow_value)
-        exit("CI has quit")
+        #exit("CI has quit")
         #message = cmdData.input_shadow_value
    #     messages_sent = 0
    #     while messages_sent < 5:
@@ -309,48 +316,92 @@ def user_input_thread_fn():
     #        change_shadow_value(cli_input)
     #        sleep(1)
     #        messages_sent += 1
-    #    exit("CI has quit")
+        exit("CI has quit")
     except Exception as e:
         print("Exception on input thread (CI)")
         exit(e)
 
+# MQTT5 specific functions
+# Callback for the lifecycle event Connection Success
+def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.LifecycleConnectSuccessData):
+    print("Lifecycle Connection Success")
+    global future_connection_success
+    future_connection_success.set_result(lifecycle_connect_success_data)
+
+# Callback for the lifecycle event on Client Stopped
+def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
+    print("Client Stopped.")
+
+    # Signal that sample is finished
+    is_sample_done.set()
 
 if __name__ == '__main__':
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
     if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
-
         proxy_options = http.HttpProxyOptions(
             host_name=cmdData.input_proxy_host,
             port=cmdData.input_proxy_port)
 
-    # Create a MQTT connection from the command line data
-    mqtt_connection = mqtt_connection_builder.mtls_from_path(
-        endpoint=cmdData.input_endpoint,
-        port=cmdData.input_port,
-        cert_filepath=cmdData.input_cert,
-        pri_key_filepath=cmdData.input_key,
-        ca_filepath=cmdData.input_ca,
-        client_id=cmdData.input_clientId,
-        clean_session=False,
-        keep_alive_secs=30,
-        http_proxy_options=proxy_options)
+    if cmdData.input_mqtt_version == 5:
+        mqtt_qos = mqtt5.QoS.AT_LEAST_ONCE
+        # Create a mqtt5 connection from the command line data
+        mqtt5_client = mqtt5_client_builder.mtls_from_path(
+            endpoint=cmdData.input_endpoint,
+            port=cmdData.input_port,
+            cert_filepath=cmdData.input_cert,
+            pri_key_filepath=cmdData.input_key,
+            ca_filepath=cmdData.input_ca,
+            client_id=cmdData.input_clientId,
+            clean_session=False,
+            keep_alive_secs=30,
+            http_proxy_options=proxy_options,
+            on_lifecycle_connection_success=on_lifecycle_connection_success,
+            on_lifecycle_stopped=on_lifecycle_stopped)
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}' with MQTT5...")
 
-    #if not cmdData.input_is_ci:
-        #print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
-    #else:
-        #print("Connecting to endpoint with client ID")
+        mqtt5_client.start()
 
-    connected_future = mqtt_connection.connect()
+        shadow_client = iotshadow.IotShadowClient(mqtt5_client)
+        future_connection_success.result()
 
-    shadow_client = iotshadow.IotShadowClient(mqtt_connection)
+        # Wait for connection to be fully established.
+        # Note that it's not necessary to wait, commands issued to the
+        # mqtt5_client before its fully connected will simply be queued.
+        # But this sample waits here so it's obvious when a connection
+        # fails or succeeds.
+    elif cmdData.input_mqtt_version == 3:
+        mqtt_qos = mqtt.QoS.AT_LEAST_ONCE
+        # Create a MQTT connection from the command line data
+        mqtt_connection = mqtt_connection_builder.mtls_from_path(
+            endpoint=cmdData.input_endpoint,
+            port=cmdData.input_port,
+            cert_filepath=cmdData.input_cert,
+            pri_key_filepath=cmdData.input_key,
+            ca_filepath=cmdData.input_ca,
+            client_id=cmdData.input_clientId,
+            clean_session=False,
+            keep_alive_secs=30,
+            http_proxy_options=proxy_options)
 
-    # Wait for connection to be fully established.
-    # Note that it's not necessary to wait, commands issued to the
-    # mqtt_connection before its fully connected will simply be queued.
-    # But this sample waits here so it's obvious when a connection
-    # fails or succeeds.
-    connected_future.result()
+        #if not cmdData.input_is_ci:
+            #print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
+        #else:
+            #print("Connecting to endpoint with client ID")
+
+        connected_future = mqtt_connection.connect()
+
+        shadow_client = iotshadow.IotShadowClient(mqtt_connection)
+
+        # Wait for connection to be fully established.
+        # Note that it's not necessary to wait, commands issued to the
+        # mqtt_connection before its fully connected will simply be queued.
+        # But this sample waits here so it's obvious when a connection
+        # fails or succeeds.
+        connected_future.result()
+    else:
+        print("Unsopported MQTT version number\n")
+        sys.exit(-1)
     print("Connected!")
 
     if not cmdData.input_shadow_name:
@@ -362,12 +413,12 @@ if __name__ == '__main__':
             print("Subscribing to Update responses...")
             update_accepted_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_accepted(
                 request=iotshadow.UpdateShadowSubscriptionRequest(thing_name=shadow_thing_name),
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=on_update_shadow_accepted)
 
             update_rejected_subscribed_future, _ = shadow_client.subscribe_to_update_shadow_rejected(
                 request=iotshadow.UpdateShadowSubscriptionRequest(thing_name=shadow_thing_name),
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=on_update_shadow_rejected)
 
             # Wait for subscriptions to succeed
@@ -377,12 +428,12 @@ if __name__ == '__main__':
             print("Subscribing to Get responses...")
             get_accepted_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_accepted(
                 request=iotshadow.GetShadowSubscriptionRequest(thing_name=shadow_thing_name),
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=on_get_shadow_accepted)
 
             get_rejected_subscribed_future, _ = shadow_client.subscribe_to_get_shadow_rejected(
                 request=iotshadow.GetShadowSubscriptionRequest(thing_name=shadow_thing_name),
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=on_get_shadow_rejected)
 
             # Wait for subscriptions to succeed
@@ -392,7 +443,7 @@ if __name__ == '__main__':
             print("Subscribing to Delta events...")
             delta_subscribed_future, _ = shadow_client.subscribe_to_shadow_delta_updated_events(
                 request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(thing_name=shadow_thing_name),
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=on_shadow_delta_updated)
 
             # Wait for subscription to succeed
@@ -411,7 +462,7 @@ if __name__ == '__main__':
 
                 publish_get_future = shadow_client.publish_get_shadow(
                     request=iotshadow.GetShadowRequest(thing_name=shadow_thing_name, client_token=token),
-                    qos=mqtt.QoS.AT_LEAST_ONCE)
+                    qos=mqtt_qos)
 
                 locked_data.request_tokens.add(token)
 
@@ -421,9 +472,12 @@ if __name__ == '__main__':
             # Launch thread to handle user input.
             # A "daemon" thread won't prevent the program from shutting down.
             print("Launching thread to read user input...")
-            user_input_thread = threading.Thread(target=user_input_thread_fn, name='user_input_thread')
-            user_input_thread.daemon = True
-            user_input_thread.start()
+#            user_input_thread = threading.Thread(target=user_input_thread_fn, name='user_input_thread')
+#            user_input_thread.daemon = True
+#            user_input_thread.start()
+
+            change_shadow_value(cmdData.input_shadow_value)
+            exit("CI has quit")
 
         except Exception as e:
             exit(e)
@@ -435,25 +489,16 @@ if __name__ == '__main__':
             # Subscribe to necessary topics.
             # Note that is **is** important to wait for "accepted/rejected" subscriptions
             # to succeed before publishing the corresponding "request".
-            state=iotshadow.ShadowState(
-                reported={shadow_property: cmdData.input_shadow_value},
-                desired={shadow_property: cmdData.input_shadow_value})
-
-            update_thing_update_future =  shadow_client.publish_update_named_shadow(request = iotshadow.UpdateNamedShadowRequest
-                    (shadow_name = named_shadow, thing_name = shadow_thing_name, state=state), qos=mqtt.QoS.AT_LEAST_ONCE)
-
-            # Wait for subscriptions to succeed
-            update_thing_update_future.result()
 
             print("Subscribing to Update responses...")
             update_accepted_subscribed_future, _ = shadow_client.subscribe_to_update_named_shadow_accepted(
                 request=iotshadow.UpdateNamedShadowSubscriptionRequest(shadow_name=named_shadow, thing_name=shadow_thing_name),
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=on_update_shadow_accepted)
 
             update_rejected_subscribed_future, _ = shadow_client.subscribe_to_update_named_shadow_rejected(
                 request=iotshadow.UpdateNamedShadowSubscriptionRequest(shadow_name=named_shadow, thing_name=shadow_thing_name),
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=on_update_shadow_rejected)
 
             # Wait for subscriptions to succeed
@@ -463,12 +508,12 @@ if __name__ == '__main__':
             print("Subscribing to Get responses...")
             get_accepted_subscribed_future, _ = shadow_client.subscribe_to_get_named_shadow_accepted(
                 request=iotshadow.GetNamedShadowSubscriptionRequest(shadow_name=named_shadow,thing_name=shadow_thing_name),
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=on_get_shadow_accepted)
 
             get_rejected_subscribed_future, _ = shadow_client.subscribe_to_get_named_shadow_rejected(
                 request=iotshadow.GetNamedShadowSubscriptionRequest(shadow_name=named_shadow, thing_name=shadow_thing_name),
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=on_get_shadow_rejected)
 
             # Wait for subscriptions to succeed
@@ -478,7 +523,7 @@ if __name__ == '__main__':
             print("Subscribing to Delta events...")
             delta_subscribed_future, _ = shadow_client.subscribe_to_named_shadow_delta_updated_events(
                 request=iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest(shadow_name=named_shadow, thing_name=shadow_thing_name),
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=on_shadow_delta_updated)
 
             # Wait for subscription to succeed
@@ -497,19 +542,34 @@ if __name__ == '__main__':
 
                 publish_get_future = shadow_client.publish_get_named_shadow(
                     request=iotshadow.GetNamedShadowRequest(shadow_name=named_shadow, thing_name=shadow_thing_name, client_token=token),
-                    qos=mqtt.QoS.AT_LEAST_ONCE)
+                    qos=mqtt_qos)
 
                 locked_data.request_tokens.add(token)
 
             # Ensure that publish succeeds
             publish_get_future.result()
 
+
+            state=iotshadow.ShadowState(
+                reported={shadow_property: cmdData.input_shadow_value},
+                desired={shadow_property: cmdData.input_shadow_value})
+
+            update_thing_update_future = shadow_client.publish_update_named_shadow(request = iotshadow.UpdateNamedShadowRequest
+                    (shadow_name = named_shadow, thing_name = shadow_thing_name, state=state), qos=mqtt_qos)
+
+            # Wait for subscriptions to succeed
+
+
             # Launch thread to handle user input.
             # A "daemon" thread won't prevent the program from shutting down.
             print("Launching thread to read user input...")
-            user_input_thread = threading.Thread(target=user_input_thread_fn, name='user_input_thread')
-            user_input_thread.daemon = True
-            user_input_thread.start()
+            #user_input_thread = threading.Thread(target=user_input_thread_fn, name='user_input_thread')
+            #user_input_thread.daemon = True
+            #user_input_thread.start()
+            change_shadow_value(cmdData.input_shadow_value)
+            update_thing_update_future.result()
+            exit("CI has quit")
+
         except Exception as e:
             exit(e)
 
