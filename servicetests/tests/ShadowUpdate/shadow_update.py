@@ -24,11 +24,8 @@ from utils.command_line_utils import CommandLineUtils
 #
 # - Detail -
 # On startup, the sample requests the shadow document to learn the property's
-# initial state. The sample also subscribes to "delta" events from the server,
-# which are sent when a property's "desired" value differs from its "reported"
-# value. When the sample learns of a new desired value, that value is changed
-# on the device and an update is sent to the server with the new "reported"
-# value.
+# initial state. The Test subscribes to modified events from the server,
+# which are sent when a property's  value  changes
 
 # cmdData is the arguments/input from the command line placed into a single struct for
 # use in this sample. This handles all of the command line parsing, validating, etc.
@@ -98,11 +95,6 @@ def on_get_shadow_accepted(response):
                 print("Ignoring get_shadow_accepted message due to unexpected token.")
                 return
 
-            print("Finished getting initial shadow state.")
-            if locked_data.shadow_value is not None:
-                print("  Ignoring initial query because a delta event has already been received.")
-                return
-
         if response.state:
             if response.state.delta:
                 value = response.state.delta.get(shadow_property)
@@ -115,7 +107,6 @@ def on_get_shadow_accepted(response):
                 value = response.state.reported.get(shadow_property)
                 if value:
                     print("  Shadow contains reported value '{}'.".format(value))
-                    set_local_value_due_to_initial_query(response.state.reported[shadow_property])
                     return
 
         print("  Shadow document lacks '{}' property. Setting defaults...".format(shadow_property))
@@ -167,7 +158,6 @@ def on_update_shadow_accepted(response):
             except KeyError:
                 print("Ignoring update_shadow_accepted message due to unexpected token.")
                 return
-
         try:
             if response.state.reported is not None:
                 if shadow_property in response.state.reported:
@@ -197,24 +187,14 @@ def on_update_shadow_rejected(error):
                 return
 
         exit("Update request was rejected. code:{} message:'{}'".format(
-            error.code, error.message))
+             error.code, error.message))
 
     except Exception as e:
         exit(e)
 
 
-def set_local_value_due_to_initial_query(reported_value):
-    with locked_data.lock:
-        locked_data.shadow_value = reported_value
-    print("2- Enter desired value: ")  # remind user they can input new values
-
-
 def change_shadow_value(value):
     with locked_data.lock:
-        if locked_data.shadow_value == value:
-            print("Local value is already '{}'.".format(value))
-            print("3- Enter desired value: ")  # remind user they can input new values
-            return
 
         print("Changed local shadow value to '{}'.".format(value))
         locked_data.shadow_value = value
@@ -225,44 +205,27 @@ def change_shadow_value(value):
         # any "response" messages received on the /accepted and /rejected topics
         token = str(uuid4())
 
-        # if the value is "clear shadow" then send a UpdateShadowRequest with None
-        # for both reported and desired to clear the shadow document completely.
-        if value == "clear_shadow":
-            tmp_state = iotshadow.ShadowState(
-                reported=None,
-                desired=None,
-                reported_is_nullable=True,
-                desired_is_nullable=True)
-            request = iotshadow.UpdateShadowRequest(
-                thing_name=shadow_thing_name,
-                state=tmp_state,
-                client_token=token,
-            )
-        # Otherwise, send a normal update request
-        else:
-            # if the value is "none" then set it to a Python none object to
-            # clear the individual shadow property
-            if value == "none":
-                value = None
-
-            request = iotshadow.UpdateShadowRequest(
-                thing_name=shadow_thing_name,
-                state=iotshadow.ShadowState(
-                    reported={shadow_property: value},
-                    desired={shadow_property: value},
-                ),
-                client_token=token,
-            )
-
+        # if the value is "none" then set it to a Python none object to
+        request = iotshadow.UpdateShadowRequest(
+            thing_name=shadow_thing_name,
+            state=iotshadow.ShadowState(
+                reported={shadow_property: value},
+                desired={shadow_property: value},
+            ),
+            client_token=token,
+        )
         future = shadow_client.publish_update_shadow(request, mqtt_qos)
         locked_data.request_tokens.add(token)
         future.add_done_callback(on_publish_update_shadow)
 
+
 def update_event_received(response):
-    print("current response", response.current)
-    print("previous response", response.previous)
+    print("Update Event Received\n")
+    print("Current response", response.current)
+    print("Previous response", response.previous)
     global update_received
     update_received.set_result(0)
+
 
 # MQTT5 specific functions
 # Callback for the lifecycle event Connection Success
@@ -271,12 +234,13 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
     global future_connection_success
     future_connection_success.set_result(lifecycle_connect_success_data)
 
+
 # Callback for the lifecycle event on Client Stopped
 def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
     print("Client Stopped.")
-
     # Signal that sample is finished
     is_sample_done.set()
+
 
 def update_named_shadow():
     print("Updating named shadow")
@@ -359,6 +323,7 @@ def update_named_shadow():
 
     except Exception as e:
         exit(e)
+
 
 def update_shadow():
     print("Updating classic shadow")
