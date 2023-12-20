@@ -1,0 +1,36 @@
+{
+    "language": "Python",
+    "runnable_file": "./tests/ShadowUpdate/shadow_update.py",
+    "runnable_region": "us-east-1",
+    "runnable_main_class": "",
+    "arguments": [
+        {
+            "name": "--mqtt_version",
+            "data": "5"
+        },
+        {
+            "name": "--endpoint",
+            "secret": "ci/endpoint"
+        },
+        {
+            "name": "--cert",
+            "data": "tests/ShadowUpdate/certificate.pem.crt"
+        },
+        {
+            "name": "--key",
+            "data": "tests/ShadowUpdate/private.pem.key"
+        },
+        {
+            "name": "--thing_name",
+            "data": "ServiceTest_Shadow_$INPUT_UUID"
+        },
+        {
+            "name": "--shadow_property",
+            "data": "color"
+        },
+        {
+            "name": "--shadow_value",
+            "data": "on"
+        }
+    ]
+}

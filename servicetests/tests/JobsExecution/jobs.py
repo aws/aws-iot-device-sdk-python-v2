@@ -76,7 +76,6 @@ def exit(msg_or_exception):
             print("Disconnecting...")
             locked_data.disconnect_called = True
             if cmdData.input_mqtt_version == 5:
-                locked_data.disconnect_called = True
                 mqtt5_client.stop()
             else:
                 future = mqtt_connection.disconnect()
@@ -334,7 +333,6 @@ if __name__ == '__main__':
     else:
         print("Unsopported MQTT version number\n")
         sys.exit(-1)
-
 
     print("Connected!")
 
