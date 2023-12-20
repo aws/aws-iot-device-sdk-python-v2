@@ -134,9 +134,9 @@ def on_get_shadow_rejected(error):
         else:
             exit("Get request was rejected. code:{} message:'{}'".format(
                 error.code, error.message))
-
     except Exception as e:
         exit(e)
+
 
 def on_publish_update_shadow(future):
     # type: (Future) -> None
@@ -314,11 +314,6 @@ def update_named_shadow():
                 (shadow_name = named_shadow, thing_name = shadow_thing_name, state=state), qos=mqtt_qos)
 
         # Wait for subscriptions to succeed
-
-        # Launch thread to handle user input.
-        # A "daemon" thread won't prevent the program from shutting down.
-        print("Launching thread to read user input...")
-        change_shadow_value(cmdData.input_shadow_value)
         update_thing_update_future.result()
 
     except Exception as e:
@@ -473,7 +468,7 @@ if __name__ == '__main__':
     print("waitin on update event\n")
     update_received.result();
     exit(0)
-    # Wait for the sample to finish (user types 'quit', or an error occurs)
+    # Wait for the sample to finish
     is_sample_done.wait()
 
 

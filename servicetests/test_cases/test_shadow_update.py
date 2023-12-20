@@ -54,7 +54,6 @@ def main():
     policy_name = secrets_client.get_secret_value(
         SecretId="ci/ShadowServiceClientTest/policy_name")["SecretString"]
 
-    #policy_name = 'CI_ShadowServiceTest_Policy'
     # Temporary certificate/key file path.
     certificate_path = os.path.join(os.getcwd(), "tests/ShadowUpdate/certificate.pem.crt")
     key_path = os.path.join(os.getcwd(), "tests/ShadowUpdate/private.pem.key")
@@ -69,16 +68,6 @@ def main():
     except Exception as e:
         print(f"ERROR: Failed to create IoT thing: {e}")
         sys.exit(-1)
-
-#    try:
-#        print("======= creating named shadow\n")
-#        response = iot_data_client.update_thing_shadow(thingName=thing_name,
-#            shadowName=shadow_name, payload='{ "state": { "desired": { "welcome": "aws-iot", "color": "off" }, "reported": { "welcome": "aws-iot", "color": "off" } } }')
-       #        shadowname=shadow_name, payload='{ "metadata": { "desired": { "color": { "timestamp": 1702669210 } }, "reported": { "color": { "timestamp": 1702669210 } } } }')
-#    except Exception as e:
-#        print(f"ERROR: Failed to create named shadow: {e}")
-#        test_result = -1
-
 
     # Perform Shadow test. If it's successful, a shadow should appear for a specified thing.
     try:
@@ -116,12 +105,12 @@ def main():
 
     # Delete a thing created for this test run.
     # NOTE We want to try to delete thing even if test was unsuccessful.
-#    try:
-#        ci_iot_thing.delete_iot_thing(thing_name, parsed_commands.region)
-#    except Exception as e:
-#        print(f"ERROR: Failed to delete thing: {e}")
-#        # Fail the test if unable to delete thing, so this won't remain unnoticed.
-#        test_result = -1
+    try:
+        ci_iot_thing.delete_iot_thing(thing_name, parsed_commands.region)
+    except Exception as e:
+        print(f"ERROR: Failed to delete thing: {e}")
+        # Fail the test if unable to delete thing, so this won't remain unnoticed.
+        test_result = -1
 
     try:
         if os.path.isfile(certificate_path):
