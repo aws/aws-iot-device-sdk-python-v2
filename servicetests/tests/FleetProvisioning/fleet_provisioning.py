@@ -281,7 +281,8 @@ if __name__ == '__main__':
 
         mqtt5_client.start()
 
-        jobs_client = iotjobs.IotJobsClient(mqtt5_client)
+        identity_client = iotidentity.IotIdentityClient(mqtt5_client)
+
         future_connection_success.result()
 
     elif cmdData.input_mqtt_version == 3:
@@ -299,6 +300,11 @@ if __name__ == '__main__':
             clean_session=False,
             keep_alive_secs=30,
             http_proxy_options=proxy_options)
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}' with MQTT5...")
+
+        connected_future = mqtt_connection.connect()
+
+        identity_client = iotidentity.IotIdentityClient(mqtt_connection)
     else:
         print("Unsopported MQTT version number\n")
         sys.exit(-1)
@@ -309,9 +315,6 @@ if __name__ == '__main__':
     else:
         print("Connecting to endpoint with client ID")
 
-    connected_future = mqtt_connection.connect()
-
-    identity_client = iotidentity.IotIdentityClient(mqtt_connection)
 
     # Wait for connection to be fully established.
     # Note that it's not necessary to wait, commands issued to the
