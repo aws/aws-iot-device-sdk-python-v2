@@ -32,6 +32,7 @@ cmdData = CommandLineUtils.parse_sample_input_fleet_provisioning()
 
 # MQTT5 specific
 mqtt5_client = None
+future_connection_success = Future()
 
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
@@ -283,6 +284,11 @@ if __name__ == '__main__':
 
         identity_client = iotidentity.IotIdentityClient(mqtt5_client)
 
+        # Wait for connection to be fully established.
+        # Note that it's not necessary to wait, commands issued to the
+        # mqtt_connection before its fully connected will simply be queued.
+        # But this sample waits here so it's obvious when a connection
+        # fails or succeeds.
         future_connection_success.result()
 
     elif cmdData.input_mqtt_version == 3:
@@ -305,6 +311,13 @@ if __name__ == '__main__':
         connected_future = mqtt_connection.connect()
 
         identity_client = iotidentity.IotIdentityClient(mqtt_connection)
+
+        # Wait for connection to be fully established.
+        # Note that it's not necessary to wait, commands issued to the
+        # mqtt_connection before its fully connected will simply be queued.
+        # But this sample waits here so it's obvious when a connection
+        # fails or succeeds.
+        connected_future.result()
     else:
         print("Unsopported MQTT version number\n")
         sys.exit(-1)
@@ -316,12 +329,6 @@ if __name__ == '__main__':
         print("Connecting to endpoint with client ID")
 
 
-    # Wait for connection to be fully established.
-    # Note that it's not necessary to wait, commands issued to the
-    # mqtt_connection before its fully connected will simply be queued.
-    # But this sample waits here so it's obvious when a connection
-    # fails or succeeds.
-    connected_future.result()
     print("Connected!")
 
     try:
