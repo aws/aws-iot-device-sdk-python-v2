@@ -46,13 +46,13 @@ class LockedData:
 
 locked_data = LockedData()
 
-# Function for gracefully quitting this sample
+# Function for gracefully quitting this test
 def exit(msg_or_exception):
     if isinstance(msg_or_exception, Exception):
-        print("Exiting Sample due to exception.")
+        print("Exiting test due to exception.")
         traceback.print_exception(msg_or_exception.__class__, msg_or_exception, sys.exc_info()[2])
     else:
-        print("Exiting Sample:", msg_or_exception)
+        print("Exiting Test:", msg_or_exception)
 
     with locked_data.lock:
         if not locked_data.disconnect_called:
@@ -66,7 +66,7 @@ def on_disconnected(disconnect_future):
     # type: (Future) -> None
     print("Disconnected.")
 
-    # Signal that sample is finished
+    # Signal that test is finished
     is_sample_done.set()
 
 

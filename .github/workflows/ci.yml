@@ -217,22 +217,22 @@ jobs:
         working-directory: ./aws-iot-device-sdk-python-v2/servicetests
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
-          python3 ./test_cases/test_fleet_provisioning.py --config-file test_cases/mqtt3_fleet_provisioning_cfg.json
+          python3 ./test_cases/test_fleet_provisioning.py --config-file test_cases/mqtt3_fleet_provisioning_cfg.json --thing-name-prefix Fleet_Thing_
       - name: run MQTT5 Fleet Provisioning
         working-directory: ./aws-iot-device-sdk-python-v2/servicetests
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
-          python3 ./test_cases/test_fleet_provisioning.py --config-file test_cases/mqtt5_fleet_provisioning_cfg.json
+          python3 ./test_cases/test_fleet_provisioning.py --config-file test_cases/mqtt5_fleet_provisioning_cfg.json --thing-name-prefix Fleet_Thing_
       - name: run MQTT3 Fleet Provisioning with CSR
         working-directory: ./aws-iot-device-sdk-python-v2/servicetests
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
-          python3 ./test_cases/test_fleet_provisioning.py --config-file test_cases/mqtt3_fleet_provisioning_with_csr_cfg.json
+          python3 ./test_cases/test_fleet_provisioning.py --config-file test_cases/mqtt3_fleet_provisioning_with_csr_cfg.json --thing-name-prefix Fleet_Thing_
       - name: run MQTT5 Fleet Provisioning with CSR
         working-directory: ./aws-iot-device-sdk-python-v2/servicetests
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
-          python3 ./test_cases/test_fleet_provisioning.py --config-file test_cases/mqtt5_fleet_provisioning_with_csr_cfg.json
+          python3 ./test_cases/test_fleet_provisioning.py --config-file test_cases/mqtt5_fleet_provisioning_with_csr_cfg.json --thing-name-prefix Fleet_Thing_
 
       - name: configure AWS credentials (service tests Shadow)
         uses: aws-actions/configure-aws-credentials@v2
