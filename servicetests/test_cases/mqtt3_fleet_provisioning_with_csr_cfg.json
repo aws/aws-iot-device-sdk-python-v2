@@ -23,6 +23,11 @@
             "filename": "tmp_key.pem"
         },
         {
+            "name": "--csr",
+            "secret": "ci/FleetProvisioning/csr",
+            "filename": "tmp_csr.pem"
+        },
+        {
             "name": "--template_name",
             "data": "CI_FleetProvisioning_Template"
         },

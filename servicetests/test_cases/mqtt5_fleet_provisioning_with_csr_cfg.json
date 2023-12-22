@@ -6,7 +6,7 @@
     "arguments": [
         {
             "name": "--mqtt_version",
-            "data": "3"
+            "data": "5"
         },
         {
             "name": "--endpoint",
@@ -21,6 +21,11 @@
             "name": "--key",
             "secret": "ci/FleetProvisioning/key",
             "filename": "tmp_key.pem"
+        },
+        {
+            "name": "--csr",
+            "secret": "ci/FleetProvisioning/csr",
+            "filename": "tmp_csr.pem"
         },
         {
             "name": "--template_name",
