@@ -58,8 +58,11 @@ def exit(msg_or_exception):
         if not locked_data.disconnect_called:
             print("Disconnecting...")
             locked_data.disconnect_called = True
-            future = mqtt_connection.disconnect()
-            future.add_done_callback(on_disconnected)
+            if cmdData.input_mqtt_version == 5:
+                mqtt5_client.stop()
+            else:
+                future = mqtt_connection.disconnect()
+                future.add_done_callback(on_disconnected)
 
 
 def on_disconnected(disconnect_future):
@@ -231,6 +234,21 @@ def waitForRegisterThingResponse():
             print('Waiting... RegisterThingResponse: ...')
         time.sleep(1)
 
+# MQTT5 specific functions
+# Callback for the lifecycle event Connection Success
+def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.LifecycleConnectSuccessData):
+    print("Lifecycle Connection Success")
+    global future_connection_success
+    future_connection_success.set_result(lifecycle_connect_success_data)
+
+# Callback for the lifecycle event on Client Stopped
+def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
+    print("Client Stopped.")
+
+    # Signal that sample is finished
+    is_sample_done.set()
+
+# end MQTT5 specific functions
 
 if __name__ == '__main__':
     # Create the proxy options if the data is present in cmdData
@@ -240,19 +258,46 @@ if __name__ == '__main__':
             host_name=cmdData.input_proxy_host,
             port=cmdData.input_proxy_port)
 
-    # Create a MQTT connection from the command line data
-    mqtt_connection = mqtt_connection_builder.mtls_from_path(
-        endpoint=cmdData.input_endpoint,
-        port=cmdData.input_port,
-        cert_filepath=cmdData.input_cert,
-        pri_key_filepath=cmdData.input_key,
-        ca_filepath=cmdData.input_ca,
-        on_connection_interrupted=on_connection_interrupted,
-        on_connection_resumed=on_connection_resumed,
-        client_id=cmdData.input_clientId,
-        clean_session=False,
-        keep_alive_secs=30,
-        http_proxy_options=proxy_options)
+    if cmdData.input_mqtt_version == 5:
+        mqtt_qos = mqtt5.QoS.AT_LEAST_ONCE
+        # Create a mqtt5 connection from the command line data
+        mqtt5_client = mqtt5_client_builder.mtls_from_path(
+            endpoint=cmdData.input_endpoint,
+            port=cmdData.input_port,
+            cert_filepath=cmdData.input_cert,
+            pri_key_filepath=cmdData.input_key,
+            ca_filepath=cmdData.input_ca,
+            client_id=cmdData.input_clientId,
+            clean_session=False,
+            keep_alive_secs=30,
+            http_proxy_options=proxy_options,
+            on_lifecycle_connection_success=on_lifecycle_connection_success,
+            on_lifecycle_stopped=on_lifecycle_stopped)
+        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}' with MQTT5...")
+
+        mqtt5_client.start()
+
+        jobs_client = iotjobs.IotJobsClient(mqtt5_client)
+        future_connection_success.result()
+
+    elif cmdData.input_mqtt_version == 3:
+        # Create a MQTT connection from the command line data
+        mqtt_connection = mqtt_connection_builder.mtls_from_path(
+            endpoint=cmdData.input_endpoint,
+            port=cmdData.input_port,
+            cert_filepath=cmdData.input_cert,
+            pri_key_filepath=cmdData.input_key,
+            ca_filepath=cmdData.input_ca,
+            on_connection_interrupted=on_connection_interrupted,
+            on_connection_resumed=on_connection_resumed,
+            client_id=cmdData.input_clientId,
+            clean_session=False,
+            keep_alive_secs=30,
+            http_proxy_options=proxy_options)
+    else:
+        print("Unsopported MQTT version number\n")
+        sys.exit(-1)
+
 
     if not cmdData.input_is_ci:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
