@@ -1,8 +1,9 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import mqtt, http
+from awscrt import mqtt, mqtt5, http
 from awsiot import iotidentity, mqtt_connection_builder
+from awsiot import mqtt5_client_builder
 from concurrent.futures import Future
 import sys
 import threading
@@ -28,6 +29,9 @@ from utils.command_line_utils import CommandLineUtils
 # use in this sample. This handles all of the command line parsing, validating, etc.
 # See the Utils/CommandLineUtils for more information.
 cmdData = CommandLineUtils.parse_sample_input_fleet_provisioning()
+
+# MQTT5 specific
+mqtt5_client = None
 
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
@@ -281,6 +285,7 @@ if __name__ == '__main__':
         future_connection_success.result()
 
     elif cmdData.input_mqtt_version == 3:
+        mqtt_qos = mqtt.QoS.AT_LEAST_ONCE
         # Create a MQTT connection from the command line data
         mqtt_connection = mqtt_connection_builder.mtls_from_path(
             endpoint=cmdData.input_endpoint,
@@ -328,7 +333,7 @@ if __name__ == '__main__':
             print("Subscribing to CreateKeysAndCertificate Accepted topic...")
             createkeysandcertificate_subscribed_accepted_future, _ = identity_client.subscribe_to_create_keys_and_certificate_accepted(
                 request=createkeysandcertificate_subscription_request,
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=createkeysandcertificate_execution_accepted)
 
             # Wait for subscription to succeed
@@ -337,7 +342,7 @@ if __name__ == '__main__':
             print("Subscribing to CreateKeysAndCertificate Rejected topic...")
             createkeysandcertificate_subscribed_rejected_future, _ = identity_client.subscribe_to_create_keys_and_certificate_rejected(
                 request=createkeysandcertificate_subscription_request,
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=createkeysandcertificate_execution_rejected)
 
             # Wait for subscription to succeed
@@ -348,7 +353,7 @@ if __name__ == '__main__':
             print("Subscribing to CreateCertificateFromCsr Accepted topic...")
             createcertificatefromcsr_subscribed_accepted_future, _ = identity_client.subscribe_to_create_certificate_from_csr_accepted(
                 request=createcertificatefromcsr_subscription_request,
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=createcertificatefromcsr_execution_accepted)
 
             # Wait for subscription to succeed
@@ -357,7 +362,7 @@ if __name__ == '__main__':
             print("Subscribing to CreateCertificateFromCsr Rejected topic...")
             createcertificatefromcsr_subscribed_rejected_future, _ = identity_client.subscribe_to_create_certificate_from_csr_rejected(
                 request=createcertificatefromcsr_subscription_request,
-                qos=mqtt.QoS.AT_LEAST_ONCE,
+                qos=mqtt_qos,
                 callback=createcertificatefromcsr_execution_rejected)
 
             # Wait for subscription to succeed
@@ -369,7 +374,7 @@ if __name__ == '__main__':
         print("Subscribing to RegisterThing Accepted topic...")
         registerthing_subscribed_accepted_future, _ = identity_client.subscribe_to_register_thing_accepted(
             request=registerthing_subscription_request,
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt_qos,
             callback=registerthing_execution_accepted)
 
         # Wait for subscription to succeed
@@ -378,7 +383,7 @@ if __name__ == '__main__':
         print("Subscribing to RegisterThing Rejected topic...")
         registerthing_subscribed_rejected_future, _ = identity_client.subscribe_to_register_thing_rejected(
             request=registerthing_subscription_request,
-            qos=mqtt.QoS.AT_LEAST_ONCE,
+            qos=mqtt_qos,
             callback=registerthing_execution_rejected)
         # Wait for subscription to succeed
         registerthing_subscribed_rejected_future.result()
@@ -388,7 +393,7 @@ if __name__ == '__main__':
         if cmdData.input_csr_path is None:
             print("Publishing to CreateKeysAndCertificate...")
             publish_future = identity_client.publish_create_keys_and_certificate(
-                request=iotidentity.CreateKeysAndCertificateRequest(), qos=mqtt.QoS.AT_LEAST_ONCE)
+                request=iotidentity.CreateKeysAndCertificateRequest(), qos=mqtt_qos,
             publish_future.add_done_callback(on_publish_create_keys_and_certificate)
 
             waitForCreateKeysAndCertificateResponse()
@@ -405,7 +410,7 @@ if __name__ == '__main__':
             csrPath = open(cmdData.input_csr_path, 'r').read()
             publish_future = identity_client.publish_create_certificate_from_csr(
                 request=iotidentity.CreateCertificateFromCsrRequest(certificate_signing_request=csrPath),
-                qos=mqtt.QoS.AT_LEAST_ONCE)
+                qos=mqtt_qos,
             publish_future.add_done_callback(on_publish_create_certificate_from_csr)
 
             waitForCreateCertificateFromCsrResponse()
@@ -420,7 +425,7 @@ if __name__ == '__main__':
 
         print("Publishing to RegisterThing topic...")
         registerthing_publish_future = identity_client.publish_register_thing(
-            registerThingRequest, mqtt.QoS.AT_LEAST_ONCE)
+            registerThingRequest, mqtt_qos,
         registerthing_publish_future.add_done_callback(on_publish_register_thing)
 
         waitForRegisterThingResponse()
