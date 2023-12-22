@@ -1,6 +1,6 @@
 {
     "language": "Python",
-    "runnable_file": "./tests/FleetProvisioning/fleet_provisioning",
+    "runnable_file": "./tests/FleetProvisioning/fleet_provisioning.py",
     "runnable_region": "us-east-1",
     "runnable_main_class": "",
     "arguments": [
