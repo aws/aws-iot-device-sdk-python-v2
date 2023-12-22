@@ -393,7 +393,7 @@ if __name__ == '__main__':
         if cmdData.input_csr_path is None:
             print("Publishing to CreateKeysAndCertificate...")
             publish_future = identity_client.publish_create_keys_and_certificate(
-                request=iotidentity.CreateKeysAndCertificateRequest(), qos=mqtt_qos,
+                request=iotidentity.CreateKeysAndCertificateRequest(), qos=mqtt_qos)
             publish_future.add_done_callback(on_publish_create_keys_and_certificate)
 
             waitForCreateKeysAndCertificateResponse()
@@ -410,7 +410,7 @@ if __name__ == '__main__':
             csrPath = open(cmdData.input_csr_path, 'r').read()
             publish_future = identity_client.publish_create_certificate_from_csr(
                 request=iotidentity.CreateCertificateFromCsrRequest(certificate_signing_request=csrPath),
-                qos=mqtt_qos,
+                qos=mqtt_qos)
             publish_future.add_done_callback(on_publish_create_certificate_from_csr)
 
             waitForCreateCertificateFromCsrResponse()
@@ -425,7 +425,7 @@ if __name__ == '__main__':
 
         print("Publishing to RegisterThing topic...")
         registerthing_publish_future = identity_client.publish_register_thing(
-            registerThingRequest, mqtt_qos,
+            registerThingRequest, mqtt_qos)
         registerthing_publish_future.add_done_callback(on_publish_register_thing)
 
         waitForRegisterThingResponse()
