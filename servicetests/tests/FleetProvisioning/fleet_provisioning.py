@@ -82,7 +82,6 @@ def on_publish_register_thing(future):
     # type: (Future) -> None
     try:
         future.result()  # raises exception if publish failed
-        print("Published RegisterThing request..")
 
     except Exception as e:
         print("Failed to publish RegisterThing request.")
@@ -93,7 +92,6 @@ def on_publish_create_keys_and_certificate(future):
     # type: (Future) -> None
     try:
         future.result()  # raises exception if publish failed
-        print("Published CreateKeysAndCertificate request..")
 
     except Exception as e:
         print("Failed to publish CreateKeysAndCertificate request.")
@@ -104,7 +102,6 @@ def on_publish_create_certificate_from_csr(future):
     # type: (Future) -> None
     try:
         future.result()  # raises exception if publish failed
-        print("Published CreateCertificateFromCsr request..")
 
     except Exception as e:
         print("Failed to publish CreateCertificateFromCsr request.")
@@ -116,9 +113,6 @@ def createkeysandcertificate_execution_accepted(response):
     try:
         global createKeysAndCertificateResponse
         createKeysAndCertificateResponse = response
-        if (cmdData.input_is_ci == False):
-            print("Received a new message {}".format(createKeysAndCertificateResponse))
-
         return
 
     except Exception as e:
@@ -136,8 +130,6 @@ def createcertificatefromcsr_execution_accepted(response):
     try:
         global createCertificateFromCsrResponse
         createCertificateFromCsrResponse = response
-        if (cmdData.input_is_ci == False):
-            print("Received a new message {}".format(createCertificateFromCsrResponse))
         global certificateOwnershipToken
         certificateOwnershipToken = response.certificate_ownership_token
 
@@ -158,8 +150,6 @@ def registerthing_execution_accepted(response):
     try:
         global registerThingResponse
         registerThingResponse = response
-        if (cmdData.input_is_ci == False):
-            print("Received a new message {} ".format(registerThingResponse))
         return
 
     except Exception as e:
@@ -178,7 +168,6 @@ def on_connection_interrupted(connection, error, **kwargs):
 
 # Callback when an interrupted connection is re-established.
 def on_connection_resumed(connection, return_code, session_present, **kwargs):
-    print("Connection resumed. return_code: {} session_present: {}".format(return_code, session_present))
 
     if return_code == mqtt.ConnectReturnCode.ACCEPTED and not session_present:
         print("Session did not persist. Resubscribing to existing topics...")
@@ -191,7 +180,6 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 
 def on_resubscribe_complete(resubscribe_future):
     resubscribe_results = resubscribe_future.result()
-    print("Resubscribe results: {}".format(resubscribe_results))
 
     for topic, qos in resubscribe_results['topics']:
         if qos is None:
@@ -204,10 +192,6 @@ def waitForCreateKeysAndCertificateResponse():
     while loopCount < 10 and createKeysAndCertificateResponse is None:
         if createKeysAndCertificateResponse is not None:
             break
-        if not cmdData.input_is_ci:
-            print('Waiting... CreateKeysAndCertificateResponse: ' + json.dumps(createKeysAndCertificateResponse))
-        else:
-            print("Waiting... CreateKeysAndCertificateResponse: ...")
         loopCount += 1
         time.sleep(1)
 
@@ -218,10 +202,6 @@ def waitForCreateCertificateFromCsrResponse():
     while loopCount < 10 and createCertificateFromCsrResponse is None:
         if createCertificateFromCsrResponse is not None:
             break
-        if not cmdData.input_is_ci:
-            print('Waiting...CreateCertificateFromCsrResponse: ' + json.dumps(createCertificateFromCsrResponse))
-        else:
-            print("Waiting... CreateCertificateFromCsrResponse: ...")
         loopCount += 1
         time.sleep(1)
 
@@ -233,10 +213,6 @@ def waitForRegisterThingResponse():
         if registerThingResponse is not None:
             break
         loopCount += 1
-        if not cmdData.input_is_ci:
-            print('Waiting... RegisterThingResponse: ' + json.dumps(registerThingResponse))
-        else:
-            print('Waiting... RegisterThingResponse: ...')
         time.sleep(1)
 
 # MQTT5 specific functions
@@ -322,13 +298,6 @@ if __name__ == '__main__':
         print("Unsopported MQTT version number\n")
         sys.exit(-1)
 
-
-    if not cmdData.input_is_ci:
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
-    else:
-        print("Connecting to endpoint with client ID")
-
-
     print("Connected!")
 
     try:
@@ -340,7 +309,6 @@ if __name__ == '__main__':
         if cmdData.input_csr_path is None:
             createkeysandcertificate_subscription_request = iotidentity.CreateKeysAndCertificateSubscriptionRequest()
 
-            print("Subscribing to CreateKeysAndCertificate Accepted topic...")
             createkeysandcertificate_subscribed_accepted_future, _ = identity_client.subscribe_to_create_keys_and_certificate_accepted(
                 request=createkeysandcertificate_subscription_request,
                 qos=mqtt_qos,
@@ -349,7 +317,6 @@ if __name__ == '__main__':
             # Wait for subscription to succeed
             createkeysandcertificate_subscribed_accepted_future.result()
 
-            print("Subscribing to CreateKeysAndCertificate Rejected topic...")
             createkeysandcertificate_subscribed_rejected_future, _ = identity_client.subscribe_to_create_keys_and_certificate_rejected(
                 request=createkeysandcertificate_subscription_request,
                 qos=mqtt_qos,
@@ -360,7 +327,6 @@ if __name__ == '__main__':
         else:
             createcertificatefromcsr_subscription_request = iotidentity.CreateCertificateFromCsrSubscriptionRequest()
 
-            print("Subscribing to CreateCertificateFromCsr Accepted topic...")
             createcertificatefromcsr_subscribed_accepted_future, _ = identity_client.subscribe_to_create_certificate_from_csr_accepted(
                 request=createcertificatefromcsr_subscription_request,
                 qos=mqtt_qos,
@@ -369,7 +335,6 @@ if __name__ == '__main__':
             # Wait for subscription to succeed
             createcertificatefromcsr_subscribed_accepted_future.result()
 
-            print("Subscribing to CreateCertificateFromCsr Rejected topic...")
             createcertificatefromcsr_subscribed_rejected_future, _ = identity_client.subscribe_to_create_certificate_from_csr_rejected(
                 request=createcertificatefromcsr_subscription_request,
                 qos=mqtt_qos,
@@ -381,7 +346,6 @@ if __name__ == '__main__':
         registerthing_subscription_request = iotidentity.RegisterThingSubscriptionRequest(
             template_name=cmdData.input_template_name)
 
-        print("Subscribing to RegisterThing Accepted topic...")
         registerthing_subscribed_accepted_future, _ = identity_client.subscribe_to_register_thing_accepted(
             request=registerthing_subscription_request,
             qos=mqtt_qos,
@@ -390,7 +354,6 @@ if __name__ == '__main__':
         # Wait for subscription to succeed
         registerthing_subscribed_accepted_future.result()
 
-        print("Subscribing to RegisterThing Rejected topic...")
         registerthing_subscribed_rejected_future, _ = identity_client.subscribe_to_register_thing_rejected(
             request=registerthing_subscription_request,
             qos=mqtt_qos,
@@ -401,7 +364,6 @@ if __name__ == '__main__':
         fleet_template_name = cmdData.input_template_name
         fleet_template_parameters = cmdData.input_template_parameters
         if cmdData.input_csr_path is None:
-            print("Publishing to CreateKeysAndCertificate...")
             publish_future = identity_client.publish_create_keys_and_certificate(
                 request=iotidentity.CreateKeysAndCertificateRequest(), qos=mqtt_qos)
             publish_future.add_done_callback(on_publish_create_keys_and_certificate)
@@ -416,7 +378,6 @@ if __name__ == '__main__':
                 certificate_ownership_token=createKeysAndCertificateResponse.certificate_ownership_token,
                 parameters=json.loads(fleet_template_parameters))
         else:
-            print("Publishing to CreateCertificateFromCsr...")
             csrPath = open(cmdData.input_csr_path, 'r').read()
             publish_future = identity_client.publish_create_certificate_from_csr(
                 request=iotidentity.CreateCertificateFromCsrRequest(certificate_signing_request=csrPath),
@@ -433,7 +394,6 @@ if __name__ == '__main__':
                 certificate_ownership_token=createCertificateFromCsrResponse.certificate_ownership_token,
                 parameters=json.loads(fleet_template_parameters))
 
-        print("Publishing to RegisterThing topic...")
         registerthing_publish_future = identity_client.publish_register_thing(
             registerThingRequest, mqtt_qos)
         registerthing_publish_future.add_done_callback(on_publish_register_thing)
