@@ -1,0 +1,39 @@
+{
+    "language": "Python",
+    "runnable_file": "./tests/FleetProvisioning/fleet_provisioning.py",
+    "runnable_region": "us-east-1",
+    "runnable_main_class": "",
+    "arguments": [
+        {
+            "name": "--mqtt_version",
+            "data": "3"
+        },
+        {
+            "name": "--endpoint",
+            "secret": "ci/endpoint"
+        },
+        {
+            "name": "--cert",
+            "secret": "ci/FleetProvisioning/cert",
+            "filename": "tmp_certificate.pem"
+        },
+        {
+            "name": "--key",
+            "secret": "ci/FleetProvisioning/key",
+            "filename": "tmp_key.pem"
+        },
+        {
+            "name": "--csr",
+            "secret": "ci/FleetProvisioning/csr",
+            "filename": "tmp_csr.pem"
+        },
+        {
+            "name": "--template_name",
+            "data": "CI_FleetProvisioning_Template"
+        },
+        {
+            "name": "--template_parameters",
+            "data": "{\"SerialNumber\":\"$INPUT_UUID\"}"
+        }
+    ]
+}

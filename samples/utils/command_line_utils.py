@@ -436,6 +436,7 @@ class CommandLineUtils:
         cmdUtils.register_command(CommandLineUtils.m_cmd_csr, "<path>", "Path to CSR in Pem format (optional).")
         cmdUtils.register_command(CommandLineUtils.m_cmd_template_name, "<str>", "The name of your provisioning template.")
         cmdUtils.register_command(CommandLineUtils.m_cmd_template_parameters, "<json>", "Template parameters json.")
+        cmdUtils.register_command(CommandLineUtils.m_cmd_mqtt_version, "<int>", "MQTT Version")
         cmdUtils.get_args()
 
         cmdData = CommandLineUtils.CmdData()
@@ -451,6 +452,7 @@ class CommandLineUtils:
         cmdData.input_template_name = cmdUtils.get_command_required(CommandLineUtils.m_cmd_template_name)
         cmdData.input_template_parameters = cmdUtils.get_command_required(CommandLineUtils.m_cmd_template_parameters)
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        cmdData.input_mqtt_version = int(cmdUtils.get_command(CommandLineUtils.m_cmd_mqtt_version, 5))
         return cmdData
 
     def parse_sample_input_jobs():

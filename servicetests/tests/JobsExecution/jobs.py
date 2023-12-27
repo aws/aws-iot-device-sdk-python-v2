@@ -3,7 +3,7 @@
 
 from awscrt import mqtt, mqtt5, http
 from awsiot import iotjobs, mqtt_connection_builder
-from awsiot import iotjobs, mqtt5_client_builder
+from awsiot import mqtt5_client_builder
 from concurrent.futures import Future
 import sys
 import threading
