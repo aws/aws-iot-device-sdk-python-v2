@@ -80,25 +80,33 @@ def main():
     if test_result == 0:
         print("Verifying that shadow was updated")
         shadow_value = None
-        try:
-            if shadow_name:
-                thing_shadow = iot_data_client.get_thing_shadow(thingName=thing_name, shadowName=shadow_name)
-            else:
-                thing_shadow = iot_data_client.get_thing_shadow(thingName=thing_name)
+        i = 0
+        while i < 10:
+            try:
+                if shadow_name:
+                    thing_shadow = iot_data_client.get_thing_shadow(thingName=thing_name, shadowName=shadow_name)
+                else:
+                    thing_shadow = iot_data_client.get_thing_shadow(thingName=thing_name)
 
-            payload = thing_shadow['payload'].read()
-            data = json.loads(payload)
-            shadow_value = data.get('state', {}).get('reported', {}).get(shadow_property, None)
-            if shadow_value != shadow_desired_value:
-                print(f"ERROR: Could not verify thing shadow: {shadow_property} is not set to desired value "
-                      f"'{shadow_desired_value}'; shadow actual state: {data}")
+                payload = thing_shadow['payload'].read()
+                data = json.loads(payload)
+                shadow_value = data.get('state', {}).get('reported', {}).get(shadow_property, None)
+                if shadow_value == shadow_desired_value:
+                    test_result = 0
+                    break
+                else:
+                    print(f"ERROR: Could not verify thing shadow: {shadow_property} is not set to desired value "
+                          f"'{shadow_desired_value}'; shadow actual state: {data}")
+                    test_result = -1
+            except KeyError as e:
+                print(f"ERROR: Could not verify thing shadow: key {e} does not exist in shadow response: {thing_shadow}")
                 test_result = -1
-        except KeyError as e:
-            print(f"ERROR: Could not verify thing shadow: key {e} does not exist in shadow response: {thing_shadow}")
-            test_result = -1
-        except Exception as e:
-            print(f"ERROR: Could not verify thing shadow: {e}")
-            test_result = -1
+            except Exception as e:
+                print(f"ERROR: Could not verify thing shadow: {e}")
+                test_result = -1
+            i = i + 1
+            time.sleep(3);
+
 
     if test_result == 0:
         print("Test succeeded")
