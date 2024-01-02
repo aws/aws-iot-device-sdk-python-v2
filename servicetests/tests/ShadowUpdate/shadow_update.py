@@ -100,7 +100,6 @@ def on_get_shadow_accepted(response):
                 value = response.state.delta.get(shadow_property)
                 if value:
                     print("  Shadow contains delta value '{}'.".format(value))
-                    change_shadow_value(value)
                     return
 
             if response.state.reported:
@@ -108,9 +107,6 @@ def on_get_shadow_accepted(response):
                 if value:
                     print("  Shadow contains reported value '{}'.".format(value))
                     return
-
-        print("  Shadow document lacks '{}' property. Setting defaults...".format(shadow_property))
-        change_shadow_value(SHADOW_VALUE_DEFAULT)
         return
 
     except Exception as e:
@@ -128,12 +124,8 @@ def on_get_shadow_rejected(error):
                 print("Ignoring get_shadow_rejected message due to unexpected token.")
                 return
 
-        if error.code == 404:
-            print("Thing has no shadow document. Creating with defaults...")
-            change_shadow_value(SHADOW_VALUE_DEFAULT)
-        else:
-            exit("Get request was rejected. code:{} message:'{}'".format(
-                error.code, error.message))
+        if error.code != 404:
+            exit("Get request was rejected. code:{} message:'{}'".format(error.code, error.message))
     except Exception as e:
         exit(e)
 
@@ -191,32 +183,6 @@ def on_update_shadow_rejected(error):
 
     except Exception as e:
         exit(e)
-
-
-def change_shadow_value(value):
-    with locked_data.lock:
-
-        print("Changed local shadow value to '{}'.".format(value))
-        locked_data.shadow_value = value
-
-        print("Updating reported shadow value to '{}'...".format(value))
-
-        # use a unique token so we can correlate this "request" message to
-        # any "response" messages received on the /accepted and /rejected topics
-        token = str(uuid4())
-
-        # if the value is "none" then set it to a Python none object to
-        request = iotshadow.UpdateShadowRequest(
-            thing_name=shadow_thing_name,
-            state=iotshadow.ShadowState(
-                reported={shadow_property: value},
-                desired={shadow_property: value},
-            ),
-            client_token=token,
-        )
-        future = shadow_client.publish_update_shadow(request, mqtt_qos)
-        locked_data.request_tokens.add(token)
-        future.add_done_callback(on_publish_update_shadow)
 
 
 def update_event_received(response):
@@ -387,8 +353,6 @@ def update_shadow():
 
         update_thing_update_future = shadow_client.publish_update_shadow(request = iotshadow.UpdateShadowRequest
                 (thing_name = shadow_thing_name, state=state), qos=mqtt_qos)
-
-        change_shadow_value(cmdData.input_shadow_value)
         update_thing_update_future.result()
 
     except Exception as e:
@@ -470,6 +434,3 @@ if __name__ == '__main__':
     exit(0)
     # Wait for the sample to finish
     is_sample_done.wait()
-
-
-
