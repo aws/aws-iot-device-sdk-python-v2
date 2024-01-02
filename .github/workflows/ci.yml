@@ -234,32 +234,31 @@ jobs:
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
           python3 ./test_cases/test_fleet_provisioning.py --config-file test_cases/mqtt5_fleet_provisioning_with_csr_cfg.json --thing-name-prefix Fleet_Thing_
 
-      # TODO Add waiting logic to checks, only then reenable these tests.
-      # - name: configure AWS credentials (service tests Shadow)
-      #   uses: aws-actions/configure-aws-credentials@v2
-      #   with:
-      #     role-to-assume: ${{ env.CI_SHADOW_SERVICE_CLIENT_ROLE }}
-      #     aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      # - name: run MQTT5 Shadow Update
-      #   working-directory: ./aws-iot-device-sdk-python-v2/servicetests
-      #   run: |
-      #     export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
-      #     python3 ./test_cases/test_shadow_update.py --config-file test_cases/mqtt5_shadow_cfg.json
-      # - name: run MQTT3 Shadow Update
-      #   working-directory: ./aws-iot-device-sdk-python-v2/servicetests
-      #   run: |
-      #     export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
-      #     python3 ./test_cases/test_shadow_update.py --config-file test_cases/mqtt3_shadow_cfg.json
-      # - name: run MQTT5 Named Shadow Update
-      #   working-directory: ./aws-iot-device-sdk-python-v2/servicetests
-      #   run: |
-      #     export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
-      #     python3 ./test_cases/test_shadow_update.py --config-file test_cases/mqtt5_named_shadow_cfg.json
-      # - name: run MQTT3 Named Shadow Update
-      #   working-directory: ./aws-iot-device-sdk-python-v2/servicetests
-      #   run: |
-      #     export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
-      #     python3 ./test_cases/test_shadow_update.py --config-file test_cases/mqtt3_named_shadow_cfg.json
+      - name: configure AWS credentials (service tests Shadow)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ env.CI_SHADOW_SERVICE_CLIENT_ROLE }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      - name: run MQTT5 Shadow Update
+        working-directory: ./aws-iot-device-sdk-python-v2/servicetests
+        run: |
+          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
+          python3 ./test_cases/test_shadow_update.py --config-file test_cases/mqtt5_shadow_cfg.json
+      - name: run MQTT3 Shadow Update
+        working-directory: ./aws-iot-device-sdk-python-v2/servicetests
+        run: |
+          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
+          python3 ./test_cases/test_shadow_update.py --config-file test_cases/mqtt3_shadow_cfg.json
+      - name: run MQTT5 Named Shadow Update
+        working-directory: ./aws-iot-device-sdk-python-v2/servicetests
+        run: |
+          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
+          python3 ./test_cases/test_shadow_update.py --config-file test_cases/mqtt5_named_shadow_cfg.json
+      - name: run MQTT3 Named Shadow Update
+        working-directory: ./aws-iot-device-sdk-python-v2/servicetests
+        run: |
+          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
+          python3 ./test_cases/test_shadow_update.py --config-file test_cases/mqtt3_named_shadow_cfg.json
 
       - name: configure AWS credentials (service tests Jobs)
         uses: aws-actions/configure-aws-credentials@v2
