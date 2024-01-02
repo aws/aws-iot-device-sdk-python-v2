@@ -81,7 +81,7 @@ def main():
         print("Verifying that shadow was updated")
         shadow_value = None
         i = 0
-        while i < 10:
+        while i < 20:
             try:
                 if shadow_name:
                     thing_shadow = iot_data_client.get_thing_shadow(thingName=thing_name, shadowName=shadow_name)
@@ -105,7 +105,7 @@ def main():
                 print(f"ERROR: Could not verify thing shadow: {e}")
                 test_result = -1
             i = i + 1
-            time.sleep(1);
+            time.sleep(3);
 
 
     if test_result == 0:
