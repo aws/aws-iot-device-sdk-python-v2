@@ -81,7 +81,7 @@ def main():
         print("Verifying that shadow was updated")
         shadow_value = None
         i = 0
-        while i < 20:
+        while i < 10:
             try:
                 if shadow_name:
                     thing_shadow = iot_data_client.get_thing_shadow(thingName=thing_name, shadowName=shadow_name)
