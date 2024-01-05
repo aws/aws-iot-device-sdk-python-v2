@@ -4,6 +4,12 @@
 
 This sample makes an MQTT connection via Websockets and then disconnects. On startup, the device connects to the server via Websockets and then disconnects right after. This sample is for reference on connecting via Websockets. This sample demonstrates the most straightforward way to connect via Websockets by querying the AWS credentials for the connection from the device's environment variables or local files.
 
+If you want to use custom auth (or static creds, or basic auth, etc) instead,
+then you will need to replace part of the sample (connection\_setup function) with a code snippet we provided in its corresponding readme.
+
+* [custom auth](./websocket_connect_custom_auth.md)
+* [static credentials](./websocket_connect_static_credentials.md)
+
 Your IoT Core Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect. Below is a sample policy that can be used on your IoT Core Thing that will allow this sample to run as intended.
 
 <details>
@@ -37,9 +43,14 @@ For this sample, using Websockets will attempt to fetch the AWS credentials to a
 
 ## How to run
 
+ptional parameters:
+```
+--proxy_host <str>
+--proxy_port <int>
+```
 To run the websocket connect from the `samples` folder, use the following command:
 
 ``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 websocket_connect.py --endpoint <endpoint> --signing_region <signing region>
+python3 websocket_connect.py --endpoint <endpoint> --signing_region <signing region> --proxy_host <str> --proxy_port <int>
 ```
