@@ -433,10 +433,12 @@ class CommandLineUtils:
             "Static Credentials Connect - Make a MQTT connection using Static Credentials.")
         cmdUtils.add_common_mqtt_commands()
         cmdUtils.add_common_logging_commands()
-        cmdUtils.add_common_custom_authorizer_commands()
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
                                 "Client ID to use for MQTT connection (optional, default='test-*').",
                                 default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_session_token, "<str>", "", default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_access_key_id, "<int>", "", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_secret_access_key, "<str>", "")
         cmdUtils.get_args()
 
         cmdData = CommandLineUtils.CmdData()
