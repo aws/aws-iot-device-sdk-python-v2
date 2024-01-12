@@ -3,8 +3,9 @@
 [**Return to main sample list**](./README.md)
 If you want to use custom auth (or static creds, or basic auth, etc) instead,
 then you will need to replace part of the sample (connection\_setup function) with a code snippet we provided in its corresponding readme.
-[**Websocket Connection Using Custom Authentication**](#Websocket Connection Using Custom Authentication)
-[**Websocket Connection Using Static Credentials**](#Websocket Connection Using Custom Authentication)
+
+[**Websocket Connection Using Custom Authentication**](#Websocket-Connection-Using-Custom-Authentication)
+[**Websocket Connection Using Static Credentials**](#Websocket-Connection-Using-Custom-Authentication)
 
 This sample makes an MQTT connection via Websockets and then disconnects.
 On startup, the device connects to the server via Websockets and then disconnects right after.
@@ -78,7 +79,7 @@ If you want to use simple or custom auth (or static creds, or basic auth, etc) i
 then you will need to replace part of the sample (connection\_setup function) with a code snippet we provided in its corresponding readme.
 
 <details>
-<summary> (code snipet to replace similar section)</summary>
+<summary> (code snipet to replace the similar function)</summary>
 <pre language="python">
 <code>
 def connection_setup():
@@ -147,7 +148,7 @@ then you will need to replace part of the sample (connection\_setup function) wi
 For this sample, using Websockets will attempt to fetch the AWS credentials to authorize the connection from static credentials.
 
 <details>
-<summary> (code snipet to replace similar section)</summary>
+<summary> (code snipet to replace the similar function)</summary>
 <pre language=cpp>
 <code >
 def connection_setup():
