@@ -36,7 +36,8 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
         between the point at which the client finishes transmitting one MQTT packet and the point it starts
         sending the next.  The client will use PINGREQ packets to maintain this property. If the responding
         CONNACK contains a keep alive property value, then that is the negotiated keep alive value. Otherwise,
-        the keep alive sent by the client is the negotiated value.
+        the keep alive sent by the client is the negotiated value. keep_alive_interval_sec must be set to at
+        least 1 second greater than ping_timeout_ms (default 30,000 ms) or it will fail validation.
 
     **username** (`str`): Username to connect with.
 
