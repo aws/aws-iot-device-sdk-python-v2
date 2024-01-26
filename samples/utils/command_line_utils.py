@@ -294,6 +294,10 @@ class CommandLineUtils:
         # PKCS12
         input_pkcs12_file : str
         input_pkcs12_password : str
+        # Static credentials
+        input_session_token : str
+        input_access_key_id : str
+        input_secret_access_key : str
 
         def __init__(self) -> None:
             pass
@@ -424,6 +428,27 @@ class CommandLineUtils:
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
 
+    def parse_sample_input_static_credentials_connect():
+        cmdUtils = CommandLineUtils(
+            "Static Credentials Connect - Make a MQTT connection using Static Credentials.")
+        cmdUtils.add_common_mqtt_commands()
+        cmdUtils.add_common_logging_commands()
+        cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
+                                "Client ID to use for MQTT connection (optional, default='test-*').",
+                                default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_session_token, "<str>", "", default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_access_key_id, "<int>", "", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_secret_access_key, "<str>", "")
+        cmdUtils.get_args()
+
+        cmdData = CommandLineUtils.CmdData()
+        cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
+        cmdData.input_session_token = cmdUtils.get_command(CommandLineUtils.m_cmd_session_token)
+        cmdData.input_access_key_id  = cmdUtils.get_command(CommandLineUtils.m_cmd_access_key_id)
+        cmdData.input_secret_access_key = cmdUtils.get_command(CommandLineUtils.m_secret_access_key)
+        cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
+        cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
+        return cmdData
 
     def parse_sample_input_fleet_provisioning():
         cmdUtils = CommandLineUtils("Fleet Provisioning - Provision device using either the keys or CSR.")
@@ -892,3 +917,6 @@ class CommandLineUtils:
     m_cmd_pkcs12_password = "pkcs12_password"
     m_cmd_region = "region"
     m_cmd_mqtt_version = "mqtt_version"
+    m_cmd_session_token = "session_token"
+    m_cmd_secret_access_key = "secret_access_key"
+    m_cmd_access_key_id = "access_key_id"

@@ -8,10 +8,6 @@ from utils.command_line_utils import CommandLineUtils
 # This sample shows how to create a MQTT connection using websockets.
 # This sample is intended to be used as a reference for making MQTT connections.
 
-# cmdData is the arguments/input from the command line placed into a single struct for
-# use in this sample. This handles all of the command line parsing, validating, etc.
-# See the Utils/CommandLineUtils for more information.
-cmdData = CommandLineUtils.parse_sample_input_websocket_connect()
 
 # Callback when connection is accidentally lost.
 def on_connection_interrupted(connection, error, **kwargs):
@@ -21,8 +17,12 @@ def on_connection_interrupted(connection, error, **kwargs):
 def on_connection_resumed(connection, return_code, session_present, **kwargs):
     print("Connection resumed. return_code: {} session_present: {}".format(return_code, session_present))
 
+def connection_setup():
+    # cmdData is the arguments/input from the command line placed into a single struct for
+    # use in this sample. This handles all of the command line parsing, validating, etc.
+    # See the Utils/CommandLineUtils for more information.
+    cmdData = CommandLineUtils.parse_sample_input_websocket_connect()
 
-if __name__ == '__main__':
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
     if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
@@ -42,6 +42,10 @@ if __name__ == '__main__':
         client_id=cmdData.input_clientId,
         clean_session=False,
         keep_alive_secs=30)
+    return mqtt_connection, cmdData
+
+if __name__ == '__main__':
+    mqtt_connection, cmdData = connection_setup()
 
     if not cmdData.input_is_ci:
         print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
