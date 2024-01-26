@@ -42,6 +42,7 @@ def connection_setup():
         client_id=cmdData.input_clientId,
         clean_session=False,
         keep_alive_secs=30)
+    return mqtt_connection, cmdData
 
 if __name__ == '__main__':
     mqtt_connection, cmdData = connection_setup()
