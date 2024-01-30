@@ -10,12 +10,12 @@
     * [Connecting to AWS IoT Core](#connecting-to-aws-iot-core)
     * [How to create a MQTT5 Client based on desired connection method](#how-to-create-a-mqtt5-client-based-on-desired-connection-method)
         * [Direct MQTT with X509-based mutual TLS](#direct-mqtt-with-x509-based-mutual-tls)
-        * [MQTT over Websockets with Sigv4 authentication](#mqtt-over-websockets-with-sigv4-authentication)
         * [Direct MQTT with Custom Authentication](#direct-mqtt-with-custom-authentication)
         * [Direct MQTT with PKCS11 Method](#direct-mqtt-with-pkcs11-method)
         * [Direct MQTT with PKCS12 Method](#direct-mqtt-with-pkcs12-method)
+        * [MQTT over Websockets with Sigv4 authentication](#mqtt-over-websockets-with-sigv4-authentication)
         * [MQTT over Websockets with Cognito authentication](#mqtt-over-websockets-with-cognito-authentication)
-        * [HTTP Proxy](#http-proxy)
+    * [Adding an HTTP Proxy](#adding-an-http-proxy)
     * [Client Lifecycle Management](#client-lifecycle-management)
         * [Lifecycle Events](#lifecycle-events)
     * [Client Operations](#client-operations)
@@ -90,30 +90,6 @@ For X509 based mutual TLS, you can create a client where the certificate and pri
         pri_key_filepath=private_key_filePath))
 ```
 
-#### **MQTT over Websockets with Sigv4 authentication**
-Sigv4-based authentication requires a credentials provider capable of sourcing valid AWS credentials. Sourced credentials
-will sign the websocket upgrade request made by the client while connecting.  The default credentials provider chain supported by
-the SDK is capable of resolving credentials in a variety of environments according to a chain of priorities:
-
-```Environment -> Profile (local file system) -> STS Web Identity -> IMDS (ec2) or ECS```
-
-If the default credentials provider chain and built-in AWS region extraction logic are sufficient, you do not need to specify
-any additional configuration:
-
-```python
-    # The signing region. e.x.: 'us-east-1'
-    signing_region = "<signing region>"
-    credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
-
-    # other builder configurations can be added using **kwargs in the builder
-
-    # Create an MQTT5 Client using mqtt5_client_builder
-    client = mqtt5_client_builder.websockets_with_default_aws_signing(
-        endpoint = "<account-specific endpoint>",
-        region = signing_region,
-        credentials_provider=credentials_provider))
-```
-
 #### **Direct MQTT with Custom Authentication**
 AWS IoT Core Custom Authentication allows you to use a lambda to gate access to IoT Core resources.  For this authentication method,
 you must supply an additional configuration structure containing fields relevant to AWS IoT Core Custom Authentication.
@@ -129,7 +105,7 @@ If your custom authenticator does not use signing, you don't specify anything re
         auth_password = <Binary data value of the password field to be passed to the authorizer lambda>)
 ```
 
-If your custom authorizer uses signing, you must specify the three signed token properties as well.  The token signature must be the URI-encoding of the base64 encoding of the digital signature of the token value via the private key associated with the public key that was registered with the custom authorizer.  It is your responsibility to URI-encode the token signature.
+If your custom authorizer uses signing, you must specify the three signed token properties as well. It is your responsibility to URI-encode the auth_username, auth_authorizer_name, and auth_token_key_name parameters.
 
 ```python
     # other builder configurations can be added using **kwargs in the builder
@@ -182,6 +158,30 @@ A MQTT5 direct connection can be made using a PKCS12 file rather than using a PE
 
 **Note**: Currently, TLS integration with PKCS#12 is only available on MacOS devices.
 
+#### **MQTT over Websockets with Sigv4 authentication**
+Sigv4-based authentication requires a credentials provider capable of sourcing valid AWS credentials. Sourced credentials
+will sign the websocket upgrade request made by the client while connecting.  The default credentials provider chain supported by
+the SDK is capable of resolving credentials in a variety of environments according to a chain of priorities:
+
+```Environment -> Profile (local file system) -> STS Web Identity -> IMDS (ec2) or ECS```
+
+If the default credentials provider chain and built-in AWS region extraction logic are sufficient, you do not need to specify
+any additional configuration:
+
+```python
+    # The signing region. e.x.: 'us-east-1'
+    signing_region = "<signing region>"
+    credentials_provider = auth.AwsCredentialsProvider.new_default_chain()
+
+    # other builder configurations can be added using **kwargs in the builder
+
+    # Create an MQTT5 Client using mqtt5_client_builder
+    client = mqtt5_client_builder.websockets_with_default_aws_signing(
+        endpoint = "<account-specific endpoint>",
+        region = signing_region,
+        credentials_provider=credentials_provider))
+```
+
 #### **MQTT over Websockets with Cognito authentication**
 
 A MQTT5 websocket connection can be made using Cognito to authenticate rather than the AWS credentials located on the device or via key and certificate. Instead, Cognito can authenticate the connection using a valid Cognito identity ID. This requires a valid Cognito identity ID, which can be retrieved from a Cognito identity pool. A Cognito identity pool can be created from the AWS console.
@@ -211,7 +211,7 @@ To create a MQTT5 builder configured for this connection, see the following code
 
 **Note**: A Cognito identity ID is different from a Cognito identity pool ID and trying to connect with a Cognito identity pool ID will not work. If you are unable to connect, make sure you are passing a Cognito identity ID rather than a Cognito identity pool ID.
 
-#### **HTTP Proxy**
+### **Adding an HTTP Proxy**
 No matter what your connection transport or authentication method is, you may connect through an HTTP proxy
 by adding the http_proxy_options keyword argument to the builder:
 
