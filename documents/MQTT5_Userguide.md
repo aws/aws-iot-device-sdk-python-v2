@@ -77,9 +77,9 @@ For X509 based mutual TLS, you can create a client where the certificate and pri
 
 ```python
     # X.509 based certificate file
-    certificate_file_path = "<certificate file path>"
+    cert_file_path = "<certificate file path>"
     # PKCS#1 or PKCS#8 PEM encoded private key file
-    private_key_filePath = "<private key file path>"
+    pri_key_filepath = "<private key file path>"
 
     # other builder configurations can be added using **kwargs in the builder
 
