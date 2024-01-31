@@ -77,7 +77,7 @@ For X509 based mutual TLS, you can create a client where the certificate and pri
 
 ```python
     # X.509 based certificate file
-    cert_file_path = "<certificate file path>"
+    cert_filepath = "<certificate file path>"
     # PKCS#1 or PKCS#8 PEM encoded private key file
     pri_key_filepath = "<private key file path>"
 
@@ -86,8 +86,8 @@ For X509 based mutual TLS, you can create a client where the certificate and pri
     # Create an MQTT5 Client using mqtt5_client_builder
     client = mqtt5_client_builder.mtls_from_path(
         endpoint = "<account-specific endpoint>",
-        cert_filepath=certificate_file_path,
-        pri_key_filepath=private_key_filePath))
+        cert_filepath=cert_filepath,
+        pri_key_filepath=pri_key_filepath))
 ```
 
 #### **Direct MQTT with Custom Authentication**
