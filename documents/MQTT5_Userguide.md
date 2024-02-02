@@ -15,6 +15,7 @@
         * [Direct MQTT with PKCS12 Method](#direct-mqtt-with-pkcs12-method)
         * [MQTT over Websockets with Sigv4 authentication](#mqtt-over-websockets-with-sigv4-authentication)
         * [MQTT over Websockets with Cognito authentication](#mqtt-over-websockets-with-cognito-authentication)
+        * [Direct MQTT with Windows Certificate Store Method](#direct-mqtt-with-windows-certificate-store-method)
     * [Adding an HTTP Proxy](#adding-an-http-proxy)
     * [Client Lifecycle Management](#client-lifecycle-management)
         * [Lifecycle Events](#lifecycle-events)
