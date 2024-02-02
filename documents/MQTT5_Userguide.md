@@ -211,6 +211,19 @@ To create a MQTT5 builder configured for this connection, see the following code
 
 **Note**: A Cognito identity ID is different from a Cognito identity pool ID and trying to connect with a Cognito identity pool ID will not work. If you are unable to connect, make sure you are passing a Cognito identity ID rather than a Cognito identity pool ID.
 
+#### **Direct MQTT with Windows Certificate Store Method**
+A MQTT5 direct connection can be made with mutual TLS with the certificate and private key in the Windows certificate
+store, rather than simply being files on disk. To create a MQTT5 builder configured for this connection, see the
+following code:
+
+```python
+    client = mqtt5_client_builder.mtls_with_windows_cert_store_path(
+        cert_store_path="<CurrentUser\\MY\\A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6>",
+        endpoint="<client specific endpoint>")
+```
+
+**Note**: Windows Certificate Store connection support is only available on Windows devices.
+
 ### **Adding an HTTP Proxy**
 No matter what your connection transport or authentication method is, you may connect through an HTTP proxy
 by adding the http_proxy_options keyword argument to the builder:
