@@ -12,7 +12,6 @@ and provides guidance on how to migrate your code to v2 from v1 of the AWS IoT S
 
 * [What's new in AWS IoT Device SDK for Python v2](#whats-new-in-aws-iot-device-sdk-for-python-v2)
 * [How to get started with AWS IoT Device SDK for Python v2](#how-to-get-started-with-aws-iot-device-sdk-for-python-v2)
-    * [Package name change](#package-name-change)
     * [MQTT protocol](#mqtt-protocol)
     * [Client builder](#client-builder)
     * [Connection types and features](#connection-types-and-features)
@@ -34,7 +33,7 @@ and provides guidance on how to migrate your code to v2 from v1 of the AWS IoT S
     * [MQTT5 features](#mqtt5-features)
 
 
-## What's new in AWS IoT Devide SDK for Python v2
+## What's new in AWS IoT Device SDK for Python v2
 
 * The v2 SDK client is truly async. Operations return `concurrent.futures.Future` objects.
     Blocking calls can be emulated by waiting for the returned `Future` object to be resolved.
