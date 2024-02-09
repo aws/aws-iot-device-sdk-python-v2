@@ -27,7 +27,7 @@
 
 ## **Introduction**
 
-This user guide is designed to act as a reference and guide for how to use MQTT5 with the Java SDK. This guide includes code snippets for how to make a MQTT5 client with proper configuration, how to connect to AWS IoT Core, how to perform operations and interact with AWS IoT Core through MQTT5, and some best practices for MQTT5.
+This user guide is designed to act as a reference and guide for how to use MQTT5 with the Python SDK. This guide includes code snippets for how to make a MQTT5 client with proper configuration, how to connect to AWS IoT Core, how to perform operations and interact with AWS IoT Core through MQTT5, and some best practices for MQTT5.
 
 If you are completely new to MQTT, it is highly recommended to check out the following resources to learn more about MQTT:
 
