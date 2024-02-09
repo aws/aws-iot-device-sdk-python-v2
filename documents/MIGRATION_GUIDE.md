@@ -153,10 +153,9 @@ feature.
 |MQTT with PKCS11 Method	                             |$${\Large\color{red}&#10008}$$  	     |$${\Large\color{green}&#10004}$$	  |[link](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/documents/MQTT5_Userguide.md#direct-mqtt-with-pkcs11-method)|
 |HTTP Proxy	                                             |$${\Large\color{orange}&#10004\*\*\*}$$|$${\Large\color{green}&#10004}$$	  |[link](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/documents/MQTT5_Userguide.md#adding-an-http-proxy)|
 
-$${\Large\color{orange}&#10004\*}$$ - To get this connection type to work in the V2 SDK, you need to convert the Java Key store key into a PKSC#11 key [import IOT Core key to a Java KeyStore and convert it to pkcs#12](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/pkcs12_connect.md#how-to-setup-and-run).\
-$${\Large\color{orange}&#10004\*}$$ - To get this connection type work in V1 SDK, you need to implement the [Custom Authentication workflow](https://docs.aws.amazon.com/iot/latest/developerguide/custom-authorizer.html).\
-$${\Large\color{orange}&#10004\*\*}$$ - The v1 SDK does not allow to specify HTTP proxy, it is possible to configure systemwide proxy.
-
+${\Large\color{orange}&#10004\*}$ - To get this connection type to work in the V2 SDK, you need to convert the Java Key store key into a PKSC#11 key [import IOT Core key to a Java KeyStore and convert it to pkcs#12](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/pkcs12_connect.md#how-to-setup-and-run).\
+${\Large\color{orange}&#10004\*}$ - To get this connection type work in V1 SDK, you need to implement the [Custom Authentication workflow](https://docs.aws.amazon.com/iot/latest/developerguide/custom-authorizer.html).\
+${\Large\color{orange}&#10004\*\*}$ - The v1 SDK does not allow to specify HTTP proxy, it is possible to configure systemwide proxy.
 
 ### Lifecycle Events
 
