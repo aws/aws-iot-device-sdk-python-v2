@@ -147,7 +147,18 @@ def make_windows_pfx_file(certificate_file_path, private_key_path, pfx_file_path
 
         # Import the PFX into the Windows Certificate Store
         # (Passing '$mypwd' is required even though it is empty and our certificate has no password. It fails CI otherwise)
-        import_pfx_arguments = ["powershell.exe", "Import-PfxCertificate", "-FilePath", pfx_file_path, "-CertStoreLocation", "Cert:\\" + pfx_certificate_store_location, "-Password", "$mypwd"]
+        import_pfx_arguments = [
+            "powershell.exe",
+            # Powershell 7.3 introduced an issue where launching powershell from cmd would not set PSModulePath correctly.
+            # As a workaround, we set `PSModulePath` to empty so powershell would automatically reset the PSModulePath to default.
+            # More details: https://github.com/PowerShell/PowerShell/issues/18530
+            "$env:PSModulePath = '';",
+            "Import-PfxCertificate",
+            "-FilePath", pfx_file_path,
+            "-CertStoreLocation",
+            "Cert:\\" + pfx_certificate_store_location,
+            "-Password",
+            "$mypwd"]
         import_pfx_run = subprocess.run(args=import_pfx_arguments, shell=True, stdout=subprocess.PIPE)
         if (import_pfx_run.returncode != 0):
             print ("ERROR: Could not import PFX certificate into Windows store!")
