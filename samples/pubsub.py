@@ -52,7 +52,7 @@ def on_resubscribe_complete(resubscribe_future):
 
 # Callback when the subscribed topic receives a message
 def on_message_received(topic, payload, dup, qos, retain, **kwargs):
-    print("Received message from topic '{}': {}".format(topic, payload))
+    print("Received message from topic '{}' with {}: {}".format(topic, qos, payload))
     global received_count
     received_count += 1
     if received_count == cmdData.input_count:
@@ -91,7 +91,8 @@ if __name__ == '__main__':
         on_connection_resumed=on_connection_resumed,
         client_id=cmdData.input_clientId,
         clean_session=False,
-        keep_alive_secs=30,
+        keep_alive_secs=10,
+        ping_timeout_ms=500,
         http_proxy_options=proxy_options,
         on_connection_success=on_connection_success,
         on_connection_failure=on_connection_failure,
@@ -135,10 +136,16 @@ if __name__ == '__main__':
             message = "{} [{}]".format(message_string, publish_count)
             print("Publishing message to topic '{}': {}".format(message_topic, message))
             message_json = json.dumps(message)
-            mqtt_connection.publish(
-                topic=message_topic,
-                payload=message_json,
-                qos=mqtt.QoS.AT_LEAST_ONCE)
+            if(publish_count % 2 == 0):
+                mqtt_connection.publish(
+                    topic=message_topic,
+                    payload=message_json,
+                    qos=mqtt.QoS.AT_LEAST_ONCE)
+            else:
+                mqtt_connection.publish(
+                    topic=message_topic,
+                    payload=message_json,
+                    qos=mqtt.QoS.AT_MOST_ONCE)
             time.sleep(1)
             publish_count += 1
 
