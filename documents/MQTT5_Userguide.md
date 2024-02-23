@@ -15,6 +15,7 @@
         * [Direct MQTT with PKCS12 Method](#direct-mqtt-with-pkcs12-method)
         * [MQTT over Websockets with Sigv4 authentication](#mqtt-over-websockets-with-sigv4-authentication)
         * [MQTT over Websockets with Cognito authentication](#mqtt-over-websockets-with-cognito-authentication)
+        * [Direct MQTT with Windows Certificate Store Method](#direct-mqtt-with-windows-certificate-store-method)
     * [Adding an HTTP Proxy](#adding-an-http-proxy)
     * [Client Lifecycle Management](#client-lifecycle-management)
         * [Lifecycle Events](#lifecycle-events)
@@ -26,7 +27,7 @@
 
 ## **Introduction**
 
-This user guide is designed to act as a reference and guide for how to use MQTT5 with the Java SDK. This guide includes code snippets for how to make a MQTT5 client with proper configuration, how to connect to AWS IoT Core, how to perform operations and interact with AWS IoT Core through MQTT5, and some best practices for MQTT5.
+This user guide is designed to act as a reference and guide for how to use MQTT5 with the Python SDK. This guide includes code snippets for how to make a MQTT5 client with proper configuration, how to connect to AWS IoT Core, how to perform operations and interact with AWS IoT Core through MQTT5, and some best practices for MQTT5.
 
 If you are completely new to MQTT, it is highly recommended to check out the following resources to learn more about MQTT:
 
@@ -210,6 +211,19 @@ To create a MQTT5 builder configured for this connection, see the following code
 ```
 
 **Note**: A Cognito identity ID is different from a Cognito identity pool ID and trying to connect with a Cognito identity pool ID will not work. If you are unable to connect, make sure you are passing a Cognito identity ID rather than a Cognito identity pool ID.
+
+#### **Direct MQTT with Windows Certificate Store Method**
+A MQTT5 direct connection can be made with mutual TLS with the certificate and private key in the Windows certificate
+store, rather than simply being files on disk. To create a MQTT5 builder configured for this connection, see the
+following code:
+
+```python
+    client = mqtt5_client_builder.mtls_with_windows_cert_store_path(
+        cert_store_path="<CurrentUser\\MY\\A11F8A9B5DF5B98BA3508FBCA575D09570E0D2C6>",
+        endpoint="<client specific endpoint>")
+```
+
+**Note**: Windows Certificate Store connection support is only available on Windows devices.
 
 ### **Adding an HTTP Proxy**
 No matter what your connection transport or authentication method is, you may connect through an HTTP proxy
