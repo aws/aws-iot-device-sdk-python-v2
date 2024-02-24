@@ -233,7 +233,6 @@ mqtt5_client = mqtt5_client_builder.mtls_from_path(
         on_lifecycle_connection_failure=on_lifecycle_connection_failure)
 mqtt5_client.start()
 
-
 ```
 
 ### Publish
@@ -275,7 +274,7 @@ client.publish("my/topic", "hello", 0)
 
 ```python
 # Non-blocking API.
-`client.configureMQTTOperationTimeout`(30) # 30 Seconds
+client.configureMQTTOperationTimeout(30) # 30 Seconds
 client.connect()
 
 def ack_callback(mid, data=data):
@@ -571,7 +570,7 @@ connectTimeoutSec = 10
 client.configureConnectDisconnectTimeout(connectTimeoutSec)
 client.connect();
 
- publishTimeoutMs = 20
+publishTimeoutMs = 20
 client.configureMQTTOperationTimeout(publishTimeoutMs)
 client.publish("my/topic", "hello", 1)
 
