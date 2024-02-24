@@ -557,7 +557,7 @@ In the v1 SDK, all operations (*publish*, *subscribe*, *unsubscribe*) will take 
 In the v2 SDK, operations timeout is set for the MQTT5 client with the
 [ClientOptions](https://awslabs.github.io/aws-crt-python/api/mqtt5.html#awscrt.mqtt5.ClientOptions)
 class member `ack_timeout_sec`.
-The default value is no timeout. As in the v1 SDK, failing to set a timeout can cause an operation to stuck forever,
+The default value is no timeout. Failing to set a timeout can cause an operation to stuck forever,
 but it won't block the client.
 
 The [get\_stats](https://awslabs.github.io/aws-crt-python/api/mqtt5.html#awscrt.mqtt5.Client.get_stats) method returns
