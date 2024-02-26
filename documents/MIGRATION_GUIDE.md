@@ -254,9 +254,9 @@ The returned `PublishCompletionData` will contain different data depending on th
 > connection
 > closed but instead receive a PUBACK with a reason code.
 
-* For QoS 0 (AT\_MOST\_ONCE): Calling `get_result` will return with no data
+* For QoS 0 (AT\_MOST\_ONCE): Calling `result` will return with no data
     and the promise will be complete as soon as the packet has been written to the socket.
-* For QoS 1 (AT\_LEAST\_ONCE): Calling `get_result` will return a
+* For QoS 1 (AT\_LEAST\_ONCE): Calling `result` will return a
     [awscrt.mqtt5.PubAckPacket](https://awslabs.github.io/aws-crt-python/api/mqtt5.html#awscrt.mqtt5.PubackPacket)
     and the promise will be complete as soon as the PUBACK is received from the broker.
 
@@ -336,13 +336,6 @@ With this callback, you can process messages made to subscribed topics through i
 #### Example of subscribing in the v1 SDK
 
 ```python
-def on_publish_received(publish_received_data):
-    return
-
-client_options = mqtt5.ClientOptions( ... )
-client_options.on_publish_received = on_publish_received
-
-client = mqtt5.Client(client_options)
 client.configureMQTTOperationTimeout(30) # 30 Seconds
 
 def ackCallback(mid, data):
@@ -369,6 +362,14 @@ client.subscribeAsync(
 #### Example of subscribing in the v2 SDK
 
 ```python
+
+def on_publish_received(publish_received_data):
+    return
+
+client_options = mqtt5.ClientOptions( ... )
+client_options.on_publish_received = on_publish_received
+client = mqtt5.Client(client_options)
+
 subscribe_future = client.subscribe(
         subscribe_packet=mqtt5.SubscribePacket(
                 subscriptions=[mqtt5.Subscription(
@@ -503,9 +504,9 @@ mqtt5_client.start()
 
 ### Offline Operations Queue
 
-In the v1 SDK, if you're having too many in-flight QoS 1 messages, you can encounter the `too many publishes in Progress` error
-on publishing messages. This is caused by the so-called in-flight publish limit. By default, ther v1 SDK supports
-a maximum of 20 in-flight operations.
+In the v1 SDK, if you're having too many in-flight QoS 1 messages, all extra messages will be queued for them to
+be sent at a later time, when the number of in-flight messages goes below the so-called in-flight publish limit.
+By default, the v1 SDK supports a maximum of 20 in-flight operations.
 
 The v2 SDK does not limit the number of in-flight messages.
 Additionally, the v2 SDK provides a way to configure which kind of packets will be placed into the offline queue
@@ -591,7 +592,7 @@ mqtt5_client = mqtt5_client_builder.mtls_from_path(
 
 The v1 SDK uses `AWSIoTPythonSDK.core` custom logger for logging.
 
-The v2 SDK uses a standard  [logging facility](https://docs.python.org/3/howto/logging.html).
+The v2 SDK uses  the logging facility provided by the [crt-io](https://awslabs.github.io/aws-crt-python/api/io.html)
 
 #### Example of using logging in the v1 SDK
 
