@@ -195,10 +195,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -231,10 +231,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -335,10 +335,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -371,10 +371,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -475,10 +475,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -615,10 +615,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -651,10 +651,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -1717,3 +1717,4 @@ class UpdateShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
