@@ -8,7 +8,7 @@
     * [Not Supported](#not-supported)
 * [Getting Started with MQTT5](#getting-started-with-mqtt5)
     * [Connecting to AWS IoT Core](#connecting-to-aws-iot-core)
-    * [How to create a MQTT5 Client based on desired connection method](#how-to-create-a-mqtt5-client-based-on-desired-connection-method)
+    * [How to create an MQTT5 Client based on desired connection method](#how-to-create-a-mqtt5-client-based-on-desired-connection-method)
         * [Direct MQTT with X509-based mutual TLS](#direct-mqtt-with-x509-based-mutual-tls)
         * [Direct MQTT with Custom Authentication](#direct-mqtt-with-custom-authentication)
         * [Direct MQTT with PKCS11 Method](#direct-mqtt-with-pkcs11-method)
@@ -27,7 +27,7 @@
 
 ## **Introduction**
 
-This user guide is designed to act as a reference and guide for how to use MQTT5 with the Python SDK. This guide includes code snippets for how to make a MQTT5 client with proper configuration, how to connect to AWS IoT Core, how to perform operations and interact with AWS IoT Core through MQTT5, and some best practices for MQTT5.
+This user guide is designed to act as a reference and guide for how to use MQTT5 with the Python SDK. This guide includes code snippets for how to make an MQTT5 client with proper configuration, how to connect to AWS IoT Core, how to perform operations and interact with AWS IoT Core through MQTT5, and some best practices for MQTT5.
 
 If you are completely new to MQTT, it is highly recommended to check out the following resources to learn more about MQTT:
 
@@ -65,12 +65,12 @@ Not all parts of the MQTT5 spec are supported by the implementation.  We current
 
 ## **Getting Started with MQTT5**
 
-This section covers how to use MQTT5 in the Python SDK. This includes how to setup a MQTT5 builder for making MQTT5 clients, how to connect to AWS IoT Core, and how to perform the operations with the MQTT5 client. Each section below contains code snippets showing the functionality in Python.
+This section covers how to use MQTT5 in the Python SDK. This includes how to setup an MQTT5 builder for making MQTT5 clients, how to connect to AWS IoT Core, and how to perform the operations with the MQTT5 client. Each section below contains code snippets showing the functionality in Python.
 
 ## **Connecting To AWS IoT Core**
 We strongly recommend using the AwsIotMqtt5ClientConfigBuilder class to configure MQTT5 clients when connecting to AWS IoT Core.  The builder simplifies configuration for all authentication methods supported by AWS IoT Core.  This section shows samples for all of the authentication possibilities.
 
-## **How to create a MQTT5 Client based on desired connection method**
+## **How to create an MQTT5 Client based on desired connection method**
 ### **Optional Keyword Arguments**
 All lifecycle events and the callback for publishes received by the MQTT5 Client should be added to the builder on creation of the Client. A full list of accepted arguments can be found in the API guide.
 #### **Direct MQTT with X509-based mutual TLS**
@@ -123,7 +123,7 @@ In both cases, the builder will construct a final CONNECT packet username field 
 
 #### **Direct MQTT with PKCS11 Method**
 
-A MQTT5 direct connection can be made using a PKCS11 device rather than using a PEM encoded private key, the private key for mutual TLS is stored on a PKCS#11 compatible smart card or Hardware Security Module (HSM). To create a MQTT5 builder configured for this connection, see the following code:
+An MQTT5 direct connection can be made using a PKCS11 device rather than using a PEM encoded private key, the private key for mutual TLS is stored on a PKCS#11 compatible smart card or Hardware Security Module (HSM). To create an MQTT5 builder configured for this connection, see the following code:
 
 ```python
     # other builder configurations can be added using **kwargs in the builder
@@ -146,7 +146,7 @@ A MQTT5 direct connection can be made using a PKCS11 device rather than using a 
 
 #### **Direct MQTT with PKCS12 Method**
 
-A MQTT5 direct connection can be made using a PKCS12 file rather than using a PEM encoded private key. To create a MQTT5 builder configured for this connection, see the following code:
+An MQTT5 direct connection can be made using a PKCS12 file rather than using a PEM encoded private key. To create an MQTT5 builder configured for this connection, see the following code:
 
 ```python
     # other builder configurations can be added using **kwargs in the builder
@@ -185,9 +185,9 @@ any additional configuration:
 
 #### **MQTT over Websockets with Cognito authentication**
 
-A MQTT5 websocket connection can be made using Cognito to authenticate rather than the AWS credentials located on the device or via key and certificate. Instead, Cognito can authenticate the connection using a valid Cognito identity ID. This requires a valid Cognito identity ID, which can be retrieved from a Cognito identity pool. A Cognito identity pool can be created from the AWS console.
+An MQTT5 websocket connection can be made using Cognito to authenticate rather than the AWS credentials located on the device or via key and certificate. Instead, Cognito can authenticate the connection using a valid Cognito identity ID. This requires a valid Cognito identity ID, which can be retrieved from a Cognito identity pool. A Cognito identity pool can be created from the AWS console.
 
-To create a MQTT5 builder configured for this connection, see the following code:
+To create an MQTT5 builder configured for this connection, see the following code:
 
 ```python
     # The signing region. e.x.: 'us-east-1'
@@ -213,8 +213,8 @@ To create a MQTT5 builder configured for this connection, see the following code
 **Note**: A Cognito identity ID is different from a Cognito identity pool ID and trying to connect with a Cognito identity pool ID will not work. If you are unable to connect, make sure you are passing a Cognito identity ID rather than a Cognito identity pool ID.
 
 #### **Direct MQTT with Windows Certificate Store Method**
-A MQTT5 direct connection can be made with mutual TLS with the certificate and private key in the Windows certificate
-store, rather than simply being files on disk. To create a MQTT5 builder configured for this connection, see the
+An MQTT5 direct connection can be made with mutual TLS with the certificate and private key in the Windows certificate
+store, rather than simply being files on disk. To create an MQTT5 builder configured for this connection, see the
 following code:
 
 ```python
@@ -317,7 +317,7 @@ The Unsubscribe operation takes a description of the UNSUBSCRIBE packet you wish
 ```
 
 ### Publish
-The Publish operation takes a description of the PUBLISH packet you wish to send and returns a future of polymorphic value.  If the PUBLISH was a QoS 0 publish, then the future result is an empty PUBACK packet with all members set to None and is completed as soon as the packet has been written to the socket.  If the PUBLISH was a QoS 1 publish, then the future result is a PUBACK packet value and is completed as soon as the PUBACK is received from the broker.  If the operation fails for any reason before these respective completion events, the future result raises an exception.
+The Publish operation takes a description of the PUBLISH packet you wish to send and returns a future of polymorphic value.  The future will result in a PublishCompletionData containing a PUBACK packet. If the PUBLISH was a QoS 0 publish, then the PUBACK packet will be empty with all members set to None and is completed as soon as the packet has been written to the socket.  If the PUBLISH was a QoS 1 publish, then the PUBACK packet will contain a reason_code and potentially a reason_string and user_properties if the broker has assigned them any values and is completed as soon as the PUBACK is received from the broker.  If the operation fails for any reason before these respective completion events, the future result raises an exception.
 
 ```python
     publish_future = client.publish(mqtt5.PublishPacket(
@@ -325,8 +325,10 @@ The Publish operation takes a description of the PUBLISH packet you wish to send
         payload = "This is the payload of a QoS 1 publish",
         qos = mqtt5.QoS.AT_LEAST_ONCE))
 
-    # on success, the result of publish_future will be a PubackPacket
-    puback = publish_future.result()
+    # on success, the result of publish_future will be a PublishCompletionData
+    publish_completion_data = publish_future.result()
+    puback = publish_completion_data.puback
+
 ```
 
 ### Disconnect
