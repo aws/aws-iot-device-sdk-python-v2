@@ -309,10 +309,8 @@ class CreateCertificateFromCsrRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.certificate_signing_request is not None:
             payload['certificateSigningRequest'] = self.certificate_signing_request
-
         return payload
 
 class CreateCertificateFromCsrResponse(awsiot.ModeledClass):
@@ -533,13 +531,10 @@ class RegisterThingRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.certificate_ownership_token is not None:
             payload['certificateOwnershipToken'] = self.certificate_ownership_token
-
         if self.parameters is not None:
             payload['parameters'] = self.parameters
-
         return payload
 
 class RegisterThingResponse(awsiot.ModeledClass):

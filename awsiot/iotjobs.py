@@ -505,16 +505,12 @@ class DescribeJobExecutionRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
-
         if self.execution_number is not None:
             payload['executionNumber'] = self.execution_number
-
         if self.include_job_document is not None:
             payload['includeJobDocument'] = self.include_job_document
-
         return payload
 
 class DescribeJobExecutionResponse(awsiot.ModeledClass):
@@ -616,10 +612,8 @@ class GetPendingJobExecutionsRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
-
         return payload
 
 class GetPendingJobExecutionsResponse(awsiot.ModeledClass):
@@ -1144,16 +1138,12 @@ class StartNextPendingJobExecutionRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
-
         if self.status_details is not None:
             payload['statusDetails'] = self.status_details
-
         if self.step_timeout_in_minutes is not None:
             payload['stepTimeoutInMinutes'] = self.step_timeout_in_minutes
-
         return payload
 
 class StartNextPendingJobExecutionSubscriptionRequest(awsiot.ModeledClass):
@@ -1232,31 +1222,22 @@ class UpdateJobExecutionRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
-
         if self.execution_number is not None:
             payload['executionNumber'] = self.execution_number
-
         if self.expected_version is not None:
             payload['expectedVersion'] = self.expected_version
-
         if self.include_job_document is not None:
             payload['includeJobDocument'] = self.include_job_document
-
         if self.include_job_execution_state is not None:
             payload['includeJobExecutionState'] = self.include_job_execution_state
-
         if self.status is not None:
             payload['status'] = self.status
-
         if self.status_details is not None:
             payload['statusDetails'] = self.status_details
-
         if self.step_timeout_in_minutes is not None:
             payload['stepTimeoutInMinutes'] = self.step_timeout_in_minutes
-
         return payload
 
 class UpdateJobExecutionResponse(awsiot.ModeledClass):
