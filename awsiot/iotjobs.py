@@ -34,10 +34,10 @@ class IotJobsClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.job_id:
             raise ValueError("request.job_id is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/jobs/{0.job_id}/get'.format(request),
@@ -111,10 +111,10 @@ class IotJobsClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.job_id:
             raise ValueError("request.job_id is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/jobs/{0.job_id}/update'.format(request),
@@ -143,10 +143,10 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.job_id:
             raise ValueError("request.job_id is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -179,10 +179,10 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.job_id:
             raise ValueError("request.job_id is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -703,7 +703,7 @@ class JobExecutionData(awsiot.ModeledClass):
         last_updated_at (datetime.datetime): The time when the job execution started.
         queued_at (datetime.datetime): The time when the job execution was enqueued.
         started_at (datetime.datetime): The time when the job execution started.
-        status (str): The status of the job execution. Can be one of: QUEUED, IN_PROGRESS, FAILED, SUCCEEDED, CANCELED, TIMED_OUT, REJECTED, or REMOVED.
+        status (enum): The status of the job execution. Can be one of: QUEUED, IN_PROGRESS, FAILED, SUCCEEDED, CANCELED, TIMED_OUT, REJECTED, or REMOVED.
         status_details (typing.Dict[str, str]): A collection of name-value pairs that describe the status of the job execution.
         thing_name (str): The name of the thing that is executing the job.
         version_number (int): The version of the job execution. Job execution versions are incremented each time they are updated by a device.
@@ -715,7 +715,7 @@ class JobExecutionData(awsiot.ModeledClass):
         last_updated_at (datetime.datetime): The time when the job execution started.
         queued_at (datetime.datetime): The time when the job execution was enqueued.
         started_at (datetime.datetime): The time when the job execution started.
-        status (str): The status of the job execution. Can be one of: QUEUED, IN_PROGRESS, FAILED, SUCCEEDED, CANCELED, TIMED_OUT, REJECTED, or REMOVED.
+        status (enum): The status of the job execution. Can be one of: QUEUED, IN_PROGRESS, FAILED, SUCCEEDED, CANCELED, TIMED_OUT, REJECTED, or REMOVED.
         status_details (typing.Dict[str, str]): A collection of name-value pairs that describe the status of the job execution.
         thing_name (str): The name of the thing that is executing the job.
         version_number (int): The version of the job execution. Job execution versions are incremented each time they are updated by a device.
@@ -783,12 +783,12 @@ class JobExecutionState(awsiot.ModeledClass):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        status (str): The status of the job execution. Can be one of: QUEUED, IN_PROGRESS, FAILED, SUCCEEDED, CANCELED, TIMED_OUT, REJECTED, or REMOVED.
+        status (enum): The status of the job execution. Can be one of: QUEUED, IN_PROGRESS, FAILED, SUCCEEDED, CANCELED, TIMED_OUT, REJECTED, or REMOVED.
         status_details (typing.Dict[str, str]): A collection of name-value pairs that describe the status of the job execution.
         version_number (int): The version of the job execution. Job execution versions are incremented each time they are updated by a device.
 
     Attributes:
-        status (str): The status of the job execution. Can be one of: QUEUED, IN_PROGRESS, FAILED, SUCCEEDED, CANCELED, TIMED_OUT, REJECTED, or REMOVED.
+        status (enum): The status of the job execution. Can be one of: QUEUED, IN_PROGRESS, FAILED, SUCCEEDED, CANCELED, TIMED_OUT, REJECTED, or REMOVED.
         status_details (typing.Dict[str, str]): A collection of name-value pairs that describe the status of the job execution.
         version_number (int): The version of the job execution. Job execution versions are incremented each time they are updated by a device.
     """
@@ -889,11 +889,11 @@ class JobExecutionsChangedEvent(awsiot.ModeledClass):
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        jobs (typing.Dict[str, typing.List[JobExecutionSummary]]): Map from JobStatus to a list of Jobs transitioning to that status.
+        jobs (typing.Dict[enum, typing.List[JobExecutionSummary]]): Map from JobStatus to a list of Jobs transitioning to that status.
         timestamp (datetime.datetime): The time when the message was sent.
 
     Attributes:
-        jobs (typing.Dict[str, typing.List[JobExecutionSummary]]): Map from JobStatus to a list of Jobs transitioning to that status.
+        jobs (typing.Dict[enum, typing.List[JobExecutionSummary]]): Map from JobStatus to a list of Jobs transitioning to that status.
         timestamp (datetime.datetime): The time when the message was sent.
     """
 
@@ -1012,14 +1012,14 @@ class RejectedError(awsiot.ModeledClass):
 
     Keyword Args:
         client_token (str): Opaque token that can correlate this response to the original request.
-        code (str): Indicates the type of error.
+        code (enum): Indicates the type of error.
         execution_state (JobExecutionState): A JobExecutionState object. This field is included only when the code field has the value InvalidStateTransition or VersionMismatch.
         message (str): A text message that provides additional information.
         timestamp (datetime.datetime): The date and time the response was generated by AWS IoT.
 
     Attributes:
         client_token (str): Opaque token that can correlate this response to the original request.
-        code (str): Indicates the type of error.
+        code (enum): Indicates the type of error.
         execution_state (JobExecutionState): A JobExecutionState object. This field is included only when the code field has the value InvalidStateTransition or VersionMismatch.
         message (str): A text message that provides additional information.
         timestamp (datetime.datetime): The date and time the response was generated by AWS IoT.
@@ -1183,7 +1183,7 @@ class UpdateJobExecutionRequest(awsiot.ModeledClass):
         include_job_document (bool): Optional. When included and set to true, the response contains the JobDocument. The default is false.
         include_job_execution_state (bool): Optional. When included and set to true, the response contains the JobExecutionState field. The default is false.
         job_id (str): The unique identifier assigned to this job when it was created.
-        status (str): The new status for the job execution (IN_PROGRESS, FAILED, SUCCEEDED, or REJECTED). This must be specified on every update.
+        status (enum): The new status for the job execution (IN_PROGRESS, FAILED, SUCCEEDED, or REJECTED). This must be specified on every update.
         status_details (typing.Dict[str, str]): A collection of name-value pairs that describe the status of the job execution. If not specified, the statusDetails are unchanged.
         step_timeout_in_minutes (int): Specifies the amount of time this device has to finish execution of this job. If the job execution status is not set to a terminal state before this timer expires, or before the timer is reset (by again calling UpdateJobExecution, setting the status to IN_PROGRESS and specifying a new timeout value in this field) the job execution status is set to TIMED_OUT. Setting or resetting this timeout has no effect on the job execution timeout that might have been specified when the job was created (by using CreateJob with the timeoutConfig).
         thing_name (str): The name of the thing associated with the device.
@@ -1195,7 +1195,7 @@ class UpdateJobExecutionRequest(awsiot.ModeledClass):
         include_job_document (bool): Optional. When included and set to true, the response contains the JobDocument. The default is false.
         include_job_execution_state (bool): Optional. When included and set to true, the response contains the JobExecutionState field. The default is false.
         job_id (str): The unique identifier assigned to this job when it was created.
-        status (str): The new status for the job execution (IN_PROGRESS, FAILED, SUCCEEDED, or REJECTED). This must be specified on every update.
+        status (enum): The new status for the job execution (IN_PROGRESS, FAILED, SUCCEEDED, or REJECTED). This must be specified on every update.
         status_details (typing.Dict[str, str]): A collection of name-value pairs that describe the status of the job execution. If not specified, the statusDetails are unchanged.
         step_timeout_in_minutes (int): Specifies the amount of time this device has to finish execution of this job. If the job execution status is not set to a terminal state before this timer expires, or before the timer is reset (by again calling UpdateJobExecution, setting the status to IN_PROGRESS and specifying a new timeout value in this field) the job execution status is set to TIMED_OUT. Setting or resetting this timeout has no effect on the job execution timeout that might have been specified when the job was created (by using CreateJob with the timeoutConfig).
         thing_name (str): The name of the thing associated with the device.

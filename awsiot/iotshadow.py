@@ -195,10 +195,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -231,10 +231,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -335,10 +335,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -371,10 +371,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -475,10 +475,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -615,10 +615,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -651,10 +651,10 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.shadow_name:
             raise ValueError("request.shadow_name is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -765,10 +765,8 @@ class DeleteNamedShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
-
         return payload
 
 class DeleteNamedShadowSubscriptionRequest(awsiot.ModeledClass):
@@ -826,10 +824,8 @@ class DeleteShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
-
         return payload
 
 class DeleteShadowResponse(awsiot.ModeledClass):
@@ -981,10 +977,8 @@ class GetNamedShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
-
         return payload
 
 class GetNamedShadowSubscriptionRequest(awsiot.ModeledClass):
@@ -1042,10 +1036,8 @@ class GetShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
-
         return payload
 
 class GetShadowResponse(awsiot.ModeledClass):
@@ -1346,19 +1338,16 @@ class ShadowState(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.desired_is_nullable is True:
             payload['desired'] = self.desired
         else:
             if self.desired is not None:
                 payload['desired'] = self.desired
-
         if self.reported_is_nullable is True:
             payload['reported'] = self.reported
         else:
             if self.reported is not None:
                 payload['reported'] = self.reported
-
         return payload
 
 class ShadowStateWithDelta(awsiot.ModeledClass):
@@ -1554,16 +1543,12 @@ class UpdateNamedShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
-
         if self.state is not None:
             payload['state'] = self.state.to_payload()
-
         if self.version is not None:
             payload['version'] = self.version
-
         return payload
 
 class UpdateNamedShadowSubscriptionRequest(awsiot.ModeledClass):
@@ -1627,16 +1612,12 @@ class UpdateShadowRequest(awsiot.ModeledClass):
     def to_payload(self):
         # type: () -> typing.Dict[str, typing.Any]
         payload = {} # type: typing.Dict[str, typing.Any]
-
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
-
         if self.state is not None:
             payload['state'] = self.state.to_payload()
-
         if self.version is not None:
             payload['version'] = self.version
-
         return payload
 
 class UpdateShadowResponse(awsiot.ModeledClass):
@@ -1717,3 +1698,4 @@ class UpdateShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
