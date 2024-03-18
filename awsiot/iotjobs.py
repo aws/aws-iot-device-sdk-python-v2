@@ -34,10 +34,10 @@ class IotJobsClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.job_id:
             raise ValueError("request.job_id is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/jobs/{0.job_id}/get'.format(request),
@@ -111,10 +111,10 @@ class IotJobsClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.job_id:
             raise ValueError("request.job_id is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/jobs/{0.job_id}/update'.format(request),
@@ -143,10 +143,10 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.job_id:
             raise ValueError("request.job_id is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -179,10 +179,10 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
         if not request.job_id:
             raise ValueError("request.job_id is required")
+        if not request.thing_name:
+            raise ValueError("request.thing_name is required")
 
         if not callable(callback):
             raise ValueError("callback is required")
