@@ -14,7 +14,8 @@ import typing
 
 class GreengrassCoreIPCClientV2:
     """
-    V2 client for the GreengrassCoreIPC service.
+    V2 client for the GreengrassCoreIPC service.  When finished with the client,
+    you must call close() to free the client's native resources.
 
     Args:
         client: Connection that this client will use. If you do not provide one, it will be made automatically.
@@ -33,7 +34,6 @@ class GreengrassCoreIPCClientV2:
         if executor is True:
             executor = concurrent.futures.ThreadPoolExecutor()
         self.executor = executor
-        self.ignore_executor_exceptions = False
 
     def close(self, *, executor_wait=True) -> concurrent.futures.Future:
         """
@@ -50,9 +50,6 @@ class GreengrassCoreIPCClientV2:
             of None if the shutdown was clean and user-initiated.
         """
         fut = self.client.close()
-
-        # events that arrive during the shutdown process will generate executor exceptions, ignore them
-        self.ignore_executor_exceptions	= True
         if self.executor is not None:
             self.executor.shutdown(wait=executor_wait)
         return fut
@@ -88,11 +85,7 @@ class GreengrassCoreIPCClientV2:
             on_stream_event = real_self.__wrap_error(on_stream_event)
             def handler(self, event):
                 if real_self.executor is not None:
-                    try:
-                        real_self.executor.submit(on_stream_event, event)
-                    except RuntimeError:
-                        if not real_self.ignore_executor_exceptions:
-                            raise
+                    real_self.executor.submit(on_stream_event, event)
                 else:
                     on_stream_event(event)
             setattr(stream_handler_type, "on_stream_event", handler)
@@ -105,11 +98,7 @@ class GreengrassCoreIPCClientV2:
             on_stream_closed = real_self.__wrap_error(on_stream_closed)
             def handler(self):
                 if real_self.executor is not None:
-                    try:
-                        real_self.executor.submit(on_stream_closed)
-                    except RuntimeError:
-                        if real_self.ignore_executor_exceptions:
-                            raise
+                    real_self.executor.submit(on_stream_closed)
                 else:
                     on_stream_closed()
             setattr(stream_handler_type, "on_stream_closed", handler)

@@ -1340,7 +1340,10 @@ class VerifyClientDeviceIdentityOperation(model._VerifyClientDeviceIdentityOpera
 
 class GreengrassCoreIPCClient(rpc.Client):
     """
-    Client for the GreengrassCoreIPC service.
+    Client for the GreengrassCoreIPC service.  When finished with the client,
+    you must call close() to free the client's native resources.
+
+
     There is a new V2 client which should be preferred.
     See the GreengrassCoreIPCClientV2 class in the clientv2 subpackage.
 
