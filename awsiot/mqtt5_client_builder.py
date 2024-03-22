@@ -37,7 +37,7 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
         sending the next.  The client will use PINGREQ packets to maintain this property. If the responding
         CONNACK contains a keep alive property value, then that is the negotiated keep alive value. Otherwise,
         the keep alive sent by the client is the negotiated value. keep_alive_interval_sec must be set to at
-        least 1 second greater than ping_timeout_ms (default 30,000 ms) or it will fail validation.
+        least 1 second greater than ping_timeout_ms (default is 29,000ms) or it will fail validation.
 
     **username** (`str`): Username to connect with.
 
@@ -185,7 +185,8 @@ import urllib.parse
 
 DEFAULT_WEBSOCKET_MQTT_PORT = 443
 DEFAULT_DIRECT_MQTT_PORT = 8883
-DEFAULT_KEEP_ALIVE = 1200
+DEFAULT_KEEP_ALIVE_SEC = 1200
+DEFAULT_PING_TIMEOUT_MS = 29000
 
 
 def _check_required_kwargs(**kwargs):
@@ -287,7 +288,7 @@ def _builder(
         client_options.min_connected_time_to_reset_reconnect_delay_ms = _get(
             kwargs, 'min_connected_time_to_reset_reconnect_delay_ms')
     if client_options.ping_timeout_ms is None:
-        client_options.ping_timeout_ms = _get(kwargs, 'ping_timeout_ms')
+        client_options.ping_timeout_ms = _get(kwargs, 'ping_timeout_ms', DEFAULT_PING_TIMEOUT_MS)
     if client_options.connack_timeout_ms is None:
         client_options.connack_timeout_ms = _get(kwargs, 'connack_timeout_ms')
     if client_options.ack_timeout_sec is None:
@@ -302,7 +303,7 @@ def _builder(
         client_options.connect_options.client_id = _get(kwargs, 'client_id')
     if client_options.connect_options.keep_alive_interval_sec is None:
         client_options.connect_options.keep_alive_interval_sec = _get(
-            kwargs, 'keep_alive_interval_sec', DEFAULT_KEEP_ALIVE)
+            kwargs, 'keep_alive_interval_sec', DEFAULT_KEEP_ALIVE_SEC)
     client_options.connect_options.username = username
     if client_options.connect_options.password is None:
         client_options.connect_options.password = _get(kwargs, 'password')
