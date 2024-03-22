@@ -14,7 +14,8 @@ import typing
 
 class GreengrassCoreIPCClientV2:
     """
-    V2 client for the GreengrassCoreIPC service.
+    V2 client for the GreengrassCoreIPC service.  When finished with the client,
+    you must call close() to free the client's native resources.
 
     Args:
         client: Connection that this client will use. If you do not provide one, it will be made automatically.

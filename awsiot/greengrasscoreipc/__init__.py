@@ -25,7 +25,8 @@ def connect(*,
             lifecycle_handler: Optional[LifecycleHandler]=None,
             timeout: float=10.0) -> GreengrassCoreIPCClient:
     """
-    Creates an IPC client and connects to the GreengrassCoreIPC service.
+    Creates an IPC client and connects to the GreengrassCoreIPC service.  When finished with the client,
+    you must call close() to free the client's native resources.
 
     Args:
         ipc_socket: Path to the Unix domain socket of Greengrass Nucleus, defaults to
