@@ -1,0 +1,25 @@
+# recipe reference: https://docs.aws.amazon.com/greengrass/v2/developerguide/component-recipe-reference.html
+---
+RecipeFormatVersion: "2020-01-25"
+ComponentName: com.example.greengrass_ipc.python.deployment_configuration
+ComponentVersion: "1.0.0"
+ComponentDescription: Greengrass IPC SDK component example
+ComponentPublisher: Amazon
+ComponentConfiguration:
+  DefaultConfiguration:
+    Webserver:
+      Host: "127.0.0.1"
+      Port: 8080
+      Directory: "/greengrass/v2/packages/"
+Manifests:
+  - Platform:
+      os: linux
+    Lifecycle:
+      Install:
+        RequiresPrivilege: true
+        Script: |
+          apt-get update
+          apt-get install --yes python3 python3-pip
+          python3 -m pip install "awsiotsdk>=1.15.0"
+      Run: |
+        python3 -u {artifacts:path}/code.py
