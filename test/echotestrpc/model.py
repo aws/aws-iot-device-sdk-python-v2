@@ -32,15 +32,17 @@ class Product(rpc.Shape):
     """
     Product
 
+    A simple product definition
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        name: 
-        price: 
+        name: The product's name
+        price: How much the product costs
 
     Attributes:
-        name: 
-        price: 
+        name: The product's name
+        price: How much the product costs
     """
 
     def __init__(self, *,
@@ -97,15 +99,17 @@ class Pair(rpc.Shape):
     """
     Pair
 
+    Shape representing a pair of values
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        key: 
-        value: 
+        key: Pair.key as a string
+        value: Pair.value also a string!
 
     Attributes:
-        key: 
-        value: 
+        key: Pair.key as a string
+        value: Pair.value also a string!
     """
 
     def __init__(self, *,
@@ -173,17 +177,19 @@ class Customer(rpc.Shape):
     """
     Customer
 
+    A simple customer definition
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        id: 
-        first_name: 
-        last_name: 
+        id: Opaque customer identifier
+        first_name: First name of the customer
+        last_name: Last name of the customer
 
     Attributes:
-        id: 
-        first_name: 
-        last_name: 
+        id: Opaque customer identifier
+        first_name: First name of the customer
+        last_name: Last name of the customer
     """
 
     def __init__(self, *,
@@ -250,29 +256,31 @@ class MessageData(rpc.Shape):
     """
     MessageData
 
+    Data associated with some notion of a message
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        string_message: 
-        boolean_message: 
-        time_message: 
-        document_message: 
-        enum_message: FruitEnum enum value. 
-        blob_message: 
-        string_list_message: 
-        key_value_pair_list: 
-        string_to_value: 
+        string_message: Some string data
+        boolean_message: Some boolean data
+        time_message: Some timestamp data
+        document_message: Some document data
+        enum_message: FruitEnum enum value. Some FruitEnum data
+        blob_message: Some blob data
+        string_list_message: Some list of strings data
+        key_value_pair_list: A list of key-value pairs
+        string_to_value: A map from strings to Product shapes
 
     Attributes:
-        string_message: 
-        boolean_message: 
-        time_message: 
-        document_message: 
-        enum_message: FruitEnum enum value. 
-        blob_message: 
-        string_list_message: 
-        key_value_pair_list: 
-        string_to_value: 
+        string_message: Some string data
+        boolean_message: Some boolean data
+        time_message: Some timestamp data
+        document_message: Some document data
+        enum_message: FruitEnum enum value. Some FruitEnum data
+        blob_message: Some blob data
+        string_list_message: Some list of strings data
+        key_value_pair_list: A list of key-value pairs
+        string_to_value: A map from strings to Product shapes
     """
 
     def __init__(self, *,
@@ -403,17 +411,19 @@ class EchoStreamingMessage(rpc.Shape):
     """
     EchoStreamingMessage is a "tagged union" class.
 
+    A union of values related to a streaming message.  Only one field may bet set.
+
     When sending, only one of the attributes may be set.
     When receiving, only one of the attributes will be set.
     All other attributes will be None.
 
     Keyword Args:
-        stream_message: 
-        key_value_pair: 
+        stream_message: A message data record
+        key_value_pair: A key value pair
 
     Attributes:
-        stream_message: 
-        key_value_pair: 
+        stream_message: A message data record
+        key_value_pair: A key value pair
     """
 
     def __init__(self, *,
@@ -470,15 +480,17 @@ class ServiceError(EchoTestRPCError):
     """
     ServiceError
 
+    A sample error shape
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message: 
-        value: 
+        message: An error message
+        value: Some auxiliary value
 
     Attributes:
-        message: 
-        value: 
+        message: An error message
+        value: Some auxiliary value
     """
 
     def __init__(self, *,
@@ -538,13 +550,15 @@ class GetAllCustomersResponse(rpc.Shape):
     """
     GetAllCustomersResponse
 
+    All data associated with the result of a GetAllCustomers operation
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        customers: 
+        customers: A list of all known customers
 
     Attributes:
-        customers: 
+        customers: A list of all known customers
     """
 
     def __init__(self, *,
@@ -590,6 +604,8 @@ class GetAllCustomersResponse(rpc.Shape):
 class GetAllCustomersRequest(rpc.Shape):
     """
     GetAllCustomersRequest
+
+    Data needed to perform a GetAllCustomers operation
     """
 
     def __init__(self):
@@ -626,13 +642,15 @@ class EchoMessageResponse(rpc.Shape):
     """
     EchoMessageResponse
 
+    All data associated with the result of an EchoMessage operation
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message: 
+        message: Some message data
 
     Attributes:
-        message: 
+        message: Some message data
     """
 
     def __init__(self, *,
@@ -679,13 +697,15 @@ class EchoMessageRequest(rpc.Shape):
     """
     EchoMessageRequest
 
+    Data needed to perform an EchoMessage operation
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        message: 
+        message: Some message data
 
     Attributes:
-        message: 
+        message: Some message data
     """
 
     def __init__(self, *,
@@ -731,6 +751,8 @@ class EchoMessageRequest(rpc.Shape):
 class EchoStreamingResponse(rpc.Shape):
     """
     EchoStreamingResponse
+
+    Data associated with the response to starting an EchoStreaming streaming operation
     """
 
     def __init__(self):
@@ -766,6 +788,8 @@ class EchoStreamingResponse(rpc.Shape):
 class EchoStreamingRequest(rpc.Shape):
     """
     EchoStreamingRequest
+
+    Data needed to start an EchoStreaming streaming operation
     """
 
     def __init__(self):
@@ -801,6 +825,8 @@ class EchoStreamingRequest(rpc.Shape):
 class CauseServiceErrorResponse(rpc.Shape):
     """
     CauseServiceErrorResponse
+
+    All data associated with the result of an EchoMessage operation
     """
 
     def __init__(self):
@@ -836,6 +862,8 @@ class CauseServiceErrorResponse(rpc.Shape):
 class CauseServiceErrorRequest(rpc.Shape):
     """
     CauseServiceErrorRequest
+
+    Data needed to perform a CauseServiceError operation
     """
 
     def __init__(self):
@@ -872,13 +900,15 @@ class GetAllProductsResponse(rpc.Shape):
     """
     GetAllProductsResponse
 
+    All data associated with the result of a GetAllProducts operation
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
-        products: 
+        products: A map from strings to products
 
     Attributes:
-        products: 
+        products: A map from strings to products
     """
 
     def __init__(self, *,
@@ -924,6 +954,8 @@ class GetAllProductsResponse(rpc.Shape):
 class GetAllProductsRequest(rpc.Shape):
     """
     GetAllProductsRequest
+
+    Data needed to perform a GetAllProducts operation
     """
 
     def __init__(self):
@@ -976,6 +1008,10 @@ SHAPE_INDEX = rpc.ShapeIndex([
 
 
 class _CauseServiceErrorOperation(rpc.ClientOperation):
+    """
+    Throws a ServiceError instead of returning a response.
+    """
+
     @classmethod
     def _model_name(cls):
         return 'awstest#CauseServiceError'
@@ -998,6 +1034,10 @@ class _CauseServiceErrorOperation(rpc.ClientOperation):
 
 
 class _CauseStreamServiceToErrorOperation(rpc.ClientOperation):
+    """
+    Responds to initial request normally then throws a ServiceError on stream response
+    """
+
     @classmethod
     def _model_name(cls):
         return 'awstest#CauseStreamServiceToError'
@@ -1020,6 +1060,10 @@ class _CauseStreamServiceToErrorOperation(rpc.ClientOperation):
 
 
 class _EchoMessageOperation(rpc.ClientOperation):
+    """
+    Returns the same data sent in the request to the response
+    """
+
     @classmethod
     def _model_name(cls):
         return 'awstest#EchoMessage'
@@ -1042,6 +1086,10 @@ class _EchoMessageOperation(rpc.ClientOperation):
 
 
 class _EchoStreamMessagesOperation(rpc.ClientOperation):
+    """
+    Initial request and response are empty, but echos streaming messages sent by client
+    """
+
     @classmethod
     def _model_name(cls):
         return 'awstest#EchoStreamMessages'
@@ -1064,6 +1112,10 @@ class _EchoStreamMessagesOperation(rpc.ClientOperation):
 
 
 class _GetAllCustomersOperation(rpc.ClientOperation):
+    """
+    Fetches all customers
+    """
+
     @classmethod
     def _model_name(cls):
         return 'awstest#GetAllCustomers'
@@ -1086,6 +1138,10 @@ class _GetAllCustomersOperation(rpc.ClientOperation):
 
 
 class _GetAllProductsOperation(rpc.ClientOperation):
+    """
+    Fetches all products, indexed by SKU
+    """
+
     @classmethod
     def _model_name(cls):
         return 'awstest#GetAllProducts'

@@ -296,7 +296,9 @@ class GetAllProductsOperation(model._GetAllProductsOperation):
 
 class EchoTestRPCClient(rpc.Client):
     """
-    Client for the EchoTestRPC service.
+    Client for the EchoTestRPC service.  When finished with the client,
+    you must call close() to free the client's native resources.
+
     Args:
         connection: Connection that this client will use.
     """
