@@ -290,6 +290,8 @@ class MessageContext(rpc.Shape):
     """
     MessageContext
 
+    The context is ignored if used in PublishMessage.
+
     All attributes are None by default, and may be set by keyword in the constructor.
 
     Keyword Args:
@@ -6888,6 +6890,10 @@ class _AuthorizeClientDeviceActionOperation(rpc.ClientOperation):
 
 
 class _CancelLocalDeploymentOperation(rpc.ClientOperation):
+    """
+    Cancel a local deployment on the device.
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#CancelLocalDeployment'
@@ -6932,6 +6938,10 @@ class _CreateDebugPasswordOperation(rpc.ClientOperation):
 
 
 class _CreateLocalDeploymentOperation(rpc.ClientOperation):
+    """
+    Creates a local deployment on the device.  Also allows to remove existing components.
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#CreateLocalDeployment'
@@ -6954,6 +6964,10 @@ class _CreateLocalDeploymentOperation(rpc.ClientOperation):
 
 
 class _DeferComponentUpdateOperation(rpc.ClientOperation):
+    """
+    Defer the update of components by a given amount of time and check again after that.
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#DeferComponentUpdate'
@@ -6976,6 +6990,10 @@ class _DeferComponentUpdateOperation(rpc.ClientOperation):
 
 
 class _DeleteThingShadowOperation(rpc.ClientOperation):
+    """
+    Deletes a device shadow document stored in the local shadow service
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#DeleteThingShadow'
@@ -7020,6 +7038,10 @@ class _GetClientDeviceAuthTokenOperation(rpc.ClientOperation):
 
 
 class _GetComponentDetailsOperation(rpc.ClientOperation):
+    """
+    Gets the status and version of the component with the given component name
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#GetComponentDetails'
@@ -7042,6 +7064,10 @@ class _GetComponentDetailsOperation(rpc.ClientOperation):
 
 
 class _GetConfigurationOperation(rpc.ClientOperation):
+    """
+    Get value of a given key from the configuration
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#GetConfiguration'
@@ -7064,6 +7090,10 @@ class _GetConfigurationOperation(rpc.ClientOperation):
 
 
 class _GetLocalDeploymentStatusOperation(rpc.ClientOperation):
+    """
+    Get status of a local deployment with the given deploymentId
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#GetLocalDeploymentStatus'
@@ -7108,6 +7138,10 @@ class _GetSecretValueOperation(rpc.ClientOperation):
 
 
 class _GetThingShadowOperation(rpc.ClientOperation):
+    """
+    Retrieves a device shadow document stored by the local shadow service
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#GetThingShadow'
@@ -7152,6 +7186,10 @@ class _ListComponentsOperation(rpc.ClientOperation):
 
 
 class _ListLocalDeploymentsOperation(rpc.ClientOperation):
+    """
+    Lists the last 5 local deployments along with their statuses
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#ListLocalDeployments'
@@ -7174,6 +7212,10 @@ class _ListLocalDeploymentsOperation(rpc.ClientOperation):
 
 
 class _ListNamedShadowsForThingOperation(rpc.ClientOperation):
+    """
+    Lists the named shadows for the specified thing
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#ListNamedShadowsForThing'
@@ -7218,6 +7260,10 @@ class _PauseComponentOperation(rpc.ClientOperation):
 
 
 class _PublishToIoTCoreOperation(rpc.ClientOperation):
+    """
+    Publish an MQTT message to AWS IoT message broker
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#PublishToIoTCore'
@@ -7240,6 +7286,10 @@ class _PublishToIoTCoreOperation(rpc.ClientOperation):
 
 
 class _PublishToTopicOperation(rpc.ClientOperation):
+    """
+    Publish to a custom topic.
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#PublishToTopic'
@@ -7284,6 +7334,10 @@ class _PutComponentMetricOperation(rpc.ClientOperation):
 
 
 class _RestartComponentOperation(rpc.ClientOperation):
+    """
+    Restarts a component with the given name
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#RestartComponent'
@@ -7328,6 +7382,12 @@ class _ResumeComponentOperation(rpc.ClientOperation):
 
 
 class _SendConfigurationValidityReportOperation(rpc.ClientOperation):
+    """
+    This operation should be used in response to event received as part of SubscribeToValidateConfigurationUpdates
+    subscription. It is not necessary to send the report if the configuration is valid (GGC will wait for timeout
+    period and proceed). Sending the report with invalid config status will prevent GGC from applying the updates
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#SendConfigurationValidityReport'
@@ -7350,6 +7410,10 @@ class _SendConfigurationValidityReportOperation(rpc.ClientOperation):
 
 
 class _StopComponentOperation(rpc.ClientOperation):
+    """
+    Stops a component with the given name
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#StopComponent'
@@ -7394,6 +7458,10 @@ class _SubscribeToCertificateUpdatesOperation(rpc.ClientOperation):
 
 
 class _SubscribeToComponentUpdatesOperation(rpc.ClientOperation):
+    """
+    Subscribe to receive notification if GGC is about to update any components
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#SubscribeToComponentUpdates'
@@ -7416,6 +7484,10 @@ class _SubscribeToComponentUpdatesOperation(rpc.ClientOperation):
 
 
 class _SubscribeToConfigurationUpdateOperation(rpc.ClientOperation):
+    """
+    Subscribes to be notified when GGC updates the configuration for a given componentName and keyName.
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#SubscribeToConfigurationUpdate'
@@ -7438,6 +7510,10 @@ class _SubscribeToConfigurationUpdateOperation(rpc.ClientOperation):
 
 
 class _SubscribeToIoTCoreOperation(rpc.ClientOperation):
+    """
+    Subscribe to a topic in AWS IoT message broker.
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#SubscribeToIoTCore'
@@ -7460,6 +7536,10 @@ class _SubscribeToIoTCoreOperation(rpc.ClientOperation):
 
 
 class _SubscribeToTopicOperation(rpc.ClientOperation):
+    """
+    Creates a subscription for a custom topic
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#SubscribeToTopic'
@@ -7482,6 +7562,13 @@ class _SubscribeToTopicOperation(rpc.ClientOperation):
 
 
 class _SubscribeToValidateConfigurationUpdatesOperation(rpc.ClientOperation):
+    """
+    Subscribes to be notified when GGC is about to update configuration for this component
+    GGC will wait for a timeout period before it proceeds with the update.
+    If the new configuration is not valid this component can use the SendConfigurationValidityReport
+    operation to indicate that
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#SubscribeToValidateConfigurationUpdates'
@@ -7504,6 +7591,11 @@ class _SubscribeToValidateConfigurationUpdatesOperation(rpc.ClientOperation):
 
 
 class _UpdateConfigurationOperation(rpc.ClientOperation):
+    """
+    Update this component's configuration by replacing the value of given keyName with the newValue.
+    If an oldValue is specified then update will only take effect id the current value matches the given oldValue
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#UpdateConfiguration'
@@ -7526,6 +7618,10 @@ class _UpdateConfigurationOperation(rpc.ClientOperation):
 
 
 class _UpdateStateOperation(rpc.ClientOperation):
+    """
+    Update status of this component
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#UpdateState'
@@ -7548,6 +7644,11 @@ class _UpdateStateOperation(rpc.ClientOperation):
 
 
 class _UpdateThingShadowOperation(rpc.ClientOperation):
+    """
+    Updates a device shadow document stored in the local shadow service
+    The update is an upsert operation, with optimistic locking support
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#UpdateThingShadow'
