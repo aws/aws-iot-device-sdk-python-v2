@@ -290,7 +290,8 @@ class MessageContext(rpc.Shape):
     """
     MessageContext
 
-    The context is ignored if used in PublishMessage.
+    Contextual information about the message.
+    NOTE The context is ignored if used in PublishMessage.
 
     All attributes are None by default, and may be set by keyword in the constructor.
 
@@ -6868,6 +6869,10 @@ SHAPE_INDEX = rpc.ShapeIndex([
 
 
 class _AuthorizeClientDeviceActionOperation(rpc.ClientOperation):
+    """
+    Send a request to authorize action on some resource
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#AuthorizeClientDeviceAction'
@@ -6916,6 +6921,10 @@ class _CancelLocalDeploymentOperation(rpc.ClientOperation):
 
 
 class _CreateDebugPasswordOperation(rpc.ClientOperation):
+    """
+    Generate a password for the LocalDebugConsole component
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#CreateDebugPassword'
@@ -7016,6 +7025,10 @@ class _DeleteThingShadowOperation(rpc.ClientOperation):
 
 
 class _GetClientDeviceAuthTokenOperation(rpc.ClientOperation):
+    """
+    Get session token for a client device
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#GetClientDeviceAuthToken'
@@ -7116,6 +7129,10 @@ class _GetLocalDeploymentStatusOperation(rpc.ClientOperation):
 
 
 class _GetSecretValueOperation(rpc.ClientOperation):
+    """
+    Retrieves a secret stored in AWS secrets manager
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#GetSecretValue'
@@ -7164,6 +7181,10 @@ class _GetThingShadowOperation(rpc.ClientOperation):
 
 
 class _ListComponentsOperation(rpc.ClientOperation):
+    """
+    Request for a list of components
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#ListComponents'
@@ -7238,6 +7259,10 @@ class _ListNamedShadowsForThingOperation(rpc.ClientOperation):
 
 
 class _PauseComponentOperation(rpc.ClientOperation):
+    """
+    Pause a running component
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#PauseComponent'
@@ -7312,6 +7337,11 @@ class _PublishToTopicOperation(rpc.ClientOperation):
 
 
 class _PutComponentMetricOperation(rpc.ClientOperation):
+    """
+    Send component metrics
+    NOTE Only usable by AWS components
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#PutComponentMetric'
@@ -7360,6 +7390,10 @@ class _RestartComponentOperation(rpc.ClientOperation):
 
 
 class _ResumeComponentOperation(rpc.ClientOperation):
+    """
+    Resume a paused component
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#ResumeComponent'
@@ -7436,6 +7470,10 @@ class _StopComponentOperation(rpc.ClientOperation):
 
 
 class _SubscribeToCertificateUpdatesOperation(rpc.ClientOperation):
+    """
+    Create a subscription for new certificates
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#SubscribeToCertificateUpdates'
@@ -7671,6 +7709,11 @@ class _UpdateThingShadowOperation(rpc.ClientOperation):
 
 
 class _ValidateAuthorizationTokenOperation(rpc.ClientOperation):
+    """
+    Validate authorization token
+    NOTE This API can be used only by stream manager, customer component calling this API will receive UnauthorizedError
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#ValidateAuthorizationToken'
@@ -7693,6 +7736,10 @@ class _ValidateAuthorizationTokenOperation(rpc.ClientOperation):
 
 
 class _VerifyClientDeviceIdentityOperation(rpc.ClientOperation):
+    """
+    Verify client device credentials
+    """
+
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#VerifyClientDeviceIdentity'
