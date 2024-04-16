@@ -81,4 +81,4 @@ is provided by code that been generated from a model of the service.
 
 This library is licensed under the [Apache 2.0 License](./documents/LICENSE).
 
-Latest released version: v1.21.2
+Latest released version: v1.21.4
