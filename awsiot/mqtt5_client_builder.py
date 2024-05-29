@@ -784,4 +784,4 @@ def new_default_builder(**kwargs) -> awscrt.mqtt5.Client:
     tls_ctx_options = awscrt.io.TlsContextOptions()
     return _builder(tls_ctx_options=tls_ctx_options,
                     use_websockets=False,
-                    **kwargs)
+                    kwargs=kwargs)
