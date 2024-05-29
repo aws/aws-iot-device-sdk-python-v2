@@ -86,11 +86,11 @@ jobs:
 
   osx:
     runs-on: ${{ matrix.runner }}
-      strategy:
-        matrix:
-          runner:
-            - macos-13
-            - macos-latest
+    strategy:
+      matrix:
+        runner:
+          - macos-13
+          - macos-latest
     permissions:
       id-token: write # This is required for requesting the JWT
     steps:
