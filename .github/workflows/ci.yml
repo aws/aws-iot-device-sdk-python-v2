@@ -95,9 +95,9 @@ jobs:
       id-token: write # This is required for requesting the JWT
     steps:
     - name: Install boto3
-      run:
-        # Starting from macos14, boto3 not longer available in  homebrew python no longer  https://github.com/Homebrew/homebrew-core/issues/157500
-        # use virtual env to work around it.
+# Starting from macos14, boto3 not longer available in  homebrew python no longer  https://github.com/Homebrew/homebrew-core/issues/157500
+# use virtual env to work around it.
+      run: |
         python3 -m venv .venv
         source .venv/bin/activate
         python3 -m pip install boto3
