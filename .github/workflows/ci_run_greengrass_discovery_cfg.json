@@ -1,6 +1,6 @@
 {
-    "language": "CPP",
-    "runnable_file": "basic-discovery",
+    "language": "Python",
+    "runnable_file": "basic_discovery.py",
     "runnable_region": "us-east-1",
     "runnable_main_class": "",
     "arguments": [
@@ -30,6 +30,5 @@
             "name": "--mode",
             "data": "publish"
         }
-    ],
-    "stdin_file": "messages.txt"
+    ]
 }

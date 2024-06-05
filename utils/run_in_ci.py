@@ -327,9 +327,6 @@ def launch_runnable(runnable_dir):
             exit_code = runnable_return.returncode
 
         elif (config_json['language'] == "Python"):
-            config_json_arguments_list.append("--is_ci")
-            config_json_arguments_list.append("True")
-
             runnable_file = os.path.join(runnable_dir, config_json['runnable_file'])
             runnable_return = subprocess.run(
                 args=[sys.executable, runnable_file] + config_json_arguments_list, input=subprocess_stdin, timeout=runnable_timeout)

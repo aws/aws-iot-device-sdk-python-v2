@@ -17,6 +17,10 @@
             "name": "--key",
             "secret": "ci/PubSub/key",
             "filename": "tmp_key.pem"
+        },
+        {
+            "name": "--is_ci",
+            "data": "true"
         }
     ]
 }

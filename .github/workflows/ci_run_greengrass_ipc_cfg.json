@@ -16,6 +16,5 @@
             "name": "--is_ci",
             "data": "true"
         }
-
     ]
 }
