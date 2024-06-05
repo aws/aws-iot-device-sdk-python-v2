@@ -403,7 +403,7 @@ jobs:
         run: |
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_greengrass_discovery_cfg.json
 
-  linux-smoke-tests:
+  linux-greengrass-tests:
     runs-on: ubuntu-22.04
     permissions:
       id-token: write # This is required for requesting the JWT
