@@ -1,0 +1,22 @@
+{
+  "component": {
+    "software.amazon.awssdk.sdk-gg-ipc": {
+      "author": "iot-device-sdk",
+      "version": "NEXT_PATCH",
+      "build": {
+        "build_system": "custom",
+        "custom_build_command": ["bash", "copy_files.sh"]
+      },
+      "publish": {
+        "bucket": "<PLACEHOLDER_BUCKET>",
+        "region": "<PLACEHOLDER_REGION>"
+      }
+    }
+  },
+  "gdk_version": "1.3.0",
+  "test-e2e": {
+    "gtf_options": {
+         "tags": "testgg"
+     }
+  }
+}
