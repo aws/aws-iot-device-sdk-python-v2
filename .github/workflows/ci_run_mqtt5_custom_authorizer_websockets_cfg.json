@@ -19,6 +19,10 @@
         {
             "name": "--use_websockets",
             "data": "true"
+        },
+        {
+            "name": "--is_ci",
+            "data": "true"
         }
     ]
 }

@@ -33,7 +33,8 @@ def setup_json_arguments_list(file, input_uuid=None):
 
     for argument in config_json['arguments']:
         # Add the name of the argument
-        config_json_arguments_list.append(argument['name'])
+        if( 'name' in argument):
+            config_json_arguments_list.append(argument['name'])
 
         # Based on the data present, we need to process and add the data differently
         try:
@@ -147,7 +148,18 @@ def make_windows_pfx_file(certificate_file_path, private_key_path, pfx_file_path
 
         # Import the PFX into the Windows Certificate Store
         # (Passing '$mypwd' is required even though it is empty and our certificate has no password. It fails CI otherwise)
-        import_pfx_arguments = ["powershell.exe", "Import-PfxCertificate", "-FilePath", pfx_file_path, "-CertStoreLocation", "Cert:\\" + pfx_certificate_store_location, "-Password", "$mypwd"]
+        import_pfx_arguments = [
+            "powershell.exe",
+            # Powershell 7.3 introduced an issue where launching powershell from cmd would not set PSModulePath correctly.
+            # As a workaround, we set `PSModulePath` to empty so powershell would automatically reset the PSModulePath to default.
+            # More details: https://github.com/PowerShell/PowerShell/issues/18530
+            "$env:PSModulePath = '';",
+            "Import-PfxCertificate",
+            "-FilePath", pfx_file_path,
+            "-CertStoreLocation",
+            "Cert:\\" + pfx_certificate_store_location,
+            "-Password",
+            "$mypwd"]
         import_pfx_run = subprocess.run(args=import_pfx_arguments, shell=True, stdout=subprocess.PIPE)
         if (import_pfx_run.returncode != 0):
             print ("ERROR: Could not import PFX certificate into Windows store!")
@@ -216,7 +228,8 @@ def cleanup_runnable():
     global config_json_arguments_list
 
     for argument in config_json['arguments']:
-        config_json_arguments_list.append(argument['name'])
+        if( 'name' in argument):
+            config_json_arguments_list.append(argument['name'])
 
         # Based on the data present, we need to process and add the data differently
         try:
@@ -242,7 +255,7 @@ def cleanup_runnable():
             return -1
 
 
-def launch_runnable():
+def launch_runnable(runnable_dir):
     global config_json
     global config_json_arguments_list
 
@@ -250,92 +263,125 @@ def launch_runnable():
         print("No configuration JSON file data found!")
         return -1
 
+    # Prepare data for runnable's STDIN
+    subprocess_stdin = None
+    if "stdin_file" in config_json:
+        stdin_file = os.path.join(runnable_dir, config_json['stdin_file'])
+        with open(stdin_file, "rb") as file:
+            subprocess_stdin = file.read()
+
     exit_code = 0
+
+    runnable_timeout = None
+    if ('timeout' in config_json):
+        runnable_timeout = config_json['timeout']
 
     print("Launching runnable...")
 
-    # Java
-    if (config_json['language'] == "Java"):
+    try:
+        # Java
+        if (config_json['language'] == "Java"):
+            # Flatten arguments down into a single string
+            arguments_as_string = ""
+            for i in range(0, len(config_json_arguments_list)):
+                arguments_as_string += str(config_json_arguments_list[i])
+                if (i+1 < len(config_json_arguments_list)):
+                    arguments_as_string += " "
 
-        # Flatten arguments down into a single string
-        arguments_as_string = ""
-        for i in range(0, len(config_json_arguments_list)):
-            arguments_as_string += str(config_json_arguments_list[i])
-            if (i+1 < len(config_json_arguments_list)):
-                arguments_as_string += " "
+            arguments = ["mvn", "compile", "exec:java"]
+            arguments.append("-pl")
+            arguments.append(config_json['runnable_file'])
+            arguments.append("-Dexec.mainClass=" + config_json['runnable_main_class'])
+            arguments.append("-Daws.crt.ci=True")
 
-        arguments = ["mvn", "compile", "exec:java"]
-        arguments.append("-pl")
-        arguments.append(config_json['runnable_file'])
-        arguments.append("-Dexec.mainClass=" + config_json['runnable_main_class'])
-        arguments.append("-Daws.crt.ci=True")
+            # We have to do this as a string, unfortunately, due to how -Dexec.args= works...
+            argument_string = subprocess.list2cmdline(arguments) + " -Dexec.args=\"" + arguments_as_string + "\""
+            print(f"Running cmd: {argument_string}")
+            runnable_return = subprocess.run(argument_string, input=subprocess_stdin, timeout=runnable_timeout, shell=True)
+            exit_code = runnable_return.returncode
 
-        # We have to do this as a string, unfortunately, due to how -Dexec.args= works...
-        argument_string = subprocess.list2cmdline(arguments) + " -Dexec.args=\"" + arguments_as_string + "\""
-        print(f"Running cmd: {argument_string}")
-        runnable_return = subprocess.run(argument_string, shell=True)
-        exit_code = runnable_return.returncode
+        elif (config_json['language'] == "Java JAR"):
+            # Flatten arguments down into a single string
+            arguments_as_string = ""
+            for i in range(0, len(config_json_arguments_list)):
+                arguments_as_string += str(config_json_arguments_list[i])
+                if (i+1 < len(config_json_arguments_list)):
+                    arguments_as_string += " "
 
-    # C++
-    elif (config_json['language'] == "CPP"):
-        runnable_return = subprocess.run(
-            args=config_json_arguments_list, executable=config_json['runnable_file'])
-        exit_code = runnable_return.returncode
+            runnable_file = os.path.join(runnable_dir, config_json['runnable_file'])
 
-    elif (config_json['language'] == "Python"):
-        config_json_arguments_list.append("--is_ci")
-        config_json_arguments_list.append("True")
+            arguments = ["java"]
+            arguments.append("-Daws.crt.ci=True")
+            arguments.append("-jar")
+            arguments.append(runnable_file)
 
-        runnable_return = subprocess.run(
-            args=[sys.executable, config_json['runnable_file']] + config_json_arguments_list)
-        exit_code = runnable_return.returncode
+            argument_string = subprocess.list2cmdline(arguments) + " " + arguments_as_string
+            print(f"Running cmd: {argument_string}")
+            runnable_return = subprocess.run(argument_string, input=subprocess_stdin, timeout=runnable_timeout, shell=True)
+            exit_code = runnable_return.returncode
 
-    elif (config_json['language'] == "Javascript"):
-        os.chdir(config_json['runnable_file'])
+        # C++
+        elif (config_json['language'] == "CPP"):
+            runnable_file = os.path.join(runnable_dir, config_json['runnable_file'])
+            runnable_return = subprocess.run(args=config_json_arguments_list, input=subprocess_stdin, timeout=runnable_timeout, executable=runnable_file)
+            exit_code = runnable_return.returncode
 
-        config_json_arguments_list.append("--is_ci")
-        config_json_arguments_list.append("true")
+        elif (config_json['language'] == "Python"):
+            runnable_file = os.path.join(runnable_dir, config_json['runnable_file'])
+            runnable_return = subprocess.run(
+                args=[sys.executable, runnable_file] + config_json_arguments_list, input=subprocess_stdin, timeout=runnable_timeout)
+            exit_code = runnable_return.returncode
 
-        runnable_return_one = None
-        if sys.platform == "win32" or sys.platform == "cygwin":
-            runnable_return_one = subprocess.run(args=["npm", "install"], shell=True)
-        else:
-            runnable_return_one = subprocess.run(args=["npm", "install"])
+        elif (config_json['language'] == "Javascript"):
+            os.chdir(config_json['runnable_file'])
 
-        if (runnable_return_one == None or runnable_return_one.returncode != 0):
-            exit_code = runnable_return_one.returncode
-        else:
-            runnable_return_two = None
-            arguments = []
-            if 'node_cmd' in config_json:
-                arguments = config_json['node_cmd'].split(" ")
+            config_json_arguments_list.append("--is_ci")
+            config_json_arguments_list.append("true")
+
+            runnable_return_one = None
+            if not 'skip_install' in config_json:
+                if sys.platform == "win32" or sys.platform == "cygwin":
+                    runnable_return_one = subprocess.run(args=["npm", "install"], shell=True, timeout=runnable_timeout)
+                else:
+                    runnable_return_one = subprocess.run(args=["npm", "install"], timeout=runnable_timeout)
+
+            if not 'skip_install' in config_json and (runnable_return_one == None or runnable_return_one.returncode != 0):
+                exit_code = runnable_return_one.returncode
             else:
-                arguments = ["node", "dist/index.js"]
+                runnable_return_two = None
+                arguments = []
+                if 'node_cmd' in config_json:
+                    arguments = config_json['node_cmd'].split(" ")
+                else:
+                    arguments = ["node", "dist/index.js"]
 
-            if sys.platform == "win32" or sys.platform == "cygwin":
-                runnable_return_two = subprocess.run(
-                    args=arguments + config_json_arguments_list, shell=True)
-            else:
-                runnable_return_two = subprocess.run(
-                    args=arguments + config_json_arguments_list)
+                if sys.platform == "win32" or sys.platform == "cygwin":
+                    runnable_return_two = subprocess.run(
+                        args=arguments + config_json_arguments_list, shell=True, check=True, timeout=runnable_timeout)
+                else:
+                    runnable_return_two = subprocess.run(
+                        args=arguments + config_json_arguments_list, input=subprocess_stdin, timeout=runnable_timeout)
 
-            if (runnable_return_two != None):
-                exit_code = runnable_return_two.returncode
-            else:
-                exit_code = 1
+                if (runnable_return_two != None):
+                    exit_code = runnable_return_two.returncode
+                else:
+                    exit_code = 1
+    except subprocess.CalledProcessError as e:
+        print(e.output)
+        exit_code = 1
 
     cleanup_runnable()
     return exit_code
 
 
-def setup_and_launch(file, input_uuid=None):
+def setup_and_launch(file, input_uuid=None, runnable_dir=''):
     setup_result = setup_runnable(file, input_uuid)
     if setup_result != 0:
         print("Setting up runnable failed")
         return setup_result
 
     print("About to launch runnable...")
-    return launch_runnable()
+    return launch_runnable(runnable_dir)
 
 
 def main():
@@ -344,13 +390,16 @@ def main():
     argument_parser.add_argument("--file", required=True, help="Configuration file to pull CI data from")
     argument_parser.add_argument("--input_uuid", required=False,
                                  help="UUID data to replace '$INPUT_UUID' with. Only works in Data field")
+    argument_parser.add_argument("--runnable_dir", required=False, default='',
+                                 help="Directory where runnable_file is located")
     parsed_commands = argument_parser.parse_args()
 
     file = parsed_commands.file
     input_uuid = parsed_commands.input_uuid
+    runnable_dir = parsed_commands.runnable_dir
 
     print(f"Starting to launch runnable: config {file}; input UUID: {input_uuid}")
-    test_result = setup_and_launch(file, input_uuid)
+    test_result = setup_and_launch(file, input_uuid, runnable_dir)
     sys.exit(test_result)
 
 

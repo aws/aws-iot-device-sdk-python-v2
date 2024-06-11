@@ -11,6 +11,10 @@
         {
             "name": "--signing_region",
             "data": "us-east-1"
+    },
+    {
+        "name": "--is_ci",
+        "data": "true"
         }
     ]
 }

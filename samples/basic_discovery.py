@@ -102,9 +102,9 @@ while loop_count < cmdData.input_max_pub_ops:
         message['message'] = cmdData.input_message
         message['sequence'] = loop_count
         messageJson = json.dumps(message)
-        pub_future, _ = mqtt_connection.publish(cmdData.input_topic, messageJson, QoS.AT_MOST_ONCE)
-        pub_future.result()
-        print('Published topic {}: {}\n'.format(cmdData.input_topic, messageJson))
+        pub_future, _ = mqtt_connection.publish(cmdData.input_topic, messageJson, QoS.AT_LEAST_ONCE)
+        publish_completion_data = pub_future.result()
+        print('Published topic {}: {} (puback reason: {})\n'.format(cmdData.input_topic, messageJson, repr(publish_completion_data.puback.reason_code)))
 
         loop_count += 1
     time.sleep(1)

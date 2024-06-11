@@ -33,6 +33,10 @@
         {
             "name": "--x509_thing_name",
             "data": "CI_PubSub_Thing"
+        },
+        {
+            "name": "--is_ci",
+            "data": "true"
         }
     ]
 }

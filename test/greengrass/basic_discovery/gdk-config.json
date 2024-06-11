@@ -1,0 +1,22 @@
+{
+  "component": {
+    "software.amazon.awssdk.sdk-gg-test-discovery": {
+      "author": "iot-device-sdk",
+      "version": "NEXT_PATCH",
+      "build": {
+        "build_system": "custom",
+        "custom_build_command": ["bash", "copy_files.sh"]
+      },
+      "publish": {
+        "bucket": "iot-sdk-ci-bucket-us-east-1",
+        "region": "us-east-1"
+      }
+    }
+  },
+  "gdk_version": "1.3.0",
+  "test-e2e": {
+    "gtf_options": {
+         "tags": "testgg"
+     }
+  }
+}

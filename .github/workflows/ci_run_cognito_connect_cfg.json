@@ -15,6 +15,10 @@
         {
             "name": "--cognito_identity",
             "secret": "ci/Cognito/identity_id"
+        },
+        {
+            "name": "--is_ci",
+            "data": "true"
         }
     ]
 }

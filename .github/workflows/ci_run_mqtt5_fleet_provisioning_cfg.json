@@ -25,6 +25,10 @@
         {
             "name": "--template_parameters",
             "data": "{\"SerialNumber\":\"$INPUT_UUID\"}"
+        },
+        {
+            "name": "--is_ci",
+            "data": "true"
         }
     ]
 }

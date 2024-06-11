@@ -29,6 +29,7 @@ env:
   CI_JOBS_ROLE: arn:aws:iam::180635532705:role/CI_Jobs_Role
   CI_FLEET_PROVISIONING_ROLE: arn:aws:iam::180635532705:role/service-role/CI_FleetProvisioning_Role
   CI_GREENGRASS_ROLE: arn:aws:iam::180635532705:role/CI_Greengrass_Role
+  CI_GREENGRASS_INSTALLER_ROLE: arn:aws:iam::180635532705:role/CI_GreengrassInstaller_Role
   CI_DEVICE_ADVISOR: arn:aws:iam::180635532705:role/CI_DeviceAdvisor_Role
   CI_MQTT5_ROLE: arn:aws:iam::180635532705:role/CI_MQTT5_Role
   CI_BUILD_AND_TEST_ROLE: arn:aws:iam::180635532705:role/V2_SDK_Unit_Testing
@@ -393,14 +394,66 @@ jobs:
           Sample_UUID=$(python3  -c "import uuid; print (uuid.uuid4())")
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_fleet_provisioning_cfg.json --input_uuid ${Sample_UUID}
           python3 ${{ env.CI_UTILS_FOLDER }}/delete_iot_thing_ci.py --thing_name "Fleet_Thing_${Sample_UUID}" --region "us-east-1"
-      - name: configure AWS credentials (Greengrass)
+
+  linux-greengrass-tests:
+    runs-on: ubuntu-22.04
+    permissions:
+      id-token: write # This is required for requesting the JWT
+    steps:
+      - name: Setup environment
+        run: |
+          python3 -m pip install boto3
+      - name: configure AWS credentials (containers)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ env.CI_GREENGRASS_ROLE }}
+          role-to-assume: ${{ env.CI_BUILD_AND_TEST_ROLE }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run Greengrass Discovery sample
+      - name: Build ${{ env.PACKAGE_NAME }}
         run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_greengrass_discovery_cfg.json
+          python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
+          chmod a+x builder
+          ./builder build -p ${{ env.PACKAGE_NAME }}
+      - name: Install Greengrass Development Kit
+        run: |
+          python3 -m pip install awsiotsdk
+          python3 -m pip install -U git+https://github.com/aws-greengrass/aws-greengrass-gdk-cli.git@v1.6.2
+      - name: Configure AWS credentials (Greengrass)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ env.CI_GREENGRASS_INSTALLER_ROLE }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      - name: Build and run Greengrass basic discovery sample
+        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/basic_discovery
+        run: |
+          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
+          gdk component build
+          gdk test-e2e build
+          gdk test-e2e run
+      - name: Show logs
+        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/basic_discovery
+        # Print logs unconditionally to provide more details on Greengrass run even if the test failed.
+        if: always()
+        run: |
+          echo "=== greengrass.log"
+          cat testResults/gg*/greengrass.log
+          echo "=== software.amazon.awssdk.sdk-gg-test-discovery.log"
+          cat testResults/gg*/software.amazon.awssdk.sdk-gg-test-discovery.log
+      - name: Build and run Greengrass IPC sample
+        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/ipc
+        run: |
+          gdk component build
+          gdk test-e2e build
+          gdk test-e2e run
+      - name: Show logs
+        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/ipc
+        # Print logs unconditionally to provide more details on Greengrass run even if the test failed.
+        if: always()
+        run: |
+          echo "=== greengrass.log"
+          cat testResults/gg*/greengrass.log
+          echo "=== software.amazon.awssdk.sdk-gg-ipc.log"
+          cat testResults/gg*/software.amazon.awssdk.sdk-gg-ipc.log
+
 
   # check that docs can still build
   check-docs:

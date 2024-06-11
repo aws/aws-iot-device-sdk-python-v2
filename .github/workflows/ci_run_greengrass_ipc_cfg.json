@@ -1,0 +1,20 @@
+{
+    "language": "Python",
+    "runnable_file": "ipc_greengrass.py",
+    "runnable_region": "us-east-1",
+    "runnable_main_class": "",
+    "arguments": [
+        {
+            "name": "--topic",
+            "data": "test/gg-ipc-topic"
+        },
+        {
+            "name": "--message",
+            "data": "hello"
+        },
+        {
+            "name": "--is_ci",
+            "data": "true"
+        }
+    ]
+}

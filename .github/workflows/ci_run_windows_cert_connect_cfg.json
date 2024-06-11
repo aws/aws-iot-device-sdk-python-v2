@@ -15,6 +15,10 @@
             "windows_cert_key": "ci/PubSub/key",
             "windows_cert_key_path": "tmp_key.pem",
             "windows_cert_pfx_key_path": "tmp_pfx.pem"
+        },
+        {
+            "name": "--is_ci",
+            "data": "true"
         }
     ]
 }
