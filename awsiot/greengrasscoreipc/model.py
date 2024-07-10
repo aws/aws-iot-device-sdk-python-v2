@@ -3636,21 +3636,25 @@ class GetSecretValueRequest(rpc.Shape):
         secret_id: The name of the secret to get. You can specify either the Amazon Resource Name (ARN) or the friendly name of the secret.
         version_id: (Optional) The ID of the version to get. If you don't specify versionId or versionStage, this operation defaults to the version with the AWSCURRENT label.
         version_stage: (Optional) The staging label of the version to get. If you don't specify versionId or versionStage, this operation defaults to the version with the AWSCURRENT label.
+        refresh: (Optional) Whether to fetch the latest secret from cloud when the request is handled. Defaults to false.
 
     Attributes:
         secret_id: The name of the secret to get. You can specify either the Amazon Resource Name (ARN) or the friendly name of the secret.
         version_id: (Optional) The ID of the version to get. If you don't specify versionId or versionStage, this operation defaults to the version with the AWSCURRENT label.
         version_stage: (Optional) The staging label of the version to get. If you don't specify versionId or versionStage, this operation defaults to the version with the AWSCURRENT label.
+        refresh: (Optional) Whether to fetch the latest secret from cloud when the request is handled. Defaults to false.
     """
 
     def __init__(self, *,
                  secret_id: typing.Optional[str] = None,
                  version_id: typing.Optional[str] = None,
-                 version_stage: typing.Optional[str] = None):
+                 version_stage: typing.Optional[str] = None,
+                 refresh: typing.Optional[bool] = None):
         super().__init__()
         self.secret_id = secret_id  # type: typing.Optional[str]
         self.version_id = version_id  # type: typing.Optional[str]
         self.version_stage = version_stage  # type: typing.Optional[str]
+        self.refresh = refresh  # type: typing.Optional[bool]
 
     def set_secret_id(self, secret_id: str):
         self.secret_id = secret_id
@@ -3664,6 +3668,10 @@ class GetSecretValueRequest(rpc.Shape):
         self.version_stage = version_stage
         return self
 
+    def set_refresh(self, refresh: bool):
+        self.refresh = refresh
+        return self
+
 
     def _to_payload(self):
         payload = {}
@@ -3673,6 +3681,8 @@ class GetSecretValueRequest(rpc.Shape):
             payload['versionId'] = self.version_id
         if self.version_stage is not None:
             payload['versionStage'] = self.version_stage
+        if self.refresh is not None:
+            payload['refresh'] = self.refresh
         return payload
 
     @classmethod
@@ -3684,6 +3694,8 @@ class GetSecretValueRequest(rpc.Shape):
             new.version_id = payload['versionId']
         if 'versionStage' in payload:
             new.version_stage = payload['versionStage']
+        if 'refresh' in payload:
+            new.refresh = payload['refresh']
         return new
 
     @classmethod

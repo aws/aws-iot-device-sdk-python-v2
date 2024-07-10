@@ -405,7 +405,8 @@ class GreengrassCoreIPCClientV2:
     def get_secret_value(self, *,
         secret_id: typing.Optional[str] = None,
         version_id: typing.Optional[str] = None,
-        version_stage: typing.Optional[str] = None) -> model.GetSecretValueResponse:
+        version_stage: typing.Optional[str] = None,
+        refresh: typing.Optional[bool] = None) -> model.GetSecretValueResponse:
         """
         Perform the GetSecretValue operation synchronously.
 
@@ -413,13 +414,15 @@ class GreengrassCoreIPCClientV2:
             secret_id: 
             version_id: 
             version_stage: 
+            refresh: 
         """
-        return self.get_secret_value_async(secret_id=secret_id, version_id=version_id, version_stage=version_stage).result()
+        return self.get_secret_value_async(secret_id=secret_id, version_id=version_id, version_stage=version_stage, refresh=refresh).result()
 
     def get_secret_value_async(self, *,
         secret_id: typing.Optional[str] = None,
         version_id: typing.Optional[str] = None,
-        version_stage: typing.Optional[str] = None):  # type: (...) -> concurrent.futures.Future[model.GetSecretValueResponse]
+        version_stage: typing.Optional[str] = None,
+        refresh: typing.Optional[bool] = None):  # type: (...) -> concurrent.futures.Future[model.GetSecretValueResponse]
         """
         Perform the GetSecretValue operation asynchronously.
 
@@ -427,8 +430,9 @@ class GreengrassCoreIPCClientV2:
             secret_id: 
             version_id: 
             version_stage: 
+            refresh: 
         """
-        request = model.GetSecretValueRequest(secret_id=secret_id, version_id=version_id, version_stage=version_stage)
+        request = model.GetSecretValueRequest(secret_id=secret_id, version_id=version_id, version_stage=version_stage, refresh=refresh)
         operation = self.client.new_get_secret_value()
         write_future = operation.activate(request)
         return self.__combine_futures(write_future, operation.get_response())
