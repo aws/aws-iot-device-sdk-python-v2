@@ -5,7 +5,7 @@ If you want to use custom auth (or static creds, or basic auth, etc) instead,
 then you will need to replace part of the sample (connection\_setup function) with a code snippet we provided in its corresponding readme.
 
 * [Websocket Connection Using Custom Authentication](#websocket-connection-using-custom-authentication)
-* [Websocket Connection Using Static Credentials](#websocket-connection-using-custom-authentication)
+* [Websocket Connection Using Static Credentials](#websocket-connection-using-static-credentials)
 
 This sample makes an MQTT connection via Websockets and then disconnects.
 On startup, the device connects to the server via Websockets and then disconnects right after.
