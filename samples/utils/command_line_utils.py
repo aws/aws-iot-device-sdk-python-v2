@@ -436,16 +436,20 @@ class CommandLineUtils:
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>",
                                 "Client ID to use for MQTT connection (optional, default='test-*').",
                                 default="test-" + str(uuid4()))
+        cmdUtils.register_command(CommandLineUtils.m_cmd_signing_region, "<str>",
+                                "The signing region used for the websocket signer",
+                                False, str)
         cmdUtils.register_command(CommandLineUtils.m_cmd_session_token, "<str>", "", default="test-" + str(uuid4()))
-        cmdUtils.register_command(CommandLineUtils.m_cmd_access_key_id, "<int>", "", type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_access_key_id, "<str>", "")
         cmdUtils.register_command(CommandLineUtils.m_cmd_secret_access_key, "<str>", "")
         cmdUtils.get_args()
 
         cmdData = CommandLineUtils.CmdData()
         cmdData.input_endpoint = cmdUtils.get_command_required(CommandLineUtils.m_cmd_endpoint)
         cmdData.input_session_token = cmdUtils.get_command(CommandLineUtils.m_cmd_session_token)
+        cmdData.input_signing_region = cmdUtils.get_command_required(CommandLineUtils.m_cmd_signing_region, CommandLineUtils.m_cmd_region)
         cmdData.input_access_key_id  = cmdUtils.get_command(CommandLineUtils.m_cmd_access_key_id)
-        cmdData.input_secret_access_key = cmdUtils.get_command(CommandLineUtils.m_secret_access_key)
+        cmdData.input_secret_access_key = cmdUtils.get_command(CommandLineUtils.m_cmd_secret_access_key)
         cmdData.input_clientId = cmdUtils.get_command(CommandLineUtils.m_cmd_client_id, "test-" + str(uuid4()))
         cmdData.input_is_ci = cmdUtils.get_command(CommandLineUtils.m_cmd_is_ci, None) != None
         return cmdData
