@@ -19,30 +19,30 @@ To run the sample, create a new AWS IoT Greengrass component and deploy it to yo
 <details>
 
 ```yaml
-  ---
-  RecipeFormatVersion: "2020-01-25"
-  ComponentName: "GreengrassIPC"
-  ComponentVersion: "1.0.0"
-  ComponentDescription: "IPC Greengrass sample."
-  ComponentPublisher: "<ComponentPublisher>"
-  ComponentConfiguration:
-  DefaultConfiguration:
-      accessControl:
-      aws.greengrass.ipc.mqttproxy:
-          software.amazon.awssdk.iotdevicesdk.GreengrassIPC:1:
-          policyDescription: "Allows access to publish to all AWS IoT Core topics. For demonstration only - use best practices in a real application"
-          operations:
-              - aws.greengrass#PublishToIoTCore
-          resources:
-              - "*"
-  Manifests:
-  - Platform:
-      os: all
-      Artifacts:
-      - URI: "<S3 Bucket URL>/GreengrassIPC/1.0.0/GreengrassIPC.zip"
-      Lifecycle:
-          RequiresPrivilege: true
-          Run: "python3 -u {artifacts:path}/GreengrassIPC/main.py "
+---
+RecipeFormatVersion: "2020-01-25"
+ComponentName: "GreengrassIPC"
+ComponentVersion: "1.0.0"
+ComponentDescription: "IPC Greengrass sample."
+ComponentPublisher: "<ComponentPublisher>"
+ComponentConfiguration:
+DefaultConfiguration:
+    accessControl:
+    aws.greengrass.ipc.mqttproxy:
+        software.amazon.awssdk.iotdevicesdk.GreengrassIPC:1:
+        policyDescription: "Allows access to publish to all AWS IoT Core topics. For demonstration only - use best practices in a real application"
+        operations:
+            - aws.greengrass#PublishToIoTCore
+        resources:
+            - "*"
+Manifests:
+- Platform:
+    os: all
+    Artifacts:
+    - URI: "<S3 Bucket URL>/GreengrassIPC/1.0.0/GreengrassIPC.zip"
+    Lifecycle:
+        RequiresPrivilege: true
+        Run: "python3 -u {artifacts:path}/GreengrassIPC/main.py "
 ```
 
 Replace the following with your information:
@@ -70,22 +70,22 @@ As an example, you could use the following `gdk-config.json` below in your compo
 <details>
 
 ```json
-  {
-  "component": {
-      "software.amazon.awssdk.iotdevicesdk.GreengrassIPC": {
-      "author": "<ComponentPublisher>",
-      "version": "1.0.0",
-      "build": {
-          "build_system": "zip"
-      },
-      "publish": {
-          "bucket": "<S3 Bucket URL>",
-          "region": "<Region>"
-      }
-      }
-  },
-  "gdk_version": "1.0.0"
-  }
+{
+"component": {
+    "software.amazon.awssdk.iotdevicesdk.GreengrassIPC": {
+    "author": "<ComponentPublisher>",
+    "version": "1.0.0",
+    "build": {
+        "build_system": "zip"
+    },
+    "publish": {
+        "bucket": "<S3 Bucket URL>",
+        "region": "<Region>"
+    }
+    }
+},
+"gdk_version": "1.0.0"
+}
 ```
 
 Replace the following with your information:
