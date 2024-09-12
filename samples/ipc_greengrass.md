@@ -26,7 +26,7 @@ ComponentVersion: "1.0.0"
 ComponentDescription: "IPC Greengrass sample."
 ComponentPublisher: "<ComponentPublisher>"
 ComponentConfiguration:
-DefaultConfiguration:
+  DefaultConfiguration:
     accessControl:
     aws.greengrass.ipc.mqttproxy:
         software.amazon.awssdk.iotdevicesdk.GreengrassIPC:1:
