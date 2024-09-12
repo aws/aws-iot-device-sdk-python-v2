@@ -38,9 +38,9 @@ ComponentConfiguration:
 Manifests:
 - Platform:
     os: all
-    Artifacts:
+  Artifacts:
     - URI: "<S3 Bucket URL>/GreengrassIPC/1.0.0/GreengrassIPC.zip"
-    Lifecycle:
+  Lifecycle:
         RequiresPrivilege: true
         Run: "python3 -u {artifacts:path}/GreengrassIPC/main.py "
 ```
