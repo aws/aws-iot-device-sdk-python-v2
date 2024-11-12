@@ -66,7 +66,7 @@ On startup, the device connects to the server, subscribes to a topic, and begins
 
     </details>
 
-2. [Install The SDK](../README.md)
+3. [Install the SDK](../README.md#Installation).
 
 ## How to run the sample
 
@@ -85,6 +85,29 @@ python3 pubsub.py --endpoint <endpoint> --cert <file> --key <file> --ca_file <fi
 ```
 
 ## Trouble Shoot
+### Sample Help
+
+All samples will show their options by passing in `--help`. For example:
+
+``` sh
+# For Windows: replace 'python3' with 'python' and '/' with '\'
+python3 pubsub.py --help
+```
+
+Which will result in output showing all of the options that can be passed in at the command line, along with descriptions of what each does and whether they are optional or not.
+
+### Enable logging in samples
+
+To enable logging in the samples, you need to pass the `--verbosity` as an additional argument. `--verbosity` controls the level of logging shown. `--verbosity` can be set to `Trace`, `Debug`, `Info`, `Warn`, `Error`, `Fatal`, or `None`.
+
+For example, to run [MQTT5 PubSub](./mqtt5_pubsub.md) sample with logging you could use the following:
+
+``` sh
+# For Windows: replace 'python3' with 'python' and '/' with '\'
+python3 pubsub.py <other arguments> --verbosity Debug
+```
+
+### Others
 Please make sure to check out our resources too before opening an DISCUSSION:
 
 * [FAQ](./documents/FAQ.md)
