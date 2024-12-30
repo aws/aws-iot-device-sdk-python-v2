@@ -54,12 +54,12 @@ class Config:
             secrets = boto3.client('secretsmanager')
             response = secrets.get_secret_value(SecretId='unit-test/endpoint')
             endpoint = response['SecretString']
-            response = secrets.get_secret_value(SecretId='unit-test/certificate')
+            response = secrets.get_secret_value(SecretId='ci/mqtt5/us/mqtt5_thing/cert')
             cert = response['SecretString'].encode('utf8')
-            response = secrets.get_secret_value(SecretId='unit-test/privatekey')
+            response = secrets.get_secret_value(SecretId='ci/mqtt5/us/mqtt5_thing/key')
             key = response['SecretString'].encode('utf8')
             region = secrets.meta.region_name
-            response = secrets.get_secret_value(SecretId='unit-test/cognitopool')
+            response = secrets.get_secret_value(SecretId='ci/Cognito/identity_id')
             cognito_pool = response['SecretString']
 
             cognito = boto3.client('cognito-identity')
