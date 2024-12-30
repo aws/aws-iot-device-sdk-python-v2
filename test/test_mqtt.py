@@ -22,7 +22,7 @@ CUSTOM_AUTHORIZER_SIGNATURE = os.environ.get("CUSTOM_AUTHORIZER_SIGNATURE")
 CUSTOM_AUTHORIZER_SIGNATURE_UNENCODED = os.environ.get("CUSTOM_AUTHORIZER_SIGNATURE_UNENCODED")
 CUSTOM_AUTHORIZER_TOKEN_KEY_NAME = os.environ.get("CUSTOM_AUTHORIZER_TOKEN_KEY_NAME")
 CUSTOM_AUTHORIZER_TOKEN_VALUE = os.environ.get("CUSTOM_AUTHORIZER_TOKEN_VALUE")
-
+AWS_DEFAULT_REGION = os.environ.get("AWS_DEFAULT_REGION")
 
 def has_custom_auth_environment():
     return (CUSTOM_AUTHORIZER_ENDPOINT is not None) and (CUSTOM_AUTHORIZER_NAME_SIGNED is not None) and \
@@ -51,7 +51,7 @@ class Config:
         warnings.simplefilter('ignore', ResourceWarning)
 
         try:
-            secrets = boto3.client('secretsmanager')
+            secrets = boto3.client('secretsmanager', region_name=AWS_DEFAULT_REGION)
             response = secrets.get_secret_value(SecretId='unit-test/endpoint')
             endpoint = response['SecretString']
             response = secrets.get_secret_value(SecretId='ci/mqtt5/us/mqtt5_thing/cert')
@@ -60,11 +60,9 @@ class Config:
             key = response['SecretString'].encode('utf8')
             region = secrets.meta.region_name
             response = secrets.get_secret_value(SecretId='ci/Cognito/identity_id')
-            cognito_pool = response['SecretString']
+            cognito_id = response['SecretString']
 
             cognito = boto3.client('cognito-identity')
-            response = cognito.get_id(IdentityPoolId=cognito_pool)
-            cognito_id = response['IdentityId']
             response = cognito.get_credentials_for_identity(IdentityId=cognito_id)
             cognito_creds = response['Credentials']
 
