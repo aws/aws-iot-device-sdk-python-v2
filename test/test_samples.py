@@ -45,16 +45,17 @@ class Config:
         warnings.simplefilter('ignore', ResourceWarning)
 
         try:
-            secrets = boto3.client('secretsmanager')
+            secrets = boto3.client('secretsmanager',region_name="us-east-1")
             response = secrets.get_secret_value(SecretId='unit-test/endpoint')
             endpoint = response['SecretString']
-            response = secrets.get_secret_value(SecretId='unit-test/certificate')
+            response = secrets.get_secret_value(SecretId='ci/mqtt5/us/mqtt5_thing/cert')
             cert = response['SecretString'].encode('utf8')
-            response = secrets.get_secret_value(SecretId='unit-test/privatekey')
+            response = secrets.get_secret_value(SecretId='ci/mqtt5/us/mqtt5_thing/key')
             key = response['SecretString'].encode('utf8')
             region = secrets.meta.region_name
             Config.cache = Config(endpoint, cert, key, region)
         except (botocore.exceptions.BotoCoreError, botocore.exceptions.ClientError) as ex:
+            print(ex)
             raise unittest.SkipTest("No credentials")
 
         return Config.cache

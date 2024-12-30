@@ -70,6 +70,7 @@ class Config:
 
             Config.cache = Config(endpoint, cert, key, region, cognito_creds)
         except (botocore.exceptions.BotoCoreError, botocore.exceptions.ClientError) as ex:
+            print(ex)
             raise unittest.SkipTest("No credentials")
 
         return Config.cache
