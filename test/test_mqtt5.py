@@ -1,4 +1,4 @@
-from awscrt import mqtt5, http
+from awscrt import mqtt5, http, io
 from awscrt.auth import AwsCredentialsProvider
 from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup
 from awsiot import mqtt5_client_builder
