@@ -16,7 +16,7 @@ import warnings
 class Config:
     cache = None
 
-    def __init__(self, endpoint, cert, key, region):
+    def __init__(self, endpoint, cert, key, gg_cert, gg_key, region):
         self.endpoint = endpoint
         self.region = region
         self.cert_bytes = cert
@@ -30,6 +30,14 @@ class Config:
         self.key_filepath = os.path.join(self._tmp_dirpath, 'privatekey.pem')
         with open(self.key_filepath, 'wb') as key_file:
             key_file.write(key)
+
+        self.gg_cert_filepath = os.path.join(self._tmp_dirpath, 'gg_certificate.pem')
+        with open(self.gg_cert_filepath, 'wb') as cert_file:
+            cert_file.write(gg_cert)
+
+        self.gg_key_filepath = os.path.join(self._tmp_dirpath, 'gg_privatekey.pem')
+        with open(self.gg_key_filepath, 'wb') as key_file:
+            key_file.write(gg_key)
 
     def __del__(self):
         shutil.rmtree(self._tmp_dirpath)
@@ -52,8 +60,12 @@ class Config:
             cert = response['SecretString'].encode('utf8')
             response = secrets.get_secret_value(SecretId='ci/mqtt5/us/mqtt5_thing/key')
             key = response['SecretString'].encode('utf8')
+            response = secrets.get_secret_value(SecretId='ci/GreengrassDiscovery/cert')
+            gg_cert = response['SecretString'].encode('utf8')
+            response = secrets.get_secret_value(SecretId='ci/GreengrassDiscovery/key')
+            gg_key = response['SecretString'].encode('utf8')
             region = secrets.meta.region_name
-            Config.cache = Config(endpoint, cert, key, region)
+            Config.cache = Config(endpoint, cert, key, region, gg_cert, gg_key)
         except (botocore.exceptions.BotoCoreError, botocore.exceptions.ClientError) as ex:
             print(ex)
             raise unittest.SkipTest("No credentials")
@@ -62,7 +74,7 @@ class Config:
 
 
 def create_client_id():
-    return 'test-aws-iot-device-sdk-python-v2-unit-test-{0}'.format(uuid.uuid4())
+    return 'aws-iot-device-sdk-python-v2-unit-test-{0}'.format(uuid.uuid4())
 
 
 class SamplesTest(unittest.TestCase):
@@ -116,7 +128,7 @@ class SamplesTest(unittest.TestCase):
             "--region", config.region,
             "--cert", config.cert_filepath,
             "--key", config.key_filepath,
-            "--thing_name", "aws-sdk-crt-unit-test",
+            "--thing_name", "CI_Greengrass_Discovery_Thing",
             "--verbosity", "Trace",
         ]
 
