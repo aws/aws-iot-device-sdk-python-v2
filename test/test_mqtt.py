@@ -166,7 +166,7 @@ class MqttBuilderTest(unittest.TestCase):
         resolver = DefaultHostResolver(elg)
         bootstrap = ClientBootstrap(elg, resolver)
         cognito_endpoint = f"cognito-identity.{config.region}.amazonaws.com"
-        credentials_provider = auth.AwsCredentialsProvider.new_cognito(
+        credentials_provider = AwsCredentialsProvider.new_cognito(
             endpoint=cognito_endpoint,
             identity=config.cognito_id)
         connection = mqtt_connection_builder.websockets_with_default_aws_signing(
