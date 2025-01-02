@@ -33,12 +33,13 @@ def has_custom_auth_environment():
 class Config:
     cache = None
 
-    def __init__(self, endpoint, cert, key, region, cognito_creds):
+    def __init__(self, endpoint, cert, key, region, cognito_creds, cognito_id):
         self.cert = cert
         self.key = key
         self.endpoint = endpoint
         self.region = region
         self.cognito_creds = cognito_creds
+        self.cognito_id = cognito_id
 
     @staticmethod
     def get():
@@ -66,7 +67,7 @@ class Config:
             response = cognito.get_credentials_for_identity(IdentityId=cognito_id)
             cognito_creds = response['Credentials']
 
-            Config.cache = Config(endpoint, cert, key, region, cognito_creds)
+            Config.cache = Config(endpoint, cert, key, region, cognito_creds, cognito_id)
         except (botocore.exceptions.BotoCoreError, botocore.exceptions.ClientError) as ex:
             print(ex)
             raise unittest.SkipTest("No credentials")
@@ -150,6 +151,24 @@ class MqttBuilderTest(unittest.TestCase):
             access_key_id=config.cognito_creds['AccessKeyId'],
             secret_access_key=config.cognito_creds['SecretKey'],
             session_token=config.cognito_creds['SessionToken'])
+        connection = mqtt_connection_builder.websockets_with_default_aws_signing(
+            region=config.region,
+            credentials_provider=cred_provider,
+            endpoint=config.endpoint,
+            client_id=create_client_id(),
+            client_bootstrap=bootstrap)
+        self._test_connection(connection)
+    
+    def test_websockets_cognito(self):
+        """Websocket connection with X-Amz-Security-Token query param"""
+        config = Config.get()
+        elg = EventLoopGroup()
+        resolver = DefaultHostResolver(elg)
+        bootstrap = ClientBootstrap(elg, resolver)
+        cognito_endpoint = f"cognito-identity.{config.region}.amazonaws.com"
+        credentials_provider = auth.AwsCredentialsProvider.new_cognito(
+            endpoint=cognito_endpoint,
+            identity=config.cognito_id)
         connection = mqtt_connection_builder.websockets_with_default_aws_signing(
             region=config.region,
             credentials_provider=cred_provider,
