@@ -1,5 +1,5 @@
 from awscrt.auth import AwsCredentialsProvider
-from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup, ClientTlsContext, TlsContextOptions
+from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup
 from awsiot import mqtt_connection_builder
 import boto3
 import botocore.exceptions
@@ -33,13 +33,12 @@ def has_custom_auth_environment():
 class Config:
     cache = None
 
-    def __init__(self, endpoint, cert, key, region, cognito_creds, cognito_id):
+    def __init__(self, endpoint, cert, key, region, cognito_creds):
         self.cert = cert
         self.key = key
         self.endpoint = endpoint
         self.region = region
         self.cognito_creds = cognito_creds
-        self.cognito_id = cognito_id
 
     @staticmethod
     def get():
@@ -62,13 +61,12 @@ class Config:
             region = secrets.meta.region_name
             response = secrets.get_secret_value(SecretId='ci/Cognito/identity_id')
             cognito_id = response['SecretString']
-            print(cognito_id)
 
             cognito = boto3.client('cognito-identity')
             response = cognito.get_credentials_for_identity(IdentityId=cognito_id)
             cognito_creds = response['Credentials']
 
-            Config.cache = Config(endpoint, cert, key, region, cognito_creds, cognito_id)
+            Config.cache = Config(endpoint, cert, key, region, cognito_creds)
         except (botocore.exceptions.BotoCoreError, botocore.exceptions.ClientError) as ex:
             print(ex)
             raise unittest.SkipTest("No credentials")
@@ -138,7 +136,7 @@ class MqttBuilderTest(unittest.TestCase):
             region=config.region,
             credentials_provider=cred_provider,
             endpoint=config.endpoint,
-            client_id='test-websockets-default-{0}'.format(uuid.uuid4()),
+            client_id=create_client_id(),
             client_bootstrap=bootstrap)
         self._test_connection(connection)
 

@@ -1,4 +1,4 @@
-from awscrt import mqtt5, http, io
+from awscrt import mqtt5, http
 from awscrt.auth import AwsCredentialsProvider
 from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup
 from awsiot import mqtt5_client_builder
@@ -159,12 +159,11 @@ class Mqtt5BuilderTest(unittest.TestCase):
         cred_provider = AwsCredentialsProvider.new_default_chain(bootstrap)
         callbacks = Mqtt5TestCallbacks()
 
-        io.init_logging(io.LogLevel.Debug, 'stdout')
         client = mqtt5_client_builder.websockets_with_default_aws_signing(
             region=config.region,
             credentials_provider=cred_provider,
             endpoint=config.endpoint,
-            client_id='test-mqtt5-websockets-default-{0}'.format(uuid.uuid4()),
+            client_id=create_client_id(),
             client_bootstrap=bootstrap,
             on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
             on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
