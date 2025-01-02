@@ -163,7 +163,7 @@ class Mqtt5BuilderTest(unittest.TestCase):
             region=config.region,
             credentials_provider=cred_provider,
             endpoint=config.endpoint,
-            client_id=create_client_id(),
+            client_id='test-mqtt5-websockets-default-{0}'.format(uuid.uuid4()),
             client_bootstrap=bootstrap,
             on_lifecycle_connection_success=callbacks.on_lifecycle_connection_success,
             on_lifecycle_stopped=callbacks.on_lifecycle_stopped)
