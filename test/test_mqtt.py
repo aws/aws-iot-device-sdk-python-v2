@@ -1,5 +1,5 @@
 from awscrt.auth import AwsCredentialsProvider
-from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup
+from awscrt.io import ClientBootstrap, DefaultHostResolver, EventLoopGroup, ClientTlsContext, TlsContextOptions
 from awsiot import mqtt_connection_builder
 import boto3
 import botocore.exceptions
@@ -62,6 +62,7 @@ class Config:
             region = secrets.meta.region_name
             response = secrets.get_secret_value(SecretId='ci/Cognito/identity_id')
             cognito_id = response['SecretString']
+            print(cognito_id)
 
             cognito = boto3.client('cognito-identity')
             response = cognito.get_credentials_for_identity(IdentityId=cognito_id)
@@ -168,7 +169,8 @@ class MqttBuilderTest(unittest.TestCase):
         cognito_endpoint = f"cognito-identity.{config.region}.amazonaws.com"
         credentials_provider = AwsCredentialsProvider.new_cognito(
             endpoint=cognito_endpoint,
-            identity=config.cognito_id)
+            identity=config.cognito_id,
+            tls_ctx=ClientTlsContext(TlsContextOptions()))
         connection = mqtt_connection_builder.websockets_with_default_aws_signing(
             region=config.region,
             credentials_provider=cred_provider,
