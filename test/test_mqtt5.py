@@ -159,6 +159,7 @@ class Mqtt5BuilderTest(unittest.TestCase):
         cred_provider = AwsCredentialsProvider.new_default_chain(bootstrap)
         callbacks = Mqtt5TestCallbacks()
 
+        io.init_logging(io.LogLevel.Debug, 'stdout')
         client = mqtt5_client_builder.websockets_with_default_aws_signing(
             region=config.region,
             credentials_provider=cred_provider,
