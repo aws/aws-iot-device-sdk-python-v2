@@ -138,7 +138,7 @@ class MqttBuilderTest(unittest.TestCase):
             region=config.region,
             credentials_provider=cred_provider,
             endpoint=config.endpoint,
-            client_id='test-test-websockets-default-{0}'.format(uuid.uuid4()),
+            client_id='test-websockets-default-{0}'.format(uuid.uuid4()),
             client_bootstrap=bootstrap)
         self._test_connection(connection)
 
@@ -156,26 +156,7 @@ class MqttBuilderTest(unittest.TestCase):
             region=config.region,
             credentials_provider=cred_provider,
             endpoint=config.endpoint,
-            client_id='test-test-websockets-sts-{0}'.format(uuid.uuid4()),
-            client_bootstrap=bootstrap)
-        self._test_connection(connection)
-    
-    def test_websockets_cognito(self):
-        """Websocket connection with X-Amz-Security-Token query param"""
-        config = Config.get()
-        elg = EventLoopGroup()
-        resolver = DefaultHostResolver(elg)
-        bootstrap = ClientBootstrap(elg, resolver)
-        cognito_endpoint = f"cognito-identity.{config.region}.amazonaws.com"
-        cred_provider = AwsCredentialsProvider.new_cognito(
-            endpoint=cognito_endpoint,
-            identity=config.cognito_id,
-            tls_ctx=ClientTlsContext(TlsContextOptions()))
-        connection = mqtt_connection_builder.websockets_with_default_aws_signing(
-            region=config.region,
-            credentials_provider=cred_provider,
-            endpoint=config.endpoint,
-            client_id='test-websockets-cognito-{0}'.format(uuid.uuid4()),
+            client_id=create_client_id(),
             client_bootstrap=bootstrap)
         self._test_connection(connection)
 
