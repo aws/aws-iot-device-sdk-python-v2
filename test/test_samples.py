@@ -62,7 +62,7 @@ class Config:
 
 
 def create_client_id():
-    return 'aws-crt-python-unit-test-{0}'.format(uuid.uuid4())
+    return 'test-aws-iot-device-sdk-python-v2-unit-test-{0}'.format(uuid.uuid4())
 
 
 class SamplesTest(unittest.TestCase):

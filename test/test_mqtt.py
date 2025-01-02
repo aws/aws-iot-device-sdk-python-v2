@@ -138,7 +138,7 @@ class MqttBuilderTest(unittest.TestCase):
             region=config.region,
             credentials_provider=cred_provider,
             endpoint=config.endpoint,
-            client_id=create_client_id(),
+            client_id='test-test-websockets-default-{0}'.format(uuid.uuid4()),
             client_bootstrap=bootstrap)
         self._test_connection(connection)
 
@@ -156,7 +156,7 @@ class MqttBuilderTest(unittest.TestCase):
             region=config.region,
             credentials_provider=cred_provider,
             endpoint=config.endpoint,
-            client_id=create_client_id(),
+            client_id='test-test-websockets-sts-{0}'.format(uuid.uuid4()),
             client_bootstrap=bootstrap)
         self._test_connection(connection)
     
@@ -167,7 +167,7 @@ class MqttBuilderTest(unittest.TestCase):
         resolver = DefaultHostResolver(elg)
         bootstrap = ClientBootstrap(elg, resolver)
         cognito_endpoint = f"cognito-identity.{config.region}.amazonaws.com"
-        credentials_provider = AwsCredentialsProvider.new_cognito(
+        cred_provider = AwsCredentialsProvider.new_cognito(
             endpoint=cognito_endpoint,
             identity=config.cognito_id,
             tls_ctx=ClientTlsContext(TlsContextOptions()))
@@ -175,7 +175,7 @@ class MqttBuilderTest(unittest.TestCase):
             region=config.region,
             credentials_provider=cred_provider,
             endpoint=config.endpoint,
-            client_id=create_client_id(),
+            client_id='test-websockets-cognito-{0}'.format(uuid.uuid4()),
             client_bootstrap=bootstrap)
         self._test_connection(connection)
 

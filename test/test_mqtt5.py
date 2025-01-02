@@ -77,7 +77,7 @@ class Config:
 
 
 def create_client_id():
-    return 'aws-iot-device-sdk-python-v2-unit-test-{0}'.format(uuid.uuid4())
+    return 'test-aws-iot-device-sdk-python-v2-unit-test-{0}'.format(uuid.uuid4())
 
 class Mqtt5TestCallbacks():
     def __init__(self):
