@@ -29,6 +29,11 @@
         {
             "name": "--mode",
             "data": "publish"
+        },
+        {
+            "name": "--ca_file",
+            "secret": "ci/AmazonRootCA1",
+            "filename": "tmp_ca.pem"
         }
     ]
 }
