@@ -95,6 +95,8 @@ def delete_iot_thing(thing_name, region):
         print(f"ERROR: Could not make Boto3 client. Credentials likely could not be sourced", file=sys.stderr)
         raise
 
+    cert_ids = []
+
     # Detach and delete thing's principals.
     try:
         thing_principals = iot_client.list_thing_principals(thingName=thing_name)
@@ -103,14 +105,23 @@ def delete_iot_thing(thing_name, region):
             certificate_id = principal.split("/")[1]
             iot_client.detach_thing_principal(thingName=thing_name, principal=principal)
             iot_client.update_certificate(certificateId=certificate_id, newStatus='INACTIVE')
-            iot_client.delete_certificate(certificateId=certificate_id, forceDelete=True)
+            cert_ids.append(certificate_id)
     except Exception:
-        print("ERROR: Could not delete certificate for IoT thing {thing_name}, probably thing does not exist",
+        print("ERROR: Could not detatch principal or set its certificate to INACTIVE for {thing_name}, probably thing does not exist",
               file=sys.stderr)
         raise
 
     # Wait for thing to be free of principals
     ThingDetachedWaiter(iot_client, timeout=10).wait(thing_name)
+
+    # Delete all the certificates
+    for cert in cert_ids:
+        try:
+            iot_client.delete_certificate(certificateId=cert, forceDelete=True)
+        except Exception:
+            print("ERROR: Could not delete certificate for IoT thing {thing_name}.",
+              file=sys.stderr)
+            raise
 
     # Delete thing.
     try:
