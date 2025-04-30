@@ -11,10 +11,12 @@ __all__ = [
     'mqtt5_client_builder',
 ]
 
-from awscrt import mqtt, mqtt5
+from awscrt import mqtt, mqtt5, mqtt_request_response
 from concurrent.futures import Future
+from dataclasses import dataclass
 import json
-from typing import Any, Callable, Dict, Optional, Tuple, TypeVar
+from typing import Any, Callable, Dict, Generic, Optional, Tuple, TypeVar
+
 
 __version__ = '1.0.0-dev'
 
@@ -192,3 +194,65 @@ class ModeledClass:
             self.__class__.__module__,
             self.__class__.__name__,
             ', '.join(properties))
+
+
+class V2ServiceException(Exception):
+
+    def __init__(self, message: str, inner_error: 'Optional[Exception]', modeled_error: 'Optional[Any]'):
+        self.message = message
+        self.inner_error = inner_error
+        self.modeled_error = modeled_error
+
+def create_v2_service_modeled_future(internal_unmodeled_future : Future, operation_name : str, accepted_topic : str, response_class, modeled_error_class):
+    modeled_future = Future()
+
+    # force a strong ref to the hidden/internal unmodeled future so that it can't be GCed prior to completion
+    modeled_future.unmodeled_future = internal_unmodeled_future
+
+    def complete_modeled_future(unmodeled_future):
+        if unmodeled_future.exception():
+            service_error = V2ServiceException(f"{operation_name} failure", unmodeled_future.exception(), None)
+            modeled_future.set_exception(service_error)
+        else:
+            unmodeled_result = unmodeled_future.result()
+            try:
+                payload_as_json = json.loads(unmodeled_result.payload.decode())
+                if unmodeled_result.topic == accepted_topic:
+                    modeled_future.set_result(response_class.from_payload(payload_as_json))
+                else:
+                    modeled_error = modeled_error_class.from_payload(payload_as_json)
+                    modeled_future.set_exception(V2ServiceException(f"{operation_name} failure", None, modeled_error))
+            except Exception as e:
+                modeled_future.set_exception(V2ServiceException(f"{operation_name} failure", e, None))
+
+    internal_unmodeled_future.add_done_callback(lambda f: complete_modeled_future(f))
+
+    return modeled_future
+
+class V2DeserializationFailure(Exception):
+    def __init__(self, message: str, inner_error: 'Optional[Exception]', payload: Optional[bytes]):
+        self.message = message
+        self.inner_error = inner_error
+        self.payload = payload
+
+@dataclass
+class ServiceStreamOptions(Generic[T]):
+    """
+    Configuration options for an MQTT-based service streaming operation.
+
+    Args:
+        incoming_event_listener (Callable[[T], None]): function object to invoke when a stream message is successfully deserialized
+        subscription_status_listener (Optional[mqtt_request_response.SubscriptionStatusListener]): function object to invoke when the operation's subscription status changes
+        deserialization_failure_listener (Optional[Callable[[V2DeserializationFailure], None]]): function object to invoke when a publish is received on the streaming subscription that cannot be deserialized into the stream's output type.  Should never happen.
+    """
+    incoming_event_listener: 'Callable[[T], None]'
+    subscription_status_listener: 'Optional[mqtt_request_response.SubscriptionStatusListener]' = None
+    deserialization_failure_listener: 'Optional[Callable[[V2DeserializationFailure], None]]' = None
+
+    def validate(self):
+        """
+        Stringently type-checks an instance's field values.
+        """
+        assert callable(self.incoming_event_listener)
+        assert callable(self.subscription_status_listener) or self.subscription_status_listener is None
+        assert callable(self.deserialization_failure_listener) or self.deserialization_failure_listener is None

@@ -598,3 +598,47 @@ class RegisterThingSubscriptionRequest(awsiot.ModeledClass):
         for key, val in zip(['template_name'], args):
             setattr(self, key, val)
 
+class V2ErrorResponse(awsiot.ModeledClass):
+    """
+
+    Response document containing details about a failed request.
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        error_code (str): Response error code
+        error_message (str): Response error message
+        status_code (int): Response status code
+
+    Attributes:
+        error_code (str): Response error code
+        error_message (str): Response error message
+        status_code (int): Response status code
+    """
+
+    __slots__ = ['error_code', 'error_message', 'status_code']
+
+    def __init__(self, *args, **kwargs):
+        self.error_code = kwargs.get('error_code')
+        self.error_message = kwargs.get('error_message')
+        self.status_code = kwargs.get('status_code')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip([], args):
+            setattr(self, key, val)
+
+    @classmethod
+    def from_payload(cls, payload):
+        # type: (typing.Dict[str, typing.Any]) -> V2ErrorResponse
+        new = cls()
+        val = payload.get('errorCode')
+        if val is not None:
+            new.error_code = val
+        val = payload.get('errorMessage')
+        if val is not None:
+            new.error_message = val
+        val = payload.get('statusCode')
+        if val is not None:
+            new.status_code = val
+        return new
+
