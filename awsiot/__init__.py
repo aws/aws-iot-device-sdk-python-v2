@@ -256,3 +256,16 @@ class ServiceStreamOptions(Generic[T]):
         assert callable(self.incoming_event_listener)
         assert callable(self.subscription_status_listener) or self.subscription_status_listener is None
         assert callable(self.deserialization_failure_listener) or self.deserialization_failure_listener is None
+
+def create_streaming_unmodeled_options(stream_options: ServiceStreamOptions[T], subscription_topic: str, event_name: str, event_class):
+    def modeled_event_callback(unmodeled_event : mqtt_request_response.IncomingPublishEvent):
+        try:
+            payload_as_json = json.loads(unmodeled_event.payload.decode())
+            modeled_event = event_class.from_payload(payload_as_json)
+            stream_options.incoming_event_listener(modeled_event)
+        except Exception as e:
+            if stream_options.deserialization_failure_listener is not None:
+                failure_event = V2DeserializationFailure(f"{event_name} stream deserialization failure", e, unmodeled_event.payload)
+                stream_options.deserialization_failure_listener(failure_event)
+
+    return mqtt_request_response.StreamingOperationOptions(subscription_topic, stream_options.subscription_status_listener, modeled_event_callback)

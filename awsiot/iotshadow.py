@@ -3,15 +3,13 @@
 
 # This file is generated
 
-from awscrt import mqtt, mqtt5, mqtt_request_response, exceptions
+from awscrt import mqtt, mqtt5, mqtt_request_response
 import awsiot
 import concurrent.futures
 import datetime
 import json
 import typing
-from uuid import uuid4
-
-import pdb
+import uuid
 
 
 class IotShadowClient(awsiot.MqttServiceClient):
@@ -1788,7 +1786,7 @@ class IotShadowClientV2:
         rejected_topic = topic_prefix + "/rejected"
         subscription1 = topic_prefix + "/+"
 
-        correlation_token = str(uuid4())
+        correlation_token = str(uuid.uuid4())
         request.client_token = correlation_token
 
         request_options = mqtt_request_response.RequestOptions(
@@ -1823,7 +1821,7 @@ class IotShadowClientV2:
         rejected_topic = topic_prefix + "/rejected"
         subscription1 = topic_prefix + "/+"
 
-        correlation_token = str(uuid4())
+        correlation_token = str(uuid.uuid4())
         request.client_token = correlation_token
 
         request_options = mqtt_request_response.RequestOptions(
@@ -1859,7 +1857,7 @@ class IotShadowClientV2:
         subscription1 = accepted_topic
         subscription2 = rejected_topic
 
-        correlation_token = str(uuid4())
+        correlation_token = str(uuid.uuid4())
         request.client_token = correlation_token
 
         request_options = mqtt_request_response.RequestOptions(
@@ -1892,17 +1890,7 @@ class IotShadowClientV2:
 
         subscription_topic = f"$aws/things/{config.thing_name}/shadow/update/delta"
 
-        def modeled_event_callback(unmodeled_event : mqtt_request_response.IncomingPublishEvent):
-            try:
-                payload_as_json = json.loads(unmodeled_event.payload.decode())
-                modeled_event = ShadowDeltaUpdatedEvent.from_payload(payload_as_json)
-                stream_options.incoming_event_listener(modeled_event)
-            except Exception as e:
-                if stream_options.deserialization_failure_listener is not None:
-                    failure_event = awsiot.V2DeserializationFailure(f"shadow_delta_updated stream deserialization failure", e, unmodeled_event.payload)
-                    stream_options.deserialization_failure_listener(failure_event)
-
-        unmodeled_options = mqtt_request_response.StreamingOperationOptions(subscription_topic, stream_options.subscription_status_listener, modeled_event_callback)
+        unmodeled_options = awsiot.create_streaming_unmodeled_options(stream_options, subscription_topic, "ShadowDeltaUpdatedEvent", ShadowDeltaUpdatedEvent)
 
         return self._rr_client.create_stream(unmodeled_options)
 
@@ -1912,17 +1900,7 @@ class IotShadowClientV2:
 
         subscription_topic = f"$aws/things/{config.thing_name}/shadow/update/documents"
 
-        def modeled_event_callback(unmodeled_event : mqtt_request_response.IncomingPublishEvent):
-            try:
-                payload_as_json = json.loads(unmodeled_event.payload.decode())
-                modeled_event = ShadowUpdatedEvent.from_payload(payload_as_json)
-                stream_options.incoming_event_listener(modeled_event)
-            except Exception as e:
-                if stream_options.deserialization_failure_listener is not None:
-                    failure_event = awsiot.V2DeserializationFailure(f"shadow_updated stream deserialization failure", e, unmodeled_event.payload)
-                    stream_options.deserialization_failure_listener(failure_event)
-
-        unmodeled_options = mqtt_request_response.StreamingOperationOptions(subscription_topic, stream_options.subscription_status_listener, modeled_event_callback)
+        unmodeled_options = awsiot.create_streaming_unmodeled_options(stream_options, subscription_topic, "ShadowUpdatedEvent", ShadowUpdatedEvent)
 
         return self._rr_client.create_stream(unmodeled_options)
 
