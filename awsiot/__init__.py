@@ -249,7 +249,7 @@ class ServiceStreamOptions(Generic[T]):
     subscription_status_listener: 'Optional[mqtt_request_response.SubscriptionStatusListener]' = None
     deserialization_failure_listener: 'Optional[Callable[[V2DeserializationFailure], None]]' = None
 
-    def validate(self):
+    def _validate(self):
         """
         Stringently type-checks an instance's field values.
         """
