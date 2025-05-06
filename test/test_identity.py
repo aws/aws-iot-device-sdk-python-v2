@@ -234,7 +234,32 @@ class IdentityServiceTest(unittest.TestCase):
     def _do_csr_provisioning_test(self, identity_client):
         test_context = TestContext()
         try:
-            pass
+            with open(test_context.csr_path, "r") as csr_file:
+                csr_data = csr_file.read()
+
+            create_response = identity_client.create_certificate_from_csr(
+                iotidentity.CreateCertificateFromCsrRequest(
+                    certificate_signing_request=csr_data,
+                )).result(TIMEOUT)
+
+            test_context.certificate_id = create_response.certificate_id
+
+            self.assertIsNotNone(create_response.certificate_id)
+            self.assertIsNotNone(create_response.certificate_pem)
+            self.assertIsNotNone(create_response.certificate_ownership_token)
+
+            register_thing_request = iotidentity.RegisterThingRequest(
+                template_name=test_context.provisioning_template_name,
+                certificate_ownership_token=create_response.certificate_ownership_token,
+                parameters= {
+                    "SerialNumber": uuid.uuid4().hex,
+                }
+            )
+
+            register_thing_response = identity_client.register_thing(register_thing_request).result(TIMEOUT)
+            test_context.thing_name = register_thing_response.thing_name;
+
+            self.assertIsNotNone(register_thing_response.thing_name)
         finally:
             self._tear_down(test_context)
 
