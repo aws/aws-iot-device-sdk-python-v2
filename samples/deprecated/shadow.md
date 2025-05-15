@@ -1,6 +1,6 @@
 # Shadow
 
-[**Return to main sample list**](./README.md)
+[**Return to main sample list**](../README.md)
 
 This sample uses the AWS IoT [Device Shadow](https://docs.aws.amazon.com/iot/latest/developerguide/iot-device-shadows.html) Service to keep a property in sync between device and server. Imagine a light whose color may be changed through an app, or set by a local user.
 
