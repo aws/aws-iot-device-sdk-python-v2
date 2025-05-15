@@ -9,7 +9,6 @@
 * [MQTT5 Shared Subscription](./mqtt5_shared_subscription.md)
 * [MQTT5 PKCS#11 Connect](./mqtt5_pkcs11_connect.md)
 * [MQTT5 Custom Authorizer Connect](./mqtt5_custom_authorizer_connect.md)
-* [MQTT5 Shadow](./shadow_mqtt5.md)
 * [MQTT5 Jobs](./jobs_mqtt5.md)
 * [MQTT5 Fleet Provisioning](./fleetprovisioning_mqtt5.md)
 ## MQTT311 Samples
@@ -22,10 +21,10 @@
 * [Custom Authorizer Connect](./custom_authorizer_connect.md)
 * [Cognito Connect](./cognito_connect.md)
 * [X509 Connect](./x509_connect.md)
-* [Shadow](./shadow.md)
 * [Jobs](./jobs.md)
 * [Fleet Provisioning](./fleetprovisioning.md)
 ## Other
+* [Shadow](./shadow.md)
 * [Greengrass Discovery](./basic_discovery.md)
 * [Greengrass IPC](./ipc_greengrass.md)
 
