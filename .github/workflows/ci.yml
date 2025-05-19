@@ -137,6 +137,7 @@ jobs:
     - name: Service tests
       shell: bash
       run: |
+        source .venv/bin/activate
         cd aws-iot-device-sdk-python-v2
         python3 -m pip install .
         source utils/test_setup.sh s3://iot-sdk-ci-bucket-us-east1/IotUsProdMqtt5EnvironmentVariables.txt us-east-1
