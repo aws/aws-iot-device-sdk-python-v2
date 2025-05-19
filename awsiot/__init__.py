@@ -9,6 +9,9 @@ __all__ = [
     'greengrass_discovery',
     'mqtt_connection_builder',
     'mqtt5_client_builder',
+    'V2ServiceException',
+    'V2DeserializationFailure',
+    'ServiceStreamOptions'
 ]
 
 from awscrt import mqtt, mqtt5, mqtt_request_response
@@ -242,7 +245,7 @@ class ServiceStreamOptions(Generic[T]):
 
     Args:
         incoming_event_listener (Callable[[T], None]): function object to invoke when a stream message is successfully deserialized
-        subscription_status_listener (Optional[mqtt_request_response.SubscriptionStatusListener]): function object to invoke when the operation's subscription status changes
+        subscription_status_listener (Optional[awscrt.mqtt_request_response.SubscriptionStatusListener]): function object to invoke when the operation's subscription status changes
         deserialization_failure_listener (Optional[Callable[[V2DeserializationFailure], None]]): function object to invoke when a publish is received on the streaming subscription that cannot be deserialized into the stream's output type.  Should never happen.
     """
     incoming_event_listener: 'Callable[[T], None]'
