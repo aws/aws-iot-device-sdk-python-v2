@@ -56,6 +56,22 @@ jobs:
       run: |
         python -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder.pyz')"
         python builder.pyz build -p ${{ env.PACKAGE_NAME }}
+    - name: configure AWS credentials (MQTT5)
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: ${{ env.CI_MQTT5_ROLE }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+    - name: Service tests
+      shell: bash
+      run: |
+        cd aws-iot-device-sdk-python-v2
+        python3 -m pip install .
+        source utils/test_setup.sh s3://iot-sdk-ci-bucket-us-east1/IotUsProdMqtt5EnvironmentVariables.txt us-east-1
+        python3 -m unittest test.test_shadow
+        python3 -m unittest test.test_jobs
+        python3 -m unittest test.test_identity
+        source utils/test_cleanup.sh
+        cd ..
     - name: configure AWS credentials (PubSub)
       uses: aws-actions/configure-aws-credentials@v4
       with:
@@ -113,6 +129,22 @@ jobs:
         python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
         chmod a+x builder
         ./builder build -p ${{ env.PACKAGE_NAME }}
+    - name: configure AWS credentials (MQTT5)
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: ${{ env.CI_MQTT5_ROLE }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+    - name: Service tests
+      shell: bash
+      run: |
+        cd aws-iot-device-sdk-python-v2
+        python3 -m pip install .
+        source utils/test_setup.sh s3://iot-sdk-ci-bucket-us-east1/IotUsProdMqtt5EnvironmentVariables.txt us-east-1
+        python3 -m unittest test.test_shadow
+        python3 -m unittest test.test_jobs
+        python3 -m unittest test.test_identity
+        source utils/test_cleanup.sh
+        cd ..
     - name: configure AWS credentials (PubSub)
       uses: aws-actions/configure-aws-credentials@v4
       with:
@@ -165,8 +197,9 @@ jobs:
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: Build ${{ env.PACKAGE_NAME }}
       run: |
-        python -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder.pyz')"
-        python builder.pyz build -p ${{ env.PACKAGE_NAME }}
+        python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
+        chmod a+x builder
+        ./builder build -p ${{ env.PACKAGE_NAME }}
     - name: configure AWS credentials (MQTT5)
       uses: aws-actions/configure-aws-credentials@v2
       with:
