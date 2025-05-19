@@ -9,8 +9,7 @@ import threading
 import time
 import traceback
 import json
-sys.path.append("../utils")
-from command_line_utils import CommandLineUtils
+from utils.command_line_utils import CommandLineUtils
 
 # - Overview -
 # This sample uses the AWS IoT Fleet Provisioning to provision device using either the keys

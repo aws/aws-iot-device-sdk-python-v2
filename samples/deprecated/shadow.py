@@ -9,8 +9,7 @@ import sys
 import threading
 import traceback
 from uuid import uuid4
-sys.path.append("../utils")
-from command_line_utils import CommandLineUtils
+from utils.command_line_utils import CommandLineUtils
 
 # - Overview -
 # This sample uses the AWS IoT Device Shadow Service to keep a property in
