@@ -18,9 +18,9 @@ env:
   DA_SHADOW_PROPERTY: datest
   DA_SHADOW_VALUE_SET: ON
   DA_SHADOW_VALUE_DEFAULT: OFF
-  CI_UTILS_FOLDER: "./utils"
-  CI_SAMPLES_CFG_FOLDER: "./.github/workflows"
-  CI_SAMPLES_FOLDER: "./samples"
+  CI_UTILS_FOLDER: "./aws-iot-device-sdk-python-v2/utils"
+  CI_SAMPLES_CFG_FOLDER: "./aws-iot-device-sdk-python-v2/.github/workflows"
+  CI_SAMPLES_FOLDER: "./aws-iot-device-sdk-python-v2/samples"
   CI_PUBSUB_ROLE: arn:aws:iam::180635532705:role/CI_PubSub_Role
   CI_COGNITO_ROLE: arn:aws:iam::180635532705:role/CI_Cognito_Role
   CI_X509_ROLE: arn:aws:iam::180635532705:role/CI_X509_Role
@@ -34,7 +34,7 @@ env:
   CI_MQTT5_ROLE: arn:aws:iam::180635532705:role/CI_MQTT5_Role
   CI_BUILD_AND_TEST_ROLE: arn:aws:iam::180635532705:role/V2_SDK_Unit_Testing
   CI_JOBS_SERVICE_CLIENT_ROLE: arn:aws:iam::180635532705:role/CI_JobsServiceClient_Role
-  CI_SERVICE_ROLE_CFG_FOLDER: "./servicetests/test_cases"
+  CI_SERVICE_ROLE_CFG_FOLDER: "./aws-iot-device-sdk-python-v2/servicetests/test_cases"
   CI_SHADOW_SERVICE_CLIENT_ROLE: arn:aws:iam::180635532705:role/CI_ShadowServiceClient_Role
 
 jobs:
