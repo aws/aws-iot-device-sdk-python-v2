@@ -172,7 +172,7 @@ jobs:
       shell: bash
       run: |
         source utils/test_setup.sh s3://iot-sdk-ci-bucket-us-east1/IotUsProdMqtt5EnvironmentVariables.txt us-east-1
-        python3 -m unittest test
+        python3 -m unittest
         source utils/test_cleanup.sh
     - name: configure AWS credentials (PubSub)
       uses: aws-actions/configure-aws-credentials@v4
