@@ -197,7 +197,6 @@ jobs:
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: run DeviceAdvisor
       run: |
-        cd ./aws-iot-device-sdk-python-v2
         python3 ./deviceadvisor/script/DATestRun.py
 
   # Runs the samples and ensures that everything is working

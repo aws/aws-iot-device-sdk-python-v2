@@ -4,6 +4,8 @@ import pdb
 import threading
 
 from awscrt import io, mqtt, mqtt5, mqtt_request_response
+from awscrt.mqtt_request_response import SubscriptionStatusEvent, SubscriptionStatusEventType
+
 import awsiot
 from awsiot import iotjobs
 
@@ -246,8 +248,9 @@ class JobsServiceTest(unittest.TestCase):
                 test_context.job_executions_changed_events.append(event)
                 test_context.signal.notify_all()
 
-        def on_subscription_event(event):
-            subscribed.set_result(event)
+        def on_subscription_event(event : SubscriptionStatusEvent):
+            if event.type == SubscriptionStatusEventType.SUBSCRIPTION_ESTABLISHED:
+                subscribed.set_result(event)
 
         stream_options = awsiot.ServiceStreamOptions(
             incoming_event_listener=on_incoming_publish_event,
@@ -273,8 +276,9 @@ class JobsServiceTest(unittest.TestCase):
                 test_context.next_job_execution_changed_events.append(event)
                 test_context.signal.notify_all()
 
-        def on_subscription_event(event):
-            subscribed.set_result(event)
+        def on_subscription_event(event : SubscriptionStatusEvent):
+            if event.type == SubscriptionStatusEventType.SUBSCRIPTION_ESTABLISHED:
+                subscribed.set_result(event)
 
         stream_options = awsiot.ServiceStreamOptions(
             incoming_event_listener=on_incoming_publish_event,
