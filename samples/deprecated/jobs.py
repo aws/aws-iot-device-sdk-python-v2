@@ -9,7 +9,8 @@ import threading
 import time
 import traceback
 import time
-from utils.command_line_utils import CommandLineUtils
+sys.path.append("../utils")
+from command_line_utils import CommandLineUtils
 
 # - Overview -
 # This sample uses the AWS IoT Jobs Service to get a list of pending jobs and
