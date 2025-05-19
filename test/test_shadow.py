@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 from awscrt import io, mqtt, mqtt5, mqtt_request_response
+from awscrt.mqtt_request_response import SubscriptionStatusEvent, SubscriptionStatusEventType
+
 import awsiot
 from awsiot import iotshadow
 
@@ -62,8 +64,8 @@ class ShadowServiceTest(unittest.TestCase):
     def _create_protocol_client5(self):
 
         input_host_name = _get_env_variable("AWS_TEST_MQTT5_IOT_CORE_HOST")
-        input_cert = _get_env_variable("AWS_TEST_MQTT5_IOT_CORE_RSA_CERT")
-        input_key = _get_env_variable("AWS_TEST_MQTT5_IOT_CORE_RSA_KEY")
+        input_cert = _get_env_variable("AWS_TEST_MQTT5_IOT_CERTIFICATE_PATH")
+        input_key = _get_env_variable("AWS_TEST_MQTT5_IOT_KEY_PATH")
 
         client_options = mqtt5.ClientOptions(
             host_name=input_host_name,
@@ -100,8 +102,8 @@ class ShadowServiceTest(unittest.TestCase):
     def _create_protocol_client311(self):
 
         input_host_name = _get_env_variable("AWS_TEST_MQTT5_IOT_CORE_HOST")
-        input_cert = _get_env_variable("AWS_TEST_MQTT5_IOT_CORE_RSA_CERT")
-        input_key = _get_env_variable("AWS_TEST_MQTT5_IOT_CORE_RSA_KEY")
+        input_cert = _get_env_variable("AWS_TEST_MQTT5_IOT_CERTIFICATE_PATH")
+        input_key = _get_env_variable("AWS_TEST_MQTT5_IOT_KEY_PATH")
 
         tls_ctx_options = io.TlsContextOptions.create_client_with_mtls_from_path(
             input_cert,
@@ -270,13 +272,18 @@ class ShadowServiceTest(unittest.TestCase):
 
             delta_subscription_future = Future()
             delta_future = Future()
+
+            def on_delta_subscription_event(event : SubscriptionStatusEvent):
+                if event.type == SubscriptionStatusEventType.SUBSCRIPTION_ESTABLISHED:
+                    delta_subscription_future.set_result(event)
+
             delta_event_stream = shadow_client.create_named_shadow_delta_updated_stream(
                 iotshadow.NamedShadowDeltaUpdatedSubscriptionRequest(
                     thing_name=thing_name,
                     shadow_name=shadow_name,
                 ),
                 awsiot.ServiceStreamOptions(
-                    subscription_status_listener=lambda event: delta_subscription_future.set_result(event),
+                    subscription_status_listener=on_delta_subscription_event,
                     incoming_event_listener=lambda event: delta_future.set_result(event),
                 )
             )
@@ -289,13 +296,18 @@ class ShadowServiceTest(unittest.TestCase):
 
             update_subscription_future = Future()
             update_future = Future()
+
+            def on_updated_subscription_event(event : SubscriptionStatusEvent):
+                if event.type == SubscriptionStatusEventType.SUBSCRIPTION_ESTABLISHED:
+                    update_subscription_future.set_result(event)
+
             update_event_stream = shadow_client.create_named_shadow_updated_stream(
                 iotshadow.NamedShadowUpdatedSubscriptionRequest(
                     thing_name=thing_name,
                     shadow_name=shadow_name,
                 ),
                 awsiot.ServiceStreamOptions(
-                    subscription_status_listener=lambda event: update_subscription_future.set_result(event),
+                    subscription_status_listener=on_updated_subscription_event,
                     incoming_event_listener=lambda event: update_future.set_result(event),
                 )
             )
