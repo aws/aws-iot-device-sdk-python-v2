@@ -14,7 +14,7 @@ __all__ = [
 from awscrt import mqtt, mqtt5
 from concurrent.futures import Future
 import json
-from typing import Any, Callable, Dict, Optional, Tuple, TypeVar
+from typing import Any, Callable, Dict, Optional, Tuple, TypeVar, Union
 
 __version__ = '1.0.0-dev'
 
@@ -32,7 +32,7 @@ class MqttServiceClient:
         mqtt_connection: MQTT connection to use
     """
 
-    def __init__(self, mqtt_connection: mqtt.Connection or mqtt5.Client):
+    def __init__(self, mqtt_connection: Union[mqtt.Connection, mqtt5.Client]):
         if isinstance(mqtt_connection, mqtt.Connection):
             self._mqtt_connection = mqtt_connection  # type: mqtt.Connection
         elif isinstance(mqtt_connection, mqtt5.Client):
