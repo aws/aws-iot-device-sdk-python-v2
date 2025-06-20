@@ -19,7 +19,7 @@ on:
 
 jobs:
   update-version:
-    runs-on: ubuntu-20.04 # latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: write # allow push
       pull-requests: write # allow making PR
