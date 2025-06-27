@@ -14,12 +14,12 @@ __all__ = [
     'ServiceStreamOptions'
 ]
 
+import awscrt
 from awscrt import mqtt, mqtt5, mqtt_request_response
 from concurrent.futures import Future
 from dataclasses import dataclass
 import json
 from typing import Any, Callable, Dict, Generic, Optional, Tuple, TypeVar
-
 
 __version__ = '1.0.0-dev'
 
@@ -238,6 +238,7 @@ class V2DeserializationFailure(Exception):
         self.inner_error = inner_error
         self.payload = payload
 
+
 @dataclass
 class ServiceStreamOptions(Generic[T]):
     """
@@ -245,11 +246,11 @@ class ServiceStreamOptions(Generic[T]):
 
     Args:
         incoming_event_listener (Callable[[T], None]): function object to invoke when a stream message is successfully deserialized
-        subscription_status_listener (Optional[awscrt.mqtt_request_response.SubscriptionStatusListener]): function object to invoke when the operation's subscription status changes
+        subscription_status_listener (Optional[Callable[[awscrt.mqtt_request_response.SubscriptionStatusEvent], None]]): function object to invoke when the operation's subscription status changes
         deserialization_failure_listener (Optional[Callable[[V2DeserializationFailure], None]]): function object to invoke when a publish is received on the streaming subscription that cannot be deserialized into the stream's output type.  Should never happen.
     """
     incoming_event_listener: 'Callable[[T], None]'
-    subscription_status_listener: 'Optional[mqtt_request_response.SubscriptionStatusListener]' = None
+    subscription_status_listener: 'Optional[Callable[[awscrt.mqtt_request_response.SubscriptionStatusEvent], None]]' = None
     deserialization_failure_listener: 'Optional[Callable[[V2DeserializationFailure], None]]' = None
 
     def _validate(self):
@@ -259,6 +260,7 @@ class ServiceStreamOptions(Generic[T]):
         assert callable(self.incoming_event_listener)
         assert callable(self.subscription_status_listener) or self.subscription_status_listener is None
         assert callable(self.deserialization_failure_listener) or self.deserialization_failure_listener is None
+
 
 def create_streaming_unmodeled_options(stream_options: ServiceStreamOptions[T], subscription_topic: str, event_name: str, event_class):
     def modeled_event_callback(unmodeled_event : mqtt_request_response.IncomingPublishEvent):
