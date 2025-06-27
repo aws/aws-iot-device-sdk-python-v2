@@ -75,7 +75,7 @@ If the venv does not yet have the device SDK installed, install it:
 python3 -m pip install awsiotsdk
 ```
 
-Assuming you are in the SDK root directory, you can now run the shadow sandbox sample:
+Assuming you are in the SDK root directory, you can now run the basic fleet provisioning sample:
 
 ``` sh
 # from the samples folder

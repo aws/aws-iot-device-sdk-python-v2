@@ -1161,6 +1161,11 @@ class NamedShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
 
+    def to_payload(self):
+        # type: () -> typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
+        return payload
+
     def _validate(self):
         if not self.shadow_name:
             raise ValueError("shadow_name is required")
@@ -1193,6 +1198,11 @@ class NamedShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
+
+    def to_payload(self):
+        # type: () -> typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
+        return payload
 
     def _validate(self):
         if not self.shadow_name:
@@ -1282,6 +1292,11 @@ class ShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
+    def to_payload(self):
+        # type: () -> typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
+        return payload
 
     def _validate(self):
         if not self.thing_name:
@@ -1557,6 +1572,11 @@ class ShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
+    def to_payload(self):
+        # type: () -> typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
+        return payload
 
     def _validate(self):
         if not self.thing_name:
@@ -1857,10 +1877,11 @@ class IotShadowClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic
 
         Args:
-            request: `DeleteNamedShadowRequest` instance.
+            request (DeleteNamedShadowRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `DeleteShadowResponse`.
+            A Future whose result will be an instance of :class:`DeleteShadowResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 
@@ -1904,10 +1925,11 @@ class IotShadowClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic
 
         Args:
-            request: `DeleteShadowRequest` instance.
+            request (DeleteShadowRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `DeleteShadowResponse`.
+            A Future whose result will be an instance of :class:`DeleteShadowResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 
@@ -1951,10 +1973,11 @@ class IotShadowClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic
 
         Args:
-            request: `GetNamedShadowRequest` instance.
+            request (GetNamedShadowRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `GetShadowResponse`.
+            A Future whose result will be an instance of :class:`GetShadowResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 
@@ -1998,10 +2021,11 @@ class IotShadowClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic
 
         Args:
-            request: `GetShadowRequest` instance.
+            request (GetShadowRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `GetShadowResponse`.
+            A Future whose result will be an instance of :class:`GetShadowResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 
@@ -2045,10 +2069,11 @@ class IotShadowClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic
 
         Args:
-            request: `UpdateNamedShadowRequest` instance.
+            request (UpdateNamedShadowRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `UpdateShadowResponse`.
+            A Future whose result will be an instance of :class:`UpdateShadowResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 
@@ -2094,10 +2119,11 @@ class IotShadowClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic
 
         Args:
-            request: `UpdateShadowRequest` instance.
+            request (UpdateShadowRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `UpdateShadowResponse`.
+            A Future whose result will be an instance of :class:`UpdateShadowResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 
@@ -2143,8 +2169,8 @@ class IotShadowClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic
 
         Args:
-            request: `NamedShadowDeltaUpdatedSubscriptionRequest` instance.
-            options: callbacks to invoke for streaming operation events
+            request (NamedShadowDeltaUpdatedSubscriptionRequest): configuration for the streaming operation to create
+            options (awsiot.ServiceStreamOptions[ShadowDeltaUpdatedEvent]): callbacks to invoke for streaming operation events
 
         Returns:
             An instance of `awscrt.mqtt_request_response.StreamingOperation`
@@ -2166,8 +2192,8 @@ class IotShadowClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic
 
         Args:
-            request: `NamedShadowUpdatedSubscriptionRequest` instance.
-            options: callbacks to invoke for streaming operation events
+            request (NamedShadowUpdatedSubscriptionRequest): configuration for the streaming operation to create
+            options (awsiot.ServiceStreamOptions[ShadowUpdatedEvent]): callbacks to invoke for streaming operation events
 
         Returns:
             An instance of `awscrt.mqtt_request_response.StreamingOperation`
@@ -2189,8 +2215,8 @@ class IotShadowClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic
 
         Args:
-            request: `ShadowDeltaUpdatedSubscriptionRequest` instance.
-            options: callbacks to invoke for streaming operation events
+            request (ShadowDeltaUpdatedSubscriptionRequest): configuration for the streaming operation to create
+            options (awsiot.ServiceStreamOptions[ShadowDeltaUpdatedEvent]): callbacks to invoke for streaming operation events
 
         Returns:
             An instance of `awscrt.mqtt_request_response.StreamingOperation`
@@ -2212,8 +2238,8 @@ class IotShadowClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic
 
         Args:
-            request: `ShadowUpdatedSubscriptionRequest` instance.
-            options: callbacks to invoke for streaming operation events
+            request (ShadowUpdatedSubscriptionRequest): configuration for the streaming operation to create
+            options (awsiot.ServiceStreamOptions[ShadowUpdatedEvent]): callbacks to invoke for streaming operation events
 
         Returns:
             An instance of `awscrt.mqtt_request_response.StreamingOperation`

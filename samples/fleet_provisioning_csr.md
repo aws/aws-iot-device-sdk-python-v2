@@ -76,7 +76,7 @@ If the venv does not yet have the device SDK installed, install it:
 python3 -m pip install awsiotsdk
 ```
 
-Assuming you are in the SDK root directory, you can now run the shadow sandbox sample:
+Assuming you are in the SDK root directory, you can now run the CSR fleet provisioning sample:
 
 ``` sh
 python3 samples/fleet_provisioning_csr.py --endpoint <endpoint> --cert <file> --key <file> --csr_file <file> --template_name <template name> --template_parameters <template parameters>

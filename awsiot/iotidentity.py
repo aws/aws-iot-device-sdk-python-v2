@@ -709,10 +709,11 @@ class IotIdentityClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html#fleet-provision-api
 
         Args:
-            request: `CreateCertificateFromCsrRequest` instance.
+            request (CreateCertificateFromCsrRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `CreateCertificateFromCsrResponse`.
+            A Future whose result will be an instance of :class:`CreateCertificateFromCsrResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 
@@ -752,10 +753,11 @@ class IotIdentityClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html#fleet-provision-api
 
         Args:
-            request: `CreateKeysAndCertificateRequest` instance.
+            request (CreateKeysAndCertificateRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `CreateKeysAndCertificateResponse`.
+            A Future whose result will be an instance of :class:`CreateKeysAndCertificateResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 
@@ -795,10 +797,11 @@ class IotIdentityClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html#fleet-provision-api
 
         Args:
-            request: `RegisterThingRequest` instance.
+            request (RegisterThingRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `RegisterThingResponse`.
+            A Future whose result will be an instance of :class:`RegisterThingResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 

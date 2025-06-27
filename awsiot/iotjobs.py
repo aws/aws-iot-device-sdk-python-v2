@@ -1561,10 +1561,11 @@ class IotJobsClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution
 
         Args:
-            request: `DescribeJobExecutionRequest` instance.
+            request (DescribeJobExecutionRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `DescribeJobExecutionResponse`.
+            A Future whose result will be an instance of :class:`DescribeJobExecutionResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 
@@ -1608,10 +1609,11 @@ class IotJobsClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions
 
         Args:
-            request: `GetPendingJobExecutionsRequest` instance.
+            request (GetPendingJobExecutionsRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `GetPendingJobExecutionsResponse`.
+            A Future whose result will be an instance of :class:`GetPendingJobExecutionsResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 
@@ -1655,10 +1657,11 @@ class IotJobsClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution
 
         Args:
-            request: `StartNextPendingJobExecutionRequest` instance.
+            request (StartNextPendingJobExecutionRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `StartNextJobExecutionResponse`.
+            A Future whose result will be an instance of :class:`StartNextJobExecutionResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 
@@ -1702,10 +1705,11 @@ class IotJobsClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution
 
         Args:
-            request: `UpdateJobExecutionRequest` instance.
+            request (UpdateJobExecutionRequest): information about the operation to perform.
 
         Returns:
-            A Future whose result will be an instance of `UpdateJobExecutionResponse`.
+            A Future whose result will be an instance of :class:`UpdateJobExecutionResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
         """
         request._validate()
 
@@ -1749,8 +1753,8 @@ class IotJobsClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-jobexecutionschanged
 
         Args:
-            request: `JobExecutionsChangedSubscriptionRequest` instance.
-            options: callbacks to invoke for streaming operation events
+            request (JobExecutionsChangedSubscriptionRequest): configuration for the streaming operation to create
+            options (awsiot.ServiceStreamOptions[JobExecutionsChangedEvent]): callbacks to invoke for streaming operation events
 
         Returns:
             An instance of `awscrt.mqtt_request_response.StreamingOperation`
@@ -1770,8 +1774,8 @@ class IotJobsClientV2:
         API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-nextjobexecutionchanged
 
         Args:
-            request: `NextJobExecutionChangedSubscriptionRequest` instance.
-            options: callbacks to invoke for streaming operation events
+            request (NextJobExecutionChangedSubscriptionRequest): configuration for the streaming operation to create
+            options (awsiot.ServiceStreamOptions[NextJobExecutionChangedEvent]): callbacks to invoke for streaming operation events
 
         Returns:
             An instance of `awscrt.mqtt_request_response.StreamingOperation`

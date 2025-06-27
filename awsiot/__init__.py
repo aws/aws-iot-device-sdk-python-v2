@@ -200,7 +200,15 @@ class ModeledClass:
 
 
 class V2ServiceException(Exception):
+    """
+    Wrapper exception thrown by V2 service clients to indicate the failure of an operation
 
+    Args:
+        message (str): Description of the failure.
+        inner_error (Optional[Exception]): Cause of the failure.
+        modeled_error (Optional[Any]): Modeled error shape that contains additional information about the failure.
+            The modeled type is specific to each individual service operation.
+    """
     def __init__(self, message: str, inner_error: 'Optional[Exception]', modeled_error: 'Optional[Any]'):
         self.message = message
         self.inner_error = inner_error
@@ -233,6 +241,14 @@ def create_v2_service_modeled_future(internal_unmodeled_future : Future, operati
     return modeled_future
 
 class V2DeserializationFailure(Exception):
+    """
+    An exception raised when deserialization from an MQTT message payload to a modeled type fails
+
+    Args:
+        message (str): description of the failure
+        inner_error (Optional[Exception]): the underlying deserialization exception
+        payload (Optional[bytes]): original MQTT message payload that could not be deserialized properly
+    """
     def __init__(self, message: str, inner_error: 'Optional[Exception]', payload: Optional[bytes]):
         self.message = message
         self.inner_error = inner_error
