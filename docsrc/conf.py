@@ -91,4 +91,8 @@ nitpick_ignore_regex = [
     # and private classes aren't documented, but we want sphinx to document base classes by default.
     # Ignoring the warnings seems like a reasonable compromise
     ('py:class', r'awsiot\.greengrasscoreipc\.model\._.*Operation'),
+
+    # sphinx does not handle generic type parameters well
+    ('py:class', r'T'),
+    ('py:obj', r'awsiot\.T')
 ]

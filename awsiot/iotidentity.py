@@ -3,8 +3,10 @@
 
 # This file is generated
 
+import awscrt
 import awsiot
 import concurrent.futures
+import json
 import typing
 
 class IotIdentityClient(awsiot.MqttServiceClient):
@@ -33,6 +35,7 @@ class IotIdentityClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/certificates/create-from-csr/json',
@@ -56,11 +59,12 @@ class IotIdentityClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/certificates/create/json',
             qos=qos,
-            payload=None)
+            payload=request.to_payload())
 
     def publish_register_thing(self, request, qos):
         # type: (RegisterThingRequest, int) -> concurrent.futures.Future
@@ -79,8 +83,7 @@ class IotIdentityClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.template_name:
-            raise ValueError("request.template_name is required")
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/provisioning-templates/{0.template_name}/provision/json'.format(request),
@@ -109,6 +112,7 @@ class IotIdentityClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -141,6 +145,7 @@ class IotIdentityClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -173,6 +178,7 @@ class IotIdentityClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -205,6 +211,7 @@ class IotIdentityClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -237,8 +244,7 @@ class IotIdentityClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.template_name:
-            raise ValueError("request.template_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -271,8 +277,7 @@ class IotIdentityClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.template_name:
-            raise ValueError("request.template_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -312,6 +317,9 @@ class CreateCertificateFromCsrRequest(awsiot.ModeledClass):
         if self.certificate_signing_request is not None:
             payload['certificateSigningRequest'] = self.certificate_signing_request
         return payload
+
+    def _validate(self):
+        return
 
 class CreateCertificateFromCsrResponse(awsiot.ModeledClass):
     """
@@ -357,6 +365,9 @@ class CreateCertificateFromCsrResponse(awsiot.ModeledClass):
             new.certificate_pem = val
         return new
 
+    def _validate(self):
+        return
+
 class CreateCertificateFromCsrSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -373,6 +384,9 @@ class CreateCertificateFromCsrSubscriptionRequest(awsiot.ModeledClass):
         for key, val in zip([], args):
             setattr(self, key, val)
 
+    def _validate(self):
+        return
+
 class CreateKeysAndCertificateRequest(awsiot.ModeledClass):
     """
 
@@ -388,6 +402,14 @@ class CreateKeysAndCertificateRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip([], args):
             setattr(self, key, val)
+
+    def to_payload(self):
+        # type: () -> typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
+        return payload
+
+    def _validate(self):
+        return
 
 class CreateKeysAndCertificateResponse(awsiot.ModeledClass):
     """
@@ -439,6 +461,9 @@ class CreateKeysAndCertificateResponse(awsiot.ModeledClass):
             new.private_key = val
         return new
 
+    def _validate(self):
+        return
+
 class CreateKeysAndCertificateSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -454,6 +479,9 @@ class CreateKeysAndCertificateSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip([], args):
             setattr(self, key, val)
+
+    def _validate(self):
+        return
 
 class ErrorResponse(awsiot.ModeledClass):
     """
@@ -499,6 +527,9 @@ class ErrorResponse(awsiot.ModeledClass):
             new.status_code = val
         return new
 
+    def _validate(self):
+        return
+
 class RegisterThingRequest(awsiot.ModeledClass):
     """
 
@@ -536,6 +567,11 @@ class RegisterThingRequest(awsiot.ModeledClass):
         if self.parameters is not None:
             payload['parameters'] = self.parameters
         return payload
+
+    def _validate(self):
+        if not self.template_name:
+            raise ValueError("template_name is required")
+        return
 
 class RegisterThingResponse(awsiot.ModeledClass):
     """
@@ -575,6 +611,9 @@ class RegisterThingResponse(awsiot.ModeledClass):
             new.thing_name = val
         return new
 
+    def _validate(self):
+        return
+
 class RegisterThingSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -597,4 +636,200 @@ class RegisterThingSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['template_name'], args):
             setattr(self, key, val)
+
+    def _validate(self):
+        if not self.template_name:
+            raise ValueError("template_name is required")
+        return
+
+class V2ErrorResponse(awsiot.ModeledClass):
+    """
+
+    Response document containing details about a failed request.
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        error_code (str): Response error code
+        error_message (str): Response error message
+        status_code (int): Response status code
+
+    Attributes:
+        error_code (str): Response error code
+        error_message (str): Response error message
+        status_code (int): Response status code
+    """
+
+    __slots__ = ['error_code', 'error_message', 'status_code']
+
+    def __init__(self, *args, **kwargs):
+        self.error_code = kwargs.get('error_code')
+        self.error_message = kwargs.get('error_message')
+        self.status_code = kwargs.get('status_code')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip([], args):
+            setattr(self, key, val)
+
+    @classmethod
+    def from_payload(cls, payload):
+        # type: (typing.Dict[str, typing.Any]) -> V2ErrorResponse
+        new = cls()
+        val = payload.get('errorCode')
+        if val is not None:
+            new.error_code = val
+        val = payload.get('errorMessage')
+        if val is not None:
+            new.error_message = val
+        val = payload.get('statusCode')
+        if val is not None:
+            new.status_code = val
+        return new
+
+    def _validate(self):
+        return
+
+class IotIdentityClientV2:
+    """
+
+    An AWS IoT service that assists with provisioning a device and installing unique client certificates on it
+
+    AWS Docs: https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html
+
+    """
+
+    def __init__(self, protocol_client: awscrt.mqtt.Connection or awscrt.mqtt5.Client, options: awscrt.mqtt_request_response.ClientOptions):
+        self._rr_client = awscrt.mqtt_request_response.Client(protocol_client, options)
+
+    def create_certificate_from_csr(self, request : CreateCertificateFromCsrRequest) -> concurrent.futures.Future :
+        """
+
+        Creates a certificate from a certificate signing request (CSR). AWS IoT provides client certificates that are signed by the Amazon Root certificate authority (CA). The new certificate has a PENDING_ACTIVATION status. When you call RegisterThing to provision a thing with this certificate, the certificate status changes to ACTIVE or INACTIVE as described in the template.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html#fleet-provision-api
+
+        Args:
+            request (CreateCertificateFromCsrRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`CreateCertificateFromCsrResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/certificates/create-from-csr/json'
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/certificates/create-from-csr/json/accepted';
+        subscription1 = '$aws/certificates/create-from-csr/json/rejected';
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+                subscription1,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "create_certificate_from_csr", accepted_topic, CreateCertificateFromCsrResponse, V2ErrorResponse)
+
+    def create_keys_and_certificate(self, request : CreateKeysAndCertificateRequest) -> concurrent.futures.Future :
+        """
+
+        Creates new keys and a certificate. AWS IoT provides client certificates that are signed by the Amazon Root certificate authority (CA). The new certificate has a PENDING_ACTIVATION status. When you call RegisterThing to provision a thing with this certificate, the certificate status changes to ACTIVE or INACTIVE as described in the template.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html#fleet-provision-api
+
+        Args:
+            request (CreateKeysAndCertificateRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`CreateKeysAndCertificateResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/certificates/create/json'
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/certificates/create/json/accepted';
+        subscription1 = '$aws/certificates/create/json/rejected';
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+                subscription1,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "create_keys_and_certificate", accepted_topic, CreateKeysAndCertificateResponse, V2ErrorResponse)
+
+    def register_thing(self, request : RegisterThingRequest) -> concurrent.futures.Future :
+        """
+
+        Provisions an AWS IoT thing using a pre-defined template.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html#fleet-provision-api
+
+        Args:
+            request (RegisterThingRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`RegisterThingResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/provisioning-templates/{0.template_name}/provision/json'.format(request)
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/provisioning-templates/{0.template_name}/provision/json/accepted'.format(request);
+        subscription1 = '$aws/provisioning-templates/{0.template_name}/provision/json/rejected'.format(request);
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+                subscription1,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "register_thing", accepted_topic, RegisterThingResponse, V2ErrorResponse)
 
