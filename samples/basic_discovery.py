@@ -104,7 +104,7 @@ while loop_count < cmdData.input_max_pub_ops:
         messageJson = json.dumps(message)
         pub_future, _ = mqtt_connection.publish(cmdData.input_topic, messageJson, QoS.AT_LEAST_ONCE)
         publish_completion_data = pub_future.result()
-        print('Published topic {}: {} (puback reason: {})\n'.format(cmdData.input_topic, messageJson, repr(publish_completion_data.puback.reason_code)))
+        print('Successfully published to topic {} with payload `{}`\n'.format(cmdData.input_topic, messageJson))
 
         loop_count += 1
     time.sleep(1)
