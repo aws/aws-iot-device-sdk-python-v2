@@ -133,18 +133,26 @@ if TYPE_CHECKING:
     # the `@deprecated` tags.
     from typing_extensions import deprecated
 else:
+    _impl = None
     try:
         # preferred import of deprecated
-        from typing_extensions import deprecated
-    except ModuleNotFoundError:
+        from typing_extensions import deprecated as _impl
+    except Exception:
         try:
-            # Python 3.12+
-            from typing import deprecated
-        except ImportError:
-            # shim if both are unavailable that turn `deprecated` into a no-op
-            def deprecated(msg=None, *, since=None):
-                def wrapper(obj): return obj
-                return wrapper
+            from typing import deprecated as _impl # Python 3.13+
+        except Exception:
+            _impl = None
+    
+    def deprecated(msg=None, *, since=None):
+        if _impl is None:
+            def _noop(obj): return obj
+            return _noop
+        if since is not None:
+            try:
+                return _impl(msg, since=since)
+            except TypeError:
+                pass # older typing_extensions: no 'since' keyword
+        return _impl(msg)
 
 
 def _check_required_kwargs(**kwargs):
