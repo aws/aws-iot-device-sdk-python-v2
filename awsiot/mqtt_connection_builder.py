@@ -289,7 +289,7 @@ def _builder(
 
 @deprecated(
     """
-    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
     the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
     a more robust feature set, clearer error handling, and lifetime management. More details can be found
     in the GitHub Repo FAQ
@@ -315,7 +315,7 @@ def mtls_from_path(cert_filepath, pri_key_filepath, **kwargs) -> awscrt.mqtt.Con
 
 @deprecated(
     """
-    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
     the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
     a more robust feature set, clearer error handling, and lifetime management. More details can be found
     in the GitHub Repo FAQ
@@ -341,7 +341,7 @@ def mtls_from_bytes(cert_bytes, pri_key_bytes, **kwargs) -> awscrt.mqtt.Connecti
 
 @deprecated(
     """
-    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
     the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
     a more robust feature set, clearer error handling, and lifetime management. More details can be found
     in the GitHub Repo FAQ
@@ -406,7 +406,7 @@ def mtls_with_pkcs11(*,
 
 @deprecated(
     """
-    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
     the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
     a more robust feature set, clearer error handling, and lifetime management. More details can be found
     in the GitHub Repo FAQ
@@ -440,7 +440,7 @@ def mtls_with_pkcs12(*,
 
 @deprecated(
     """
-    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
     the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
     a more robust feature set, clearer error handling, and lifetime management. More details can be found
     in the GitHub Repo FAQ
@@ -472,7 +472,7 @@ def mtls_with_windows_cert_store_path(*,
 
 @deprecated(
     """
-    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
     the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
     a more robust feature set, clearer error handling, and lifetime management. More details can be found
     in the GitHub Repo FAQ
@@ -524,7 +524,7 @@ def websockets_with_default_aws_signing(
 
 @deprecated(
     """
-    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
     the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
     a more robust feature set, clearer error handling, and lifetime management. More details can be found
     in the GitHub Repo FAQ
@@ -586,7 +586,7 @@ def _add_to_username_parameter(input_string, parameter_value, parameter_pretext)
 
 @deprecated(
     """
-    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
     the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
     a more robust feature set, clearer error handling, and lifetime management. More details can be found
     in the GitHub Repo FAQ
@@ -649,7 +649,7 @@ def direct_with_custom_authorizer(
 
 @deprecated(
     """
-    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
     the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
     a more robust feature set, clearer error handling, and lifetime management. More details can be found
     in the GitHub Repo FAQ
@@ -720,7 +720,7 @@ def websockets_with_custom_authorizer(
 
 @deprecated(
     """
-    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
     the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
     a more robust feature set, clearer error handling, and lifetime management. More details can be found
     in the GitHub Repo FAQ
@@ -788,7 +788,7 @@ def _with_custom_authorizer(auth_username=None,
 
 @deprecated(
     """
-    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
     the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
     a more robust feature set, clearer error handling, and lifetime management. More details can be found
     in the GitHub Repo FAQ
