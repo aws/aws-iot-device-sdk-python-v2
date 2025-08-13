@@ -289,10 +289,10 @@ def _builder(
 
 @deprecated(
     """
-    Deprecated tag: Please use MQTT5 Client for new code. There are no current plans to
-    fully deprecate the MQTT 3.1.1 client but it is highly recommended customers migrate
-    to the MQTT5 Client to have access to a more robust feature set, clearer error handling, and lifetime
-    management. More details can be found here: <URL>
+    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
     """,
     since="9.9.9")
 def mtls_from_path(cert_filepath, pri_key_filepath, **kwargs) -> awscrt.mqtt.Connection:
@@ -315,10 +315,10 @@ def mtls_from_path(cert_filepath, pri_key_filepath, **kwargs) -> awscrt.mqtt.Con
 
 @deprecated(
     """
-    Deprecated tag: Please use MQTT5 Client for new code. There are no current plans to
-    fully deprecate the MQTT 3.1.1 client but it is highly recommended customers migrate
-    to the MQTT5 Client to have access to a more robust feature set, clearer error handling, and lifetime
-    management. More details can be found here: <URL>
+    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
     """,
     since="9.9.9")
 def mtls_from_bytes(cert_bytes, pri_key_bytes, **kwargs) -> awscrt.mqtt.Connection:
@@ -341,10 +341,10 @@ def mtls_from_bytes(cert_bytes, pri_key_bytes, **kwargs) -> awscrt.mqtt.Connecti
 
 @deprecated(
     """
-    Deprecated tag: Please use MQTT5 Client for new code. There are no current plans to
-    fully deprecate the MQTT 3.1.1 client but it is highly recommended customers migrate
-    to the MQTT5 Client to have access to a more robust feature set, clearer error handling, and lifetime
-    management. More details can be found here: <URL>
+    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
     """,
     since="9.9.9")
 def mtls_with_pkcs11(*,
@@ -406,10 +406,10 @@ def mtls_with_pkcs11(*,
 
 @deprecated(
     """
-    Deprecated tag: Please use MQTT5 Client for new code. There are no current plans to
-    fully deprecate the MQTT 3.1.1 client but it is highly recommended customers migrate
-    to the MQTT5 Client to have access to a more robust feature set, clearer error handling, and lifetime
-    management. More details can be found here: <URL>
+    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
     """,
     since="9.9.9")
 def mtls_with_pkcs12(*,
@@ -440,10 +440,10 @@ def mtls_with_pkcs12(*,
 
 @deprecated(
     """
-    Deprecated tag: Please use MQTT5 Client for new code. There are no current plans to
-    fully deprecate the MQTT 3.1.1 client but it is highly recommended customers migrate
-    to the MQTT5 Client to have access to a more robust feature set, clearer error handling, and lifetime
-    management. More details can be found here: <URL>
+    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
     """,
     since="9.9.9")
 def mtls_with_windows_cert_store_path(*,
@@ -472,10 +472,10 @@ def mtls_with_windows_cert_store_path(*,
 
 @deprecated(
     """
-    Deprecated tag: Please use MQTT5 Client for new code. There are no current plans to
-    fully deprecate the MQTT 3.1.1 client but it is highly recommended customers migrate
-    to the MQTT5 Client to have access to a more robust feature set, clearer error handling, and lifetime
-    management. More details can be found here: <URL>
+    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
     """,
     since="9.9.9")
 def websockets_with_default_aws_signing(
@@ -524,10 +524,10 @@ def websockets_with_default_aws_signing(
 
 @deprecated(
     """
-    Deprecated tag: Please use MQTT5 Client for new code. There are no current plans to
-    fully deprecate the MQTT 3.1.1 client but it is highly recommended customers migrate
-    to the MQTT5 Client to have access to a more robust feature set, clearer error handling, and lifetime
-    management. More details can be found here: <URL>
+    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
     """,
     since="9.9.9")
 def websockets_with_custom_handshake(
@@ -586,10 +586,10 @@ def _add_to_username_parameter(input_string, parameter_value, parameter_pretext)
 
 @deprecated(
     """
-    Deprecated tag: Please use MQTT5 Client for new code. There are no current plans to
-    fully deprecate the MQTT 3.1.1 client but it is highly recommended customers migrate
-    to the MQTT5 Client to have access to a more robust feature set, clearer error handling, and lifetime
-    management. More details can be found here: <URL>
+    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
     """,
     since="9.9.9")
 def direct_with_custom_authorizer(
@@ -649,10 +649,10 @@ def direct_with_custom_authorizer(
 
 @deprecated(
     """
-    Deprecated tag: Please use MQTT5 Client for new code. There are no current plans to
-    fully deprecate the MQTT 3.1.1 client but it is highly recommended customers migrate
-    to the MQTT5 Client to have access to a more robust feature set, clearer error handling, and lifetime
-    management. More details can be found here: <URL>
+    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
     """,
     since="9.9.9")
 def websockets_with_custom_authorizer(
@@ -720,10 +720,10 @@ def websockets_with_custom_authorizer(
 
 @deprecated(
     """
-    Deprecated tag: Please use MQTT5 Client for new code. There are no current plans to
-    fully deprecate the MQTT 3.1.1 client but it is highly recommended customers migrate
-    to the MQTT5 Client to have access to a more robust feature set, clearer error handling, and lifetime
-    management. More details can be found here: <URL>
+    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
     """,
     since="9.9.9")
 def _with_custom_authorizer(auth_username=None,
@@ -788,10 +788,10 @@ def _with_custom_authorizer(auth_username=None,
 
 @deprecated(
     """
-    Deprecated tag: Please use MQTT5 Client for new code. There are no current plans to
-    fully deprecate the MQTT 3.1.1 client but it is highly recommended customers migrate
-    to the MQTT5 Client to have access to a more robust feature set, clearer error handling, and lifetime
-    management. More details can be found here: <URL>
+    We strongly recommend using mqtt5.Client. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
     """,
     since="9.9.9")
 def new_default_builder(**kwargs) -> awscrt.mqtt.Connection:
