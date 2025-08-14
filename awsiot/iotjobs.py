@@ -11,8 +11,19 @@ import json
 import typing
 import uuid
 
+from awscrt.common import deprecated
+
+@deprecated(
+    """
+    We strongly recommend using IotJobsClientV2. There are no current plans to
+    fully deprecate IotJobsClient but it is highly recommended customers migrate to IotJobsClientV2.
+    More details can be found in the GitHub Repo FAQ
+    """)
 class IotJobsClient(awsiot.MqttServiceClient):
     """
+    Deprecated: We strongly recommend using IotJobsClientV2. There are no current plans to
+    fully deprecate IotJobsClient but it is highly recommended customers migrate to IotJobsClientV2.
+    More details can be found in the GitHub Repo FAQ
 
     The AWS IoT jobs service can be used to define a set of remote operations that are sent to and executed on one or more devices connected to AWS IoT.
 
