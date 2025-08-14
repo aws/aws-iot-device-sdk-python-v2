@@ -124,35 +124,7 @@ import awscrt.auth
 import awscrt.io
 import awscrt.mqtt
 import urllib.parse
-
-# TYPE_CHECKING is used to exclusively execute code by static analysers. Never at runtime.
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    # Static analysers will always attempt to import deprecated from typing_extensions and
-    # fall back to known interpretation of `deprecated` if it fails and appropriately handle
-    # the `@deprecated` tags.
-    from typing_extensions import deprecated
-else:
-    _impl = None
-    try:
-        # preferred import of deprecated
-        from typing_extensions import deprecated as _impl
-    except Exception:
-        try:
-            from typing import deprecated as _impl # Python 3.13+
-        except Exception:
-            _impl = None
-    
-    def deprecated(msg=None, *, since=None):
-        if _impl is None:
-            def _noop(obj): return obj
-            return _noop
-        if since is not None:
-            try:
-                return _impl(msg, since=since)
-            except TypeError:
-                pass # older typing_extensions: no 'since' keyword
-        return _impl(msg)
+from awscrt.common import deprecated
 
 
 def _check_required_kwargs(**kwargs):
