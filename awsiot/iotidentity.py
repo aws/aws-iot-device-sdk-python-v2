@@ -9,7 +9,7 @@ import concurrent.futures
 import json
 import typing
 
-from awsiot.remove_me import deprecated
+from .remove_me import deprecated
 # from awscrt.common import deprecated
 
 @deprecated(
