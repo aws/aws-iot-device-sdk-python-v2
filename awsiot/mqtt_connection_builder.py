@@ -124,7 +124,8 @@ import awscrt.auth
 import awscrt.io
 import awscrt.mqtt
 import urllib.parse
-from awscrt.common import deprecated
+# from awscrt.common import deprecated
+from remove_me import deprecated
 
 
 def _check_required_kwargs(**kwargs):

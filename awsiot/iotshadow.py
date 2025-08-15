@@ -11,7 +11,8 @@ import json
 import typing
 import uuid
 
-from awscrt.common import deprecated
+from awsiot.remove_me import deprecated
+# from awscrt.common import deprecated
 
 @deprecated(
     """
