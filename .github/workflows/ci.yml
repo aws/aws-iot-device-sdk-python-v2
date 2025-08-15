@@ -193,7 +193,7 @@ jobs:
         cd ./aws-iot-device-sdk-python-v2
         python3 ./deviceadvisor/script/DATestRun.py
 
-  # Runs the samples and ensures that everything is working
+  # Runs the sampels and service tests and ensures that everything is working
   linux-smoke-tests:
     runs-on: ubuntu-22.04
     permissions:
