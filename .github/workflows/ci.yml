@@ -215,7 +215,6 @@ jobs:
           python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
           chmod a+x builder
           ./builder build -p ${{ env.PACKAGE_NAME }}
-
       - name: configure AWS credentials (service tests Fleet Provisioning)
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -283,31 +282,11 @@ jobs:
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
           python3 ./test_cases/test_jobs_execution.py --config-file test_cases/mqtt5_jobs_cfg.json
-      - name: run Websocket Connect sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_websocket_connect_cfg.json
-      - name: run PKCS11 Connect sample
-        run: |
-          mkdir -p /tmp/tokens
-          export SOFTHSM2_CONF=/tmp/softhsm2.conf
-          echo "directories.tokendir = /tmp/tokens" > /tmp/softhsm2.conf
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_pkcs11_connect_cfg.json
       - name: configure AWS credentials (Cognito)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ env.CI_COGNITO_ROLE }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run Cognito Connect sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_cognito_connect_cfg.json
-      - name: configure AWS credentials (X509)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_X509_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run X509 sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_x509_connect_cfg.json
       - name: configure AWS credentials (MQTT5 samples)
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -331,14 +310,6 @@ jobs:
       - name: run MQTT5 Shared Subscription sample
         run: |
           python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_shared_subscription_cfg.json
-      - name: configure AWS credentials (Custom Authorizer)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_CUSTOM_AUTHORIZER_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run CustomAuthorizerConnect sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_custom_authorizer_connect_cfg.json
 
   linux-greengrass-tests:
     runs-on: ubuntu-22.04
