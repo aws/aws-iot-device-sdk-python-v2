@@ -124,6 +124,9 @@ import awscrt.auth
 import awscrt.io
 import awscrt.mqtt
 import urllib.parse
+from .remove_me import deprecated
+# from awscrt.common import deprecated
+
 
 
 def _check_required_kwargs(**kwargs):
@@ -258,6 +261,14 @@ def _builder(
     )
 
 
+@deprecated(
+    """
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
+    """,
+    since="9.9.9")
 def mtls_from_path(cert_filepath, pri_key_filepath, **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT.
@@ -276,6 +287,14 @@ def mtls_from_path(cert_filepath, pri_key_filepath, **kwargs) -> awscrt.mqtt.Con
     return _builder(tls_ctx_options, **kwargs)
 
 
+@deprecated(
+    """
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
+    """,
+    since="9.9.9")
 def mtls_from_bytes(cert_bytes, pri_key_bytes, **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT.
@@ -294,6 +313,14 @@ def mtls_from_bytes(cert_bytes, pri_key_bytes, **kwargs) -> awscrt.mqtt.Connecti
     return _builder(tls_ctx_options, **kwargs)
 
 
+@deprecated(
+    """
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
+    """,
+    since="9.9.9")
 def mtls_with_pkcs11(*,
                      pkcs11_lib: awscrt.io.Pkcs11Lib,
                      user_pin: str,
@@ -350,6 +377,15 @@ def mtls_with_pkcs11(*,
 
     return _builder(tls_ctx_options, **kwargs)
 
+
+@deprecated(
+    """
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
+    """,
+    since="9.9.9")
 def mtls_with_pkcs12(*,
                      pkcs12_filepath: str,
                      pkcs12_password: str,
@@ -376,6 +412,14 @@ def mtls_with_pkcs12(*,
     return _builder(tls_ctx_options, **kwargs)
 
 
+@deprecated(
+    """
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
+    """,
+    since="9.9.9")
 def mtls_with_windows_cert_store_path(*,
                                       cert_store_path: str,
                                       **kwargs) -> awscrt.mqtt.Connection:
@@ -400,6 +444,14 @@ def mtls_with_windows_cert_store_path(*,
     return _builder(tls_ctx_options, **kwargs)
 
 
+@deprecated(
+    """
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
+    """,
+    since="9.9.9")
 def websockets_with_default_aws_signing(
         region,
         credentials_provider,
@@ -444,6 +496,14 @@ def websockets_with_default_aws_signing(
     return websockets_with_custom_handshake(_sign_websocket_handshake_request, websocket_proxy_options, **kwargs)
 
 
+@deprecated(
+    """
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
+    """,
+    since="9.9.9")
 def websockets_with_custom_handshake(
         websocket_handshake_transform,
         websocket_proxy_options=None,
@@ -498,6 +558,14 @@ def _add_to_username_parameter(input_string, parameter_value, parameter_pretext)
         return return_string + parameter_pretext + parameter_value
 
 
+@deprecated(
+    """
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
+    """,
+    since="9.9.9")
 def direct_with_custom_authorizer(
         auth_username=None,
         auth_authorizer_name=None,
@@ -552,6 +620,15 @@ def direct_with_custom_authorizer(
         use_websockets=False,
         **kwargs)
 
+
+@deprecated(
+    """
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
+    """,
+    since="9.9.9")
 def websockets_with_custom_authorizer(
         region=None,
         credentials_provider=None,
@@ -615,6 +692,14 @@ def websockets_with_custom_authorizer(
         **kwargs)
 
 
+@deprecated(
+    """
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
+    """,
+    since="9.9.9")
 def _with_custom_authorizer(auth_username=None,
         auth_authorizer_name=None,
         auth_authorizer_signature=None,
@@ -675,6 +760,14 @@ def _with_custom_authorizer(auth_username=None,
                     **kwargs)
 
 
+@deprecated(
+    """
+    We strongly recommend using mqtt5_client_builder. There are no current plans to fully deprecate
+    the MQTT 3.1.1 client but it is highly recommended customers migrate to the MQTT5 client to access
+    a more robust feature set, clearer error handling, and lifetime management. More details can be found
+    in the GitHub Repo FAQ
+    """,
+    since="9.9.9")
 def new_default_builder(**kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, without any configuration besides the default TLS context options.
