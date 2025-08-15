@@ -97,8 +97,8 @@ jobs:
       id-token: write # This is required for requesting the JWT
     steps:
     - name: Install boto3
-# Starting from macos14, boto3 is no longer available in macos homebrew python https://github.com/Homebrew/homebrew-core/issues/157500
-# use virtual env to work around.
+      # Starting from macos14, boto3 is no longer available in macos homebrew python https://github.com/Homebrew/homebrew-core/issues/157500
+      # use virtual env to work around.
       run: |
         python3 -m venv .venv
         source .venv/bin/activate
@@ -180,11 +180,6 @@ jobs:
         python3 -m unittest test.test_identity
         source utils/test_cleanup.sh
         cd ..
-    - name: configure AWS credentials (MQTT5 samples)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_MQTT5_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
     - name: run MQTT5 PubSub sample
       run: |
         python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_pubsub_cfg.json
