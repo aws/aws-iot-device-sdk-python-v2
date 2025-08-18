@@ -96,10 +96,7 @@ if __name__ == '__main__':
 
     print("MQTT5 Client Created")
 
-    if not args.input_is_ci:
-        print(f"Connecting to {args.input_endpoint} with client ID '{args.input_clientId}'...")
-    else:
-        print("Connecting to endpoint with client ID")
+    print(f"Connecting to {args.input_endpoint} with client ID '{args.input_clientId}'...")
 
     client.start()
     future_connection_success.result(TIMEOUT)
