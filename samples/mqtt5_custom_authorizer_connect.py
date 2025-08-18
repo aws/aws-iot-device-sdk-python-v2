@@ -32,7 +32,7 @@ def parse_sample_input():
 
     # Misc
     parser.add_argument("--client-id", dest="input_clientId",
-                        default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}", help="Client ID")
+                        default=f"test-{uuid.uuid4().hex[:8]}", help="Client ID")
     
     args = parser.parse_args()
 
@@ -75,9 +75,8 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 
 
 if __name__ == '__main__':
-
     # Create MQTT5 Client with a custom authorizer
-    if cmdData.input_use_websockets is None:
+    if cmdData.input_use_websockets is None:        
         client = mqtt5_client_builder.direct_with_custom_authorizer(
             endpoint=cmdData.input_endpoint,
             ca_filepath=cmdData.input_ca,
