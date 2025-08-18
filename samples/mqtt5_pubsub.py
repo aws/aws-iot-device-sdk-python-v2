@@ -3,18 +3,6 @@
 
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse, uuid
-from pathlib import Path
-
-def _existing_file(p: str) -> str:
-    if p and not Path(p).exists():
-        raise argparse.ArgumentTypeError(f"file not found: {p}")
-    return p
-
-def _nonneg_int(s: str) -> int:
-    v = int(s)
-    if v < 0:
-        raise argparse.ArgumentTypeError("--count must be >= 0")
-    return v
 
 def parse_sample_input():
     parser = argparse.ArgumentParser(
@@ -25,14 +13,16 @@ def parse_sample_input():
     # Connection / TLS
     parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
     parser.add_argument("--port", type=int, default=8883, dest="input_port", help="Port (8883 mTLS, 443 ALPN)")
-    parser.add_argument("--cert", required=True, dest="input_cert", type=_existing_file, help="Client cert (PEM)")
-    parser.add_argument("--key", required=True, dest="input_key", type=_existing_file, help="Client private key (PEM)")
-    parser.add_argument("--ca", dest="input_ca", type=_existing_file, help="Optional CA bundle (PEM)")
+    parser.add_argument("--cert", required=True, dest="input_cert",
+                        help="Path to the certificate file to use during mTLS connection establishment")
+    parser.add_argument("--key", required=True, dest="input_key",
+                        help="Path to the private key file to use during mTLS connection establishment")
+    parser.add_argument("--ca", dest="input_ca", help="Path to optional CA bundle (PEM)")
 
     # Messaging
     parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
     parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
-    parser.add_argument("--count", type=_nonneg_int, default=5, dest="input_count",
+    parser.add_argument("--count", default=5, dest="input_count",
                         help="Messages to publish (0 = infinite)")
 
     # Proxy (optional)
@@ -45,7 +35,7 @@ def parse_sample_input():
 
     return parser.parse_args()
 
-cmdData = parse_sample_input()
+args = parse_sample_input()
 
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
@@ -69,7 +59,7 @@ def on_publish_received(publish_packet_data):
     print("Received message from topic'{}':{}".format(publish_packet.topic, publish_packet.payload))
     global received_count
     received_count += 1
-    if received_count == cmdData.input_count:
+    if received_count == args.input_count:
         received_all_event.set()
 
 
@@ -95,30 +85,30 @@ def on_lifecycle_connection_failure(lifecycle_connection_failure: mqtt5.Lifecycl
 
 if __name__ == '__main__':
     print("\nStarting MQTT5 PubSub Sample\n")
-    message_count = cmdData.input_count
-    message_topic = cmdData.input_topic
-    message_string = cmdData.input_message
+    message_count = args.input_count
+    message_topic = args.input_topic
+    message_string = args.input_message
 
-    # Create the proxy options if the data is present in cmdData
+    # Create the proxy options if the data is present in args
     proxy_options = None
-    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
+    if args.input_proxy_host is not None and args.input_proxy_port != 0:
         proxy_options = http.HttpProxyOptions(
-            host_name=cmdData.input_proxy_host,
-            port=cmdData.input_proxy_port)
+            host_name=args.input_proxy_host,
+            port=args.input_proxy_port)
 
     # Create MQTT5 client
     client = mqtt5_client_builder.mtls_from_path(
-        endpoint=cmdData.input_endpoint,
-        port=cmdData.input_port,
-        cert_filepath=cmdData.input_cert,
-        pri_key_filepath=cmdData.input_key,
-        ca_filepath=cmdData.input_ca,
+        endpoint=args.input_endpoint,
+        port=args.input_port,
+        cert_filepath=args.input_cert,
+        pri_key_filepath=args.input_key,
+        ca_filepath=args.input_ca,
         http_proxy_options=proxy_options,
         on_publish_received=on_publish_received,
         on_lifecycle_stopped=on_lifecycle_stopped,
         on_lifecycle_connection_success=on_lifecycle_connection_success,
         on_lifecycle_connection_failure=on_lifecycle_connection_failure,
-        client_id=cmdData.input_clientId)
+        client_id=args.input_clientId)
     print("MQTT5 Client Created")
 
     
@@ -128,7 +118,7 @@ if __name__ == '__main__':
     lifecycle_connect_success_data = future_connection_success.result(TIMEOUT)
     connack_packet = lifecycle_connect_success_data.connack_packet
     negotiated_settings = lifecycle_connect_success_data.negotiated_settings
-    print(f"Connected to endpoint:'{cmdData.input_endpoint}' with Client ID:'{cmdData.input_clientId}' with reason_code:{repr(connack_packet.reason_code)}")
+    print(f"Connected to endpoint:'{args.input_endpoint}' with Client ID:'{args.input_clientId}' with reason_code:{repr(connack_packet.reason_code)}")
 
     # Subscribe
 
