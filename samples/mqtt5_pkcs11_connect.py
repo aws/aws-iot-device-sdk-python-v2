@@ -1,17 +1,53 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
+# --------------------------------- ARGUMENT PARSING -----------------------------------------
+import argparse, uuid
+
+def parse_sample_input():
+    parser = argparse.ArgumentParser(
+        description="MQTT5 pub/sub sample (mTLS).",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+
+    # Connection / TLS
+    parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
+    parser.add_argument("--port", type=int, default=8883, dest="input_port", help="Port (8883 mTLS, 443 ALPN)")
+    parser.add_argument("--cert", required=True, dest="input_cert",
+                        help="Path to the certificate file to use during mTLS connection establishment")
+    parser.add_argument("--ca", dest="input_ca", help="Path to optional CA bundle (PEM)")
+
+    # Messaging
+    parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
+    parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
+    parser.add_argument("--count", default=5, dest="input_count",
+                        help="Messages to publish (0 = infinite)")
+
+    # Proxy (optional)
+    parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
+    parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
+
+    # Misc
+    parser.add_argument("--client-id", dest="input_clientId",
+                        default=f"test-{uuid.uuid4().hex[:8]}", help="Client ID")
+    
+    parser.add_argument("--pkcs11_lib", required=True, dest="input_pkcs11_lib_path", help="Path to PKCS#11 Library")
+    parser.add_argument("--pin", required=True, dest="input_pkcs11_user_pin", help="User PIN for logging into PKCS#11 token")
+    parser.add_argument("--token_label", dest="input_pkcs11_token_label", help="Label of the PKCS#11 token to use (optional).")
+    parser.add_argument("--slot_id", dest="input_pkcs11_slot_id", help="Slot ID containing the PKCS#11 token to use (optional).")
+    parser.add_argument("--key_label", dest="input_pkcs11_key_label", help="Label of private key on the PKCS#11 token (optional).")
+
+    return parser.parse_args()
+
+args = parse_sample_input()
+
+# --------------------------------- ARGUMENT PARSING END -----------------------------------------
+
 from awscrt import mqtt5, io
 from awsiot import mqtt5_client_builder
 from concurrent.futures import Future
-from utils.command_line_utils import CommandLineUtils
 
 TIMEOUT = 100
-
-# cmdData is the arguments/input from the command line placed into a single struct for
-# use in this sample. This handles all of the command line parsing, validating, etc.
-# See the Utils/CommandLineUtils for more information.
-cmdData = CommandLineUtils.parse_sample_input_mqtt5_pkcs11_connect()
 
 future_stopped = Future()
 future_connection_success = Future()
@@ -33,35 +69,35 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 if __name__ == '__main__':
     print("\nStarting MQTT5 pkcs11 connect Sample\n")
 
-    print(f"Loading PKCS#11 library '{cmdData.input_pkcs11_lib_path}' ...")
+    print(f"Loading PKCS#11 library '{args.input_pkcs11_lib_path}' ...")
     pkcs11_lib = io.Pkcs11Lib(
-        file=cmdData.input_pkcs11_lib_path,
+        file=args.input_pkcs11_lib_path,
         behavior=io.Pkcs11Lib.InitializeFinalizeBehavior.STRICT)
     print("Loaded!")
 
     pkcs11_slot_id = None
-    if (cmdData.input_pkcs11_slot_id is not None):
-        pkcs11_slot_id = int(cmdData.input_pkcs11_slot_id)
+    if (args.input_pkcs11_slot_id is not None):
+        pkcs11_slot_id = int(args.input_pkcs11_slot_id)
 
     # Create MQTT5 client
     client = mqtt5_client_builder.mtls_with_pkcs11(
         pkcs11_lib=pkcs11_lib,
-        user_pin=cmdData.input_pkcs11_user_pin,
+        user_pin=args.input_pkcs11_user_pin,
         slot_id=pkcs11_slot_id,
-        token_label=cmdData.input_pkcs11_token_label,
-        private_key_label=cmdData.input_pkcs11_key_label,
-        cert_filepath=cmdData.input_cert,
-        endpoint=cmdData.input_endpoint,
-        port=cmdData.input_port,
-        ca_filepath=cmdData.input_ca,
+        token_label=args.input_pkcs11_token_label,
+        private_key_label=args.input_pkcs11_key_label,
+        cert_filepath=args.input_cert,
+        endpoint=args.input_endpoint,
+        port=args.input_port,
+        ca_filepath=args.input_ca,
         on_lifecycle_stopped=on_lifecycle_stopped,
         on_lifecycle_connection_success=on_lifecycle_connection_success,
-        client_id=cmdData.input_clientId)
+        client_id=args.input_clientId)
 
     print("MQTT5 Client Created")
 
-    if not cmdData.input_is_ci:
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
+    if not args.input_is_ci:
+        print(f"Connecting to {args.input_endpoint} with client ID '{args.input_clientId}'...")
     else:
         print("Connecting to endpoint with client ID")
 

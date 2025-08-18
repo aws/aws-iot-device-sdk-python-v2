@@ -47,7 +47,7 @@ def parse_sample_input():
 
     return args
 
-cmdData = parse_sample_input()
+args = parse_sample_input()
 
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
@@ -76,33 +76,33 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 
 if __name__ == '__main__':
     # Create MQTT5 Client with a custom authorizer
-    if cmdData.input_use_websockets is None:        
+    if args.input_use_websockets is None:        
         client = mqtt5_client_builder.direct_with_custom_authorizer(
-            endpoint=cmdData.input_endpoint,
-            ca_filepath=cmdData.input_ca,
-            auth_username=cmdData.input_custom_auth_username,
-            auth_authorizer_name=cmdData.input_custom_authorizer_name,
-            auth_authorizer_signature=cmdData.input_custom_authorizer_signature,
-            auth_password=cmdData.input_custom_auth_password,
-            auth_token_key_name=cmdData.input_custom_authorizer_token_key_name,
-            auth_token_value=cmdData.input_custom_authorizer_token_value,
+            endpoint=args.input_endpoint,
+            ca_filepath=args.input_ca,
+            auth_username=args.input_custom_auth_username,
+            auth_authorizer_name=args.input_custom_authorizer_name,
+            auth_authorizer_signature=args.input_custom_authorizer_signature,
+            auth_password=args.input_custom_auth_password,
+            auth_token_key_name=args.input_custom_authorizer_token_key_name,
+            auth_token_value=args.input_custom_authorizer_token_value,
             on_lifecycle_stopped=on_lifecycle_stopped,
             on_lifecycle_connection_success=on_lifecycle_connection_success,
-            client_id=cmdData.input_clientId)
+            client_id=args.input_clientId)
     else:
         client = mqtt5_client_builder.websockets_with_custom_authorizer(
-            endpoint=cmdData.input_endpoint,
-            auth_username=cmdData.input_custom_auth_username,
-            auth_authorizer_name=cmdData.input_custom_authorizer_name,
-            auth_authorizer_signature=cmdData.input_custom_authorizer_signature,
-            auth_password=cmdData.input_custom_auth_password,
-            auth_token_key_name=cmdData.input_custom_authorizer_token_key_name,
-            auth_token_value=cmdData.input_custom_authorizer_token_value,
+            endpoint=args.input_endpoint,
+            auth_username=args.input_custom_auth_username,
+            auth_authorizer_name=args.input_custom_authorizer_name,
+            auth_authorizer_signature=args.input_custom_authorizer_signature,
+            auth_password=args.input_custom_auth_password,
+            auth_token_key_name=args.input_custom_authorizer_token_key_name,
+            auth_token_value=args.input_custom_authorizer_token_value,
             on_lifecycle_stopped=on_lifecycle_stopped,
             on_lifecycle_connection_success=on_lifecycle_connection_success,
-            client_id=cmdData.input_clientId)
+            client_id=args.input_clientId)
 
-    print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
+    print(f"Connecting to {args.input_endpoint} with client ID '{args.input_clientId}'...")
 
     client.start()
     future_connection_success.result(TIMEOUT)
