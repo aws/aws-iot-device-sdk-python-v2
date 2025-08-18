@@ -1,82 +1,21 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-# --------------------------------- ARGUMENT PARSING -----------------------------------------
-import argparse, uuid
-from pathlib import Path
-
-def _existing_file(p: str) -> str:
-    if p and not Path(p).exists():
-        raise argparse.ArgumentTypeError(f"file not found: {p}")
-    return p
-
-def _nonneg_int(s: str) -> int:
-    v = int(s)
-    if v < 0:
-        raise argparse.ArgumentTypeError("--count must be >= 0")
-    return v
-
-def parse_sample_input():
-    parser = argparse.ArgumentParser(
-        description="MQTT5 pub/sub sample (mTLS).",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-
-    # Connection / TLS
-    parser.add_argument("--port", type=int, default=8883, dest="input_port", help="Port (8883 mTLS, 443 ALPN)")
-    parser.add_argument("--cert", required=True, dest="input_cert", type=_existing_file, help="Client cert (PEM)")
-    parser.add_argument("--key", required=True, dest="input_key", type=_existing_file, help="Client private key (PEM)")
-    parser.add_argument("--ca", dest="input_ca", type=_existing_file, help="Optional CA bundle (PEM)")
-
-    # Messaging
-    parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
-    parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
-    parser.add_argument("--count", type=_nonneg_int, default=5, dest="input_count",
-                        help="Messages to publish (0 = infinite)")
-
-    # Proxy (optional)
-    parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
-    parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
-
-    # Misc
-    parser.add_argument("--client-id", dest="input_clientId",
-                        default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}", help="Client ID")
-    parser.add_argument("--ci", action="store_true", dest="input_is_ci", help="CI mode (less verbose)")
-    
-
-    parser.add_argument("--signing_region", required=True, dest="input_signing_region", 
-                        help="The signing region used for the websocket signer")
-    parser.add_argument("--thing_name", required=True, dest="input_thing_name",
-                         help="The name assigned to your IoT Thing")
-    parser.add_argument("--mode", dest="input_mode", default='both', 
-                        help="The operation mode (optional, default='both').\nModes:both, publish, subscribe")
-    parser.add_argument("--region", required=True, dest="input_region",
-                        help="The region to connect through.")
-    parser.add_argument("--max_pub_ops", dest="input_max_pub_ops", default=10,
-                        help="The maximum number of publish operations (optional, default='10').")
-    parser.add_argument("--print_discover_resp_only", dest="input_print_discovery_resp_only",
-                        help="(optional, default='False').", action="store_true", default=False)
-
-    return parser.parse_args()
-
-cmdData = parse_sample_input()
-
-# --------------------------------- ARGUMENT PARSING END -----------------------------------------
-
-import time, json
+import time
+import json
 from awscrt import io, http
 from awscrt.mqtt import QoS
 from awsiot.greengrass_discovery import DiscoveryClient
 from awsiot import mqtt_connection_builder
 
-# from utils.command_line_utils import CommandLineUtils
+from utils.command_line_utils import CommandLineUtils
 
 allowed_actions = ['both', 'publish', 'subscribe']
 
 # cmdData is the arguments/input from the command line placed into a single struct for
 # use in this sample. This handles all of the command line parsing, validating, etc.
 # See the Utils/CommandLineUtils for more information.
-# cmdData = CommandLineUtils.parse_sample_input_basic_discovery()
+cmdData = CommandLineUtils.parse_sample_input_basic_discovery()
 
 tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(cmdData.input_cert, cmdData.input_key)
 if (cmdData.input_ca is not None):
@@ -98,7 +37,10 @@ discovery_client = DiscoveryClient(
 resp_future = discovery_client.discover(cmdData.input_thing_name)
 discover_response = resp_future.result()
 
-print("Received a greengrass discovery result! Not showing result for possible data sensitivity.")
+if (cmdData.input_is_ci):
+    print("Received a greengrass discovery result! Not showing result in CI for possible data sensitivity.")
+else:
+    print(discover_response)
 
 if (cmdData.input_print_discovery_resp_only):
     exit(0)
