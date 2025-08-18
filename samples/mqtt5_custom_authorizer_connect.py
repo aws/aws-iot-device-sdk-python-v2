@@ -29,7 +29,6 @@ def parse_sample_input():
     parser.add_argument("--use_websockets", dest="input_use_websockets",
                         action="store_const", const=True, default=None,
                         help="Use WebSockets instead of direct TLS")
-    parser.add_argument("--use_websockets", dest="input_use_websockets")
 
     # Misc
     parser.add_argument("--client-id", dest="input_clientId",
