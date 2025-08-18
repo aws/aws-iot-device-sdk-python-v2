@@ -103,10 +103,7 @@ if __name__ == '__main__':
             on_lifecycle_connection_success=on_lifecycle_connection_success,
             client_id=cmdData.input_clientId)
 
-    if not cmdData.input_is_ci:
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
-    else:
-        print("Connecting to endpoint with client ID")
+    print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
 
     client.start()
     future_connection_success.result(TIMEOUT)
