@@ -17,13 +17,13 @@ def parse_sample_input():
                         help="The name to send when connecting through the custom authorizer (optional)")
     parser.add_argument("--custom_auth_authorizer_name", dest="input_custom_auth_authorizer_name",
                         help="The name of the custom authorizer to connect to (optional but required for everything but custom domains)")
-    parser.add_argument("--custom_auth_authorizer_signature", dest="input_custom_auth_authorizer_signature",
+    parser.add_argument("--custom_auth_authorizer_signature", dest="input_custom_authorizer_signature",
                         help="The signature to send when connecting through a custom authorizer (optional)")
     parser.add_argument("--custom_auth_password", dest="input_custom_auth_password",
                         help="The password to send when connecting through a custom authorizer (optional)")
-    parser.add_argument("--custom_auth_token_key_name", dest="input_custom_auth_token_key_name",
+    parser.add_argument("--custom_auth_token_key_name", dest="input_custom_authorizer_token_key_name",
                         help="Key used to extract the custom authorizer token (optional)")
-    parser.add_argument("--custom_auth_token_value", dest="input_custom_auth_token_value",
+    parser.add_argument("--custom_auth_token_value", dest="input_custom_authorizer_token_value",
                         help="The opaque token value for the custom authorizer (optional)")
     
     parser.add_argument("--use_websockets", dest="input_use_websockets",
