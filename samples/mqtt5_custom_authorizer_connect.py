@@ -13,8 +13,8 @@ def parse_sample_input():
     parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
     parser.add_argument("--ca", dest="input_ca", help="Path to optional CA bundle (PEM)")
 
-    parser.add_argument("--custom_auth_username", dest="input_custom_auth_username"
-                        required="", help="The name to send when connecting through the custom authorizer (optional)")
+    parser.add_argument("--custom_auth_username", dest="input_custom_auth_username",
+                        help="The name to send when connecting through the custom authorizer (optional)")
     parser.add_argument("--custom_auth_authorizer_name", dest="input_custom_auth_authorizer_name"
                         help="The name of the custom authorizer to connect to (optional but required for everything but custom domains)")
     parser.add_argument("--custom_auth_authorizer_signature", dest="input_custom_auth_authorizer_signature",
