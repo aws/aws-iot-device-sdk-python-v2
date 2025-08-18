@@ -354,7 +354,6 @@ jobs:
           echo "=== software.amazon.awssdk.sdk-gg-ipc.log"
           cat testResults/gg*/software.amazon.awssdk.sdk-gg-ipc.log
 
-
   # check that docs can still build
   check-docs:
     runs-on: ubuntu-22.04 # latest
