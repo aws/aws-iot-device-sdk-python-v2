@@ -42,7 +42,6 @@ def parse_sample_input():
     # Misc
     parser.add_argument("--client-id", dest="input_clientId",
                         default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}", help="Client ID")
-    parser.add_argument("--ci", action="store_true", dest="input_is_ci", help="CI mode (less verbose)")
 
     return parser.parse_args()
 
@@ -122,18 +121,14 @@ if __name__ == '__main__':
         client_id=cmdData.input_clientId)
     print("MQTT5 Client Created")
 
-    if not cmdData.input_is_ci:
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
-    else:
-        print("Connecting to endpoint with client ID")
+    
+    print("Connecting to endpoint with client ID")
 
     client.start()
     lifecycle_connect_success_data = future_connection_success.result(TIMEOUT)
     connack_packet = lifecycle_connect_success_data.connack_packet
     negotiated_settings = lifecycle_connect_success_data.negotiated_settings
-    if not cmdData.input_is_ci:
-        print(
-            f"Connected to endpoint:'{cmdData.input_endpoint}' with Client ID:'{cmdData.input_clientId}' with reason_code:{repr(connack_packet.reason_code)}")
+    print(f"Connected to endpoint:'{cmdData.input_endpoint}' with Client ID:'{cmdData.input_clientId}' with reason_code:{repr(connack_packet.reason_code)}")
 
     # Subscribe
 
