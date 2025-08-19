@@ -5,12 +5,7 @@ from awscrt import mqtt, mqtt5, http
 from awsiot import iotidentity, mqtt_connection_builder
 from awsiot import mqtt5_client_builder
 from concurrent.futures import Future
-import sys
-import threading
-import time
-import traceback
-import json
-# from utils.command_line_utils import CommandLineUtils
+import sys, threading, time, traceback, json
 
 # - Overview -
 # This sample uses the AWS IoT Fleet Provisioning to provision device using either the keys
@@ -25,10 +20,6 @@ import json
 # On startup, the script subscribes to topics based on the request type of either CSR or Keys
 # publishes the request to corresponding topic and calls RegisterThing.
 
-# cmdData is the arguments/input from the command line placed into a single struct for
-# use in this sample. This handles all of the command line parsing, validating, etc.
-# See the Utils/CommandLineUtils for more information.
-# cmdData = CommandLineUtils.parse_sample_input_fleet_provisioning()
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse, uuid
 

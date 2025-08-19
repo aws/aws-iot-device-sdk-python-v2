@@ -5,11 +5,8 @@ from time import sleep
 from awscrt import mqtt, mqtt5, http
 from awsiot import iotshadow, mqtt_connection_builder, mqtt5_client_builder
 from concurrent.futures import Future
-import sys
-import threading
-import traceback
+import sys, threading, traceback
 from uuid import uuid4
-from utils.command_line_utils import CommandLineUtils
 
 # - Overview -
 # This sample uses the AWS IoT Device Shadow Service to keep a property in
@@ -27,16 +24,49 @@ from utils.command_line_utils import CommandLineUtils
 # initial state. The Test subscribes to modified events from the server,
 # which are sent when a property's  value  changes
 
-# cmdData is the arguments/input from the command line placed into a single struct for
-# use in this sample. This handles all of the command line parsing, validating, etc.
-# See the Utils/CommandLineUtils for more information.
-cmdData = CommandLineUtils.parse_sample_input_shadow()
+# --------------------------------- ARGUMENT PARSING -----------------------------------------
+import argparse, uuid
+
+def parse_sample_input():
+    parser = argparse.ArgumentParser(
+        description="MQTT5 pub/sub sample (mTLS).",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+
+    # Connection / TLS
+    parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
+    parser.add_argument("--port", type=int, default=8883, dest="input_port", help="Port (8883 mTLS, 443 ALPN)")
+    parser.add_argument("--cert", required=True, dest="input_cert",
+                        help="Path to the certificate file to use during mTLS connection establishment")
+    parser.add_argument("--key", required=True, dest="input_key",
+                        help="Path to the private key file to use during mTLS connection establishment")
+    parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
+
+    # Proxy (optional)
+    parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
+    parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
+
+    # Misc
+    parser.add_argument("--client-id", dest="input_clientId",
+                        default=f"test-{uuid.uuid4().hex[:8]}", help="Client ID")
+    parser.add_argument("--mqtt_version", type=int, default=0, dest="input_mqtt_version", help="MQTT Version")
+    parser.add_argument("--thing_name", required=True, dest="input_thing_name", help="The name assigned to your IoT Thing.")
+    parser.add_argument("--shadow_property", dest="input_shadow_property", default="", 
+                        help="The name of the shadow property you want to change (optional, default=''")
+    parser.add_argument("--shadow_value", dest="input_shadow_value", help="The desired value of the shadow property you want to set (optional)")
+    parser.add_argument("--shadow_name", dest="input_shadow_name", default="", help="Shadow name (optional, default='')")
+
+    return parser.parse_args()
+
+args = parse_sample_input()
+
+# --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
 # Using globals to simplify sample code
 is_sample_done = threading.Event()
 mqtt_connection = None
-shadow_thing_name = cmdData.input_thing_name
-shadow_property = cmdData.input_shadow_property
+shadow_thing_name = args.input_thing_name
+shadow_property = args.input_shadow_property
 mqtt_qos = None
 
 # MQTT5 specific
@@ -67,7 +97,7 @@ def exit(msg_or_exception):
     with locked_data.lock:
         if not locked_data.disconnect_called:
             locked_data.disconnect_called = True
-            if cmdData.input_mqtt_version == 5:
+            if args.input_mqtt_version == 5:
                 print("Stop the client...")
                 mqtt5_client.stop()
             else:
@@ -211,7 +241,7 @@ def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
 def update_named_shadow():
     print("Updating named shadow")
     # named shadow here
-    named_shadow = cmdData.input_shadow_name
+    named_shadow = args.input_shadow_name
     try:
         # Subscribe to necessary topics.
         # Note that is **is** important to wait for "accepted/rejected" subscriptions
@@ -272,8 +302,8 @@ def update_named_shadow():
         subscribe_future.result()
 
         state=iotshadow.ShadowState(
-            reported={shadow_property: cmdData.input_shadow_value},
-            desired={shadow_property: cmdData.input_shadow_value},
+            reported={shadow_property: args.input_shadow_value},
+            desired={shadow_property: args.input_shadow_value},
             token=token)
 
         update_thing_update_future = shadow_client.publish_update_named_shadow(request = iotshadow.UpdateNamedShadowRequest
@@ -347,8 +377,8 @@ def update_shadow():
         subscribe_future.result()
 
         state=iotshadow.ShadowState(
-            reported={shadow_property: cmdData.input_shadow_value},
-            desired={shadow_property: cmdData.input_shadow_value},
+            reported={shadow_property: args.input_shadow_value},
+            desired={shadow_property: args.input_shadow_value},
             token=token)
 
         update_thing_update_future = shadow_client.publish_update_shadow(request = iotshadow.UpdateShadowRequest
@@ -362,27 +392,27 @@ def update_shadow():
 if __name__ == '__main__':
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
-    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
+    if args.input_proxy_host is not None and args.input_proxy_port != 0:
         proxy_options = http.HttpProxyOptions(
-            host_name=cmdData.input_proxy_host,
-            port=cmdData.input_proxy_port)
+            host_name=args.input_proxy_host,
+            port=args.input_proxy_port)
 
-    if cmdData.input_mqtt_version == 5:
+    if args.input_mqtt_version == 5:
         mqtt_qos = mqtt5.QoS.AT_LEAST_ONCE
         # Create a mqtt5 connection from the command line data
         mqtt5_client = mqtt5_client_builder.mtls_from_path(
-            endpoint=cmdData.input_endpoint,
-            port=cmdData.input_port,
-            cert_filepath=cmdData.input_cert,
-            pri_key_filepath=cmdData.input_key,
-            ca_filepath=cmdData.input_ca,
-            client_id=cmdData.input_clientId,
+            endpoint=args.input_endpoint,
+            port=args.input_port,
+            cert_filepath=args.input_cert,
+            pri_key_filepath=args.input_key,
+            ca_filepath=args.input_ca,
+            client_id=args.input_clientId,
             clean_session=False,
             keep_alive_secs=30,
             http_proxy_options=proxy_options,
             on_lifecycle_connection_success=on_lifecycle_connection_success,
             on_lifecycle_stopped=on_lifecycle_stopped)
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}' with MQTT5...")
+        print(f"Connecting to {args.input_endpoint} with client ID '{args.input_clientId}' with MQTT5...")
 
         mqtt5_client.start()
 
@@ -394,16 +424,16 @@ if __name__ == '__main__':
         # mqtt5_client before its fully connected will simply be queued.
         # But this sample waits here so it's obvious when a connection
         # fails or succeeds.
-    elif cmdData.input_mqtt_version == 3:
+    elif args.input_mqtt_version == 3:
         mqtt_qos = mqtt.QoS.AT_LEAST_ONCE
         # Create a MQTT connection from the command line data
         mqtt_connection = mqtt_connection_builder.mtls_from_path(
-            endpoint=cmdData.input_endpoint,
-            port=cmdData.input_port,
-            cert_filepath=cmdData.input_cert,
-            pri_key_filepath=cmdData.input_key,
-            ca_filepath=cmdData.input_ca,
-            client_id=cmdData.input_clientId,
+            endpoint=args.input_endpoint,
+            port=args.input_port,
+            cert_filepath=args.input_cert,
+            pri_key_filepath=args.input_key,
+            ca_filepath=args.input_ca,
+            client_id=args.input_clientId,
             clean_session=False,
             keep_alive_secs=30,
             http_proxy_options=proxy_options)
@@ -424,7 +454,7 @@ if __name__ == '__main__':
 
     print("Connected!")
 
-    if not cmdData.input_shadow_name:
+    if not args.input_shadow_name:
         update_shadow()
     else:
         update_named_shadow()
