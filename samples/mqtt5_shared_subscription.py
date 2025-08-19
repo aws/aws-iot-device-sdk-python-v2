@@ -1,12 +1,17 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
+from awsiot import mqtt5_client_builder
+from awscrt import mqtt5
+from concurrent.futures import Future
+import time, json
+
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse, uuid
 
 def parse_sample_input():
     parser = argparse.ArgumentParser(
-        description="MQTT5 pub/sub sample (mTLS).",
+        description="MQTT5 Shared Subscription Sample.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
@@ -17,13 +22,15 @@ def parse_sample_input():
                         help="Path to the certificate file to use during mTLS connection establishment")
     parser.add_argument("--key", required=True, dest="input_key",
                         help="Path to the private key file to use during mTLS connection establishment")
-    parser.add_argument("--ca", dest="input_ca", help="Path to optional CA bundle (PEM)")
+    parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
 
     # Messaging
     parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
     parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
     parser.add_argument("--count", default=5, dest="input_count",
                         help="Messages to publish (0 = infinite)")
+    parser.add_argument("--group_identifier", default="python-sample", dest="input_group_identifier", 
+                        help="The group identifier to use in the shared subscription (optional, default='python-sample').")
 
     # Proxy (optional)
     parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
@@ -32,22 +39,14 @@ def parse_sample_input():
     # Misc
     parser.add_argument("--client-id", dest="input_clientId", default=f"test-{uuid.uuid4().hex[:8]}", 
                         help="Client ID to use for MQTT5 connection (optional, default=None). Note that '1', '2', and '3' will be added for to the given clientIDs since this sample uses 3 clients.")
-    
-    parser.add_argument("--group_identifier", default="python-sample", dest="input_group_identifier", 
-                        help="The group identifier to use in the shared subscription (optional, default='python-sample').")
 
     return parser.parse_args()
 
+# args contains all the parsed commandline arguments used by the sample
 args = parse_sample_input()
 
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
-from awscrt import mqtt5
-from awsiot import mqtt5_client_builder
-import threading
-from concurrent.futures import Future
-import time
-import json
 
 # For the purposes of this sample, we need to associate certain variables with a particular MQTT5 client
 # and to do so we use this class to hold all the data for a particular client used in the sample.

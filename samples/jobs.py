@@ -1,15 +1,18 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import mqtt5, mqtt_request_response
 from awsiot import iotjobs, mqtt5_client_builder
+from awscrt import mqtt5, mqtt_request_response
 import boto3
 from concurrent.futures import Future
 from dataclasses import dataclass
 from typing import Optional
-import awsiot
+import awsiot, sys
+
+# --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse
-import sys
+
+# --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
 
 @dataclass

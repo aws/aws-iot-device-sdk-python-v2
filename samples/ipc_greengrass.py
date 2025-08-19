@@ -19,10 +19,7 @@ https://docs.aws.amazon.com/greengrass/v2/developerguide/interprocess-communicat
 
 """
 
-import json
-import time
-import os
-import sys
+import json, time, os, sys
 
 import awsiot.greengrasscoreipc
 import awsiot.greengrasscoreipc.model as model

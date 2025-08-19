@@ -1,11 +1,11 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-import time, json
-from awscrt import io, http
-from awscrt.mqtt import QoS
 from awsiot.greengrass_discovery import DiscoveryClient
 from awsiot import mqtt_connection_builder
+from awscrt import io, http
+from awscrt.mqtt import QoS
+import time, json
 
 allowed_actions = ['both', 'publish', 'subscribe']
 
@@ -14,10 +14,11 @@ import argparse, uuid
 
 def parse_sample_input():
     parser = argparse.ArgumentParser(
-        description="Greengrass basic discovery",
+        description="Greengrass Basic Discovery",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
+    # Connection / TLS
     parser.add_argument("--cert", required=True, dest="input_cert",
                         help="Path to the certificate file to use during mTLS connection establishment")
     parser.add_argument("--key", required=True, dest="input_key",
@@ -36,7 +37,7 @@ def parse_sample_input():
     parser.add_argument("--mode", default='both', dest="input_mode", 
                         help=f"The operation mode (optional, default='both').\nModes:{allowed_actions}")
 
-    # Proxy (optional)
+    # Proxy
     parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
     parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
 
@@ -46,9 +47,11 @@ def parse_sample_input():
 
     return parser.parse_args()
 
+# args contains all the parsed commandline arguments used by the sample
 args = parse_sample_input()
 
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
+
 
 tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.input_cert, args.input_key)
 if (args.input_ca is not None):

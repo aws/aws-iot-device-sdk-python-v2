@@ -1,12 +1,15 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import mqtt5, mqtt_request_response
 from awsiot import iotidentity, mqtt5_client_builder
+from awscrt import mqtt5, mqtt_request_response
 from concurrent.futures import Future
+import json, uuid
+
+# --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse
-import json
-import uuid
+
+# --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
 
 if __name__ == '__main__':
