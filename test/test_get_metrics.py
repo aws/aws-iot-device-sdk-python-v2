@@ -18,16 +18,6 @@ class TestImportlibMetadata(unittest.TestCase):
         awsiot.mqtt_connection_builder._metrics_str = None
         awsiot.mqtt5_client_builder._metrics_str = None
 
-    def test_importlib_metadata_available(self):
-        """Test that importlib.metadata is available and working"""
-        try:
-            # Test that we can import importlib.metadata
-            import importlib.metadata
-
-            self.assertTrue(True, "importlib.metadata is available")
-        except ImportError:
-            self.fail("importlib.metadata should be available in Python 3.8+")
-
     def test_metrics_string_generation_mqtt_connection_builder(self):
         """Test that mqtt_connection_builder uses importlib.metadata for version detection"""
         from awsiot import mqtt_connection_builder
@@ -132,18 +122,6 @@ class TestImportlibMetadata(unittest.TestCase):
         # Check that pkg_resources is not in the module's globals
         self.assertNotIn("pkg_resources", awsiot.mqtt_connection_builder.__dict__)
         self.assertNotIn("pkg_resources", awsiot.mqtt5_client_builder.__dict__)
-
-    def test_importlib_metadata_import(self):
-        """Test that importlib.metadata is properly imported in the modified files"""
-        # Check that importlib.metadata is available (though it might be imported locally)
-        # We can't directly check if it's imported since it's done inside the function
-        # But we can verify the function works with importlib.metadata
-        try:
-            import importlib.metadata
-
-            self.assertTrue(True, "importlib.metadata is available for import")
-        except ImportError:
-            self.fail("importlib.metadata should be available")
 
 
 if __name__ == "__main__":
