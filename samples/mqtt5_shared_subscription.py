@@ -9,41 +9,34 @@ import time, json
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse, uuid
 
-def parse_sample_input():
-    parser = argparse.ArgumentParser(
-        description="MQTT5 Shared Subscription Sample.",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-
-    # Connection / TLS
-    parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
-    parser.add_argument("--port", type=int, default=8883, dest="input_port", help="Port (8883 mTLS, 443 ALPN)")
-    parser.add_argument("--cert", required=True, dest="input_cert",
-                        help="Path to the certificate file to use during mTLS connection establishment")
-    parser.add_argument("--key", required=True, dest="input_key",
-                        help="Path to the private key file to use during mTLS connection establishment")
-    parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
-
-    # Messaging
-    parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
-    parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
-    parser.add_argument("--count", default=5, dest="input_count",
-                        help="Messages to publish (0 = infinite)")
-    parser.add_argument("--group_identifier", default="python-sample", dest="input_group_identifier", 
-                        help="The group identifier to use in the shared subscription (optional, default='python-sample').")
-
-    # Proxy (optional)
-    parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
-    parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
-
-    # Misc
-    parser.add_argument("--client-id", dest="input_clientId", default=f"test-{uuid.uuid4().hex[:8]}", 
-                        help="Client ID to use for MQTT5 connection (optional, default=None). Note that '1', '2', and '3' will be added for to the given clientIDs since this sample uses 3 clients.")
-
-    return parser.parse_args()
+parser = argparse.ArgumentParser(
+    description="MQTT5 Shared Subscription Sample.",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+)
+# Connection / TLS
+parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
+parser.add_argument("--port", type=int, default=8883, dest="input_port", help="Port (8883 mTLS, 443 ALPN)")
+parser.add_argument("--cert", required=True, dest="input_cert",
+                    help="Path to the certificate file to use during mTLS connection establishment")
+parser.add_argument("--key", required=True, dest="input_key",
+                    help="Path to the private key file to use during mTLS connection establishment")
+parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
+# Messaging
+parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
+parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
+parser.add_argument("--count", default=5, dest="input_count",
+                    help="Messages to publish (0 = infinite)")
+parser.add_argument("--group_identifier", default="python-sample", dest="input_group_identifier", 
+                    help="The group identifier to use in the shared subscription (optional, default='python-sample').")
+# Proxy (optional)
+parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
+parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
+# Misc
+parser.add_argument("--client-id", dest="input_clientId", default=f"test-{uuid.uuid4().hex[:8]}", 
+                    help="Client ID to use for MQTT5 connection (optional, default=None). Note that '1', '2', and '3' will be added for to the given clientIDs since this sample uses 3 clients.")
 
 # args contains all the parsed commandline arguments used by the sample
-args = parse_sample_input()
+args = parser.parse_args()
 
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 

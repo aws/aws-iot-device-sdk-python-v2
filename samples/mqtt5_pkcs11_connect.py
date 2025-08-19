@@ -8,44 +8,36 @@ from concurrent.futures import Future
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse, uuid
 
-def parse_sample_input():
-    parser = argparse.ArgumentParser(
-        description="MQTT5 PKCS11 Sample.",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-
-    # Connection / TLS
-    parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
-    parser.add_argument("--port", type=int, default=8883, dest="input_port", help="Port (8883 mTLS, 443 ALPN)")
-    parser.add_argument("--cert", required=True, dest="input_cert",
-                        help="Path to the certificate file to use during mTLS connection establishment")
-    parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
-
-    # PKCS11
-    parser.add_argument("--pkcs11_lib", required=True, dest="input_pkcs11_lib_path", help="Path to PKCS#11 Library")
-    parser.add_argument("--pin", required=True, dest="input_pkcs11_user_pin", help="User PIN for logging into PKCS#11 token")
-    parser.add_argument("--token_label", dest="input_pkcs11_token_label", help="Label of the PKCS#11 token to use (optional).")
-    parser.add_argument("--slot_id", dest="input_pkcs11_slot_id", help="Slot ID containing the PKCS#11 token to use (optional).")
-    parser.add_argument("--key_label", dest="input_pkcs11_key_label", help="Label of private key on the PKCS#11 token (optional).")
-
-    # Messaging
-    parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
-    parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
-    parser.add_argument("--count", default=5, dest="input_count",
-                        help="Messages to publish (0 = infinite)")
-
-    # Proxy (optional)
-    parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
-    parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
-
-    # Misc
-    parser.add_argument("--client-id", dest="input_clientId",
-                        default=f"test-{uuid.uuid4().hex[:8]}", help="Client ID")
-
-    return parser.parse_args()
+parser = argparse.ArgumentParser(
+    description="MQTT5 PKCS11 Sample.",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+)
+# Connection / TLS
+parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
+parser.add_argument("--port", type=int, default=8883, dest="input_port", help="Port (8883 mTLS, 443 ALPN)")
+parser.add_argument("--cert", required=True, dest="input_cert",
+                    help="Path to the certificate file to use during mTLS connection establishment")
+parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
+# PKCS11
+parser.add_argument("--pkcs11_lib", required=True, dest="input_pkcs11_lib_path", help="Path to PKCS#11 Library")
+parser.add_argument("--pin", required=True, dest="input_pkcs11_user_pin", help="User PIN for logging into PKCS#11 token")
+parser.add_argument("--token_label", dest="input_pkcs11_token_label", help="Label of the PKCS#11 token to use (optional).")
+parser.add_argument("--slot_id", dest="input_pkcs11_slot_id", help="Slot ID containing the PKCS#11 token to use (optional).")
+parser.add_argument("--key_label", dest="input_pkcs11_key_label", help="Label of private key on the PKCS#11 token (optional).")
+# Messaging
+parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
+parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
+parser.add_argument("--count", default=5, dest="input_count",
+                    help="Messages to publish (0 = infinite)")
+# Proxy (optional)
+parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
+parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
+# Misc
+parser.add_argument("--client-id", dest="input_clientId",
+                    default=f"test-{uuid.uuid4().hex[:8]}", help="Client ID")
 
 # args contains all the parsed commandline arguments used by the sample
-args = parse_sample_input()
+args = parser.parse_args()
 
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 

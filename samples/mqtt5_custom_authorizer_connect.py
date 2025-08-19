@@ -8,52 +8,36 @@ from concurrent.futures import Future
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse, uuid
 
-def parse_sample_input():
-    parser = argparse.ArgumentParser(
-        description="MQTT5 Custom Authorizer Sample.",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
 
-    # Connection
-    parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
-    parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
-    parser.add_argument("--use_websockets", dest="input_use_websockets",
-                        action="store_const", const=True, default=None,
-                        help="Use WebSockets instead of direct TLS")
-
-    # Custom Auth
-    parser.add_argument("--custom_auth_username", dest="input_custom_auth_username",
-                        help="The name to send when connecting through the custom authorizer (optional)")
-    parser.add_argument("--custom_auth_authorizer_name", dest="input_custom_authorizer_name",
-                        help="The name of the custom authorizer to connect to (optional but required for everything but custom domains)")
-    parser.add_argument("--custom_auth_authorizer_signature", dest="input_custom_authorizer_signature",
-                        help="The signature to send when connecting through a custom authorizer (optional)")
-    parser.add_argument("--custom_auth_password", dest="input_custom_auth_password",
-                        help="The password to send when connecting through a custom authorizer (optional)")
-    parser.add_argument("--custom_auth_token_key_name", dest="input_custom_authorizer_token_key_name",
-                        help="Key used to extract the custom authorizer token (optional)")
-    parser.add_argument("--custom_auth_token_value", dest="input_custom_authorizer_token_value",
-                        help="The opaque token value for the custom authorizer (optional)")
-
-    # Misc
-    parser.add_argument("--client-id", dest="input_clientId",
-                        default=f"test-{uuid.uuid4().hex[:8]}", help="Client ID")
-    
-    args = parser.parse_args()
-
-    # Validate custom-authorizer inputs:
-    # Either provide --custom-auth-username, OR provide signature + token key + token value.
-    has_username = bool(args.input_custom_auth_username)
-    has_token_triplet = all([
-        args.input_custom_authorizer_signature,
-        args.input_custom_authorizer_token_key_name,
-        args.input_custom_authorizer_token_value,
-    ])
-
-    return args
+parser = argparse.ArgumentParser(
+    description="MQTT5 Custom Authorizer Sample.",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+)
+# Connection
+parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
+parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
+parser.add_argument("--use_websockets", dest="input_use_websockets",
+                    action="store_const", const=True, default=None,
+                    help="Use WebSockets instead of direct TLS")
+# Custom Auth
+parser.add_argument("--custom_auth_username", dest="input_custom_auth_username",
+                    help="The name to send when connecting through the custom authorizer (optional)")
+parser.add_argument("--custom_auth_authorizer_name", dest="input_custom_authorizer_name",
+                    help="The name of the custom authorizer to connect to (optional but required for everything but custom domains)")
+parser.add_argument("--custom_auth_authorizer_signature", dest="input_custom_authorizer_signature",
+                    help="The signature to send when connecting through a custom authorizer (optional)")
+parser.add_argument("--custom_auth_password", dest="input_custom_auth_password",
+                    help="The password to send when connecting through a custom authorizer (optional)")
+parser.add_argument("--custom_auth_token_key_name", dest="input_custom_authorizer_token_key_name",
+                    help="Key used to extract the custom authorizer token (optional)")
+parser.add_argument("--custom_auth_token_value", dest="input_custom_authorizer_token_value",
+                    help="The opaque token value for the custom authorizer (optional)")
+# Misc
+parser.add_argument("--client-id", dest="input_clientId",
+                    default=f"test-{uuid.uuid4().hex[:8]}", help="Client ID")
 
 # args contains all the parsed commandline arguments used by the sample
-args = parse_sample_input()
+args = parser.parse_args()
 
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
