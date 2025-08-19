@@ -1,28 +1,20 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-import time
-import json
+import time, json
 from awscrt import io, http
 from awscrt.mqtt import QoS
 from awsiot.greengrass_discovery import DiscoveryClient
 from awsiot import mqtt_connection_builder
 
-# from utils.command_line_utils import CommandLineUtils
-
 allowed_actions = ['both', 'publish', 'subscribe']
-
-# cmdData is the arguments/input from the command line placed into a single struct for
-# use in this sample. This handles all of the command line parsing, validating, etc.
-# See the Utils/CommandLineUtils for more information.
-# cmdData = CommandLineUtils.parse_sample_input_basic_discovery()
 
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse, uuid
 
 def parse_sample_input():
     parser = argparse.ArgumentParser(
-        description="MQTT5 pub/sub sample (mTLS).",
+        description="Greengrass basic discovery",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
@@ -57,8 +49,6 @@ def parse_sample_input():
 args = parse_sample_input()
 
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
-
-# [--mode <mode>]
 
 tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.input_cert, args.input_key)
 if (args.input_ca is not None):
