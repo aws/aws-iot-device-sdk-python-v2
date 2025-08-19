@@ -12,6 +12,18 @@ import awsiot, sys
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse
 
+parser = argparse.ArgumentParser(
+    description="AWS IoT Jobs sandbox application")
+parser.add_argument('--endpoint', required=True, help="AWS IoT endpoint to connect to")
+parser.add_argument('--cert', required=True,
+                    help="Path to the certificate file to use during mTLS connection establishment")
+parser.add_argument('--key', required=True,
+                    help="Path to the private key file to use during mTLS connection establishment")
+parser.add_argument('--thing', required=True,
+                    help="Name of the IoT thing to interact with")
+parser.add_argument('--region', required=True,
+                    help="AWS region to use.  Must match the endpoint region.")
+args = parser.parse_args()
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
 
@@ -113,20 +125,6 @@ def create_thing_if_needed(context: SampleContext):
     print(f"Thing {context.thing} successfully created with arn {context.thing_arn}")
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description="AWS IoT Jobs sandbox application")
-    parser.add_argument('--endpoint', required=True, help="AWS IoT endpoint to connect to")
-    parser.add_argument('--cert', required=True,
-                        help="Path to the certificate file to use during mTLS connection establishment")
-    parser.add_argument('--key', required=True,
-                        help="Path to the private key file to use during mTLS connection establishment")
-    parser.add_argument('--thing', required=True,
-                        help="Name of the IoT thing to interact with")
-    parser.add_argument('--region', required=True,
-                        help="AWS region to use.  Must match the endpoint region.")
-
-    args = parser.parse_args()
-
     initial_connection_success = Future()
     def on_lifecycle_connection_success(event: mqtt5.LifecycleConnectSuccessData):
         initial_connection_success.set_result(True)

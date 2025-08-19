@@ -37,7 +37,6 @@ parser.add_argument("--client-id", dest="input_clientId", default=f"test-{uuid.u
 
 # args contains all the parsed commandline arguments used by the sample
 args = parser.parse_args()
-
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
 

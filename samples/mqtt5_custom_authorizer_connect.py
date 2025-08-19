@@ -8,7 +8,6 @@ from concurrent.futures import Future
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse, uuid
 
-
 parser = argparse.ArgumentParser(
     description="MQTT5 Custom Authorizer Sample.",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -38,7 +37,6 @@ parser.add_argument("--client-id", dest="input_clientId",
 
 # args contains all the parsed commandline arguments used by the sample
 args = parser.parse_args()
-
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
 

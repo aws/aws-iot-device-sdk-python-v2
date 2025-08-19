@@ -16,7 +16,6 @@ parser = argparse.ArgumentParser(
     description="Greengrass Basic Discovery",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
-
 # Connection / TLS
 parser.add_argument("--cert", required=True, dest="input_cert",
                     help="Path to the certificate file to use during mTLS connection establishment")
@@ -43,7 +42,6 @@ parser.add_argument("--client-id", dest="input_clientId",
 
 # args contains all the parsed commandline arguments used by the sample
 args = parser.parse_args()
-
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
 

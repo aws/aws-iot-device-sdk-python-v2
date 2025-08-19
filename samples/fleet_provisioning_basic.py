@@ -9,24 +9,24 @@ import json, uuid
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse
 
+parser = argparse.ArgumentParser(
+    description="AWS IoT Basic Fleet Provisioning sample application")
+parser.add_argument('--endpoint', required=True, help="AWS IoT endpoint to connect to")
+parser.add_argument('--cert', required=True,
+                    help="Path to the certificate file to use during mTLS connection establishment")
+parser.add_argument('--key', required=True,
+                    help="Path to the private key file to use during mTLS connection establishment")
+parser.add_argument('--template_name', required=True,
+                    help="Name of the provisioning template to use")
+parser.add_argument('--template_parameters', required=False,
+                    help="JSON map of substitution parameters for the provisioning template")
+
+# args contains all the parsed commandline arguments used by the sample
+args = parser.parse_args()
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description="AWS IoT Basic Fleet Provisioning sample application")
-    parser.add_argument('--endpoint', required=True, help="AWS IoT endpoint to connect to")
-    parser.add_argument('--cert', required=True,
-                        help="Path to the certificate file to use during mTLS connection establishment")
-    parser.add_argument('--key', required=True,
-                        help="Path to the private key file to use during mTLS connection establishment")
-    parser.add_argument('--template_name', required=True,
-                        help="Name of the provisioning template to use")
-    parser.add_argument('--template_parameters', required=False,
-                        help="JSON map of substitution parameters for the provisioning template")
-
-    args = parser.parse_args()
-
     initial_connection_success = Future()
     def on_lifecycle_connection_success(event: mqtt5.LifecycleConnectSuccessData):
         initial_connection_success.set_result(True)

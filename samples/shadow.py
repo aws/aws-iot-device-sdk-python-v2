@@ -10,8 +10,18 @@ import awsiot, json, sys
 
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
 import argparse
-# --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
+parser = argparse.ArgumentParser(
+    description="AWS IoT Shadow sandbox application")
+parser.add_argument('--endpoint', required=True, help="AWS IoT endpoint to connect to")
+parser.add_argument('--cert', required=True,
+                    help="Path to the certificate file to use during mTLS connection establishment")
+parser.add_argument('--key', required=True,
+                    help="Path to the private key file to use during mTLS connection establishment")
+parser.add_argument('--thing', required=True,
+                    help="Name of the IoT thing to interact with")
+args = parser.parse_args()
+# --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
 
 @dataclass
@@ -76,18 +86,6 @@ def handle_input(context : SampleContext, line: str):
     return False
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description="AWS IoT Shadow sandbox application")
-    parser.add_argument('--endpoint', required=True, help="AWS IoT endpoint to connect to")
-    parser.add_argument('--cert', required=True,
-                        help="Path to the certificate file to use during mTLS connection establishment")
-    parser.add_argument('--key', required=True,
-                        help="Path to the private key file to use during mTLS connection establishment")
-    parser.add_argument('--thing', required=True,
-                        help="Name of the IoT thing to interact with")
-
-    args = parser.parse_args()
-
     initial_connection_success = Future()
     def on_lifecycle_connection_success(event: mqtt5.LifecycleConnectSuccessData):
         initial_connection_success.set_result(True)
