@@ -10,7 +10,7 @@ import threading
 import time
 import traceback
 import json
-from utils.command_line_utils import CommandLineUtils
+# from utils.command_line_utils import CommandLineUtils
 
 # - Overview -
 # This sample uses the AWS IoT Fleet Provisioning to provision device using either the keys
@@ -28,7 +28,46 @@ from utils.command_line_utils import CommandLineUtils
 # cmdData is the arguments/input from the command line placed into a single struct for
 # use in this sample. This handles all of the command line parsing, validating, etc.
 # See the Utils/CommandLineUtils for more information.
-cmdData = CommandLineUtils.parse_sample_input_fleet_provisioning()
+# cmdData = CommandLineUtils.parse_sample_input_fleet_provisioning()
+# --------------------------------- ARGUMENT PARSING -----------------------------------------
+import argparse, uuid
+
+def parse_sample_input():
+    parser = argparse.ArgumentParser(
+        description="MQTT5 pub/sub sample (mTLS).",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+
+    # Connection / TLS
+    parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
+    parser.add_argument("--port", type=int, default=8883, dest="input_port", help="Port (8883 mTLS, 443 ALPN)")
+    parser.add_argument("--cert", required=True, dest="input_cert",
+                        help="Path to the certificate file to use during mTLS connection establishment")
+    parser.add_argument("--key", required=True, dest="input_key",
+                        help="Path to the private key file to use during mTLS connection establishment")
+    parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
+
+    # Proxy (optional)
+    parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
+    parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
+
+    # Misc
+    parser.add_argument("--client-id", dest="input_clientId",
+                        default=f"test-{uuid.uuid4().hex[:8]}", help="Client ID")
+    parser.add_argument("--mqtt_version", type=int, default=0, dest="input_mqtt_version", help="MQTT Version")
+    parser.add_argument("--csr", dest="input_csr_path", help="Path to CSR in Pem format (optional).")
+    parser.add_argument("--template_name", dest="input_template_name", help="The name of your provisioning template.")
+    parser.add_argument("--template_parameters", dest="input_template_parameters", help="Template parameters json.")
+
+    return parser.parse_args()
+
+args = parse_sample_input()
+
+# --------------------------------- ARGUMENT PARSING END -----------------------------------------
+
+# [--csr <path>] 
+# [--template_name <str>] 
+# [--template_parameters <json>]
 
 # MQTT5 specific
 mqtt5_client = None
@@ -63,7 +102,7 @@ def exit(msg_or_exception):
         if not locked_data.disconnect_called:
             print("Disconnecting...")
             locked_data.disconnect_called = True
-            if cmdData.input_mqtt_version == 5:
+            if args.input_mqtt_version == 5:
                 mqtt5_client.stop()
             else:
                 future = mqtt_connection.disconnect()
@@ -234,27 +273,27 @@ def on_lifecycle_stopped(lifecycle_stopped_data: mqtt5.LifecycleStoppedData):
 if __name__ == '__main__':
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
-    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
+    if args.input_proxy_host is not None and args.input_proxy_port != 0:
         proxy_options = http.HttpProxyOptions(
-            host_name=cmdData.input_proxy_host,
-            port=cmdData.input_proxy_port)
+            host_name=args.input_proxy_host,
+            port=args.input_proxy_port)
 
-    if cmdData.input_mqtt_version == 5:
+    if args.input_mqtt_version == 5:
         mqtt_qos = mqtt5.QoS.AT_LEAST_ONCE
         # Create a mqtt5 connection from the command line data
         mqtt5_client = mqtt5_client_builder.mtls_from_path(
-            endpoint=cmdData.input_endpoint,
-            port=cmdData.input_port,
-            cert_filepath=cmdData.input_cert,
-            pri_key_filepath=cmdData.input_key,
-            ca_filepath=cmdData.input_ca,
-            client_id=cmdData.input_clientId,
+            endpoint=args.input_endpoint,
+            port=args.input_port,
+            cert_filepath=args.input_cert,
+            pri_key_filepath=args.input_key,
+            ca_filepath=args.input_ca,
+            client_id=args.input_clientId,
             clean_session=False,
             keep_alive_secs=30,
             http_proxy_options=proxy_options,
             on_lifecycle_connection_success=on_lifecycle_connection_success,
             on_lifecycle_stopped=on_lifecycle_stopped)
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}' with MQTT5...")
+        print(f"Connecting to {args.input_endpoint} with client ID '{args.input_clientId}' with MQTT5...")
 
         mqtt5_client.start()
 
@@ -267,22 +306,22 @@ if __name__ == '__main__':
         # fails or succeeds.
         future_connection_success.result()
 
-    elif cmdData.input_mqtt_version == 3:
+    elif args.input_mqtt_version == 3:
         mqtt_qos = mqtt.QoS.AT_LEAST_ONCE
         # Create a MQTT connection from the command line data
         mqtt_connection = mqtt_connection_builder.mtls_from_path(
-            endpoint=cmdData.input_endpoint,
-            port=cmdData.input_port,
-            cert_filepath=cmdData.input_cert,
-            pri_key_filepath=cmdData.input_key,
-            ca_filepath=cmdData.input_ca,
+            endpoint=args.input_endpoint,
+            port=args.input_port,
+            cert_filepath=args.input_cert,
+            pri_key_filepath=args.input_key,
+            ca_filepath=args.input_ca,
             on_connection_interrupted=on_connection_interrupted,
             on_connection_resumed=on_connection_resumed,
-            client_id=cmdData.input_clientId,
+            client_id=args.input_clientId,
             clean_session=False,
             keep_alive_secs=30,
             http_proxy_options=proxy_options)
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}' with MQTT5...")
+        print(f"Connecting to {args.input_endpoint} with client ID '{args.input_clientId}' with MQTT5...")
 
         connected_future = mqtt_connection.connect()
 
@@ -306,7 +345,7 @@ if __name__ == '__main__':
         # to succeed before publishing the corresponding "request".
 
         # Keys workflow if csr is not provided
-        if cmdData.input_csr_path is None:
+        if args.input_csr_path is None:
             createkeysandcertificate_subscription_request = iotidentity.CreateKeysAndCertificateSubscriptionRequest()
 
             createkeysandcertificate_subscribed_accepted_future, _ = identity_client.subscribe_to_create_keys_and_certificate_accepted(
@@ -344,7 +383,7 @@ if __name__ == '__main__':
             createcertificatefromcsr_subscribed_rejected_future.result()
 
         registerthing_subscription_request = iotidentity.RegisterThingSubscriptionRequest(
-            template_name=cmdData.input_template_name)
+            template_name=args.input_template_name)
 
         registerthing_subscribed_accepted_future, _ = identity_client.subscribe_to_register_thing_accepted(
             request=registerthing_subscription_request,
@@ -361,9 +400,9 @@ if __name__ == '__main__':
         # Wait for subscription to succeed
         registerthing_subscribed_rejected_future.result()
 
-        fleet_template_name = cmdData.input_template_name
-        fleet_template_parameters = cmdData.input_template_parameters
-        if cmdData.input_csr_path is None:
+        fleet_template_name = args.input_template_name
+        fleet_template_parameters = args.input_template_parameters
+        if args.input_csr_path is None:
             publish_future = identity_client.publish_create_keys_and_certificate(
                 request=iotidentity.CreateKeysAndCertificateRequest(), qos=mqtt_qos)
             publish_future.add_done_callback(on_publish_create_keys_and_certificate)
@@ -378,7 +417,7 @@ if __name__ == '__main__':
                 certificate_ownership_token=createKeysAndCertificateResponse.certificate_ownership_token,
                 parameters=json.loads(fleet_template_parameters))
         else:
-            csrPath = open(cmdData.input_csr_path, 'r').read()
+            csrPath = open(args.input_csr_path, 'r').read()
             publish_future = identity_client.publish_create_certificate_from_csr(
                 request=iotidentity.CreateCertificateFromCsrRequest(certificate_signing_request=csrPath),
                 qos=mqtt_qos)
