@@ -1,13 +1,44 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-from awscrt import mqtt5
 from awsiot import mqtt5_client_builder
-import threading
+from awscrt import mqtt5
 from concurrent.futures import Future
-import time
-import json
-from utils.command_line_utils import CommandLineUtils
+import time, json
+
+# --------------------------------- ARGUMENT PARSING -----------------------------------------
+import argparse, uuid
+
+parser = argparse.ArgumentParser(
+    description="MQTT5 Shared Subscription Sample.",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+)
+# Connection / TLS
+parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
+parser.add_argument("--port", type=int, default=8883, dest="input_port", help="Port (8883 mTLS, 443 ALPN)")
+parser.add_argument("--cert", required=True, dest="input_cert",
+                    help="Path to the certificate file to use during mTLS connection establishment")
+parser.add_argument("--key", required=True, dest="input_key",
+                    help="Path to the private key file to use during mTLS connection establishment")
+parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
+# Messaging
+parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
+parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
+parser.add_argument("--count", default=5, dest="input_count",
+                    help="Messages to publish (0 = infinite)")
+parser.add_argument("--group_identifier", default="python-sample", dest="input_group_identifier", 
+                    help="The group identifier to use in the shared subscription (optional, default='python-sample').")
+# Proxy (optional)
+parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
+parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
+# Misc
+parser.add_argument("--client-id", dest="input_clientId", default=f"test-{uuid.uuid4().hex[:8]}", 
+                    help="Client ID to use for MQTT5 connection (optional, default=None). Note that '1', '2', and '3' will be added for to the given clientIDs since this sample uses 3 clients.")
+
+# args contains all the parsed commandline arguments used by the sample
+args = parser.parse_args()
+# --------------------------------- ARGUMENT PARSING END -----------------------------------------
+
 
 # For the purposes of this sample, we need to associate certain variables with a particular MQTT5 client
 # and to do so we use this class to hold all the data for a particular client used in the sample.
@@ -89,27 +120,21 @@ class sample_mqtt5_client:
                 # Stop the client, which will interrupt the subscription and stop the sample
                 self.client.stop()
 
-
-# cmdData is the arguments/input from the command line placed into a single struct for
-# use in this sample. This handles all of the command line parsing, validating, etc.
-# See the Utils/CommandLineUtils for more information.
-cmdData = CommandLineUtils.parse_sample_input_mqtt5_shared_subscription()
-
 # Construct the shared topic
-input_shared_topic = f"$share/{cmdData.input_group_identifier}/{cmdData.input_topic}"
+input_shared_topic = f"$share/{args.input_group_identifier}/{args.input_topic}"
 
 if __name__ == '__main__':
     try:
         # Create the MQTT5 clients: one publisher and two subscribers
         publisher = sample_mqtt5_client(
-            cmdData.input_endpoint, cmdData.input_cert, cmdData.input_key, cmdData.input_ca,
-            cmdData.input_clientId + "1", "Publisher")
+            args.input_endpoint, args.input_cert, args.input_key, args.input_ca,
+            args.input_clientId + "1", "Publisher")
         subscriber_one = sample_mqtt5_client(
-            cmdData.input_endpoint, cmdData.input_cert, cmdData.input_key, cmdData.input_ca,
-            cmdData.input_clientId + "2", "Subscriber One")
+            args.input_endpoint, args.input_cert, args.input_key, args.input_ca,
+            args.input_clientId + "2", "Subscriber One")
         subscriber_two = sample_mqtt5_client(
-            cmdData.input_endpoint, cmdData.input_cert, cmdData.input_key, cmdData.input_ca,
-            cmdData.input_clientId + "3", "Subscriber Two")
+            args.input_endpoint, args.input_cert, args.input_key, args.input_ca,
+            args.input_clientId + "3", "Subscriber Two")
 
         # Connect all the clients
         publisher.client.start()
@@ -130,20 +155,20 @@ if __name__ == '__main__':
         )
         subscribe_one_future = subscriber_one.client.subscribe(subscribe_packet)
         suback_one = subscribe_one_future.result(60)
-        print(f"[{subscriber_one.name}]: Subscribed to topic '{cmdData.input_topic}' in shared subscription group '{cmdData.input_group_identifier}'.")
+        print(f"[{subscriber_one.name}]: Subscribed to topic '{args.input_topic}' in shared subscription group '{args.input_group_identifier}'.")
         print(f"[{subscriber_one.name}]: Full subscribed topic is: '{input_shared_topic}' with SubAck code: {suback_one.reason_codes}")
         subscribe_two_future = subscriber_two.client.subscribe(subscribe_packet)
         suback_two = subscribe_two_future.result(60)
-        print(f"[{subscriber_two.name}]: Subscribed to topic '{cmdData.input_topic}' in shared subscription group '{cmdData.input_group_identifier}'.")
+        print(f"[{subscriber_two.name}]: Subscribed to topic '{args.input_topic}' in shared subscription group '{args.input_group_identifier}'.")
         print(f"[{subscriber_two.name}]: Full subscribed topic is: '{input_shared_topic}' with SubAck code: {suback_two.reason_codes}")
 
         # Publish using the publisher client
-        if (cmdData.input_count > 0):
+        if (args.input_count > 0):
             publish_count = 1
-            while (publish_count <= cmdData.input_count):
-                publish_message = f"{cmdData.input_message} [{publish_count}]"
+            while (publish_count <= args.input_count):
+                publish_message = f"{args.input_message} [{publish_count}]"
                 publish_future = publisher.client.publish(mqtt5.PublishPacket(
-                    topic=cmdData.input_topic,
+                    topic=args.input_topic,
                     payload=json.dumps(publish_message),
                     qos=mqtt5.QoS.AT_LEAST_ONCE
                 ))
@@ -161,11 +186,11 @@ if __name__ == '__main__':
         unsubscribe_packet = mqtt5.UnsubscribePacket(topic_filters=[input_shared_topic])
         unsubscribe_one_future = subscriber_one.client.unsubscribe(unsubscribe_packet)
         unsuback_one = unsubscribe_one_future.result(60)
-        print(f"[{subscriber_one.name}]: Unsubscribed to topic '{cmdData.input_topic}' in shared subscription group '{cmdData.input_group_identifier}'.")
+        print(f"[{subscriber_one.name}]: Unsubscribed to topic '{args.input_topic}' in shared subscription group '{args.input_group_identifier}'.")
         print(f"[{subscriber_one.name}]: Full unsubscribed topic is: '{input_shared_topic}' with UnsubAck code: {unsuback_one.reason_codes}")
         unsubscribe_two_future = subscriber_two.client.unsubscribe(unsubscribe_packet)
         unsuback_two = unsubscribe_two_future.result(60)
-        print(f"[{subscriber_two.name}]: Unsubscribed to topic '{cmdData.input_topic}' in shared subscription group '{cmdData.input_group_identifier}'.")
+        print(f"[{subscriber_two.name}]: Unsubscribed to topic '{args.input_topic}' in shared subscription group '{args.input_group_identifier}'.")
         print(f"[{subscriber_two.name}]: Full unsubscribed topic is: '{input_shared_topic}' with UnsubAck code {unsuback_two.reason_codes}")
 
         # Disconnect all the clients

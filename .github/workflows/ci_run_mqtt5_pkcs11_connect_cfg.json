@@ -34,10 +34,6 @@
         {
             "name": "--key_label",
             "data": "my-key"
-        },
-        {
-            "name": "--is_ci",
-            "data": "true"
         }
     ]
 }

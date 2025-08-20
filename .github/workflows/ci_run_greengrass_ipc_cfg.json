@@ -11,10 +11,6 @@
         {
             "name": "--message",
             "data": "hello"
-        },
-        {
-            "name": "--is_ci",
-            "data": "true"
         }
     ]
 }

@@ -1,3 +1,4 @@
+@@ -1,9 +0,0 @@
 # Greengrass Discovery
 
 [**Return to main sample list**](./README.md)

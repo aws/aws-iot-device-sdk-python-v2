@@ -15,10 +15,6 @@
         {
             "name": "--custom_auth_password",
             "secret": "ci/CustomAuthorizer/password"
-        },
-        {
-            "name": "--is_ci",
-            "data": "true"
         }
     ]
 }

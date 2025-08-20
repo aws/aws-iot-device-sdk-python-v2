@@ -4,14 +4,43 @@
 from awsiot import mqtt5_client_builder
 from awscrt import mqtt5
 from concurrent.futures import Future
-from utils.command_line_utils import CommandLineUtils
+
+# --------------------------------- ARGUMENT PARSING -----------------------------------------
+import argparse, uuid
+
+parser = argparse.ArgumentParser(
+    description="MQTT5 Custom Authorizer Sample.",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+)
+# Connection
+parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
+parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
+parser.add_argument("--use_websockets", dest="input_use_websockets",
+                    action="store_const", const=True, default=None,
+                    help="Use WebSockets instead of direct TLS")
+# Custom Auth
+parser.add_argument("--custom_auth_username", dest="input_custom_auth_username",
+                    help="The name to send when connecting through the custom authorizer (optional)")
+parser.add_argument("--custom_auth_authorizer_name", dest="input_custom_authorizer_name",
+                    help="The name of the custom authorizer to connect to (optional but required for everything but custom domains)")
+parser.add_argument("--custom_auth_authorizer_signature", dest="input_custom_authorizer_signature",
+                    help="The signature to send when connecting through a custom authorizer (optional)")
+parser.add_argument("--custom_auth_password", dest="input_custom_auth_password",
+                    help="The password to send when connecting through a custom authorizer (optional)")
+parser.add_argument("--custom_auth_token_key_name", dest="input_custom_authorizer_token_key_name",
+                    help="Key used to extract the custom authorizer token (optional)")
+parser.add_argument("--custom_auth_token_value", dest="input_custom_authorizer_token_value",
+                    help="The opaque token value for the custom authorizer (optional)")
+# Misc
+parser.add_argument("--client-id", dest="input_clientId",
+                    default=f"test-{uuid.uuid4().hex[:8]}", help="Client ID")
+
+# args contains all the parsed commandline arguments used by the sample
+args = parser.parse_args()
+# --------------------------------- ARGUMENT PARSING END -----------------------------------------
+
 
 TIMEOUT = 100
-
-# cmdData is the arguments/input from the command line placed into a single struct for
-# use in this sample. This handles all of the command line parsing, validating, etc.
-# See the Utils/CommandLineUtils for more information.
-cmdData = CommandLineUtils.parse_sample_input_mqtt5_custom_authorizer_connect()
 
 future_stopped = Future()
 future_connection_success = Future()
@@ -31,38 +60,34 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 
 
 if __name__ == '__main__':
-
     # Create MQTT5 Client with a custom authorizer
-    if cmdData.input_use_websockets is None:
+    if args.input_use_websockets is None:        
         client = mqtt5_client_builder.direct_with_custom_authorizer(
-            endpoint=cmdData.input_endpoint,
-            ca_filepath=cmdData.input_ca,
-            auth_username=cmdData.input_custom_auth_username,
-            auth_authorizer_name=cmdData.input_custom_authorizer_name,
-            auth_authorizer_signature=cmdData.input_custom_authorizer_signature,
-            auth_password=cmdData.input_custom_auth_password,
-            auth_token_key_name=cmdData.input_custom_authorizer_token_key_name,
-            auth_token_value=cmdData.input_custom_authorizer_token_value,
+            endpoint=args.input_endpoint,
+            ca_filepath=args.input_ca,
+            auth_username=args.input_custom_auth_username,
+            auth_authorizer_name=args.input_custom_authorizer_name,
+            auth_authorizer_signature=args.input_custom_authorizer_signature,
+            auth_password=args.input_custom_auth_password,
+            auth_token_key_name=args.input_custom_authorizer_token_key_name,
+            auth_token_value=args.input_custom_authorizer_token_value,
             on_lifecycle_stopped=on_lifecycle_stopped,
             on_lifecycle_connection_success=on_lifecycle_connection_success,
-            client_id=cmdData.input_clientId)
+            client_id=args.input_clientId)
     else:
         client = mqtt5_client_builder.websockets_with_custom_authorizer(
-            endpoint=cmdData.input_endpoint,
-            auth_username=cmdData.input_custom_auth_username,
-            auth_authorizer_name=cmdData.input_custom_authorizer_name,
-            auth_authorizer_signature=cmdData.input_custom_authorizer_signature,
-            auth_password=cmdData.input_custom_auth_password,
-            auth_token_key_name=cmdData.input_custom_authorizer_token_key_name,
-            auth_token_value=cmdData.input_custom_authorizer_token_value,
+            endpoint=args.input_endpoint,
+            auth_username=args.input_custom_auth_username,
+            auth_authorizer_name=args.input_custom_authorizer_name,
+            auth_authorizer_signature=args.input_custom_authorizer_signature,
+            auth_password=args.input_custom_auth_password,
+            auth_token_key_name=args.input_custom_authorizer_token_key_name,
+            auth_token_value=args.input_custom_authorizer_token_value,
             on_lifecycle_stopped=on_lifecycle_stopped,
             on_lifecycle_connection_success=on_lifecycle_connection_success,
-            client_id=cmdData.input_clientId)
+            client_id=args.input_clientId)
 
-    if not cmdData.input_is_ci:
-        print(f"Connecting to {cmdData.input_endpoint} with client ID '{cmdData.input_clientId}'...")
-    else:
-        print("Connecting to endpoint with client ID")
+    print(f"Connecting to {args.input_endpoint} with client ID '{args.input_clientId}'...")
 
     client.start()
     future_connection_success.result(TIMEOUT)

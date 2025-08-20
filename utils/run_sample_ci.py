@@ -293,18 +293,12 @@ def launch_sample():
         exit_code = sample_return.returncode
 
     elif (config_json['language'] == "Python"):
-        config_json_arguments_list.append("--is_ci")
-        config_json_arguments_list.append("True")
-
         sample_return = subprocess.run(
             args=[sys.executable, config_json['sample_file']] + config_json_arguments_list)
         exit_code = sample_return.returncode
 
     elif (config_json['language'] == "Javascript"):
         os.chdir(config_json['sample_file'])
-
-        config_json_arguments_list.append("--is_ci")
-        config_json_arguments_list.append("true")
 
         sample_return_one = None
         if sys.platform == "win32" or sys.platform == "cygwin":
