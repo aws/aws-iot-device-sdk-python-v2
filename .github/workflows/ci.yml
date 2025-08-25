@@ -104,6 +104,7 @@ jobs:
   osx:
     runs-on: ${{ matrix.runner }}
     strategy:
+      fail-fast: false
       matrix:
         runner:
           - macos-13
