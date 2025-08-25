@@ -43,11 +43,6 @@
                 ["/opt/python/cp38-cp38/bin/python", "-m", "pip", "install", ".", "--verbose"],
                 ["/opt/python/cp38-cp38/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
                 ["/opt/python/cp38-cp38/bin/python", "-m", "unittest", "discover", "--verbose"],
-                ["echo", "------ Python 3.7 ------"],
-                ["/opt/python/cp37-cp37m/bin/python", "-m", "pip", "install", "--upgrade", "pip", "setuptools"],
-                ["/opt/python/cp37-cp37m/bin/python", "-m", "pip", "install", ".", "--verbose"],
-                ["/opt/python/cp37-cp37m/bin/python", "-m", "pip", "install", "boto3", "autopep8"],
-                ["/opt/python/cp37-cp37m/bin/python", "-m", "unittest", "discover", "--verbose"]
             ],
             "run_tests": false,
             "_comment": "manylinux has all its own build steps, turn off 'tests' which is where normal build steps are declared. using data to program sucks"

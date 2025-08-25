@@ -18,7 +18,7 @@ This document provides information about the AWS IoT Device SDK v2 for Python. T
 ## Installation
 
 ### Minimum Requirements
-* Python 3.7+
+* Python 3.8+
 
 [Step-by-step instructions](./documents/PREREQUISITES.md)
 
