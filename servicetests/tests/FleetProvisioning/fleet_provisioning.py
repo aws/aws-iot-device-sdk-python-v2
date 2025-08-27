@@ -25,7 +25,7 @@ import argparse, uuid
 
 def parse_sample_input():
     parser = argparse.ArgumentParser(
-        description="MQTT5 pub/sub sample (mTLS).",
+        description="Fleet Provisioning - Provision device using either the keys or CSR.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
@@ -55,10 +55,6 @@ def parse_sample_input():
 args = parse_sample_input()
 
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
-
-# [--csr <path>] 
-# [--template_name <str>] 
-# [--template_parameters <json>]
 
 # MQTT5 specific
 mqtt5_client = None

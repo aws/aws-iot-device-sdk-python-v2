@@ -29,7 +29,7 @@ import argparse, uuid
 
 def parse_sample_input():
     parser = argparse.ArgumentParser(
-        description="MQTT5 pub/sub sample (mTLS).",
+        description="Shadow - Keep a property in sync between device and server.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 

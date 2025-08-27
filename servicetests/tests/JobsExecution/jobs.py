@@ -38,7 +38,7 @@ import argparse, uuid
 
 def parse_sample_input():
     parser = argparse.ArgumentParser(
-        description="MQTT5 pub/sub sample (mTLS).",
+        description="Jobs - Receive and execute operations on the device.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
