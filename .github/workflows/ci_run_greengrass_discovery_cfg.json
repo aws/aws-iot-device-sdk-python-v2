@@ -1,0 +1,34 @@
+{
+    "language": "Python",
+    "runnable_file": "basic_discovery.py",
+    "runnable_region": "us-east-1",
+    "runnable_main_class": "",
+    "arguments": [
+        {
+            "name": "--cert",
+            "secret": "ci/GreengrassDiscovery/cert",
+            "filename": "tmp_certificate.pem"
+        },
+        {
+            "name": "--key",
+            "secret": "ci/GreengrassDiscovery/key",
+            "filename": "tmp_key.pem"
+        },
+        {
+            "name": "--thing_name",
+            "data": "CI_Greengrass_Discovery_Thing"
+        },
+        {
+            "name": "--region",
+            "data": "us-east-1"
+        },
+        {
+            "name": "--topic",
+            "data": "clients/CI_Greengrass_Discovery_Thing/hello/world/$INPUT_UUID"
+        },
+        {
+            "name": "--mode",
+            "data": "publish"
+        }
+    ]
+}
