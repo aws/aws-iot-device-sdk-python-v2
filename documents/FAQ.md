@@ -8,6 +8,7 @@
 * [I am experiencing deadlocks](#i-am-experiencing-deadlocks)
 * [How do debug in VSCode?](#how-do-debug-in-vscode)
 * [What certificates do I need?](#what-certificates-do-i-need)
+* [Where can I find MQTT 311 Samples?](#where-can-i-find-mqtt-311-samples)
 * [I still have more questions about this sdk?](#i-still-have-more-questions-about-this-sdk)
 
 ### Where should I start?
@@ -125,6 +126,9 @@ Here is an example launch.json file to run the pubsub sample
     * Key files
         * You should have generated/downloaded private and public keys that will be used to verify that communications are coming from you
         * When using samples you only need the private key and it will look like this: `--key abcde12345-private.pem.key`
+
+### Where can I find MQTT 311 Samples?
+The MQTT 311 Samples can be found in the v1.24.0 samples folder [here](https://github.com/aws/aws-iot-device-sdk-python-v2/tree/v1.24.0/samples)
 
 ### I still have more questions about this sdk?
 
