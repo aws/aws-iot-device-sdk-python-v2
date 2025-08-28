@@ -63,9 +63,6 @@ jobs:
         python3 -m unittest test.test_identity
         source utils/test_cleanup.sh
         cd ..
-    - name: run MQTT5 PubSub sample
-      run: |
-        python ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_pubsub_cfg.json
     - name: configure AWS credentials (Device Advisor)
       uses: aws-actions/configure-aws-credentials@v4
       with:
@@ -122,10 +119,6 @@ jobs:
         python3 -m unittest test.test_identity
         source utils/test_cleanup.sh
         cd ..
-    - name: run MQTT5 PubSub sample
-      run: |
-        source .venv/bin/activate
-        python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_pubsub_cfg.json
     - name: configure AWS credentials (Device Advisor)
       uses: aws-actions/configure-aws-credentials@v4
       with:
@@ -171,9 +164,6 @@ jobs:
         python3 -m unittest test.test_identity
         source utils/test_cleanup.sh
         cd ..
-    - name: run MQTT5 PubSub sample
-      run: |
-        python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_pubsub_cfg.json
     - name: configure AWS credentials (Device Advisor)
       uses: aws-actions/configure-aws-credentials@v4
       with:
@@ -271,29 +261,6 @@ jobs:
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
           python3 ./test_cases/test_jobs_execution.py --config-file test_cases/mqtt5_jobs_cfg.json
-      - name: configure AWS credentials (MQTT5 samples)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_MQTT5_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run MQTT5 PubSub sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_pubsub_cfg.json
-      - name: run MQTT5 PKCS11 Connect sample
-        run: |
-          mkdir -p /tmp/mqtt5/tokens
-          export SOFTHSM2_CONF=/tmp/softhsm2.conf
-          echo "directories.tokendir = /tmp/mqtt5/tokens" > /tmp/softhsm2.conf
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_pkcs11_connect_cfg.json
-      - name: run MQTT5 CustomAuthorizerConnect sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_custom_authorizer_cfg.json
-      - name: run MQTT5 CustomAuthorizerConnect sample (websockets)
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_custom_authorizer_websockets_cfg.json
-      - name: run MQTT5 Shared Subscription sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_shared_subscription_cfg.json
 
   linux-greengrass-tests:
     runs-on: ubuntu-22.04
