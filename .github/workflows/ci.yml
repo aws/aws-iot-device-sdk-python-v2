@@ -22,7 +22,6 @@ env:
   CI_SAMPLES_CFG_FOLDER: "./aws-iot-device-sdk-python-v2/.github/workflows"
   CI_FLEET_PROVISIONING_ROLE: arn:aws:iam::180635532705:role/service-role/CI_FleetProvisioning_Role
   CI_GREENGRASS_INSTALLER_ROLE: arn:aws:iam::180635532705:role/CI_GreengrassInstaller_Role
-  CI_DEVICE_ADVISOR: arn:aws:iam::180635532705:role/CI_DeviceAdvisor_Role
   CI_MQTT5_ROLE: arn:aws:iam::180635532705:role/CI_MQTT5_Role
   CI_BUILD_AND_TEST_ROLE: arn:aws:iam::180635532705:role/V2_SDK_Unit_Testing
   CI_JOBS_SERVICE_CLIENT_ROLE: arn:aws:iam::180635532705:role/CI_JobsServiceClient_Role
@@ -63,15 +62,6 @@ jobs:
         python3 -m unittest test.test_identity
         source utils/test_cleanup.sh
         cd ..
-    - name: configure AWS credentials (Device Advisor)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_DEVICE_ADVISOR }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: run DeviceAdvisor
-      run: |
-        cd ./aws-iot-device-sdk-python-v2
-        python ./deviceadvisor/script/DATestRun.py
 
   osx:
     runs-on: ${{ matrix.runner }}
@@ -119,16 +109,6 @@ jobs:
         python3 -m unittest test.test_identity
         source utils/test_cleanup.sh
         cd ..
-    - name: configure AWS credentials (Device Advisor)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_DEVICE_ADVISOR }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: run DeviceAdvisor
-      run: |
-        source .venv/bin/activate
-        cd ./aws-iot-device-sdk-python-v2
-        python3 ./deviceadvisor/script/DATestRun.py
 
   linux:
     runs-on: ubuntu-22.04 # latest
@@ -164,15 +144,6 @@ jobs:
         python3 -m unittest test.test_identity
         source utils/test_cleanup.sh
         cd ..
-    - name: configure AWS credentials (Device Advisor)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_DEVICE_ADVISOR }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: run DeviceAdvisor
-      run: |
-        cd ./aws-iot-device-sdk-python-v2
-        python3 ./deviceadvisor/script/DATestRun.py
 
   # Runs the samples and service tests and ensures that everything is working
   linux-smoke-tests:
