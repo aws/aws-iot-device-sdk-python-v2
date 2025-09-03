@@ -5,6 +5,7 @@ from awsiot.greengrass_discovery import DiscoveryClient
 from awsiot import mqtt_connection_builder
 from awscrt import io, http
 from awscrt.mqtt import QoS
+from awscrt import mqtt5
 import time, json
 
 allowed_actions = ['both', 'publish', 'subscribe']
@@ -22,23 +23,27 @@ parser.add_argument("--cert", required=True, dest="input_cert",
 parser.add_argument("--key", required=True, dest="input_key",
                     help="Path to the private key file to use during mTLS connection establishment")
 parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
-# Messaging
-parser.add_argument("--topic", default=f"test/topic/{uuid.uuid4().hex[:8]}", dest="input_topic", help="Topic")
-parser.add_argument("--message", default="Hello World!", dest="input_message", help="Message payload")
-parser.add_argument("--thing_name", required=True, dest="input_thing_name", help="The name assigned to your IoT Thing.")
 parser.add_argument("--region", required=True, dest="input_signing_region", help="The region to connect through.")
+parser.add_argument("--thing_name", required=True, dest="input_thing_name", help="The name assigned to your IoT Thing.")
+
+
+# Proxy
+parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
+parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
+
+# Optional Arguments
 parser.add_argument("--max_pub_ops", type=int, default=10, dest="input_max_pub_ops", 
                     help="The maximum number of publish operations (optional, default='10').")
 parser.add_argument("--print_discover_resp_only", type=bool, default=False, dest="input_print_discovery_resp_only", 
                     help="(optional, default='False').")
 parser.add_argument("--mode", default='both', dest="input_mode", 
                     help=f"The operation mode (optional, default='both').\nModes:{allowed_actions}")
-# Proxy
-parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
-parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
-# Misc
-parser.add_argument("--client-id", dest="input_clientId",
-                    default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}", help="Client ID")
+
+parser.add_argument("--client-id", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}", help="Client ID")
+parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
+parser.add_argument("--topic", default=f"test/topic/{uuid.uuid4().hex[:8]}", dest="input_topic", help="Topic")
+parser.add_argument("--message", default="Hello World!", dest="input_message", help="Message payload")
+parser.add_argument("--count", default=5, dest="input_count", help="Messages to publish (0 = infinite)")
 
 # args contains all the parsed commandline arguments used by the sample
 args = parser.parse_args()
