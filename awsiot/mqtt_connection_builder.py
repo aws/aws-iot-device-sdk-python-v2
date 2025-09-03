@@ -161,11 +161,11 @@ def _get_metrics_str(current_username=""):
 
     if _metrics_str is None:
         try:
-            import pkg_resources
+            import importlib.metadata
             try:
-                version = pkg_resources.get_distribution("awsiotsdk").version
+                version = importlib.metadata.version("awsiotsdk")
                 _metrics_str = "SDK=PythonV2&Version={}".format(version)
-            except pkg_resources.DistributionNotFound:
+            except importlib.metadata.PackageNotFoundError:
                 _metrics_str = "SDK=PythonV2&Version=dev"
         except BaseException:
             _metrics_str = ""
