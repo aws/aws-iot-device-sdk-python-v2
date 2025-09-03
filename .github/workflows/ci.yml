@@ -263,7 +263,7 @@ jobs:
       - name: Build and run Greengrass basic discovery sample
         working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/basic_discovery
         run: |
-          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
+          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples/greengrass
           gdk component build
           gdk test-e2e build
           gdk test-e2e run
