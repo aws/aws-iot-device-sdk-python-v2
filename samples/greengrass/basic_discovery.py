@@ -51,7 +51,7 @@ tls_context = io.ClientTlsContext(tls_options)
 
 socket_options = io.SocketOptions()
 
-print('Performing greengrass discovery...')
+print(f'Performing greengrass discovery for thing: {args.input_thing_name}...')
 discovery_client = DiscoveryClient(
     io.ClientBootstrap.get_or_create_static_default(),
     socket_options,
@@ -136,6 +136,7 @@ if args.input_mode == 'both' or args.input_mode == 'subscribe':
     suback = subscribe_future.result(TIMEOUT)
     print("Successfully subscribed to topic {}".format(args.input_topic))
 
+print(f"Starting publishing loop with mode: {args.input_mode}, max_ops: {args.input_max_pub_ops}")
 loop_count = 0
 while loop_count < args.input_max_pub_ops:
     if args.input_mode == 'both' or args.input_mode == 'publish':
@@ -144,6 +145,7 @@ while loop_count < args.input_max_pub_ops:
         message['sequence'] = loop_count
         messageJson = json.dumps(message)
 
+        print(f"Publishing message {loop_count + 1}/{args.input_max_pub_ops} to topic {args.input_topic}")
         publish_future = mqtt5_client.publish(mqtt5.PublishPacket(
             topic=args.input_topic,
             payload=messageJson,
@@ -153,4 +155,9 @@ while loop_count < args.input_max_pub_ops:
         print("Successfully published to topic {} with payload `{}`\n".format(args.input_topic, messageJson))
 
         loop_count += 1
+    else:
+        print(f"Skipping publish due to mode: {args.input_mode}")
+        break
     time.sleep(1)
+
+print(f"Publishing loop completed. Published {loop_count} messages.")
