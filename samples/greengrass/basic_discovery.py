@@ -2,10 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 from awsiot.greengrass_discovery import DiscoveryClient
-from awsiot import mqtt5_client_builder #mqtt_connection_builder
-from awscrt import io, http
-from awscrt.mqtt import QoS
-from awscrt import mqtt5
+from awsiot import mqtt5_client_builder
+from awscrt import mqtt5, io
 import time, json, threading
 
 allowed_actions = ['both', 'publish', 'subscribe']
@@ -90,7 +88,7 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 # Callback when any publish is received
 def on_publish_received(publish_packet_data):
     publish_packet = publish_packet_data.publish_packet
-    print("Publish received on topic {}".format(
+    print("Received new message on topic {}".format(
         publish_packet.topic))
     print("{}".format(publish_packet.payload.decode('utf-8')))
 
@@ -103,7 +101,7 @@ def try_iot_endpoints():
                     print(
                         f"Trying core {gg_core.thing_arn} at host {connectivity_info.host_address} port {connectivity_info.port}")
                     mqtt5_client = mqtt5_client_builder.mtls_from_path(
-                        endpoint=args.input_endpoint,
+                        endpoint=connectivity_info.host_address,
                         port=connectivity_info.port,
                         cert_filepath=args.input_cert,
                         pri_key_filepath=args.input_key,
@@ -155,12 +153,7 @@ if args.input_mode == 'both' or args.input_mode == 'subscribe':
             qos=mqtt5.QoS.AT_MOST_ONCE)]
     ))
     suback = subscribe_future.result(TIMEOUT)
-        
-    # def on_publish(topic, payload, dup, qos, retain, **kwargs):
-    #     print('Publish received on topic {}'.format(topic))
-    #     print(payload)
-    # subscribe_future, _ = mqtt_connection.subscribe(args.input_topic, QoS.AT_MOST_ONCE, on_publish)
-    # subscribe_result = subscribe_future.result()
+    print("Successfully subscribed to topic {}".format(args.input_topic))
 
 loop_count = 0
 while loop_count < args.input_max_pub_ops:
@@ -177,10 +170,6 @@ while loop_count < args.input_max_pub_ops:
         ))
         publish_completion_data = publish_future.result(TIMEOUT)
         print("Successfully published to topic {} with payload `{}`\n".format(args.input_topic, messageJson))
-
-        # pub_future, _ = mqtt_connection.publish(args.input_topic, messageJson, QoS.AT_LEAST_ONCE)
-        # publish_completion_data = pub_future.result()
-        # print('Successfully published to topic {} with payload `{}`\n'.format(args.input_topic, messageJson))
 
         loop_count += 1
     time.sleep(1)
