@@ -33,7 +33,6 @@ parser.add_argument("--mode", default='both', dest="input_mode",
                     help=f"The operation mode (optional, default='both').\nModes:{allowed_actions}")
 
 parser.add_argument("--client-id", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}", help="Client ID")
-parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
 parser.add_argument("--topic", default=f"test/topic/{uuid.uuid4().hex[:8]}", dest="input_topic", help="Topic")
 parser.add_argument("--message", default="Hello World!", dest="input_message", help="Message payload")
 parser.add_argument("--count", default=5, dest="input_count", help="Messages to publish (0 = infinite)")
@@ -88,8 +87,7 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 # Callback when any publish is received
 def on_publish_received(publish_packet_data):
     publish_packet = publish_packet_data.publish_packet
-    print("Received new message on topic {}".format(
-        publish_packet.topic))
+    print("Received new message on topic {}".format(publish_packet.topic))
     print("{}".format(publish_packet.payload.decode('utf-8')))
 
 # Try IoT endpoints until we find one that works
@@ -118,23 +116,6 @@ def try_iot_endpoints():
                         raise TimeoutError("Connection timeout")
                     
                     return mqtt5_client
-
-                    # mqtt_connection = mqtt_connection_builder.mtls_from_path(
-                    #     endpoint=connectivity_info.host_address,
-                    #     port=connectivity_info.port,
-                    #     cert_filepath=args.input_cert,
-                    #     pri_key_filepath=args.input_key,
-                    #     ca_bytes=gg_group.certificate_authorities[0].encode('utf-8'),
-                    #     on_connection_interrupted=on_connection_interupted,
-                    #     on_connection_resumed=on_connection_resumed,
-                    #     client_id=args.input_thing_name,
-                    #     clean_session=False,
-                    #     keep_alive_secs=30)
-
-                    # connect_future = mqtt_connection.connect()
-                    # connect_future.result()
-                    # print('Connected!')
-                    # return mqtt_connection
 
                 except Exception as e:
                     print('Connection failed with exception {}'.format(e))
