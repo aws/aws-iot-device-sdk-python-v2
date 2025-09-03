@@ -2,11 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 from awsiot.greengrass_discovery import DiscoveryClient
-from awsiot import mqtt_connection_builder
+from awsiot import mqtt5_client_builder #mqtt_connection_builder
 from awscrt import io, http
 from awscrt.mqtt import QoS
 from awscrt import mqtt5
-import time, json
+import time, json, threading
 
 allowed_actions = ['both', 'publish', 'subscribe']
 
@@ -26,11 +26,6 @@ parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bund
 parser.add_argument("--region", required=True, dest="input_signing_region", help="The region to connect through.")
 parser.add_argument("--thing_name", required=True, dest="input_thing_name", help="The name assigned to your IoT Thing.")
 
-
-# Proxy
-parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
-parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
-
 # Optional Arguments
 parser.add_argument("--max_pub_ops", type=int, default=10, dest="input_max_pub_ops", 
                     help="The maximum number of publish operations (optional, default='10').")
@@ -49,6 +44,8 @@ parser.add_argument("--count", default=5, dest="input_count", help="Messages to 
 args = parser.parse_args()
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
+connection_success_event = threading.Event()
+TIMEOUT = 100
 
 tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.input_cert, args.input_key)
 if (args.input_ca is not None):
@@ -57,16 +54,14 @@ tls_context = io.ClientTlsContext(tls_options)
 
 socket_options = io.SocketOptions()
 
-proxy_options = None
-if args.input_proxy_host is not None and args.input_proxy_port != 0:
-    proxy_options = http.HttpProxyOptions(args.input_proxy_host, args.input_proxy_port)
-
 print('Performing greengrass discovery...')
 discovery_client = DiscoveryClient(
     io.ClientBootstrap.get_or_create_static_default(),
     socket_options,
     tls_context,
-    args.input_signing_region, None, proxy_options)
+    args.input_signing_region, 
+    None, 
+    None)
 resp_future = discovery_client.discover(args.input_thing_name)
 discover_response = resp_future.result()
 
@@ -76,13 +71,28 @@ if (args.input_print_discovery_resp_only):
     exit(0)
 
 
-def on_connection_interupted(connection, error, **kwargs):
-    print('connection interrupted with error {}'.format(error))
+def on_lifecycle_disconnection(lifecycle_disconnection_data: mqtt5.LifecycleDisconnectionData):
+    print("connection interrupted with error {}"
+          .format(repr(lifecycle_disconnection_data.disconnect_packet.reason_code)))
 
+# Callback for the lifecycle event Connection Success
+def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.LifecycleConnectSuccessData):
+    connack_packet = lifecycle_connect_success_data.connack_packet
+    
+    if connack_packet.session_present:
+        print('session resumed with reason code {}'
+              .format(repr(connack_packet.reason_code)))
+    else:
+        print("Lifecycle Connection Success with reason_code:{}\n".format(
+            repr(connack_packet.reason_code)))
+        connection_success_event.set()
 
-def on_connection_resumed(connection, return_code, session_present, **kwargs):
-    print('connection resumed with return code {}, session present {}'.format(return_code, session_present))
-
+# Callback when any publish is received
+def on_publish_received(publish_packet_data):
+    publish_packet = publish_packet_data.publish_packet
+    print("Publish received on topic {}".format(
+        publish_packet.topic))
+    print("{}".format(publish_packet.payload.decode('utf-8')))
 
 # Try IoT endpoints until we find one that works
 def try_iot_endpoints():
@@ -92,22 +102,41 @@ def try_iot_endpoints():
                 try:
                     print(
                         f"Trying core {gg_core.thing_arn} at host {connectivity_info.host_address} port {connectivity_info.port}")
-                    mqtt_connection = mqtt_connection_builder.mtls_from_path(
-                        endpoint=connectivity_info.host_address,
+                    mqtt5_client = mqtt5_client_builder.mtls_from_path(
+                        endpoint=args.input_endpoint,
                         port=connectivity_info.port,
                         cert_filepath=args.input_cert,
                         pri_key_filepath=args.input_key,
                         ca_bytes=gg_group.certificate_authorities[0].encode('utf-8'),
-                        on_connection_interrupted=on_connection_interupted,
-                        on_connection_resumed=on_connection_resumed,
+                        on_lifecycle_disconnection=on_lifecycle_disconnection,
+                        on_lifecycle_connection_success=on_lifecycle_connection_success,
+                        on_publish_received=on_publish_received,
                         client_id=args.input_thing_name,
                         clean_session=False,
-                        keep_alive_secs=30)
+                        keep_alive_interval_sec=30)
+                    
+                    mqtt5_client.start()
+                    if not connection_success_event.wait(TIMEOUT):
+                        raise TimeoutError("Connection timeout")
+                    
+                    return mqtt5_client
 
-                    connect_future = mqtt_connection.connect()
-                    connect_future.result()
-                    print('Connected!')
-                    return mqtt_connection
+                    # mqtt_connection = mqtt_connection_builder.mtls_from_path(
+                    #     endpoint=connectivity_info.host_address,
+                    #     port=connectivity_info.port,
+                    #     cert_filepath=args.input_cert,
+                    #     pri_key_filepath=args.input_key,
+                    #     ca_bytes=gg_group.certificate_authorities[0].encode('utf-8'),
+                    #     on_connection_interrupted=on_connection_interupted,
+                    #     on_connection_resumed=on_connection_resumed,
+                    #     client_id=args.input_thing_name,
+                    #     clean_session=False,
+                    #     keep_alive_secs=30)
+
+                    # connect_future = mqtt_connection.connect()
+                    # connect_future.result()
+                    # print('Connected!')
+                    # return mqtt_connection
 
                 except Exception as e:
                     print('Connection failed with exception {}'.format(e))
@@ -116,14 +145,22 @@ def try_iot_endpoints():
     exit('All connection attempts failed')
 
 
-mqtt_connection = try_iot_endpoints()
+mqtt5_client = try_iot_endpoints()
 
 if args.input_mode == 'both' or args.input_mode == 'subscribe':
-    def on_publish(topic, payload, dup, qos, retain, **kwargs):
-        print('Publish received on topic {}'.format(topic))
-        print(payload)
-    subscribe_future, _ = mqtt_connection.subscribe(args.input_topic, QoS.AT_MOST_ONCE, on_publish)
-    subscribe_result = subscribe_future.result()
+
+    subscribe_future = mqtt5_client.subscribe(subscribe_packet=mqtt5.SubscribePacket(
+        subscriptions=[mqtt5.Subscription(
+            topic_filter=args.input_topic,
+            qos=mqtt5.QoS.AT_MOST_ONCE)]
+    ))
+    suback = subscribe_future.result(TIMEOUT)
+        
+    # def on_publish(topic, payload, dup, qos, retain, **kwargs):
+    #     print('Publish received on topic {}'.format(topic))
+    #     print(payload)
+    # subscribe_future, _ = mqtt_connection.subscribe(args.input_topic, QoS.AT_MOST_ONCE, on_publish)
+    # subscribe_result = subscribe_future.result()
 
 loop_count = 0
 while loop_count < args.input_max_pub_ops:
@@ -132,9 +169,18 @@ while loop_count < args.input_max_pub_ops:
         message['message'] = args.input_message
         message['sequence'] = loop_count
         messageJson = json.dumps(message)
-        pub_future, _ = mqtt_connection.publish(args.input_topic, messageJson, QoS.AT_LEAST_ONCE)
-        publish_completion_data = pub_future.result()
-        print('Successfully published to topic {} with payload `{}`\n'.format(args.input_topic, messageJson))
+
+        publish_future = mqtt5_client.publish(mqtt5.PublishPacket(
+            topic=args.input_topic,
+            payload=messageJson,
+            qos=mqtt5.QoS.AT_LEAST_ONCE
+        ))
+        publish_completion_data = publish_future.result(TIMEOUT)
+        print("Successfully published to topic {} with payload `{}`\n".format(args.input_topic, messageJson))
+
+        # pub_future, _ = mqtt_connection.publish(args.input_topic, messageJson, QoS.AT_LEAST_ONCE)
+        # publish_completion_data = pub_future.result()
+        # print('Successfully published to topic {} with payload `{}`\n'.format(args.input_topic, messageJson))
 
         loop_count += 1
     time.sleep(1)
