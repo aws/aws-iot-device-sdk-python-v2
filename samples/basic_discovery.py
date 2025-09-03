@@ -1,48 +1,73 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-import time
-import json
-from awscrt import io, http
-from awscrt.mqtt import QoS
 from awsiot.greengrass_discovery import DiscoveryClient
 from awsiot import mqtt_connection_builder
-
-from utils.command_line_utils import CommandLineUtils
+from awscrt import io, http
+from awscrt.mqtt import QoS
+import time, json
 
 allowed_actions = ['both', 'publish', 'subscribe']
 
-# cmdData is the arguments/input from the command line placed into a single struct for
-# use in this sample. This handles all of the command line parsing, validating, etc.
-# See the Utils/CommandLineUtils for more information.
-cmdData = CommandLineUtils.parse_sample_input_basic_discovery()
+# --------------------------------- ARGUMENT PARSING -----------------------------------------
+import argparse, uuid
 
-tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(cmdData.input_cert, cmdData.input_key)
-if (cmdData.input_ca is not None):
-    tls_options.override_default_trust_store_from_path(None, cmdData.input_ca)
+parser = argparse.ArgumentParser(
+    description="Greengrass Basic Discovery",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+)
+# Connection / TLS
+parser.add_argument("--cert", required=True, dest="input_cert",
+                    help="Path to the certificate file to use during mTLS connection establishment")
+parser.add_argument("--key", required=True, dest="input_key",
+                    help="Path to the private key file to use during mTLS connection establishment")
+parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
+# Messaging
+parser.add_argument("--topic", default=f"test/topic/{uuid.uuid4().hex[:8]}", dest="input_topic", help="Topic")
+parser.add_argument("--message", default="Hello World!", dest="input_message", help="Message payload")
+parser.add_argument("--thing_name", required=True, dest="input_thing_name", help="The name assigned to your IoT Thing.")
+parser.add_argument("--region", required=True, dest="input_signing_region", help="The region to connect through.")
+parser.add_argument("--max_pub_ops", type=int, default=10, dest="input_max_pub_ops", 
+                    help="The maximum number of publish operations (optional, default='10').")
+parser.add_argument("--print_discover_resp_only", type=bool, default=False, dest="input_print_discovery_resp_only", 
+                    help="(optional, default='False').")
+parser.add_argument("--mode", default='both', dest="input_mode", 
+                    help=f"The operation mode (optional, default='both').\nModes:{allowed_actions}")
+# Proxy
+parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
+parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
+# Misc
+parser.add_argument("--client-id", dest="input_clientId",
+                    default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}", help="Client ID")
+
+# args contains all the parsed commandline arguments used by the sample
+args = parser.parse_args()
+# --------------------------------- ARGUMENT PARSING END -----------------------------------------
+
+
+tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.input_cert, args.input_key)
+if (args.input_ca is not None):
+    tls_options.override_default_trust_store_from_path(None, args.input_ca)
 tls_context = io.ClientTlsContext(tls_options)
 
 socket_options = io.SocketOptions()
 
 proxy_options = None
-if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
-    proxy_options = http.HttpProxyOptions(cmdData.input_proxy_host, cmdData.input_proxy_port)
+if args.input_proxy_host is not None and args.input_proxy_port != 0:
+    proxy_options = http.HttpProxyOptions(args.input_proxy_host, args.input_proxy_port)
 
 print('Performing greengrass discovery...')
 discovery_client = DiscoveryClient(
     io.ClientBootstrap.get_or_create_static_default(),
     socket_options,
     tls_context,
-    cmdData.input_signing_region, None, proxy_options)
-resp_future = discovery_client.discover(cmdData.input_thing_name)
+    args.input_signing_region, None, proxy_options)
+resp_future = discovery_client.discover(args.input_thing_name)
 discover_response = resp_future.result()
 
-if (cmdData.input_is_ci):
-    print("Received a greengrass discovery result! Not showing result in CI for possible data sensitivity.")
-else:
-    print(discover_response)
+print("Received a greengrass discovery result! Not showing result for possible data sensitivity.")
 
-if (cmdData.input_print_discovery_resp_only):
+if (args.input_print_discovery_resp_only):
     exit(0)
 
 
@@ -65,12 +90,12 @@ def try_iot_endpoints():
                     mqtt_connection = mqtt_connection_builder.mtls_from_path(
                         endpoint=connectivity_info.host_address,
                         port=connectivity_info.port,
-                        cert_filepath=cmdData.input_cert,
-                        pri_key_filepath=cmdData.input_key,
+                        cert_filepath=args.input_cert,
+                        pri_key_filepath=args.input_key,
                         ca_bytes=gg_group.certificate_authorities[0].encode('utf-8'),
                         on_connection_interrupted=on_connection_interupted,
                         on_connection_resumed=on_connection_resumed,
-                        client_id=cmdData.input_thing_name,
+                        client_id=args.input_thing_name,
                         clean_session=False,
                         keep_alive_secs=30)
 
@@ -88,23 +113,23 @@ def try_iot_endpoints():
 
 mqtt_connection = try_iot_endpoints()
 
-if cmdData.input_mode == 'both' or cmdData.input_mode == 'subscribe':
+if args.input_mode == 'both' or args.input_mode == 'subscribe':
     def on_publish(topic, payload, dup, qos, retain, **kwargs):
         print('Publish received on topic {}'.format(topic))
         print(payload)
-    subscribe_future, _ = mqtt_connection.subscribe(cmdData.input_topic, QoS.AT_MOST_ONCE, on_publish)
+    subscribe_future, _ = mqtt_connection.subscribe(args.input_topic, QoS.AT_MOST_ONCE, on_publish)
     subscribe_result = subscribe_future.result()
 
 loop_count = 0
-while loop_count < cmdData.input_max_pub_ops:
-    if cmdData.input_mode == 'both' or cmdData.input_mode == 'publish':
+while loop_count < args.input_max_pub_ops:
+    if args.input_mode == 'both' or args.input_mode == 'publish':
         message = {}
-        message['message'] = cmdData.input_message
+        message['message'] = args.input_message
         message['sequence'] = loop_count
         messageJson = json.dumps(message)
-        pub_future, _ = mqtt_connection.publish(cmdData.input_topic, messageJson, QoS.AT_LEAST_ONCE)
+        pub_future, _ = mqtt_connection.publish(args.input_topic, messageJson, QoS.AT_LEAST_ONCE)
         publish_completion_data = pub_future.result()
-        print('Successfully published to topic {} with payload `{}`\n'.format(cmdData.input_topic, messageJson))
+        print('Successfully published to topic {} with payload `{}`\n'.format(args.input_topic, messageJson))
 
         loop_count += 1
     time.sleep(1)

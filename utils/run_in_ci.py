@@ -335,9 +335,6 @@ def launch_runnable(runnable_dir):
         elif (config_json['language'] == "Javascript"):
             os.chdir(config_json['runnable_file'])
 
-            config_json_arguments_list.append("--is_ci")
-            config_json_arguments_list.append("true")
-
             runnable_return_one = None
             if not 'skip_install' in config_json:
                 if sys.platform == "win32" or sys.platform == "cygwin":

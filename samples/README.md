@@ -9,16 +9,6 @@
 * [MQTT5 Shared Subscription](./mqtt5_shared_subscription.md)
 * [MQTT5 PKCS#11 Connect](./mqtt5_pkcs11_connect.md)
 * [MQTT5 Custom Authorizer Connect](./mqtt5_custom_authorizer_connect.md)
-## MQTT311 Samples
-* [PubSub](./pubsub.md)
-* [Basic Connect](./basic_connect.md)
-* [Websocket Connect](./websocket_connect.md)
-* [PKCS#11 Connect](./pkcs11_connect.md)
-* [PKCS#12 Connect](./pkcs12_connect.md)
-* [Windows Certificate Connect](./windows_cert_connect/README.md)
-* [Custom Authorizer Connect](./custom_authorizer_connect.md)
-* [Cognito Connect](./cognito_connect.md)
-* [X509 Connect](./x509_connect.md)
 ## Other
 * [Basic Fleet Provisioning](./fleet_provisioning_basic.md)
 * [CSR Fleet Provisioning](./fleet_provisioning_csr.md)
