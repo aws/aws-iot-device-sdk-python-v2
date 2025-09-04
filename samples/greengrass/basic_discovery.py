@@ -55,18 +55,12 @@ tls_context = io.ClientTlsContext(tls_options)
 
 socket_options = io.SocketOptions()
 
-proxy_options = None
-if args.input_proxy_host is not None and args.input_proxy_port != 0:
-    proxy_options = http.HttpProxyOptions(args.input_proxy_host, args.input_proxy_port)
-
 print(f'Performing greengrass discovery for thing: {args.input_thing_name}...')
 discovery_client = DiscoveryClient(
     io.ClientBootstrap.get_or_create_static_default(),
     socket_options,
     tls_context,
-    args.input_signing_region, 
-    None, 
-    proxy_options)
+    args.input_signing_region)
 resp_future = discovery_client.discover(args.input_thing_name)
 discover_response = resp_future.result()
 
@@ -76,7 +70,7 @@ if (args.input_print_discovery_resp_only):
     exit(0)
 
 
-def on_lifecycle_disconnection(lifecycle_disconnection_data: mqtt5.LifecycleDisconnectionData):
+def on_lifecycle_disconnection(lifecycle_disconnection_data: mqtt5.LifecycleDisconnectData):
     print("connection interrupted with error {}"
           .format(repr(lifecycle_disconnection_data.disconnect_packet.reason_code)))
 
