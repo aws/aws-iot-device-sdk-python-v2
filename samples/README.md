@@ -1,19 +1,18 @@
 # Sample apps for the AWS IoT Device SDK v2 for Python
 ## MQTT5 Samples
 #### MQTT5 is the recommended MQTT Client. It has many benefits over MQTT311 outlined in the [MQTT5 User Guide](../documents/MQTT5_Userguide.md)
-* [MQTT5 PubSub](./mqtt5_pubsub.md)
-    + [Direct MQTT with X509-based mutual TLS](./mqtt5_pubsub.md#direct-mqtt-with-x509-based-mutual-tls)
-    + [Direct MQTT with PKCS12 Method](./mqtt5_pubsub.md#direct-mqtt-with-pkcs12-method)
-    + [MQTT over Websockets with Sigv4 authentication](./mqtt5_pubsub.md#mqtt-over-websockets-with-sigv4-authentication)
-    + [MQTT over Websockets with Cognito authentication](./mqtt5_pubsub.md#mqtt-over-websockets-with-cognito-authentication)
-* [MQTT5 Shared Subscription](./mqtt5_shared_subscription.md)
-* [MQTT5 PKCS#11 Connect](./mqtt5_pkcs11_connect.md)
-* [MQTT5 Custom Authorizer Connect](./mqtt5_custom_authorizer_connect.md)
-## Other
+* [X509-based mutual TLS](./mqtt/mqtt5_x509.md)
+* [PKCS11](./mqtt/mqtt5_pkcs11_connect.md)
+* [Websockets with Sigv4 authentication](./mqtt/mqtt5_aws_websocket.md)
+* [AWS Custom Authorizer Lambda Function](./mqtt/mqtt5_custom_auth.md)
+
+## Service Clients
 * [Basic Fleet Provisioning](./fleet_provisioning_basic.md)
 * [CSR Fleet Provisioning](./fleet_provisioning_csr.md)
 * [Shadow](./shadow.md)
 * [Jobs](./jobs.md)
+
+## Greengrass
 * [Greengrass Discovery](./basic_discovery.md)
 * [Greengrass IPC](./ipc_greengrass.md)
 
