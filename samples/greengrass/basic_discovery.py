@@ -32,6 +32,10 @@ parser.add_argument("--print_discover_resp_only", type=bool, default=False, dest
 parser.add_argument("--mode", default='both', dest="input_mode", 
                     help=f"The operation mode (optional, default='both').\nModes:{allowed_actions}")
 
+# Proxy
+parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
+parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
+
 parser.add_argument("--client-id", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}", help="Client ID")
 parser.add_argument("--topic", default=f"test/topic/{uuid.uuid4().hex[:8]}", dest="input_topic", help="Topic")
 parser.add_argument("--message", default="Hello World!", dest="input_message", help="Message payload")
@@ -42,7 +46,7 @@ args = parser.parse_args()
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
 connection_success_event = threading.Event()
-TIMEOUT = 100
+TIMEOUT = 20
 
 tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.input_cert, args.input_key)
 if (args.input_ca is not None):
@@ -51,6 +55,10 @@ tls_context = io.ClientTlsContext(tls_options)
 
 socket_options = io.SocketOptions()
 
+proxy_options = None
+if args.input_proxy_host is not None and args.input_proxy_port != 0:
+    proxy_options = http.HttpProxyOptions(args.input_proxy_host, args.input_proxy_port)
+
 print(f'Performing greengrass discovery for thing: {args.input_thing_name}...')
 discovery_client = DiscoveryClient(
     io.ClientBootstrap.get_or_create_static_default(),
@@ -58,7 +66,7 @@ discovery_client = DiscoveryClient(
     tls_context,
     args.input_signing_region, 
     None, 
-    None)
+    proxy_options)
 resp_future = discovery_client.discover(args.input_thing_name)
 discover_response = resp_future.result()
 
