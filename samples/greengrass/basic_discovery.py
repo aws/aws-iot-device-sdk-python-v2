@@ -46,7 +46,7 @@ args = parser.parse_args()
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 
 connection_success_event = threading.Event()
-TIMEOUT = 20
+TIMEOUT = 2
 
 tls_options = io.TlsContextOptions.create_client_with_mtls_from_path(args.input_cert, args.input_key)
 if (args.input_ca is not None):
