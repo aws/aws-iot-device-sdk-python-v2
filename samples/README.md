@@ -1,6 +1,6 @@
 # Sample apps for the AWS IoT Device SDK v2 for Python
 ## MQTT5 Samples
-#### MQTT5 is the recommended MQTT Client. It has many benefits over MQTT311 outlined in the [MQTT5 User Guide](../documents/MQTT5_Userguide.md)
+#### MQTT5 is the recommended MQTT Client. Additional infomration and usage instructions can be found in the [MQTT5 User Guide](../documents/MQTT5_Userguide.md)
 * [X509-based mutual TLS](./mqtt/mqtt5_x509.md)
 * [PKCS11](./mqtt/mqtt5_pkcs11_connect.md)
 * [Websockets with Sigv4 authentication](./mqtt/mqtt5_aws_websocket.md)
