@@ -31,7 +31,7 @@ def main():
     try:
         ipc_client = GreengrassCoreIPCClientV2()
 
-        client_device_hello_world_topic = 'clients/+/hello/world/{}'.format(input_uuid)
+        client_device_hello_world_topic = 'clients/CI_Greengrass_Discovery_Thing/hello/world/{}'.format(input_uuid)
 
         # SubscribeToTopic returns a tuple with the response and the operation.
         _, operation = ipc_client.subscribe_to_topic(
