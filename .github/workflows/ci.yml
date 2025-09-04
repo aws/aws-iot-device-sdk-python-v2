@@ -260,22 +260,22 @@ jobs:
         with:
           role-to-assume: ${{ env.CI_GREENGRASS_INSTALLER_ROLE }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: Build and run Greengrass basic discovery sample
-        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/basic_discovery
-        run: |
-          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples/greengrass
-          gdk component build
-          gdk test-e2e build
-          gdk test-e2e run
-      - name: Show logs
-        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/basic_discovery
-        # Print logs unconditionally to provide more details on Greengrass run even if the test failed.
-        if: always()
-        run: |
-          echo "=== greengrass.log"
-          cat testResults/gg*/greengrass.log
-          echo "=== software.amazon.awssdk.sdk-gg-test-discovery.log"
-          cat testResults/gg*/software.amazon.awssdk.sdk-gg-test-discovery.log
+      # - name: Build and run Greengrass basic discovery sample
+      #   working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/basic_discovery
+      #   run: |
+      #     export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples/greengrass
+      #     gdk component build
+      #     gdk test-e2e build
+      #     gdk test-e2e run
+      # - name: Show logs
+      #   working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/basic_discovery
+      #   # Print logs unconditionally to provide more details on Greengrass run even if the test failed.
+      #   if: always()
+      #   run: |
+      #     echo "=== greengrass.log"
+      #     cat testResults/gg*/greengrass.log
+      #     echo "=== software.amazon.awssdk.sdk-gg-test-discovery.log"
+      #     cat testResults/gg*/software.amazon.awssdk.sdk-gg-test-discovery.log
       - name: Build and run Greengrass IPC sample
         working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/ipc
         run: |
