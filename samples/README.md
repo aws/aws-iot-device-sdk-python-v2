@@ -41,9 +41,9 @@ This directory contains sample applications for [aws-iot-device-sdk-python-v2](.
 
 ### Build Instructions
 
-First, install the `aws-iot-devices-sdk-python-v2` with following the instructions from [Installation](../README.md#Installation).
+First, install the `aws-iot-devices-sdk-python-v2` with following the [Installation Instructions](../README.md#Installation).
 
-Each sample's README has instructions on how to run the sample along with links to additional relevant information. For example, the [MQTT5 X509 README](./mqtt/mqtt5_x509.md) is `mqtt5_x509.md` and it can be run with the following command from the folder containing the sample:
+Each sample's README contains prerequisites, arguments, and detailed instructions. For example, the [MQTT5 X509 Sample README](./mqtt/mqtt5_x509.md) is `mqtt5_x509.md` and the sample can be run with the following command:
 
 ``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
@@ -52,14 +52,33 @@ python3 mqtt5_x509.py --endpoint <endpoint> --cert <path to certificate> --key <
 
 ### Sample Help
 
-All samples will show their options by passing in `--help`. For example:
-`
+All samples will show their options and arguments by passing in `--help`. For example:
 ``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
 python3 mqtt5_x509.py --help
 ```
 
-Which will result in output showing all of the options that can be passed in at the command line, along with descriptions of what each does and whether they are optional or not.
+will result in the following print output:
+```
+MQTT5 X509 Sample (mTLS)
+
+options:
+  -h, --help    show this help message and exit
+
+required arguments:
+  --endpoint    IoT endpoint hostname (default: None)
+  --cert        Path to the certificate file to use during mTLS connection establishment (default: None)
+  --key         Path to the private key file to use during mTLS connection establishment (default: None)
+
+optional arguments:
+  --client-id   Client ID (default: mqtt5-sample-5873a450)
+  --ca_file     Path to optional CA bundle (PEM) (default: None)
+  --topic       Topic (default: test/topic)
+  --message     Message payload (default: Hello from mqtt5 sample)
+  --count       Messages to publish (0 = infinite) (default: 5)
+```
+
+The sample will not run without the required arguments and will notify you of missing arguments.
 
 ### Enable logging in samples
 

@@ -12,22 +12,28 @@ parser = argparse.ArgumentParser(
     description="MQTT5 Unsigned Custom Authorizer Sample",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
-# Connection
-parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
+required = parser.add_argument_group("required arguments")
+optional = parser.add_argument_group("optional arguments")
 
-# Custom Auth
-parser.add_argument("--authorizer_name", required=True, dest="input_authorizer_name",
+# Required Arguments
+required.add_argument("--endpoint", required=True,  metavar="", dest="input_endpoint",
+                      help="IoT endpoint hostname")
+required.add_argument("--authorizer_name", required=True,  metavar="", dest="input_authorizer_name",
                     help="The name of the custom authorizer to connect to invoke")
-parser.add_argument("--auth_username", required=True, dest="input_auth_username",
+required.add_argument("--auth_username", required=True,  metavar="", dest="input_auth_username",
                     help="The name to send when connecting through the custom authorizer")
-parser.add_argument("--auth_password", required=True, dest="input_auth_password",
+required.add_argument("--auth_password", required=True,  metavar="", dest="input_auth_password",
                     help="The password to send when connecting through a custom authorizer")
 
 # Optional Arguments
-parser.add_argument("--client-id", dest="input_clientId", default=f"test-{uuid.uuid4().hex[:8]}", help="Client ID")
-parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
-parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
-parser.add_argument("--count", default=5, dest="input_count", help="Messages to publish (0 = infinite)")
+optional.add_argument("--client-id",  metavar="", dest="input_clientId", default=f"test-{uuid.uuid4().hex[:8]}",
+                      help="Client ID")
+optional.add_argument("--topic", default="test/topic",  metavar="", dest="input_topic",
+                      help="Topic")
+optional.add_argument("--message", default="Hello from mqtt5 sample",  metavar="", dest="input_message",
+                      help="Message payload")
+optional.add_argument("--count", default=5,  metavar="", dest="input_count",
+                      help="Messages to publish (0 = infinite)")
 
 # args contains all the parsed commandline arguments used by the sample
 args = parser.parse_args()

@@ -13,13 +13,18 @@ import argparse
 
 parser = argparse.ArgumentParser(
     description="AWS IoT Shadow sandbox application")
-parser.add_argument('--endpoint', required=True, help="AWS IoT endpoint to connect to")
-parser.add_argument('--cert', required=True,
+required = parser.add_argument_group("required arguments")
+
+# Required Arguments
+required.add_argument('--endpoint',  metavar="", required=True,
+                      help="AWS IoT endpoint to connect to")
+required.add_argument('--cert',  metavar="", required=True,
                     help="Path to the certificate file to use during mTLS connection establishment")
-parser.add_argument('--key', required=True,
+required.add_argument('--key',  metavar="", required=True,
                     help="Path to the private key file to use during mTLS connection establishment")
-parser.add_argument('--thing', required=True,
+required.add_argument('--thing',  metavar="", required=True,
                     help="Name of the IoT thing to interact with")
+
 args = parser.parse_args()
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 

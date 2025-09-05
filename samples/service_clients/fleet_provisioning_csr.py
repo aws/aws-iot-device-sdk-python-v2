@@ -11,17 +11,25 @@ import argparse
 
 parser = argparse.ArgumentParser(
     description="AWS IoT CSR Fleet Provisioning sample application")
-parser.add_argument('--endpoint', required=True, help="AWS IoT endpoint to connect to")
-parser.add_argument('--cert', required=True,
+required = parser.add_argument_group("required arguments")
+optional = parser.add_argument_group("optional arguments")
+
+# Required Arguments
+required.add_argument('--endpoint',  metavar="", required=True,
+                      help="AWS IoT endpoint to connect to")
+required.add_argument('--cert',  metavar="", required=True,
                     help="Path to the certificate file to use during mTLS connection establishment")
-parser.add_argument('--key', required=True,
+required.add_argument('--key',  metavar="", required=True,
                     help="Path to the private key file to use during mTLS connection establishment")
-parser.add_argument('--template_name', required=True,
+required.add_argument('--template_name',  metavar="", required=True,
                     help="Name of the provisioning template to use")
-parser.add_argument('--csr_file', required=True,
+required.add_argument('--csr_file',  metavar="", required=True,
                     help="Path to a CSR file in PEM format")
-parser.add_argument('--template_parameters', required=False,
+
+# Optional Arguments
+optional.add_argument('--template_parameters',  metavar="", required=False,
                     help="JSON map of substitution parameters for the provisioning template")
+
 args = parser.parse_args()
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
 

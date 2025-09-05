@@ -12,16 +12,26 @@ parser = argparse.ArgumentParser(
     description="MQTT5 AWS Websocket Sample.",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
-# Connection / TLS
-parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
-parser.add_argument("--signing-region", required=True, dest="input_signing_region", help="Signing region for websocket connection")
+required = parser.add_argument_group("required arguments")
+optional = parser.add_argument_group("optional arguments")
+
+# Required Arguments
+required.add_argument("--endpoint", required=True,  metavar="", dest="input_endpoint",
+                      help="IoT endpoint hostname")
+required.add_argument("--signing-region", required=True,  metavar="", dest="input_signing_region",
+                      help="Signing region for websocket connection")
 
 # Optional Arguments
-parser.add_argument("--client-id", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}", help="Client ID")
-parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
-parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
-parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
-parser.add_argument("--count", default=5, dest="input_count", help="Messages to publish (0 = infinite)")
+optional.add_argument("--client-id",  metavar="", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
+                      help="Client ID")
+optional.add_argument("--ca_file",  metavar="", dest="input_ca",
+                      help="Path to optional CA bundle (PEM)")
+optional.add_argument("--topic", default="test/topic",  metavar="", dest="input_topic",
+                      help="Topic")
+optional.add_argument("--message", default="Hello from mqtt5 sample",  metavar="", dest="input_message",
+                      help="Message payload")
+optional.add_argument("--count", default=5,  metavar="", dest="input_count",
+                      help="Messages to publish (0 = infinite)")
 
 # args contains all the parsed commandline arguments used by the sample
 args = parser.parse_args()

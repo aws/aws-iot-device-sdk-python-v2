@@ -12,19 +12,28 @@ parser = argparse.ArgumentParser(
     description="MQTT5 X509 Sample (mTLS)",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
-# Connection / TLS
-parser.add_argument("--endpoint", required=True, dest="input_endpoint", help="IoT endpoint hostname")
-parser.add_argument("--cert", required=True, dest="input_cert",
+required = parser.add_argument_group("required arguments")
+optional = parser.add_argument_group("optional arguments")
+
+# Required Arguments
+required.add_argument("--endpoint", required=True, metavar="", dest="input_endpoint",
+                      help="IoT endpoint hostname")
+required.add_argument("--cert", required=True, metavar="", dest="input_cert",
                     help="Path to the certificate file to use during mTLS connection establishment")
-parser.add_argument("--key", required=True, dest="input_key",
+required.add_argument("--key", required=True, metavar="", dest="input_key",
                     help="Path to the private key file to use during mTLS connection establishment")
 
 # Optional Arguments
-parser.add_argument("--client-id", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}", help="Client ID")
-parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
-parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
-parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
-parser.add_argument("--count", default=5, dest="input_count", help="Messages to publish (0 = infinite)")
+optional.add_argument("--client-id", metavar="",dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
+                      help="Client ID")
+optional.add_argument("--ca_file", metavar="",dest="input_ca",
+                      help="Path to optional CA bundle (PEM)")
+optional.add_argument("--topic", metavar="",default="test/topic", dest="input_topic",
+                      help="Topic")
+optional.add_argument("--message", metavar="",default="Hello from mqtt5 sample", dest="input_message",
+                      help="Message payload")
+optional.add_argument("--count", metavar="",default=5, dest="input_count",
+                      help="Messages to publish (0 = infinite)")
 
 # args contains all the parsed commandline arguments used by the sample
 args = parser.parse_args()
