@@ -1,14 +1,25 @@
 # PKCS#11 Connect
 
-[**Return to main sample list**](./README.md)
+[**Return to main sample list**](../README.md)
+*__Jump To:__*
+* [Introduction](#introduction)
+* [Requirements](#requirements)
+* [How To Run](#how-to-run)
+* [Run Sample with Soft HSM](#run-sample-with-softhsm)
+* [Additional Information](#additional-information)
 
-This sample is similar to the [MQTT5 PubSub](./mqtt5_pubsub.md) sample with how it connects, in that it connects via Mutual TLS (mTLS) using a certificate and key file. However, unlike Basic Connect where the certificate and private key file are stored on disk, this sample uses a PKCS#11 compatible smart card or Hardware Security Module (HSM) to store and access the private key file. This adds a layer of security because the private key file is not just sitting on the computer and instead is hidden securely away behind the PKCS#11 device.
+## Introduction
+This sample is similar to the [MQTT5 X509](./mqtt5_x509.md) sample in that it connects via Mutual TLS (mTLS) using a certificate and key file. However, unlike the x509 sample where the certificate and private key file are stored on disk, this sample uses a PKCS#11 compatible smart card or Hardware Security Module (HSM) to store and access the private key file. This adds a layer of security because the private key file is not openly on the computer but instead is hidden securely away behind the PKCS#11 device.
 
-MQTT5 introduces additional features and enhancements that improve the development experience with MQTT. You can read more about MQTT5 in the Python V2 SDK by checking out the [MQTT5 user guide](../documents/MQTT5_Userguide.md).
+You can read more about MQTT5 for the Python IoT Device SDK V2 in the [MQTT5 user guide](../../documents/MQTT5_Userguide.md).
+
+## Requirements
 
 **WARNING: Unix (Linux) only**. Currently, TLS integration with PKCS#11 is only available on Unix devices.
 
-Your IoT Core Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect. Below is a sample policy that can be used on your IoT Core Thing that will allow this sample to run as intended.
+This sample assumes you have the required AWS IoT resources available. Information about AWS IoT can be found [HERE](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html) and instructions on creating AWS IoT resources (AWS IoT Policy, Device Certificate, Private Key) can be found [HERE](https://docs.aws.amazon.com/iot/latest/developerguide/create-iot-resources.html).
+
+Your IoT Core Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect, subscribe, publish, and receive. Below is a sample policy that can be used on your IoT Core Thing that will allow this sample to run as intended.
 
 <details>
 <summary>(see sample policy)</summary>
@@ -16,6 +27,25 @@ Your IoT Core Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerg
 {
   "Version": "2012-10-17",
   "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Publish",
+        "iot:Receive"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/test/topic"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Subscribe"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/test/topic"
+      ]
+    },
     {
       "Effect": "Allow",
       "Action": [
@@ -39,19 +69,44 @@ Note that in a real application, you may want to avoid the use of wildcards in y
 
 ## How to run
 
-The MQTT5 PKCS11 connect sample can be run from the `samples` folder using the following command:
+The MQTT5 PKCS11 connect sample can be run from the `samples\mqtt` folder using the following command:
 
 ```sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
 python3 mqtt5_pkcs11_connect.py --endpoint <endpoint> --cert <path to certificate> --pkcs11_lib <path to PKCS11 lib> --pin <user-pin> --token_label <token-label> --key_label <key-label>
 ```
 
-You can also pass a Certificate Authority file (CA) if your certificate and key combination requires it:
-
-```sh
+If you would like to see what optional arguments are available, use the `--help` argument:
+``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 mqtt5_pkcs11_connect.py --endpoint <endpoint> --cert <path to certificate> --pkcs11_lib <path to PKCS11 lib> --pin <user-pin> --token_label <token-label> --key_label <key-label> --ca_file <path to root CA>
+python3 mqtt5_pkcs11_connect.py --help
 ```
+will result in the following output:
+```
+MQTT5 PKCS11 Sample.
+
+options:
+  -h, --help      show this help message and exit
+
+required arguments:
+  --endpoint      IoT endpoint hostname (default: None)
+  --cert          Path to the certificate file to use during mTLS connection establishment (default: None)
+  --pkcs11_lib    Path to PKCS#11 Library (default: None)
+  --pin           User PIN for logging into PKCS#11 token (default: None)
+
+optional arguments:
+  --port          Port (8883 mTLS, 443 ALPN) (default: 8883)
+  --token_label   Label of the PKCS#11 token to use (optional). (default: None)
+  --slot_id       Slot ID containing the PKCS#11 token to use (optional). (default: None)
+  --key_label     Label of private key on the PKCS#11 token (optional). (default: None)
+  --ca_file       Path to optional CA bundle (PEM) (default: None)
+  --topic         Topic (default: test/topic)
+  --message       Message payload (default: Hello from mqtt5 sample)
+  --count         Messages to publish (0 = infinite) (default: 5)
+  --proxy-host    HTTP proxy host (default: None)
+  --proxy-port    HTTP proxy port (default: 0)
+  --client-id     Client ID (default: test-548e4344)
+  ```
 
 ### Run sample with SoftHSM
 
@@ -109,3 +164,6 @@ The steps to use [SoftHSM2](https://www.opendnssec.org/softhsm/) as the PKCS#11 
     # For Windows: replace 'python3' with 'python' and '/' with '\'
     python3 mqtt5_pkcs11_connect.py --endpoint <endpoint> --ca_file <path to root CA> --cert <path to certificate> --pkcs11_lib <path to PKCS11 lib> --pin <user-pin> --token_label <token-label> --key_label <key-label>
     ```
+  
+  ## Additional Information
+Additional help with the MQTT5 Client can be found in the [MQTT5 Userguide](../../documents/MQTT5_Userguide.md). This guide will provide more details on MQTT5 [operations](../../documents/MQTT5_Userguide.md#optional-keyword-arguments), [lifecycle events](../../documents/MQTT5_Userguide.md#lifecycle-events), [connection methods](../../documents/MQTT5_Userguide.md#connecting-to-aws-iot-core), and other useful information.
