@@ -1,18 +1,18 @@
 # MQTT5 X509 PubSub
 
-[**Return to main sample list**](./README.md)
+[**Return to main sample list**](../README.md)
 *__Jump To:__*
 * [Introduction](#introduction)
 * [Requirements](#requirements)
 * [How To Run](#how-to-run)
-* [Alternate Connection Configuration Methods](../documents/MQTT5_Userguide.md#how-to-create-a-mqtt5-client-based-on-desired-connection-method)
+* [Additional Information](#additional-information)
 
 ## Introduction
 This sample uses the
 [Message Broker](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html)
 for AWS IoT to send and receive messages through an MQTT connection using MQTT5. 
 
-MQTT5 introduces additional features and enhancements that improve the development experience with MQTT. You can read more about MQTT5 for the Python IoT Device SDK V2 in the [MQTT5 user guide](../documents/MQTT5_Userguide.md).
+You can read more about MQTT5 for the Python IoT Device SDK V2 in the [MQTT5 user guide](../../documents/MQTT5_Userguide.md).
 
 ## Requirements
 
@@ -68,23 +68,39 @@ Note that in a real application, you may want to avoid the use of wildcards in y
 
 ## How to run
 
-To Run this sample from the `samples` folder, use the following command:
+To Run this sample from the `samples\mqtt` folder, use the following command:
 
 ```sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 mqtt5_pubsub.py --endpoint <endpoint> --cert <file> --key <file>
+python3 mqtt5_x509.py --endpoint <endpoint> --cert <file> --key <file>
 ```
-
-You can also pass a Certificate Authority file (CA) if your certificate and key combination requires it:
-
-```sh
+If you would like to see what optional arguments are available, use the `--help` argument:
+``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 mqtt5_pubsub.py --endpoint <endpoint> --cert <file> --key <file> --ca_file <file>
+python3 mqtt5_x509.py --help
 ```
 
-### Optional Keyword Arguments
-`--client-id` assign a client id for the MQTT5 Client
-`--topic` Change the topic the MQTT5 Client will subscribe and publish to
-`--message` Change the message included in Publishes
-`--count` Change the number of messages sent during the sample's execution
-`--ca_file` Path to optional CA bundle (PEM)
+will result in the following output:
+```
+MQTT5 X509 Sample (mTLS)
+
+options:
+  -h, --help    show this help message and exit
+
+required arguments:
+  --endpoint    IoT endpoint hostname (default: None)
+  --cert        Path to the certificate file to use during mTLS connection establishment (default: None)
+  --key         Path to the private key file to use during mTLS connection establishment (default: None)
+
+optional arguments:
+  --client-id   Client ID (default: mqtt5-sample-5873a450)
+  --ca_file     Path to optional CA bundle (PEM) (default: None)
+  --topic       Topic (default: test/topic)
+  --message     Message payload (default: Hello from mqtt5 sample)
+  --count       Messages to publish (0 = infinite) (default: 5)
+```
+
+The sample will not run without the required arguments and will notify you of missing arguments.
+
+## Additional Information
+Additional help with the MQTT5 Client can be found in the [MQTT5 Userguide](../../documents/MQTT5_Userguide.md). This guide will provide more details on MQTT5 [operations](../../documents/MQTT5_Userguide.md#optional-keyword-arguments), [lifecycle events](../../documents/MQTT5_Userguide.md#lifecycle-events), [connection methods](../../documents/MQTT5_Userguide.md#connecting-to-aws-iot-core), and other useful information.
