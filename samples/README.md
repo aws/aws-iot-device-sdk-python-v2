@@ -1,50 +1,66 @@
-# Sample apps for the AWS IoT Device SDK v2 for Python
-## MQTT5 Samples
-#### MQTT5 is the recommended MQTT Client. Additional infomration and usage instructions can be found in the [MQTT5 User Guide](../documents/MQTT5_Userguide.md)
-* [X509-based mutual TLS](./mqtt/mqtt5_x509.md)
-* [PKCS11](./mqtt/mqtt5_pkcs11_connect.md)
-* [Websockets with Sigv4 authentication](./mqtt/mqtt5_aws_websocket.md)
-* [AWS Custom Authorizer Lambda Function](./mqtt/mqtt5_custom_auth.md)
+# Sample for the AWS IoT Device SDK v2 for Python
+This directory contains sample applications for [aws-iot-device-sdk-python-v2](../README.md).
 
-## Service Clients
-* [Basic Fleet Provisioning](./fleet_provisioning_basic.md)
-* [CSR Fleet Provisioning](./fleet_provisioning_csr.md)
-* [Shadow](./shadow.md)
-* [Jobs](./jobs.md)
+### Table of Contents
+* [Samples](#samples)
+    * [MQTT5 Client Samples](#mqtt5-client-samples)
+    * [Service Client Samples](#service-client-samples)
+    * [Greengrass Samples](#greengrass-samples)
+* [Build Instructions](#build-instructions)
+* [Sample Help](#sample-help)
+* [Enable Logging in Samples](#enable-logging-in-samples)
 
-## Greengrass
-* [Greengrass Discovery](./basic_discovery.md)
-* [Greengrass IPC](./ipc_greengrass.md)
 
-### Build instructions
+## Samples
+### MQTT5 Client Samples
+##### MQTT5 is the recommended MQTT Client. Additional infomration and usage instructions can be found in the [MQTT5 User Guide](../documents/MQTT5_Userguide.md). The samples below will create an MQTT5 client, connect using the selected method, subscribe to a topic, publish to the topic, and then disconnect.
+| MQTT5 Client Sample | Description |
+|--------|-------------|
+| [X509-based mutual TLS](./mqtt/mqtt5_x509.md) | Demonstrates connecting to AWS IoT Core using X.509 certificates and private keys.
+| [Websockets with Sigv4 authentication](./mqtt/mqtt5_aws_websocket.md) | Shows how to authenticate over websockets using AWS Signature Version 4 credentials. |
+| [AWS Custom Authorizer Lambda Function](./mqtt/mqtt5_custom_auth.md) | Examples of connecting with a signed and unsigned Lambda-backed custom authorizer.
+| [PKCS11](./mqtt/mqtt5_pkcs11_connect.md) | Demonstrates connecting using a hardware security module (HSM) or smartcard with PKCS#11. |
+| [Other Connection Methods](../documents/MQTT5_Userguide.md#how-to-create-a-mqtt5-client-based-on-desired-connection-method) | More connection methods are available for review in the MQTT5 Userguide
+
+### Service Client Samples
+##### AWS offers a number of IoT related services using MQTT. The samples below demonstrate how to use the service clients provided by the SDK to interact with those services.
+| Service Client Sample | Description |
+|--------|-------------|
+| [Shadow](./service_clients//shadow.md) | Manage and sync device state using the IoT Device Shadow service. |
+| [Jobs](./service_clients//jobs.md) | Receive and execute remote operations sent from the Jobs service. |
+| [Basic Fleet Provisioning](./service_clients//fleet_provisioning_basic.md) | Provision a device using the Fleet Provisioning template. |
+| [CSR Fleet Provisioning](./service_clients//fleet_provisioning_csr.md) | Demonstrates CSR-based device certificate provisioning. |
+
+
+### Greengrass Samples
+##### Samples that interact with [AWS Greengrass](https://aws.amazon.com/greengrass/).
+| Greengrass Sample | Description |
+|--------|-------------|
+| [Greengrass Discovery](./greengrass//basic_discovery.md) | Discover and connect to a local Greengrass core. |
+| [Greengrass IPC](./greengrass//ipc_greengrass.md) | Demonstrates Inter-Process Communication (IPC) with Greengrass components. |
+
+### Build Instructions
 
 First, install the `aws-iot-devices-sdk-python-v2` with following the instructions from [Installation](../README.md#Installation).
 
-Each sample README has instructions on how to run each sample with the same name as the sample itself. For example, the [MQTT5 PubSub README](./mqtt5_pubsub.md) is `mqtt5_pubsub.md` and it can be run with the following:
+Each sample's README has instructions on how to run the sample along with links to additional relevant information. For example, the [MQTT5 X509 README](./mqtt/mqtt5_x509.md) is `mqtt5_x509.md` and it can be run with the following command from the folder containing the sample:
 
 ``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 mqtt5_pubsub.py --endpoint <endpoint> --cert <path to certificate> --key <path to private key>
+python3 mqtt5_x509.py --endpoint <endpoint> --cert <path to certificate> --key <path to private key>
 ```
 
 ### Sample Help
 
 All samples will show their options by passing in `--help`. For example:
-
+`
 ``` sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 mqtt5_pubsub.py --help
+python3 mqtt5_x509.py --help
 ```
 
 Which will result in output showing all of the options that can be passed in at the command line, along with descriptions of what each does and whether they are optional or not.
 
 ### Enable logging in samples
 
-To enable logging in the samples, you need to pass the `--verbosity` as an additional argument. `--verbosity` controls the level of logging shown. `--verbosity` can be set to `Trace`, `Debug`, `Info`, `Warn`, `Error`, `Fatal`, or `None`.
-
-For example, to run [MQTT5 PubSub](./mqtt5_pubsub.md) sample with logging you could use the following:
-
-``` sh
-# For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 mqtt5_pubsub.py <other arguments> --verbosity Debug
-```
+To enable logging in the samples, you can follow the instructions provided in the [FAQ](../documents/FAQ.md) related to [enabling logs](../documents/FAQ.md#how-do-i-enable-logging).
