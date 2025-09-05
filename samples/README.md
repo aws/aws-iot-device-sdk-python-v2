@@ -6,9 +6,9 @@ This directory contains sample applications for [aws-iot-device-sdk-python-v2](.
     * [MQTT5 Client Samples](#mqtt5-client-samples)
     * [Service Client Samples](#service-client-samples)
     * [Greengrass Samples](#greengrass-samples)
-* [Build Instructions](#build-instructions)
+* [Instructions](#instructions)
 * [Sample Help](#sample-help)
-* [Enable Logging in Samples](#enable-logging-in-samples)
+* [Enable Logging](#enable-logging)
 
 
 ## Samples
@@ -39,9 +39,9 @@ This directory contains sample applications for [aws-iot-device-sdk-python-v2](.
 | [Greengrass Discovery](./greengrass//basic_discovery.md) | Discover and connect to a local Greengrass core. |
 | [Greengrass IPC](./greengrass//ipc_greengrass.md) | Demonstrates Inter-Process Communication (IPC) with Greengrass components. |
 
-### Build Instructions
+### Instructions
 
-First, install the `aws-iot-devices-sdk-python-v2` with following the [Installation Instructions](../README.md#Installation).
+First, install `aws-iot-devices-sdk-python-v2`. Installation instructions for the SDK are [Provided Here](../README.md#Installation).
 
 Each sample's README contains prerequisites, arguments, and detailed instructions. For example, the [MQTT5 X509 Sample README](./mqtt/mqtt5_x509.md) is `mqtt5_x509.md` and the sample can be run with the following command:
 
@@ -80,6 +80,6 @@ optional arguments:
 
 The sample will not run without the required arguments and will notify you of missing arguments.
 
-### Enable logging in samples
+### Enable Logging
 
-To enable logging in the samples, you can follow the instructions provided in the [FAQ](../documents/FAQ.md) related to [enabling logs](../documents/FAQ.md#how-do-i-enable-logging).
+Instructions to enable logging are available in the [FAQ](../documents/FAQ.md) under [How do I enable logging](../documents/FAQ.md#how-do-i-enable-logging).
