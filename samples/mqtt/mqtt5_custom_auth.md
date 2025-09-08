@@ -10,15 +10,15 @@
 ## Introduction
 The Custom Authorizer samples illustrate how to connect to the [AWS IoT Message Broker](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html) with the MQTT5 Client by authenticating with a signed or unsigned [Custom Authorizer Lambda Function](https://docs.aws.amazon.com/iot/latest/developerguide/custom-auth-tutorial.html)
 
-You will need to setup your Custom Authorizer so the Lambda function returns a policy document. See [this page on the documentation](https://docs.aws.amazon.com/iot/latest/developerguide/config-custom-auth.html) for more details and example return result. You can customize this lambda function as needed for your application to provide your own security measures based on the needs of your application.
-
 You can read more about MQTT5 for the Python IoT Device SDK V2 in the [MQTT5 user guide](../../documents/MQTT5_Userguide.md).
 
 ## Requirements
 
-This sample assumes you have the required AWS IoT resources available. Information about AWS IoT can be found [HERE](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html) and instructions on creating AWS IoT resources (AWS IoT Policy, Device Certificate, Private Key) can be found [HERE](https://docs.aws.amazon.com/iot/latest/developerguide/create-iot-resources.html).
+You will need to setup your Custom Authorizer so the Lambda function returns a policy document. See [this page on the documentation](https://docs.aws.amazon.com/iot/latest/developerguide/config-custom-auth.html) for more details and example return result. You can customize this lambda function as needed for your application to provide your own security measures based on the needs of your application.
 
-Your IoT Core Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect, subscribe, publish, and receive. Below is a sample policy that can be used on your IoT Core Thing that will allow this sample to run as intended.
+The policy [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) provided by your Custom Authorizer Lambda must provide iot connect, subscribe, publish, and receive privileges for this sample to run successfully.
+
+Below is a sample policy that provides the necessary privileges.
 
 <details>
 <summary>(see sample policy)</summary>
