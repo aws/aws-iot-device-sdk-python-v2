@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 from awsiot import mqtt5_client_builder
-from awscrt import mqtt5, io
+from awscrt import mqtt5
 import threading, time
 
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
@@ -38,7 +38,7 @@ optional.add_argument("--count", metavar="",default=5, dest="input_count",
 # args contains all the parsed commandline arguments used by the sample
 args = parser.parse_args()
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
-io.init_logging(io.LogLevel.Debug, 'stdout')
+
 TIMEOUT = 100
 message_count = args.input_count
 message_topic = args.input_topic

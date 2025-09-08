@@ -1,0 +1,128 @@
+# Custom Authorizer Connect
+
+[**Return to main sample list**](../README.md)
+*__Jump To:__*
+* [Introduction](#introduction)
+* [Requirements](#requirements)
+* [How To Run](#how-to-run)
+* [Additional Information](#additional-information)
+
+## Introduction
+The Custom Authorizer samples illustrate how to connect to the [AWS IoT Message Broker](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html) with the MQTT5 Client by authenticating with a signed or unsigned [Custom Authorizer Lambda Function](https://docs.aws.amazon.com/iot/latest/developerguide/custom-auth-tutorial.html)
+
+You will need to setup your Custom Authorizer so the Lambda function returns a policy document. See [this page on the documentation](https://docs.aws.amazon.com/iot/latest/developerguide/config-custom-auth.html) for more details and example return result. You can customize this lambda function as needed for your application to provide your own security measures based on the needs of your application.
+
+You can read more about MQTT5 for the Python IoT Device SDK V2 in the [MQTT5 user guide](../../documents/MQTT5_Userguide.md).
+
+## Requirements
+
+This sample assumes you have the required AWS IoT resources available. Information about AWS IoT can be found [HERE](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html) and instructions on creating AWS IoT resources (AWS IoT Policy, Device Certificate, Private Key) can be found [HERE](https://docs.aws.amazon.com/iot/latest/developerguide/create-iot-resources.html).
+
+Your IoT Core Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) must provide privileges for this sample to connect, subscribe, publish, and receive. Below is a sample policy that can be used on your IoT Core Thing that will allow this sample to run as intended.
+
+<details>
+<summary>(see sample policy)</summary>
+<pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Publish",
+        "iot:Receive"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topic/test/topic"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Subscribe"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:topicfilter/test/topic"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Connect"
+      ],
+      "Resource": [
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      ]
+    }
+  ]
+}å
+</pre>
+
+Replace with the following with the data from your AWS account:
+* `<region>`: The AWS IoT Core region where you created your AWS IoT Core thing you wish to use with this sample. For example `us-east-1`.
+* `<account>`: Your AWS IoT Core account ID. This is the set of numbers in the top right next to your AWS account name when using the AWS IoT Core website.
+
+Note that in a real application, you may want to avoid the use of wildcards in your ClientID or use them selectively. Please follow best practices when working with AWS on production applications using the SDK. Also, for the purposes of this sample, please make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+
+</details>
+
+## How to run
+
+To Run this sample from the `samples\mqtt` folder, use the following command:
+
+```sh
+# For Windows: replace 'python3' with 'python' and '/' with '\'
+
+# For an unsigned custom authorizer
+python3 mqtt5_custom_auth_unsigned.py \
+    --endpoint <AWS IoT endpoint> \
+    --authorizer_name <authorizer name> \
+    --auth_username <username data used by the authorizer Lambda>\
+    --auth_password <password data used by the authorizer Lambda>
+
+# For a signed custom authorizer
+python3 mqtt5_custom_auth_signed.py \
+    --endpoint <AWS IoT endpoint> \
+    --authorizer_name <authorizer name> \
+    --auth_token_key_name <name used to pass the token key value during authentication> \
+    --auth_token_key_value <developer-chosen value whose digital signature passed to authenticate> \
+    --auth_signature <url-encoded base64-encoded digital signature of <authorizer-token-key-value>> \
+    --auth_username <username data used by the authorizer Lambda> \
+    --auth_password <password data used by the authorizer Lambda>
+
+```
+If you would like to see optional arguments, use the `--help` argument:
+``` sh
+# For Windows: replace 'python3' with 'python' and '/' with '\'
+
+# For an unsigned custom authorizer
+python3 mqtt5_custom_auth_unsigned.py --help
+
+# For a signed custom authorizer
+python3 mqtt5_custom_auth_signed.py --help
+```
+
+will result in the following output:
+```
+MQTT5 X509 Sample (mTLS)
+
+options:
+  -h, --help    show this help message and exit
+
+required arguments:
+  --endpoint    IoT endpoint hostname (default: None)
+  --cert        Path to the certificate file to use during mTLS connection establishment (default: None)
+  --key         Path to the private key file to use during mTLS connection establishment (default: None)
+
+optional arguments:
+  --client-id   Client ID (default: mqtt5-sample-5873a450)
+  --ca_file     Path to optional CA bundle (PEM) (default: None)
+  --topic       Topic (default: test/topic)
+  --message     Message payload (default: Hello from mqtt5 sample)
+  --count       Messages to publish (0 = infinite) (default: 5)
+```
+
+The sample will not run without the required arguments and will notify you of missing arguments.
+
+## Additional Information
+Additional help with the MQTT5 Client can be found in the [MQTT5 Userguide](../../documents/MQTT5_Userguide.md). This guide will provide more details on MQTT5 [operations](../../documents/MQTT5_Userguide.md#optional-keyword-arguments), [lifecycle events](../../documents/MQTT5_Userguide.md#lifecycle-events), [connection methods](../../documents/MQTT5_Userguide.md#connecting-to-aws-iot-core), and other useful information.
