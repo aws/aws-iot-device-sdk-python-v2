@@ -1,4 +1,4 @@
-# Custom Authorizer Connect
+# MQTT5 Custom Authorizer PubSub
 
 [**Return to main sample list**](../README.md)
 *__Jump To:__*
@@ -76,19 +76,19 @@ To Run this sample from the `samples\mqtt` folder, use the following command:
 # For an unsigned custom authorizer
 python3 mqtt5_custom_auth_unsigned.py \
     --endpoint <AWS IoT endpoint> \
-    --authorizer_name <authorizer name> \
-    --auth_username <username data used by the authorizer Lambda>\
-    --auth_password <password data used by the authorizer Lambda>
+    --authorizer_name <The name of the custom authorizer to connect to invoke> \
+    --auth_username <The name to send when connecting through the custom authorizer>\
+    --auth_password <The password to send when connecting through a custom authorizer>
 
 # For a signed custom authorizer
 python3 mqtt5_custom_auth_signed.py \
     --endpoint <AWS IoT endpoint> \
-    --authorizer_name <authorizer name> \
-    --auth_token_key_name <name used to pass the token key value during authentication> \
-    --auth_token_key_value <developer-chosen value whose digital signature passed to authenticate> \
-    --auth_signature <url-encoded base64-encoded digital signature of <authorizer-token-key-value>> \
-    --auth_username <username data used by the authorizer Lambda> \
-    --auth_password <password data used by the authorizer Lambda>
+    --authorizer_name <The name of the custom authorizer to connect to invoke> \
+    --auth_token_key_name <Authorizer token key name> \
+    --auth_token_key_value <Authorizer token key value> \
+    --auth_signature <Custom authorizer signature> \
+    --auth_username <The name to send when connecting through the custom authorizer> \
+    --auth_password <The password to send when connecting through a custom authorizer>
 
 ```
 If you would like to see optional arguments, use the `--help` argument:
@@ -104,22 +104,27 @@ python3 mqtt5_custom_auth_signed.py --help
 
 will result in the following output:
 ```
-MQTT5 X509 Sample (mTLS)
+MQTT5 Unsigned Custom Authorizer Sample
 
 options:
-  -h, --help    show this help message and exit
+  -h, --help            show this help message and exit
 
 required arguments:
-  --endpoint    IoT endpoint hostname (default: None)
-  --cert        Path to the certificate file to use during mTLS connection establishment (default: None)
-  --key         Path to the private key file to use during mTLS connection establishment (default: None)
+  --endpoint            IoT endpoint hostname (default: None)
+  --authorizer_name     The name of the custom authorizer to connect to invoke (default: None)
+  --auth_signature      Custom authorizer signature (default: None)
+  --auth_token_key_name 
+                        Authorizer token key name (default: None)
+  --auth_token_key_value 
+                        Authorizer token key value (default: None)
+  --auth_username       The name to send when connecting through the custom authorizer (optional) (default: None)
+  --auth_password       The password to send when connecting through a custom authorizer (optional) (default: None)
 
 optional arguments:
-  --client-id   Client ID (default: mqtt5-sample-5873a450)
-  --ca_file     Path to optional CA bundle (PEM) (default: None)
-  --topic       Topic (default: test/topic)
-  --message     Message payload (default: Hello from mqtt5 sample)
-  --count       Messages to publish (0 = infinite) (default: 5)
+  --client-id           Client ID (default: test-f3168b42)
+  --topic               Topic (default: test/topic)
+  --message             Message payload (default: Hello from mqtt5 sample)
+  --count               Messages to publish (0 = infinite) (default: 5)
 ```
 
 The sample will not run without the required arguments and will notify you of missing arguments.

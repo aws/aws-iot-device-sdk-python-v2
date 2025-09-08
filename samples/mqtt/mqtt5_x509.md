@@ -55,7 +55,7 @@ Your IoT Core Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerg
       ]
     }
   ]
-}
+}å
 </pre>
 
 Replace with the following with the data from your AWS account:
@@ -72,7 +72,10 @@ To Run this sample from the `samples\mqtt` folder, use the following command:
 
 ```sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 mqtt5_x509.py --endpoint <endpoint> --cert <file> --key <file>
+python3 mqtt5_x509.py \
+  --endpoint <AWS IoT endpoint> \
+  --cert <Path to certificate file> \
+  --key <Path to private key file>
 ```
 If you would like to see what optional arguments are available, use the `--help` argument:
 ``` sh

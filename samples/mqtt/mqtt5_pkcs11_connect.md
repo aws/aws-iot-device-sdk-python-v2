@@ -1,4 +1,4 @@
-# PKCS#11 Connect
+# MQTT5 PKCS#11 PubSub
 
 [**Return to main sample list**](../README.md)
 *__Jump To:__*
@@ -73,7 +73,13 @@ The MQTT5 PKCS11 connect sample can be run from the `samples\mqtt` folder using 
 
 ```sh
 # For Windows: replace 'python3' with 'python' and '/' with '\'
-python3 mqtt5_pkcs11_connect.py --endpoint <endpoint> --cert <path to certificate> --pkcs11_lib <path to PKCS11 lib> --pin <user-pin> --token_label <token-label> --key_label <key-label>
+python3 mqtt5_pkcs11_connect.py \
+  --endpoint <AWS IoT endpoint> \
+  --cert <path to certificate file> \
+  --pkcs11_lib <Path to PKCS#11 Library> \
+  --pin <User PIN for logging into PKCS#11 token> \
+  --token_label <Label of the PKCS#11 token to use (optional)> \
+  --key_label <Label of private key on the PKCS#11 token (optional)>
 ```
 
 If you would like to see what optional arguments are available, use the `--help` argument:
