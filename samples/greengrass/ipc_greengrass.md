@@ -1,6 +1,6 @@
 # Greengrass IPC
 
-[**Return to main sample list**](./README.md)
+[**Return to main sample list**](../README.md)
 
 This sample uses [AWS IoT Greengrass V2](https://docs.aws.amazon.com/greengrass/index.html) to publish messages from the Greengrass device to the AWS IoT MQTT broker.
 

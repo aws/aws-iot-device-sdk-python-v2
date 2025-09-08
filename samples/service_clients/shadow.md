@@ -1,7 +1,18 @@
 # Shadow Sandbox
 
-[**Return to main sample list**](./README.md)
+[**Return to main sample list**](../README.md)
+*__Jump To:__*
+* [Introduction](#introduction)
+* [Prerequisites](#prerequisites)
+* [Walkthrough](#walkthrough)
+  * [Initialization](#initialization)
+  * [Changing Properties](#changing-properties)
+  * [Multiple Properties](#multiple-properties)
+  * [Removing Properties](#removing-properties)
+  * [Removing a Shadow](#removing-a-shadow)
 
+
+## Introduction
 This is an interactive sample that supports a set of commands that allow you to interact with "classic" (unnamed) shadows of the AWS IoT [Device Shadow](https://docs.aws.amazon.com/iot/latest/developerguide/iot-device-shadows.html) Service.
 
 ### Commands
@@ -252,7 +263,7 @@ Received ShadowDeltaUpdatedEvent:
 Similar to how updates are delta-based, notice how the ShadowDeltaUpdated event only includes the "Status" property, leaving the "Color" property out because it 
 is still in sync between desired and reported.
 
-### Removing properties
+### Removing Properties
 Properties can be removed from a shadow by setting them to null.  Removing a property completely would require its removal from both the
 reported and desired states of the shadow (output omitted):
 
@@ -279,7 +290,7 @@ get response:
 
 The Status property has been fully removed from the shadow state.
 
-### Removing a shadow
+### Removing a Shadow
 To remove a shadow, you must invoke the DeleteShadow API (setting the reported and desired
 states to null will only clear the states, but not delete the shadow resource itself).
 

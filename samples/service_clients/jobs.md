@@ -1,7 +1,16 @@
 # Jobs Sandbox
 
-[**Return to main sample list**](./README.md)
+[**Return to main sample list**](../README.md)
+*__Jump To:__*
+* [Introduction](#introduction)
+* [Prerequisites](#prerequisites)
+* [Walkthrough](#walkthrough)
+  * [Job Creation](#job-creation)
+  * [Job Execution](#job-execution)
+  * [Job Cleanup](#job-cleanup)
+  * [FAQ](#faq)
 
+## Introduction
 This is an interactive sample that supports a set of commands that allow you to interact with the AWS IoT [Jobs](https://docs.aws.amazon.com/iot/latest/developerguide/iot-jobs.html) Service.  The sample includes both control plane
 commands (that require the AWS SDK for Python and use HTTP as transport) and data plane commands (that use the v2 device SDK and use MQTT as transport).  In a real use case,
 control plane commands would be issued by applications under control of the customer, while the data plane operations would be issued by software running on the
@@ -304,7 +313,7 @@ yielding
 DeleteJobResponse: {'ResponseMetadata': {'RequestId': 'cbd856d6-9d52-4603-a0bf-0a0800025903', 'HTTPStatusCode': 200, 'HTTPHeaders': {'date': 'Thu, 15 May 2025 20:54:16 GMT', 'content-type': 'application/json', 'content-length': '0', 'connection': 'keep-alive', 'x-amzn-requestid': 'cbd856d6-9d52-4603-a0bf-0a0800025903'}, 'RetryAttempts': 0}}
 ```
 
-### Misc. Topics
+### FAQ
 #### What happens if I call `start_next_pending_job_execution` and there are no jobs to execute?
 The request will not fail, but the `execution` field of the response will be empty, indicating that there is nothing to do.
 

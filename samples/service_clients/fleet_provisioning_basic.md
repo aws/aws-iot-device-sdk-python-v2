@@ -1,9 +1,19 @@
 # Basic Fleet provisioning
 
-[**Return to main sample list**](./README.md)
+[**Return to main sample list**](../README.md)
+*__Jump To:__*
+* [Introduction](#introduction)
+* [Requirements](#requirements)
+* [How To Run](#how-to-run)
+* [Fleet Provisioning Detailed Instructions](#fleet-provisioning-detailed-instructions)
+  * [Aws Resource Setup](#aws-resource-setup)
+  * [Creating a Certificate-key Set from a Provisioning Claim](#creating-a-certificate-key-set-from-a-provisioning-claim)
+  * [Running the Sample using a Certificate-key Set](#running-the-sample-using-a-certificate-key-set)
 
+## Introduction
 This sample uses the AWS IoT [Fleet provisioning service](https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html) to provision devices using the CreateKeysAndCertificate and RegisterThing APIs. This allows you to create new AWS IoT Core thing resources using a Fleet Provisioning Template.
 
+## Requirements
 The [IAM Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-policies.html) attached to your provisioning certificate must provide privileges for this sample to connect, subscribe, publish, and receive. Below is a sample policy that can be used that will allow this sample to run as intended.
 
 <details>
@@ -82,7 +92,7 @@ Assuming you are in the SDK root directory, you can now run the basic fleet prov
 python3 samples/fleet_provisioning_basic.py --endpoint <endpoint> --cert <file> --key <file> --template_name <template name> --template_parameters <template parameters>
 ```
 
-### Fleet Provisioning Detailed Instructions
+## Fleet Provisioning Detailed Instructions
 
 #### Aws Resource Setup
 
@@ -234,7 +244,7 @@ And here is the same JSON document, but as a single line for easier copy-pasting
 
 You can use this JSON document as the `<TemplateJSON>` in the AWS CLI command. This sample will assume you have used the template JSON above, so you may need to adjust if you are using a different template JSON. Thankfully, all of these steps need to only be done and, now that they are complete, you will need not perform them again.
 
-#### Creating a certificate-key set from a provisioning claim
+#### Creating a Certificate-key Set from a Provisioning Claim
 
 To run the provisioning sample, you'll need a certificate and key set with sufficient permissions. Provisioning certificates are normally created ahead of time and placed on your device, but for this sample, we will just create them on the fly. This is primarily done for example purposes.
 
@@ -258,7 +268,7 @@ aws iot create-provisioning-claim \
 This will create a certificate and key in the `tmp` folder with file names starting with `provision`. You can now use these temporary keys
 to perform the actual provisioning in the section below.
 
-#### Running the sample using a certificate-key set
+#### Running the Sample Using a Certificate-key Set
 
 To run the sample with your certificate and private key, use the following command:
 
