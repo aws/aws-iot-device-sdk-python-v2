@@ -10,7 +10,7 @@
 ## Introduction
 This sample uses the
 [Message Broker](https://docs.aws.amazon.com/iot/latest/developerguide/iot-message-broker.html)
-for AWS IoT to send and receive messages through an MQTT connection using MQTT5 and a websocket as transport. AWS Websocket requires the initial handshake request to be signed with the AWS Sigv4 signing algorithm. [`AwsCredentialsProvider.new_default_chain`](https://github.com/awslabs/aws-crt-python/blob/main/awscrt/auth.py) is used to source credentials via the default credentials provider chain to sign the websocket handshake.
+for AWS IoT to send and receive messages through an MQTT connection using MQTT5 and a websocket as transport. Using websockets as transport requires the initial handshake request to be signed with the AWS Sigv4 signing algorithm. [`AwsCredentialsProvider.new_default_chain`](https://github.com/awslabs/aws-crt-python/blob/main/awscrt/auth.py) is used to source credentials via the default credentials provider chain to sign the websocket handshake.
 
 You can read more about MQTT5 for the Python IoT Device SDK V2 in the [MQTT5 user guide](../../documents/MQTT5_Userguide.md).
 
