@@ -145,8 +145,8 @@ jobs:
         source utils/test_cleanup.sh
         cd ..
 
-  # Runs the samples and service tests and ensures that everything is working
-  linux-smoke-tests:
+  # Runs the service client tests
+  linux-service-client-tests:
     runs-on: ubuntu-22.04
     permissions:
       id-token: write # This is required for requesting the JWT
