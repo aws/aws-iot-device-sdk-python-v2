@@ -16,8 +16,12 @@
 If you are just getting started make sure you [install this sdk](https://github.com/aws/aws-iot-device-sdk-python-v2#installation) and then build and run the [basic PubSub](https://github.com/aws/aws-iot-device-sdk-python-v2/tree/main/samples#pubsub)
 
 ### How do I enable logging?
+To enable logging you must import `io` from `awscrt` and initialize it with `init_logging`.
 
+`LogLevel` can be set to `Fatal`, `Error`, `Warn`, `Info`, `Debug`, or `Trace`. `stderr` and `stdout` can be used to print logs while any other string will be assumed to be a file path. 
 ``` python
+from awscrt import io
+# This sets the logger to print any Error level logs to stderr
 io.init_logging(io.LogLevel.Error, 'stderr')
 ```
 You can also enable [CloudWatch logging](https://docs.aws.amazon.com/iot/latest/developerguide/cloud-watch-logs.html) for IoT which will provide you with additional information that is not available on the client side sdk.

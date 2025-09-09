@@ -1231,10 +1231,7 @@ These are forwarded to the receiver of the message. Use content\_type(str) metho
 
 **Shared Subscriptions**\
 Shared Subscriptions allow multiple clients to share a subscription to a topic and only one client will receive messages
-published to that topic using a random distribution.\
-For more infromation, see a
-[shared subscription sample](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/mqtt5_shared_subscription.md)
-in the v2 SDK.
+published to that topic using a random distribution.
 
 > [!NOTE]
 > AWS IoT Core supports Shared Subscriptions for both MQTT3 and MQTT5. For more information,

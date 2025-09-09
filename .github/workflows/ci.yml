@@ -145,8 +145,8 @@ jobs:
         source utils/test_cleanup.sh
         cd ..
 
-  # Runs the samples and service tests and ensures that everything is working
-  linux-smoke-tests:
+  # Runs the service client tests
+  linux-service-client-tests:
     runs-on: ubuntu-22.04
     permissions:
       id-token: write # This is required for requesting the JWT
@@ -232,65 +232,6 @@ jobs:
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
           python3 ./test_cases/test_jobs_execution.py --config-file test_cases/mqtt5_jobs_cfg.json
-
-  linux-greengrass-tests:
-    runs-on: ubuntu-22.04
-    permissions:
-      id-token: write # This is required for requesting the JWT
-    steps:
-      - name: Setup environment
-        run: |
-          python3 -m pip install boto3
-      - name: configure AWS credentials (containers)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_BUILD_AND_TEST_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: Build ${{ env.PACKAGE_NAME }}
-        run: |
-          python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
-          chmod a+x builder
-          ./builder build -p ${{ env.PACKAGE_NAME }}
-      - name: Install Greengrass Development Kit
-        run: |
-          python3 -m pip install awsiotsdk
-          python3 -m pip install -U git+https://github.com/aws-greengrass/aws-greengrass-gdk-cli.git@v1.6.2
-      - name: Configure AWS credentials (Greengrass)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_GREENGRASS_INSTALLER_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: Build and run Greengrass basic discovery sample
-        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/basic_discovery
-        run: |
-          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
-          gdk component build
-          gdk test-e2e build
-          gdk test-e2e run
-      - name: Show logs
-        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/basic_discovery
-        # Print logs unconditionally to provide more details on Greengrass run even if the test failed.
-        if: always()
-        run: |
-          echo "=== greengrass.log"
-          cat testResults/gg*/greengrass.log
-          echo "=== software.amazon.awssdk.sdk-gg-test-discovery.log"
-          cat testResults/gg*/software.amazon.awssdk.sdk-gg-test-discovery.log
-      - name: Build and run Greengrass IPC sample
-        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/ipc
-        run: |
-          gdk component build
-          gdk test-e2e build
-          gdk test-e2e run
-      - name: Show logs
-        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/ipc
-        # Print logs unconditionally to provide more details on Greengrass run even if the test failed.
-        if: always()
-        run: |
-          echo "=== greengrass.log"
-          cat testResults/gg*/greengrass.log
-          echo "=== software.amazon.awssdk.sdk-gg-ipc.log"
-          cat testResults/gg*/software.amazon.awssdk.sdk-gg-ipc.log
 
   # check that docs can still build
   check-docs:
