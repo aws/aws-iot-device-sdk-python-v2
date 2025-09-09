@@ -8,7 +8,7 @@
     * [Not Supported](#not-supported)
 * [Getting Started with MQTT5](#getting-started-with-mqtt5)
     * [Connecting to AWS IoT Core](#connecting-to-aws-iot-core)
-    * [How to create an MQTT5 Client based on desired connection method](#how-to-create-a-mqtt5-client-based-on-desired-connection-method)
+    * [How to create an MQTT5 Client based on desired connection method](#how-to-create-an-mqtt5-client-based-on-desired-connection-method)
         * [Direct MQTT with X509-based mutual TLS](#direct-mqtt-with-x509-based-mutual-tls)
         * [Direct MQTT with Custom Authentication](#direct-mqtt-with-custom-authentication)
         * [Direct MQTT with PKCS11 Method](#direct-mqtt-with-pkcs11-method)

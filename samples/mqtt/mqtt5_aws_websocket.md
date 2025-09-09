@@ -53,7 +53,7 @@ The AWS IAM permission policy associated with the AWS credentials resolved by th
       ]
     }
   ]
-}å
+}
 </pre>
 
 Replace with the following with the data from your AWS account:

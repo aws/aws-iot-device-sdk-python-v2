@@ -20,7 +20,7 @@ This directory contains sample applications for [aws-iot-device-sdk-python-v2](.
 | [Websockets with Sigv4 authentication](./mqtt/mqtt5_aws_websocket.md) | Shows how to authenticate over websockets using AWS Signature Version 4 credentials. |
 | [AWS Custom Authorizer Lambda Function](./mqtt/mqtt5_custom_auth.md) | Examples of connecting with a signed and unsigned Lambda-backed custom authorizer.
 | [PKCS11](./mqtt/mqtt5_pkcs11_connect.md) | Demonstrates connecting using a hardware security module (HSM) or smartcard with PKCS#11. |
-| [Other Connection Methods](../documents/MQTT5_Userguide.md#how-to-create-a-mqtt5-client-based-on-desired-connection-method) | More connection methods are available for review in the MQTT5 Userguide
+| [Other Connection Methods](../documents/MQTT5_Userguide.md#how-to-create-an-mqtt5-client-based-on-desired-connection-method) | More connection methods are available for review in the MQTT5 Userguide
 
 ### Service Client Samples
 ##### AWS offers a number of IoT related services using MQTT. The samples below demonstrate how to use the service clients provided by the SDK to interact with those services.
