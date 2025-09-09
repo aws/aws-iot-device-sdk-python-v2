@@ -55,7 +55,7 @@ Below is a sample policy that provides the necessary privileges.
       ]
     }
   ]
-}å
+}
 </pre>
 
 Replace with the following with the data from your AWS account:

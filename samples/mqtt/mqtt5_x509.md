@@ -55,7 +55,7 @@ Your IoT Core Thing's [Policy](https://docs.aws.amazon.com/iot/latest/developerg
       ]
     }
   ]
-}å
+}
 </pre>
 
 Replace with the following with the data from your AWS account:
