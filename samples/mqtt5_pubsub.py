@@ -24,7 +24,7 @@ parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bund
 # Messaging
 parser.add_argument("--topic", default="test/topic", dest="input_topic", help="Topic")
 parser.add_argument("--message", default="Hello from mqtt5 sample", dest="input_message", help="Message payload")
-parser.add_argument("--count", default=5, dest="input_count",
+parser.add_argument("--count", type=int, default=5, dest="input_count",
                     help="Messages to publish (0 = infinite)")
 # Proxy
 parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
@@ -79,7 +79,7 @@ def on_lifecycle_connection_failure(lifecycle_connection_failure: mqtt5.Lifecycl
 
 if __name__ == '__main__':
     print("\nStarting MQTT5 PubSub Sample\n")
-    message_count = args.input_count
+    message_count = int(args.input_count)
     message_topic = args.input_topic
     message_string = args.input_message
 
