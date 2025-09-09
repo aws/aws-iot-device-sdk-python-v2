@@ -32,7 +32,7 @@ optional.add_argument("--topic", metavar="",default="test/topic", dest="input_to
                       help="Topic")
 optional.add_argument("--message", metavar="",default="Hello from mqtt5 sample", dest="input_message",
                       help="Message payload")
-optional.add_argument("--count", metavar="",default=5, dest="input_count",
+optional.add_argument("--count", type=int, metavar="",default=5, dest="input_count",
                       help="Messages to publish (0 = infinite)")
 
 # args contains all the parsed commandline arguments used by the sample

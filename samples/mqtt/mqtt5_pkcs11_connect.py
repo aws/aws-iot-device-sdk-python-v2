@@ -30,7 +30,7 @@ required.add_argument("--pin", required=True,  metavar="", dest="input_pkcs11_us
 # Optional Arguments
 optional.add_argument("--token_label",  metavar="", dest="input_pkcs11_token_label",
                       help="Label of the PKCS#11 token to use (optional).")
-optional.add_argument("--slot_id",  metavar="", dest="input_pkcs11_slot_id",
+optional.add_argument("--slot_id", type=int, metavar="", dest="input_pkcs11_slot_id",
                       help="Slot ID containing the PKCS#11 token to use (optional).")
 optional.add_argument("--key_label",  metavar="", dest="input_pkcs11_key_label",
                       help="Label of private key on the PKCS#11 token (optional).")
@@ -40,7 +40,7 @@ optional.add_argument("--topic", default="test/topic",  metavar="", dest="input_
                       help="Topic")
 optional.add_argument("--message", default="Hello from mqtt5 sample",  metavar="", dest="input_message",
                       help="Message payload")
-optional.add_argument("--count", default=5,  metavar="", dest="input_count",
+optional.add_argument("--count", type=int, default=5,  metavar="", dest="input_count",
                     help="Messages to publish (0 = infinite)")
 optional.add_argument("--proxy-host",  metavar="", dest="input_proxy_host",
                       help="HTTP proxy host")

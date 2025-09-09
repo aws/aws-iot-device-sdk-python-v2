@@ -33,10 +33,14 @@ required.add_argument("--auth_password", required=False,  metavar="", dest="inpu
                     help="The password to send when connecting through a custom authorizer (optional)")
 
 # Optional Arguments
-optional.add_argument("--client-id",  metavar="", dest="input_clientId", default=f"test-{uuid.uuid4().hex[:8]}", help="Client ID")
-optional.add_argument("--topic", default="test/topic",  metavar="", dest="input_topic", help="Topic")
-optional.add_argument("--message", default="Hello from mqtt5 sample",  metavar="", dest="input_message", help="Message payload")
-optional.add_argument("--count", default=5,  metavar="", dest="input_count", help="Messages to publish (0 = infinite)")
+optional.add_argument("--client-id",  metavar="", dest="input_clientId", default=f"test-{uuid.uuid4().hex[:8]}", 
+                      help="Client ID")
+optional.add_argument("--topic", default="test/topic",  metavar="", dest="input_topic", 
+                      help="Topic")
+optional.add_argument("--message", default="Hello from mqtt5 sample",  metavar="", dest="input_message", 
+                      help="Message payload")
+optional.add_argument("--count", type=int, default=5,  metavar="", dest="input_count", 
+                      help="Messages to publish (0 = infinite)")
 
 # args contains all the parsed commandline arguments used by the sample
 args = parser.parse_args()
