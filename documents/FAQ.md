@@ -108,7 +108,7 @@ Here is an example launch.json file to run the pubsub sample
                 "--ca_file", "<path to root-CA>",
                 "--cert", "<path to cert>",
                 "--key", "<path to key>",
-                "--client-id", "test-client"
+                "--client_id", "test-client"
             ]
         }
     ]

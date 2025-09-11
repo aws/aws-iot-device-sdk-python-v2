@@ -72,7 +72,7 @@ To Run this sample from the `samples\mqtt` folder, use the following command:
 # For Windows: replace 'python3' with 'python' and '/' with '\'
 python3 mqtt5_aws_websocket.py \
   --endpoint <AWS IoT endpoint> \
-  --signing-region <Signing region for websocket connection>
+  --signing_region <Signing region for websocket connection>
 ```
 If you would like to see what optional arguments are available, use the `--help` argument:
 ``` sh
@@ -89,10 +89,10 @@ options:
 
 required arguments:
   --endpoint         IoT endpoint hostname (default: None)
-  --signing-region   Signing region for websocket connection (default: None)
+  --signing_region   Signing region for websocket connection (default: None)
 
 optional arguments:
-  --client-id        Client ID (default: mqtt5-sample-809571c8)
+  --client_id        Client ID (default: mqtt5-sample-809571c8)
   --ca_file          Path to optional CA bundle (PEM) (default: None)
   --topic            Topic (default: test/topic)
   --message          Message payload (default: Hello from mqtt5 sample)

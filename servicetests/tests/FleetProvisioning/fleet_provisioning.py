@@ -39,11 +39,11 @@ def parse_sample_input():
     parser.add_argument("--ca_file", dest="input_ca", help="Path to optional CA bundle (PEM)")
 
     # Proxy (optional)
-    parser.add_argument("--proxy-host", dest="input_proxy_host", help="HTTP proxy host")
-    parser.add_argument("--proxy-port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
+    parser.add_argument("--proxy_host", dest="input_proxy_host", help="HTTP proxy host")
+    parser.add_argument("--proxy_port", type=int, default=0, dest="input_proxy_port", help="HTTP proxy port")
 
     # Misc
-    parser.add_argument("--client-id", dest="input_clientId",
+    parser.add_argument("--client_id", dest="input_clientId",
                         default=f"test-{uuid.uuid4().hex[:8]}", help="Client ID")
     parser.add_argument("--mqtt_version", type=int, default=0, dest="input_mqtt_version", help="MQTT Version")
     parser.add_argument("--csr", dest="input_csr_path", help="Path to CSR in Pem format (optional).")

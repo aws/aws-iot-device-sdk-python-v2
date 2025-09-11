@@ -24,7 +24,7 @@ required.add_argument("--key", required=True, metavar="", dest="input_key",
                     help="Path to the private key file to use during mTLS connection establishment")
 
 # Optional Arguments
-optional.add_argument("--client-id", metavar="",dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
+optional.add_argument("--client_id", metavar="",dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
                       help="Client ID")
 optional.add_argument("--ca_file", metavar="",dest="input_ca",
                       help="Path to optional CA bundle (PEM)")
