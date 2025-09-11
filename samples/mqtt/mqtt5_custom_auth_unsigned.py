@@ -26,7 +26,7 @@ required.add_argument("--auth_password", required=True,  metavar="", dest="input
                     help="The password to send when connecting through a custom authorizer")
 
 # Optional Arguments
-optional.add_argument("--client-id",  metavar="", dest="input_clientId", default=f"test-{uuid.uuid4().hex[:8]}",
+optional.add_argument("--client_id",  metavar="", dest="input_clientId", default=f"test-{uuid.uuid4().hex[:8]}",
                       help="Client ID")
 optional.add_argument("--topic", default="test/topic",  metavar="", dest="input_topic",
                       help="Topic")

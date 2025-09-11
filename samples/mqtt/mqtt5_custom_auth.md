@@ -121,7 +121,7 @@ required arguments:
   --auth_password       The password to send when connecting through a custom authorizer (optional) (default: None)
 
 optional arguments:
-  --client-id           Client ID (default: test-f3168b42)
+  --client_id           Client ID (default: test-f3168b42)
   --topic               Topic (default: test/topic)
   --message             Message payload (default: Hello from mqtt5 sample)
   --count               Messages to publish (0 = infinite) (default: 5)

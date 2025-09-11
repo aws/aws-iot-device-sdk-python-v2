@@ -18,11 +18,11 @@ optional = parser.add_argument_group("optional arguments")
 # Required Arguments
 required.add_argument("--endpoint", required=True,  metavar="", dest="input_endpoint",
                       help="IoT endpoint hostname")
-required.add_argument("--signing-region", required=True,  metavar="", dest="input_signing_region",
+required.add_argument("--signing_region", required=True,  metavar="", dest="input_signing_region",
                       help="Signing region for websocket connection")
 
 # Optional Arguments
-optional.add_argument("--client-id",  metavar="", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
+optional.add_argument("--client_id",  metavar="", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
                       help="Client ID")
 optional.add_argument("--ca_file",  metavar="", dest="input_ca",
                       help="Path to optional CA bundle (PEM)")

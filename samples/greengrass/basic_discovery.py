@@ -42,11 +42,11 @@ optional.add_argument("--print_discover_resp_only", type=bool, default=False,  m
                     help="(optional, default='False').")
 optional.add_argument("--mode", default='both',  metavar="", dest="input_mode",
                     help=f"The operation mode (optional, default='both').\nModes:{allowed_actions}")
-optional.add_argument("--proxy-host",  metavar="", dest="input_proxy_host",
+optional.add_argument("--proxy_host",  metavar="", dest="input_proxy_host",
                       help="HTTP proxy host")
-optional.add_argument("--proxy-port", type=int, default=0,  metavar="", dest="input_proxy_port",
+optional.add_argument("--proxy_port", type=int, default=0,  metavar="", dest="input_proxy_port",
                       help="HTTP proxy port")
-optional.add_argument("--client-id",  metavar="", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
+optional.add_argument("--client_id",  metavar="", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
                     help="Client ID")
 
 # args contains all the parsed commandline arguments used by the sample
