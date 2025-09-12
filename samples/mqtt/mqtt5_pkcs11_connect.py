@@ -72,6 +72,16 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
     global future_connection_success
     future_connection_success.set_result(lifecycle_connect_success_data)
 
+# Callback for the lifecycle event Connection Failure
+def on_lifecycle_connection_failure(lifecycle_connection_failure: mqtt5.LifecycleConnectFailureData):
+    print("Lifecycle Connection Failure with exception:{}".format(
+        lifecycle_connection_failure.exception))
+
+# Callback for the lifecycle event Disconnection
+def on_lifecycle_disconnection(lifecycle_disconnect_data: mqtt5.LifecycleDisconnectData):
+    print("Lifecycle Disconnected with reason code:{}".format(
+        lifecycle_disconnect_data.disconnect_packet.reason_code if lifecycle_disconnect_data.disconnect_packet else "None"))
+
 
 if __name__ == '__main__':
     print("\nStarting MQTT5 pkcs11 connect Sample\n")
@@ -99,6 +109,8 @@ if __name__ == '__main__':
         ca_filepath=args.input_ca,
         on_lifecycle_stopped=on_lifecycle_stopped,
         on_lifecycle_connection_success=on_lifecycle_connection_success,
+        on_lifecycle_connection_failure=on_lifecycle_connection_failure,
+        on_lifecycle_disconnection=on_lifecycle_disconnection,
         client_id=args.input_clientId)
 
     print("MQTT5 Client Created")

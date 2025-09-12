@@ -79,7 +79,7 @@ def on_lifecycle_attempting_connect(lifecycle_attempting_connect_data: mqtt5.Lif
 # Callback for the lifecycle event Connection Success
 def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.LifecycleConnectSuccessData):
     connack_packet = lifecycle_connect_success_data.connack_packet
-    print("Lifecycle Connection Success with reason_code:{}\n".format(
+    print("Lifecycle Connection Success with reason code:{}\n".format(
         repr(connack_packet.reason_code)))
     connection_success_event.set()
 
@@ -88,6 +88,12 @@ def on_lifecycle_connection_success(lifecycle_connect_success_data: mqtt5.Lifecy
 def on_lifecycle_connection_failure(lifecycle_connection_failure: mqtt5.LifecycleConnectFailureData):
     print("Lifecycle Connection Failure with exception:{}".format(
         lifecycle_connection_failure.exception))
+
+
+# Callback for the lifecycle event Disconnection
+def on_lifecycle_disconnection(lifecycle_disconnect_data: mqtt5.LifecycleDisconnectData):
+    print("Lifecycle Disconnected with reason code:{}".format(
+        lifecycle_disconnect_data.disconnect_packet.reason_code if lifecycle_disconnect_data.disconnect_packet else "None"))
 
 
 if __name__ == '__main__':
@@ -104,6 +110,7 @@ if __name__ == '__main__':
         on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,
         on_lifecycle_connection_success=on_lifecycle_connection_success,
         on_lifecycle_connection_failure=on_lifecycle_connection_failure,
+        on_lifecycle_disconnection=on_lifecycle_disconnection,
         client_id=args.input_clientId)
 
 
