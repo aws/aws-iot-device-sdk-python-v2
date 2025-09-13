@@ -1,6 +1,6 @@
 # PREREQUISITES
 
-## Python 3.7 or higher
+## Python 3.8 or higher
 
 How you install Python varies from platform to platform. Below are the instructions for Windows, MacOS, and Linux:
 

@@ -3,10 +3,13 @@
 
 # This file is generated
 
+import awscrt
 import awsiot
 import concurrent.futures
 import datetime
+import json
 import typing
+import uuid
 
 class IotShadowClient(awsiot.MqttServiceClient):
     """
@@ -34,10 +37,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.shadow_name:
-            raise ValueError("request.shadow_name is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/shadow/name/{0.shadow_name}/delete'.format(request),
@@ -61,8 +61,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/shadow/delete'.format(request),
@@ -86,10 +85,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.shadow_name:
-            raise ValueError("request.shadow_name is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/shadow/name/{0.shadow_name}/get'.format(request),
@@ -113,8 +109,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/shadow/get'.format(request),
@@ -138,10 +133,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.shadow_name:
-            raise ValueError("request.shadow_name is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/shadow/name/{0.shadow_name}/update'.format(request),
@@ -165,8 +157,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/shadow/update'.format(request),
@@ -195,10 +186,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.shadow_name:
-            raise ValueError("request.shadow_name is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -231,10 +219,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.shadow_name:
-            raise ValueError("request.shadow_name is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -267,8 +252,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -301,8 +285,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -335,10 +318,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.shadow_name:
-            raise ValueError("request.shadow_name is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -371,10 +351,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.shadow_name:
-            raise ValueError("request.shadow_name is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -407,8 +384,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -441,8 +417,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -475,10 +450,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.shadow_name:
-            raise ValueError("request.shadow_name is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -511,10 +483,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.shadow_name:
-            raise ValueError("request.shadow_name is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -547,8 +516,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -581,8 +549,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -615,10 +582,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.shadow_name:
-            raise ValueError("request.shadow_name is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -651,10 +615,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.shadow_name:
-            raise ValueError("request.shadow_name is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -687,8 +648,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -721,8 +681,7 @@ class IotShadowClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -769,6 +728,13 @@ class DeleteNamedShadowRequest(awsiot.ModeledClass):
             payload['clientToken'] = self.client_token
         return payload
 
+    def _validate(self):
+        if not self.shadow_name:
+            raise ValueError("shadow_name is required")
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
+
 class DeleteNamedShadowSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -794,6 +760,13 @@ class DeleteNamedShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
+
+    def _validate(self):
+        if not self.shadow_name:
+            raise ValueError("shadow_name is required")
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class DeleteShadowRequest(awsiot.ModeledClass):
     """
@@ -827,6 +800,11 @@ class DeleteShadowRequest(awsiot.ModeledClass):
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
         return payload
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class DeleteShadowResponse(awsiot.ModeledClass):
     """
@@ -872,6 +850,9 @@ class DeleteShadowResponse(awsiot.ModeledClass):
             new.version = val
         return new
 
+    def _validate(self):
+        return
+
 class DeleteShadowSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -894,6 +875,11 @@ class DeleteShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class ErrorResponse(awsiot.ModeledClass):
     """
@@ -945,6 +931,9 @@ class ErrorResponse(awsiot.ModeledClass):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
+    def _validate(self):
+        return
+
 class GetNamedShadowRequest(awsiot.ModeledClass):
     """
 
@@ -981,6 +970,13 @@ class GetNamedShadowRequest(awsiot.ModeledClass):
             payload['clientToken'] = self.client_token
         return payload
 
+    def _validate(self):
+        if not self.shadow_name:
+            raise ValueError("shadow_name is required")
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
+
 class GetNamedShadowSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1006,6 +1002,13 @@ class GetNamedShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
+
+    def _validate(self):
+        if not self.shadow_name:
+            raise ValueError("shadow_name is required")
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class GetShadowRequest(awsiot.ModeledClass):
     """
@@ -1039,6 +1042,11 @@ class GetShadowRequest(awsiot.ModeledClass):
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
         return payload
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class GetShadowResponse(awsiot.ModeledClass):
     """
@@ -1096,6 +1104,9 @@ class GetShadowResponse(awsiot.ModeledClass):
             new.version = val
         return new
 
+    def _validate(self):
+        return
+
 class GetShadowSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1118,6 +1129,11 @@ class GetShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class NamedShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
     """
@@ -1145,6 +1161,18 @@ class NamedShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
 
+    def to_payload(self):
+        # type: () -> typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
+        return payload
+
+    def _validate(self):
+        if not self.shadow_name:
+            raise ValueError("shadow_name is required")
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
+
 class NamedShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1170,6 +1198,18 @@ class NamedShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
+
+    def to_payload(self):
+        # type: () -> typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
+        return payload
+
+    def _validate(self):
+        if not self.shadow_name:
+            raise ValueError("shadow_name is required")
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
     """
@@ -1227,6 +1267,9 @@ class ShadowDeltaUpdatedEvent(awsiot.ModeledClass):
             new.version = val
         return new
 
+    def _validate(self):
+        return
+
 class ShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1249,6 +1292,16 @@ class ShadowDeltaUpdatedSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
+    def to_payload(self):
+        # type: () -> typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
+        return payload
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class ShadowMetadata(awsiot.ModeledClass):
     """
@@ -1287,6 +1340,9 @@ class ShadowMetadata(awsiot.ModeledClass):
         if val is not None:
             new.reported = val
         return new
+
+    def _validate(self):
+        return
 
 class ShadowState(awsiot.ModeledClass):
     """
@@ -1350,6 +1406,9 @@ class ShadowState(awsiot.ModeledClass):
                 payload['reported'] = self.reported
         return payload
 
+    def _validate(self):
+        return
+
 class ShadowStateWithDelta(awsiot.ModeledClass):
     """
 
@@ -1393,6 +1452,9 @@ class ShadowStateWithDelta(awsiot.ModeledClass):
         if val is not None:
             new.reported = val
         return new
+
+    def _validate(self):
+        return
 
 class ShadowUpdatedEvent(awsiot.ModeledClass):
     """
@@ -1438,6 +1500,9 @@ class ShadowUpdatedEvent(awsiot.ModeledClass):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
+    def _validate(self):
+        return
+
 class ShadowUpdatedSnapshot(awsiot.ModeledClass):
     """
 
@@ -1482,6 +1547,9 @@ class ShadowUpdatedSnapshot(awsiot.ModeledClass):
             new.version = val
         return new
 
+    def _validate(self):
+        return
+
 class ShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1504,6 +1572,16 @@ class ShadowUpdatedSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
+    def to_payload(self):
+        # type: () -> typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
+        return payload
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class UpdateNamedShadowRequest(awsiot.ModeledClass):
     """
@@ -1551,6 +1629,13 @@ class UpdateNamedShadowRequest(awsiot.ModeledClass):
             payload['version'] = self.version
         return payload
 
+    def _validate(self):
+        if not self.shadow_name:
+            raise ValueError("shadow_name is required")
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
+
 class UpdateNamedShadowSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1576,6 +1661,13 @@ class UpdateNamedShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['shadow_name', 'thing_name'], args):
             setattr(self, key, val)
+
+    def _validate(self):
+        if not self.shadow_name:
+            raise ValueError("shadow_name is required")
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class UpdateShadowRequest(awsiot.ModeledClass):
     """
@@ -1619,6 +1711,11 @@ class UpdateShadowRequest(awsiot.ModeledClass):
         if self.version is not None:
             payload['version'] = self.version
         return payload
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class UpdateShadowResponse(awsiot.ModeledClass):
     """
@@ -1676,6 +1773,9 @@ class UpdateShadowResponse(awsiot.ModeledClass):
             new.version = val
         return new
 
+    def _validate(self):
+        return
+
 class UpdateShadowSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1698,4 +1798,458 @@ class UpdateShadowSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
+
+class V2ErrorResponse(awsiot.ModeledClass):
+    """
+
+    Response document containing details about a failed request.
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        client_token (str): Opaque request-response correlation data.  Present only if a client token was used in the request.
+        code (int): An HTTP response code that indicates the type of error.
+        message (str): A text message that provides additional information.
+        timestamp (datetime.datetime): The date and time the response was generated by AWS IoT. This property is not present in all error response documents.
+
+    Attributes:
+        client_token (str): Opaque request-response correlation data.  Present only if a client token was used in the request.
+        code (int): An HTTP response code that indicates the type of error.
+        message (str): A text message that provides additional information.
+        timestamp (datetime.datetime): The date and time the response was generated by AWS IoT. This property is not present in all error response documents.
+    """
+
+    __slots__ = ['client_token', 'code', 'message', 'timestamp']
+
+    def __init__(self, *args, **kwargs):
+        self.client_token = kwargs.get('client_token')
+        self.code = kwargs.get('code')
+        self.message = kwargs.get('message')
+        self.timestamp = kwargs.get('timestamp')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip([], args):
+            setattr(self, key, val)
+
+    @classmethod
+    def from_payload(cls, payload):
+        # type: (typing.Dict[str, typing.Any]) -> V2ErrorResponse
+        new = cls()
+        val = payload.get('clientToken')
+        if val is not None:
+            new.client_token = val
+        val = payload.get('code')
+        if val is not None:
+            new.code = val
+        val = payload.get('message')
+        if val is not None:
+            new.message = val
+        val = payload.get('timestamp')
+        if val is not None:
+            new.timestamp = datetime.datetime.fromtimestamp(val)
+        return new
+
+    def _validate(self):
+        return
+
+class IotShadowClientV2:
+    """
+
+    The AWS IoT Device Shadow service adds shadows to AWS IoT thing objects. Shadows are a simple data store for device properties and state.  Shadows can make a device’s state available to apps and other services whether the device is connected to AWS IoT or not.
+
+    AWS Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html
+
+    """
+
+    def __init__(self, protocol_client: awscrt.mqtt.Connection or awscrt.mqtt5.Client, options: awscrt.mqtt_request_response.ClientOptions):
+        self._rr_client = awscrt.mqtt_request_response.Client(protocol_client, options)
+
+    def delete_named_shadow(self, request : DeleteNamedShadowRequest) -> concurrent.futures.Future :
+        """
+
+        Deletes a named shadow for an AWS IoT thing.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic
+
+        Args:
+            request (DeleteNamedShadowRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`DeleteShadowResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/things/{0.thing_name}/shadow/name/{0.shadow_name}/delete'.format(request)
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/things/{0.thing_name}/shadow/name/{0.shadow_name}/delete/+'.format(request);
+
+        correlation_token = str(uuid.uuid4())
+        request.client_token = correlation_token
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                    "clientToken"
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                    "clientToken"
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+            correlation_token = correlation_token,
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "delete_named_shadow", accepted_topic, DeleteShadowResponse, V2ErrorResponse)
+
+    def delete_shadow(self, request : DeleteShadowRequest) -> concurrent.futures.Future :
+        """
+
+        Deletes the (classic) shadow for an AWS IoT thing.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#delete-pub-sub-topic
+
+        Args:
+            request (DeleteShadowRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`DeleteShadowResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/things/{0.thing_name}/shadow/delete'.format(request)
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/things/{0.thing_name}/shadow/delete/+'.format(request);
+
+        correlation_token = str(uuid.uuid4())
+        request.client_token = correlation_token
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                    "clientToken"
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                    "clientToken"
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+            correlation_token = correlation_token,
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "delete_shadow", accepted_topic, DeleteShadowResponse, V2ErrorResponse)
+
+    def get_named_shadow(self, request : GetNamedShadowRequest) -> concurrent.futures.Future :
+        """
+
+        Gets a named shadow for an AWS IoT thing.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic
+
+        Args:
+            request (GetNamedShadowRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`GetShadowResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/things/{0.thing_name}/shadow/name/{0.shadow_name}/get'.format(request)
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/things/{0.thing_name}/shadow/name/{0.shadow_name}/get/+'.format(request);
+
+        correlation_token = str(uuid.uuid4())
+        request.client_token = correlation_token
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                    "clientToken"
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                    "clientToken"
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+            correlation_token = correlation_token,
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "get_named_shadow", accepted_topic, GetShadowResponse, V2ErrorResponse)
+
+    def get_shadow(self, request : GetShadowRequest) -> concurrent.futures.Future :
+        """
+
+        Gets the (classic) shadow for an AWS IoT thing.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic
+
+        Args:
+            request (GetShadowRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`GetShadowResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/things/{0.thing_name}/shadow/get'.format(request)
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/things/{0.thing_name}/shadow/get/+'.format(request);
+
+        correlation_token = str(uuid.uuid4())
+        request.client_token = correlation_token
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                    "clientToken"
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                    "clientToken"
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+            correlation_token = correlation_token,
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "get_shadow", accepted_topic, GetShadowResponse, V2ErrorResponse)
+
+    def update_named_shadow(self, request : UpdateNamedShadowRequest) -> concurrent.futures.Future :
+        """
+
+        Update a named shadow for a device.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic
+
+        Args:
+            request (UpdateNamedShadowRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`UpdateShadowResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/things/{0.thing_name}/shadow/name/{0.shadow_name}/update'.format(request)
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/things/{0.thing_name}/shadow/name/{0.shadow_name}/update/accepted'.format(request);
+        subscription1 = '$aws/things/{0.thing_name}/shadow/name/{0.shadow_name}/update/rejected'.format(request);
+
+        correlation_token = str(uuid.uuid4())
+        request.client_token = correlation_token
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+                subscription1,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                    "clientToken"
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                    "clientToken"
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+            correlation_token = correlation_token,
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "update_named_shadow", accepted_topic, UpdateShadowResponse, V2ErrorResponse)
+
+    def update_shadow(self, request : UpdateShadowRequest) -> concurrent.futures.Future :
+        """
+
+        Update a device's (classic) shadow.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-pub-sub-topic
+
+        Args:
+            request (UpdateShadowRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`UpdateShadowResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/things/{0.thing_name}/shadow/update'.format(request)
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/things/{0.thing_name}/shadow/update/accepted'.format(request);
+        subscription1 = '$aws/things/{0.thing_name}/shadow/update/rejected'.format(request);
+
+        correlation_token = str(uuid.uuid4())
+        request.client_token = correlation_token
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+                subscription1,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                    "clientToken"
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                    "clientToken"
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+            correlation_token = correlation_token,
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "update_shadow", accepted_topic, UpdateShadowResponse, V2ErrorResponse)
+
+    def create_named_shadow_delta_updated_stream(self, request : NamedShadowDeltaUpdatedSubscriptionRequest, options: awsiot.ServiceStreamOptions[ShadowDeltaUpdatedEvent]):
+        """
+
+        Create a stream for NamedShadowDelta events for a named shadow of an AWS IoT thing.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic
+
+        Args:
+            request (NamedShadowDeltaUpdatedSubscriptionRequest): configuration for the streaming operation to create
+            options (awsiot.ServiceStreamOptions[ShadowDeltaUpdatedEvent]): callbacks to invoke for streaming operation events
+
+        Returns:
+            An instance of `awscrt.mqtt_request_response.StreamingOperation`
+        """
+        request._validate()
+        options._validate()
+
+        subscription_topic_filter = '$aws/things/{0.thing_name}/shadow/name/{0.shadow_name}/update/delta'.format(request)
+
+        unmodeled_options = awsiot.create_streaming_unmodeled_options(options, subscription_topic_filter, "ShadowDeltaUpdatedEvent", ShadowDeltaUpdatedEvent)
+
+        return self._rr_client.create_stream(unmodeled_options)
+
+    def create_named_shadow_updated_stream(self, request : NamedShadowUpdatedSubscriptionRequest, options: awsiot.ServiceStreamOptions[ShadowUpdatedEvent]):
+        """
+
+        Create a stream for ShadowUpdated events for a named shadow of an AWS IoT thing.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic
+
+        Args:
+            request (NamedShadowUpdatedSubscriptionRequest): configuration for the streaming operation to create
+            options (awsiot.ServiceStreamOptions[ShadowUpdatedEvent]): callbacks to invoke for streaming operation events
+
+        Returns:
+            An instance of `awscrt.mqtt_request_response.StreamingOperation`
+        """
+        request._validate()
+        options._validate()
+
+        subscription_topic_filter = '$aws/things/{0.thing_name}/shadow/name/{0.shadow_name}/update/documents'.format(request)
+
+        unmodeled_options = awsiot.create_streaming_unmodeled_options(options, subscription_topic_filter, "ShadowUpdatedEvent", ShadowUpdatedEvent)
+
+        return self._rr_client.create_stream(unmodeled_options)
+
+    def create_shadow_delta_updated_stream(self, request : ShadowDeltaUpdatedSubscriptionRequest, options: awsiot.ServiceStreamOptions[ShadowDeltaUpdatedEvent]):
+        """
+
+        Create a stream for ShadowDelta events for the (classic) shadow of an AWS IoT thing.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-delta-pub-sub-topic
+
+        Args:
+            request (ShadowDeltaUpdatedSubscriptionRequest): configuration for the streaming operation to create
+            options (awsiot.ServiceStreamOptions[ShadowDeltaUpdatedEvent]): callbacks to invoke for streaming operation events
+
+        Returns:
+            An instance of `awscrt.mqtt_request_response.StreamingOperation`
+        """
+        request._validate()
+        options._validate()
+
+        subscription_topic_filter = '$aws/things/{0.thing_name}/shadow/update/delta'.format(request)
+
+        unmodeled_options = awsiot.create_streaming_unmodeled_options(options, subscription_topic_filter, "ShadowDeltaUpdatedEvent", ShadowDeltaUpdatedEvent)
+
+        return self._rr_client.create_stream(unmodeled_options)
+
+    def create_shadow_updated_stream(self, request : ShadowUpdatedSubscriptionRequest, options: awsiot.ServiceStreamOptions[ShadowUpdatedEvent]):
+        """
+
+        Create a stream for ShadowUpdated events for the (classic) shadow of an AWS IoT thing.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#update-documents-pub-sub-topic
+
+        Args:
+            request (ShadowUpdatedSubscriptionRequest): configuration for the streaming operation to create
+            options (awsiot.ServiceStreamOptions[ShadowUpdatedEvent]): callbacks to invoke for streaming operation events
+
+        Returns:
+            An instance of `awscrt.mqtt_request_response.StreamingOperation`
+        """
+        request._validate()
+        options._validate()
+
+        subscription_topic_filter = '$aws/things/{0.thing_name}/shadow/update/documents'.format(request)
+
+        unmodeled_options = awsiot.create_streaming_unmodeled_options(options, subscription_topic_filter, "ShadowUpdatedEvent", ShadowUpdatedEvent)
+
+        return self._rr_client.create_stream(unmodeled_options)
 

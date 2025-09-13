@@ -3,10 +3,13 @@
 
 # This file is generated
 
+import awscrt
 import awsiot
 import concurrent.futures
 import datetime
+import json
 import typing
+import uuid
 
 class IotJobsClient(awsiot.MqttServiceClient):
     """
@@ -34,10 +37,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.job_id:
-            raise ValueError("request.job_id is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/jobs/{0.job_id}/get'.format(request),
@@ -61,8 +61,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/jobs/get'.format(request),
@@ -86,8 +85,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/jobs/start-next'.format(request),
@@ -111,10 +109,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             request is successfully published. The Future's result will be an
             exception if the request cannot be published.
         """
-        if not request.job_id:
-            raise ValueError("request.job_id is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         return self._publish_operation(
             topic='$aws/things/{0.thing_name}/jobs/{0.job_id}/update'.format(request),
@@ -143,10 +138,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.job_id:
-            raise ValueError("request.job_id is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -179,10 +171,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.job_id:
-            raise ValueError("request.job_id is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -215,8 +204,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -249,8 +237,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -283,8 +270,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -315,8 +301,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -349,8 +334,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -383,8 +367,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -417,10 +400,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.job_id:
-            raise ValueError("request.job_id is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -453,10 +433,7 @@ class IotJobsClient(awsiot.MqttServiceClient):
             to `unsubscribe()` to stop receiving messages. Note that messages
             may arrive before the subscription is acknowledged.
         """
-        if not request.job_id:
-            raise ValueError("request.job_id is required")
-        if not request.thing_name:
-            raise ValueError("request.thing_name is required")
+        request._validate()
 
         if not callable(callback):
             raise ValueError("callback is required")
@@ -513,6 +490,13 @@ class DescribeJobExecutionRequest(awsiot.ModeledClass):
             payload['includeJobDocument'] = self.include_job_document
         return payload
 
+    def _validate(self):
+        if not self.job_id:
+            raise ValueError("job_id is required")
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
+
 class DescribeJobExecutionResponse(awsiot.ModeledClass):
     """
 
@@ -557,6 +541,9 @@ class DescribeJobExecutionResponse(awsiot.ModeledClass):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
+    def _validate(self):
+        return
+
 class DescribeJobExecutionSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -582,6 +569,13 @@ class DescribeJobExecutionSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['job_id', 'thing_name'], args):
             setattr(self, key, val)
+
+    def _validate(self):
+        if not self.job_id:
+            raise ValueError("job_id is required")
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class GetPendingJobExecutionsRequest(awsiot.ModeledClass):
     """
@@ -615,6 +609,11 @@ class GetPendingJobExecutionsRequest(awsiot.ModeledClass):
         if self.client_token is not None:
             payload['clientToken'] = self.client_token
         return payload
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class GetPendingJobExecutionsResponse(awsiot.ModeledClass):
     """
@@ -666,6 +665,9 @@ class GetPendingJobExecutionsResponse(awsiot.ModeledClass):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
+    def _validate(self):
+        return
+
 class GetPendingJobExecutionsSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -688,6 +690,11 @@ class GetPendingJobExecutionsSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class JobExecutionData(awsiot.ModeledClass):
     """
@@ -775,6 +782,9 @@ class JobExecutionData(awsiot.ModeledClass):
             new.version_number = val
         return new
 
+    def _validate(self):
+        return
+
 class JobExecutionState(awsiot.ModeledClass):
     """
 
@@ -818,6 +828,9 @@ class JobExecutionState(awsiot.ModeledClass):
         if val is not None:
             new.version_number = val
         return new
+
+    def _validate(self):
+        return
 
 class JobExecutionSummary(awsiot.ModeledClass):
     """
@@ -881,6 +894,9 @@ class JobExecutionSummary(awsiot.ModeledClass):
             new.version_number = val
         return new
 
+    def _validate(self):
+        return
+
 class JobExecutionsChangedEvent(awsiot.ModeledClass):
     """
 
@@ -919,6 +935,9 @@ class JobExecutionsChangedEvent(awsiot.ModeledClass):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
+    def _validate(self):
+        return
+
 class JobExecutionsChangedSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -941,6 +960,16 @@ class JobExecutionsChangedSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
+    def to_payload(self):
+        # type: () -> typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
+        return payload
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class NextJobExecutionChangedEvent(awsiot.ModeledClass):
     """
@@ -980,6 +1009,9 @@ class NextJobExecutionChangedEvent(awsiot.ModeledClass):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
+    def _validate(self):
+        return
+
 class NextJobExecutionChangedSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1002,6 +1034,16 @@ class NextJobExecutionChangedSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
+    def to_payload(self):
+        # type: () -> typing.Dict[str, typing.Any]
+        payload = {} # type: typing.Dict[str, typing.Any]
+        return payload
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class RejectedError(awsiot.ModeledClass):
     """
@@ -1059,6 +1101,9 @@ class RejectedError(awsiot.ModeledClass):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
+    def _validate(self):
+        return
+
 class StartNextJobExecutionResponse(awsiot.ModeledClass):
     """
 
@@ -1103,6 +1148,9 @@ class StartNextJobExecutionResponse(awsiot.ModeledClass):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
+    def _validate(self):
+        return
+
 class StartNextPendingJobExecutionRequest(awsiot.ModeledClass):
     """
 
@@ -1146,6 +1194,11 @@ class StartNextPendingJobExecutionRequest(awsiot.ModeledClass):
             payload['stepTimeoutInMinutes'] = self.step_timeout_in_minutes
         return payload
 
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
+
 class StartNextPendingJobExecutionSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1168,6 +1221,11 @@ class StartNextPendingJobExecutionSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['thing_name'], args):
             setattr(self, key, val)
+
+    def _validate(self):
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
 
 class UpdateJobExecutionRequest(awsiot.ModeledClass):
     """
@@ -1240,6 +1298,13 @@ class UpdateJobExecutionRequest(awsiot.ModeledClass):
             payload['stepTimeoutInMinutes'] = self.step_timeout_in_minutes
         return payload
 
+    def _validate(self):
+        if not self.job_id:
+            raise ValueError("job_id is required")
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
+
 class UpdateJobExecutionResponse(awsiot.ModeledClass):
     """
 
@@ -1290,6 +1355,9 @@ class UpdateJobExecutionResponse(awsiot.ModeledClass):
             new.timestamp = datetime.datetime.fromtimestamp(val)
         return new
 
+    def _validate(self):
+        return
+
 class UpdateJobExecutionSubscriptionRequest(awsiot.ModeledClass):
     """
 
@@ -1315,6 +1383,72 @@ class UpdateJobExecutionSubscriptionRequest(awsiot.ModeledClass):
         # for backwards compatibility, read any arguments that used to be accepted by position
         for key, val in zip(['job_id', 'thing_name'], args):
             setattr(self, key, val)
+
+    def _validate(self):
+        if not self.job_id:
+            raise ValueError("job_id is required")
+        if not self.thing_name:
+            raise ValueError("thing_name is required")
+        return
+
+class V2ErrorResponse(awsiot.ModeledClass):
+    """
+
+    Response document containing details about a failed request.
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        client_token (str): Opaque token that can correlate this response to the original request.
+        code (str): Indicates the type of error.
+        execution_state (JobExecutionState): A JobExecutionState object. This field is included only when the code field has the value InvalidStateTransition or VersionMismatch.
+        message (str): A text message that provides additional information.
+        timestamp (datetime.datetime): The date and time the response was generated by AWS IoT.
+
+    Attributes:
+        client_token (str): Opaque token that can correlate this response to the original request.
+        code (str): Indicates the type of error.
+        execution_state (JobExecutionState): A JobExecutionState object. This field is included only when the code field has the value InvalidStateTransition or VersionMismatch.
+        message (str): A text message that provides additional information.
+        timestamp (datetime.datetime): The date and time the response was generated by AWS IoT.
+    """
+
+    __slots__ = ['client_token', 'code', 'execution_state', 'message', 'timestamp']
+
+    def __init__(self, *args, **kwargs):
+        self.client_token = kwargs.get('client_token')
+        self.code = kwargs.get('code')
+        self.execution_state = kwargs.get('execution_state')
+        self.message = kwargs.get('message')
+        self.timestamp = kwargs.get('timestamp')
+
+        # for backwards compatibility, read any arguments that used to be accepted by position
+        for key, val in zip([], args):
+            setattr(self, key, val)
+
+    @classmethod
+    def from_payload(cls, payload):
+        # type: (typing.Dict[str, typing.Any]) -> V2ErrorResponse
+        new = cls()
+        val = payload.get('clientToken')
+        if val is not None:
+            new.client_token = val
+        val = payload.get('code')
+        if val is not None:
+            new.code = val
+        val = payload.get('executionState')
+        if val is not None:
+            new.execution_state = JobExecutionState.from_payload(val)
+        val = payload.get('message')
+        if val is not None:
+            new.message = val
+        val = payload.get('timestamp')
+        if val is not None:
+            new.timestamp = datetime.datetime.fromtimestamp(val)
+        return new
+
+    def _validate(self):
+        return
 
 class JobStatus:
     """
@@ -1406,4 +1540,252 @@ class RejectedErrorCode:
     """
     Occurs when a command to describe a job is performed on a job that is in a terminal state.
     """
+
+class IotJobsClientV2:
+    """
+
+    The AWS IoT jobs service can be used to define a set of remote operations that are sent to and executed on one or more devices connected to AWS IoT.
+
+    AWS Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#jobs-mqtt-api
+
+    """
+
+    def __init__(self, protocol_client: awscrt.mqtt.Connection or awscrt.mqtt5.Client, options: awscrt.mqtt_request_response.ClientOptions):
+        self._rr_client = awscrt.mqtt_request_response.Client(protocol_client, options)
+
+    def describe_job_execution(self, request : DescribeJobExecutionRequest) -> concurrent.futures.Future :
+        """
+
+        Gets detailed information about a job execution.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-describejobexecution
+
+        Args:
+            request (DescribeJobExecutionRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`DescribeJobExecutionResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/things/{0.thing_name}/jobs/{0.job_id}/get'.format(request)
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/things/{0.thing_name}/jobs/{0.job_id}/get/+'.format(request);
+
+        correlation_token = str(uuid.uuid4())
+        request.client_token = correlation_token
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                    "clientToken"
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                    "clientToken"
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+            correlation_token = correlation_token,
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "describe_job_execution", accepted_topic, DescribeJobExecutionResponse, V2ErrorResponse)
+
+    def get_pending_job_executions(self, request : GetPendingJobExecutionsRequest) -> concurrent.futures.Future :
+        """
+
+        Gets the list of all jobs for a thing that are not in a terminal state.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-getpendingjobexecutions
+
+        Args:
+            request (GetPendingJobExecutionsRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`GetPendingJobExecutionsResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/things/{0.thing_name}/jobs/get'.format(request)
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/things/{0.thing_name}/jobs/get/+'.format(request);
+
+        correlation_token = str(uuid.uuid4())
+        request.client_token = correlation_token
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                    "clientToken"
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                    "clientToken"
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+            correlation_token = correlation_token,
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "get_pending_job_executions", accepted_topic, GetPendingJobExecutionsResponse, V2ErrorResponse)
+
+    def start_next_pending_job_execution(self, request : StartNextPendingJobExecutionRequest) -> concurrent.futures.Future :
+        """
+
+        Gets and starts the next pending job execution for a thing (status IN_PROGRESS or QUEUED).
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-startnextpendingjobexecution
+
+        Args:
+            request (StartNextPendingJobExecutionRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`StartNextJobExecutionResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/things/{0.thing_name}/jobs/start-next'.format(request)
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/things/{0.thing_name}/jobs/start-next/+'.format(request);
+
+        correlation_token = str(uuid.uuid4())
+        request.client_token = correlation_token
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                    "clientToken"
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                    "clientToken"
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+            correlation_token = correlation_token,
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "start_next_pending_job_execution", accepted_topic, StartNextJobExecutionResponse, V2ErrorResponse)
+
+    def update_job_execution(self, request : UpdateJobExecutionRequest) -> concurrent.futures.Future :
+        """
+
+        Updates the status of a job execution. You can optionally create a step timer by setting a value for the stepTimeoutInMinutes property. If you don't update the value of this property by running UpdateJobExecution again, the job execution times out when the step timer expires.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-updatejobexecution
+
+        Args:
+            request (UpdateJobExecutionRequest): information about the operation to perform.
+
+        Returns:
+            A Future whose result will be an instance of :class:`UpdateJobExecutionResponse`.  If the
+            operation fails, the future will be completed with a :class:`awsiot.V2ServiceException` exception.
+        """
+        request._validate()
+
+        publish_topic = '$aws/things/{0.thing_name}/jobs/{0.job_id}/update'.format(request)
+        accepted_topic = publish_topic + "/accepted";
+        rejected_topic = publish_topic + "/rejected";
+
+        subscription0 = '$aws/things/{0.thing_name}/jobs/{0.job_id}/update/+'.format(request);
+
+        correlation_token = str(uuid.uuid4())
+        request.client_token = correlation_token
+
+        request_options = awscrt.mqtt_request_response.RequestOptions(
+            subscription_topic_filters = [
+                subscription0,
+            ],
+            response_paths = [
+                awscrt.mqtt_request_response.ResponsePath(
+                    accepted_topic,
+                    "clientToken"
+                ),
+                awscrt.mqtt_request_response.ResponsePath(
+                    rejected_topic,
+                    "clientToken"
+                )
+            ],
+            publish_topic = publish_topic,
+            payload = json.dumps(request.to_payload()).encode(),
+            correlation_token = correlation_token,
+        )
+
+        internal_unmodeled_future = self._rr_client.make_request(request_options)
+
+        return awsiot.create_v2_service_modeled_future(internal_unmodeled_future, "update_job_execution", accepted_topic, UpdateJobExecutionResponse, V2ErrorResponse)
+
+    def create_job_executions_changed_stream(self, request : JobExecutionsChangedSubscriptionRequest, options: awsiot.ServiceStreamOptions[JobExecutionsChangedEvent]):
+        """
+
+        Creates a stream of JobExecutionsChanged notifications for a given IoT thing.
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-jobexecutionschanged
+
+        Args:
+            request (JobExecutionsChangedSubscriptionRequest): configuration for the streaming operation to create
+            options (awsiot.ServiceStreamOptions[JobExecutionsChangedEvent]): callbacks to invoke for streaming operation events
+
+        Returns:
+            An instance of `awscrt.mqtt_request_response.StreamingOperation`
+        """
+        request._validate()
+        options._validate()
+
+        subscription_topic_filter = '$aws/things/{0.thing_name}/jobs/notify'.format(request)
+
+        unmodeled_options = awsiot.create_streaming_unmodeled_options(options, subscription_topic_filter, "JobExecutionsChangedEvent", JobExecutionsChangedEvent)
+
+        return self._rr_client.create_stream(unmodeled_options)
+
+    def create_next_job_execution_changed_stream(self, request : NextJobExecutionChangedSubscriptionRequest, options: awsiot.ServiceStreamOptions[NextJobExecutionChangedEvent]):
+        """
+
+        API Docs: https://docs.aws.amazon.com/iot/latest/developerguide/jobs-api.html#mqtt-nextjobexecutionchanged
+
+        Args:
+            request (NextJobExecutionChangedSubscriptionRequest): configuration for the streaming operation to create
+            options (awsiot.ServiceStreamOptions[NextJobExecutionChangedEvent]): callbacks to invoke for streaming operation events
+
+        Returns:
+            An instance of `awscrt.mqtt_request_response.StreamingOperation`
+        """
+        request._validate()
+        options._validate()
+
+        subscription_topic_filter = '$aws/things/{0.thing_name}/jobs/notify-next'.format(request)
+
+        unmodeled_options = awsiot.create_streaming_unmodeled_options(options, subscription_topic_filter, "NextJobExecutionChangedEvent", NextJobExecutionChangedEvent)
+
+        return self._rr_client.create_stream(unmodeled_options)
 

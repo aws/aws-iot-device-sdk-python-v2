@@ -3,7 +3,7 @@ name: "Close stale issues"
 # Controls when the action will run.
 on:
   schedule:
-    - cron: "*/60 * * * *"
+    - cron: '0 9 * * 1' # minute hour dom month dow
 
 jobs:
   cleanup:
