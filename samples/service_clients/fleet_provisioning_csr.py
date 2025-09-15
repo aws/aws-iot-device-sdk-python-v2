@@ -54,7 +54,7 @@ if __name__ == '__main__':
         stopped.set_result(True)
 
     connect_options=mqtt5.ConnectPacket(
-        client_id="test-" + uuid.uuid4().hex,
+        client_id="mqtt5-sample-" + uuid.uuid4().hex,
     )
 
     # Create a mqtt5 connection from the command line data

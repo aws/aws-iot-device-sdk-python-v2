@@ -57,7 +57,7 @@ The [IAM Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-polic
     {
       "Effect": "Allow",
       "Action": "iot:Connect",
-      "Resource": "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      "Resource": "arn:aws:iot:<b>region</b>:<b>account</b>:client/mqtt5-sample-*"
     }
   ]
 }
@@ -68,7 +68,7 @@ Replace with the following with the data from your AWS account:
 * `<account>`: Your AWS IoT Core account ID. This is the set of numbers in the top right next to your AWS account name when using the AWS IoT Core website.
 * `<templatename>`: The name of your AWS Fleet Provisioning template you want to use to create new AWS IoT Core Things.
 
-Note that in a real application, you may want to avoid the use of wildcards in your ClientID or use them selectively. Please follow best practices when working with AWS on production applications using the SDK. Also, for the purposes of this sample, please make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+Note that in a real application, you may want to avoid the use of wildcards in your ClientID or use them selectively. Please follow best practices when working with AWS on production applications using the SDK. Also, for the purposes of this sample, please make sure your policy allows a client ID of `mqtt5-sample-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
 
 </details>
 
