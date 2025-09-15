@@ -42,10 +42,7 @@ optional.add_argument("--message", default="Hello from mqtt5 sample",  metavar="
                       help="Message payload")
 optional.add_argument("--count", type=int, default=5,  metavar="", dest="input_count",
                     help="Messages to publish (0 = infinite)")
-optional.add_argument("--proxy_host",  metavar="", dest="input_proxy_host",
-                      help="HTTP proxy host")
-optional.add_argument("--proxy_port", type=int, default=0,  metavar="", dest="input_proxy_port",
-                      help="HTTP proxy port")
+
 optional.add_argument("--client_id",  metavar="", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
                     help="Client ID")
 
