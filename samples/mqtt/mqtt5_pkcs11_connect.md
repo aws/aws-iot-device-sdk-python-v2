@@ -105,12 +105,9 @@ optional arguments:
   --token_label   Label of the PKCS#11 token to use (optional). (default: None)
   --slot_id       Slot ID containing the PKCS#11 token to use (optional). (default: None)
   --key_label     Label of private key on the PKCS#11 token (optional). (default: None)
-  --ca_file       Path to optional CA bundle (PEM) (default: None)
   --topic         Topic (default: test/topic)
   --message       Message payload (default: Hello from mqtt5 sample)
   --count         Messages to publish (0 = infinite) (default: 5)
-  --proxy_host    HTTP proxy host (default: None)
-  --proxy_port    HTTP proxy port (default: 0)
   --client_id     Client ID (default: test-548e4344)
   ```
 
