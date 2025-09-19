@@ -97,7 +97,6 @@ required arguments:
 
 optional arguments:
   --client_id   Client ID (default: mqtt5-sample-5873a450)
-  --ca_file     Path to optional CA bundle (PEM) (default: None)
   --topic       Topic (default: test/topic)
   --message     Message payload (default: Hello from mqtt5 sample)
   --count       Messages to publish (0 = infinite) (default: 5)
