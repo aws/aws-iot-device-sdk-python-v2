@@ -102,7 +102,7 @@ Here is an example launch.json file to run the pubsub sample
             "name": "PubSub",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/samples/pubsub.py",
+            "program": "${workspaceFolder}/samples/mqtt/mqtt5_x509.py",
             "args": [
                 "--endpoint", "<account-number>-ats.iot.<region>.amazonaws.com",
                 "--ca_file", "<path to root-CA>",

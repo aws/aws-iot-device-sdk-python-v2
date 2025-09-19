@@ -166,7 +166,7 @@ python3 -m pip install boto3
 Assuming you are in the SDK root directory, you can now run the jobs sandbox sample:
 
 ``` sh
-python3 samples/jobs.py --cert <path to certificate> --key <path to private key> --endpoint <account-specific broker endpoint> --thing <thing name> --region <aws region>
+python3 samples/service_clients/jobs.py --cert <path to certificate> --key <path to private key> --endpoint <account-specific broker endpoint> --thing <thing name> --region <aws region>
 ```
 
 The region value passed in the region parameter must match the region referred to by the endpoint parameter.

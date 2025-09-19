@@ -103,7 +103,7 @@ class SamplesTest(unittest.TestCase):
         config = Config.get()
         args = [
             sys.executable,
-            "samples/mqtt5_pubsub.py",
+            "samples/mqtt/mqtt5_x509.py",
             "--endpoint", config.endpoint,
             "--cert", config.cert_filepath,
             "--key", config.key_filepath,

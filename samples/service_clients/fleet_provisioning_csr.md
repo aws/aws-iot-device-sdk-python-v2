@@ -89,7 +89,7 @@ python3 -m pip install awsiotsdk
 Assuming you are in the SDK root directory, you can now run the CSR fleet provisioning sample:
 
 ``` sh
-python3 samples/fleet_provisioning_csr.py --endpoint <endpoint> --cert <file> --key <file> --csr_file <file> --template_name <template name> --template_parameters <template parameters>
+python3 samples/service_clients/fleet_provisioning_csr.py --endpoint <endpoint> --cert <file> --key <file> --csr_file <file> --template_name <template name> --template_parameters <template parameters>
 ```
 
 ## Fleet Provisioning Detailed Instructions
@@ -285,7 +285,7 @@ openssl req -new -key /tmp/deviceCert.key -out /tmp/deviceCert.csr
 Finally, you pass the certificate signing request while invoking the Fleet Provisioning sample.
 
 ``` sh
-python3 samples/fleet_provisioning_csr.py --endpoint <endpoint> --cert <file> --key <file> --csr_file <file> --template_name <template name> --template_parameters '{"SerialNumber":"1","DeviceLocation":"Seattle"}'
+python3 samples/service_clients/fleet_provisioning_csr.py --endpoint <endpoint> --cert <file> --key <file> --csr_file <file> --template_name <template name> --template_parameters '{"SerialNumber":"1","DeviceLocation":"Seattle"}'
 ```
 
 
