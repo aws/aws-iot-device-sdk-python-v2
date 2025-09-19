@@ -24,8 +24,6 @@ required.add_argument("--signing_region", required=True,  metavar="", dest="inpu
 # Optional Arguments
 optional.add_argument("--client_id",  metavar="", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
                       help="Client ID")
-optional.add_argument("--ca_file",  metavar="", dest="input_ca",
-                      help="Path to optional CA bundle (PEM)")
 optional.add_argument("--topic", default="test/topic",  metavar="", dest="input_topic",
                       help="Topic")
 optional.add_argument("--message", default="Hello from mqtt5 sample",  metavar="", dest="input_message",
