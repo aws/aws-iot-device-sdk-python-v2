@@ -51,7 +51,7 @@ Below is a sample policy that provides the necessary privileges.
         "iot:Connect"
       ],
       "Resource": [
-        "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+        "arn:aws:iot:<b>region</b>:<b>account</b>:client/mqtt5-sample-*"
       ]
     }
   ]
@@ -62,7 +62,7 @@ Replace with the following with the data from your AWS account:
 * `<region>`: The AWS IoT Core region where you created your AWS IoT Core thing you wish to use with this sample. For example `us-east-1`.
 * `<account>`: Your AWS IoT Core account ID. This is the set of numbers in the top right next to your AWS account name when using the AWS IoT Core website.
 
-Note that in a real application, you may want to avoid the use of wildcards in your ClientID or use them selectively. Please follow best practices when working with AWS on production applications using the SDK. Also, for the purposes of this sample, please make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+Note that in a real application, you may want to avoid the use of wildcards in your ClientID or use them selectively. Please follow best practices when working with AWS on production applications using the SDK. Also, for the purposes of this sample, please make sure your policy allows a client ID of `mqtt5-sample-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
 
 </details>
 
@@ -121,7 +121,7 @@ required arguments:
   --auth_password       The password to send when connecting through a custom authorizer (optional) (default: None)
 
 optional arguments:
-  --client_id           Client ID (default: test-f3168b42)
+  --client_id           Client ID (default: mqtt5-sample-<uuid>)
   --topic               Topic (default: test/topic)
   --message             Message payload (default: Hello from mqtt5 sample)
   --count               Messages to publish (0 = infinite) (default: 5)

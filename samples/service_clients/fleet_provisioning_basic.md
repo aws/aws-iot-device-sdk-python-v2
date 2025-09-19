@@ -57,7 +57,7 @@ The [IAM Policy](https://docs.aws.amazon.com/iot/latest/developerguide/iot-polic
     {
       "Effect": "Allow",
       "Action": "iot:Connect",
-      "Resource": "arn:aws:iot:<b>region</b>:<b>account</b>:client/test-*"
+      "Resource": "arn:aws:iot:<b>region</b>:<b>account</b>:client/mqtt5-sample-*"
     }
   ]
 }
@@ -68,7 +68,7 @@ Replace with the following with the data from your AWS account:
 * `<account>`: Your AWS IoT Core account ID. This is the set of numbers in the top right next to your AWS account name when using the AWS IoT Core website.
 * `<templatename>`: The name of your AWS Fleet Provisioning template you want to use to create new AWS IoT Core Things.
 
-Note that in a real application, you may want to avoid the use of wildcards in your ClientID or use them selectively. Please follow best practices when working with AWS on production applications using the SDK. Also, for the purposes of this sample, please make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+Note that in a real application, you may want to avoid the use of wildcards in your ClientID or use them selectively. Please follow best practices when working with AWS on production applications using the SDK. Also, for the purposes of this sample, please make sure your policy allows a client ID of `mqtt5-sample-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
 
 </details>
 
@@ -89,7 +89,7 @@ Assuming you are in the SDK root directory, you can now run the basic fleet prov
 
 ``` sh
 # from the samples folder
-python3 samples/fleet_provisioning_basic.py --endpoint <endpoint> --cert <file> --key <file> --template_name <template name> --template_parameters <template parameters>
+python3 samples/service_clients/fleet_provisioning_basic.py --endpoint <endpoint> --cert <file> --key <file> --template_name <template name> --template_parameters <template parameters>
 ```
 
 ## Fleet Provisioning Detailed Instructions
@@ -273,7 +273,7 @@ to perform the actual provisioning in the section below.
 To run the sample with your certificate and private key, use the following command:
 
 ``` sh
-python3 samples/fleet_provisioning_basic.py --endpoint <endpoint> --cert <file> --key <file> --template_name <template name> --template_parameters '{"SerialNumber":"1","DeviceLocation":"Seattle"}'
+python3 samples/service_clients/fleet_provisioning_basic.py --endpoint <endpoint> --cert <file> --key <file> --template_name <template name> --template_parameters '{"SerialNumber":"1","DeviceLocation":"Seattle"}'
 ```
 
 As per normal, replace the `<>` parameters with the proper values. Notice that we provided substitution values for the two parameters in the template body, `DeviceLocation` and `SerialNumber`.
