@@ -26,8 +26,6 @@ required.add_argument("--pin", required=True,  metavar="", dest="input_pkcs11_us
                       help="User PIN for logging into PKCS#11 token")
 
 # Optional Arguments
-optional.add_argument("--port", type=int, default=8883,  metavar="", dest="input_port",
-                      help="Port (8883 mTLS, 443 ALPN)")
 optional.add_argument("--token_label",  metavar="", dest="input_pkcs11_token_label",
                       help="Label of the PKCS#11 token to use (optional).")
 optional.add_argument("--slot_id", type=int, metavar="", dest="input_pkcs11_slot_id",
@@ -99,8 +97,6 @@ if __name__ == '__main__':
         private_key_label=args.input_pkcs11_key_label,
         cert_filepath=args.input_cert,
         endpoint=args.input_endpoint,
-        port=args.input_port,
-        ca_filepath=args.input_ca,
         on_lifecycle_stopped=on_lifecycle_stopped,
         on_lifecycle_connection_success=on_lifecycle_connection_success,
         on_lifecycle_connection_failure=on_lifecycle_connection_failure,

@@ -101,7 +101,6 @@ required arguments:
   --pin           User PIN for logging into PKCS#11 token (default: None)
 
 optional arguments:
-  --port          Port (8883 mTLS, 443 ALPN) (default: 8883)
   --token_label   Label of the PKCS#11 token to use (optional). (default: None)
   --slot_id       Slot ID containing the PKCS#11 token to use (optional). (default: None)
   --key_label     Label of private key on the PKCS#11 token (optional). (default: None)
