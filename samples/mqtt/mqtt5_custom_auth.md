@@ -76,14 +76,14 @@ To Run this sample from the `samples\mqtt` folder, use the following command:
 # For an unsigned custom authorizer
 python3 mqtt5_custom_auth_unsigned.py \
     --endpoint <AWS IoT endpoint> \
-    --authorizer_name <The name of the custom authorizer to connect to invoke> \
+    --authorizer_name <The name of the custom authorizer to invoke> \
     --auth_username <The name to send when connecting through the custom authorizer>\
     --auth_password <The password to send when connecting through a custom authorizer>
 
 # For a signed custom authorizer
 python3 mqtt5_custom_auth_signed.py \
     --endpoint <AWS IoT endpoint> \
-    --authorizer_name <The name of the custom authorizer to connect to invoke> \
+    --authorizer_name <The name of the custom authorizer to invoke> \
     --auth_token_key_name <Authorizer token key name> \
     --auth_token_key_value <Authorizer token key value> \
     --auth_signature <Custom authorizer signature> \
