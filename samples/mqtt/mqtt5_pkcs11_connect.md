@@ -164,7 +164,7 @@ The steps to use [SoftHSM2](https://www.opendnssec.org/softhsm/) as the PKCS#11 
 
     ```sh
     # For Windows: replace 'python3' with 'python' and '/' with '\'
-    python3 mqtt5_pkcs11_connect.py --endpoint <endpoint> --ca_file <path to root CA> --cert <path to certificate> --pkcs11_lib <path to PKCS11 lib> --pin <user-pin> --token_label <token-label> --key_label <key-label>
+    python3 mqtt5_pkcs11_connect.py --endpoint <endpoint> --cert <path to certificate> --pkcs11_lib <path to PKCS11 lib> --pin <user-pin> --token_label <token-label> --key_label <key-label>
     ```
   
   ## Additional Information

@@ -108,8 +108,7 @@ class SamplesTest(unittest.TestCase):
             "--cert", config.cert_filepath,
             "--key", config.key_filepath,
             "--client_id", create_client_id(),
-            "--count", "1",
-            "--verbosity", "Trace",
+            "--count", "1"
         ]
 
         def stdout_checker(stdout):
@@ -128,8 +127,7 @@ class SamplesTest(unittest.TestCase):
             "--region", config.region,
             "--cert", config.cert_filepath,
             "--key", config.key_filepath,
-            "--thing_name", "CI_Greengrass_Discovery_Thing",
-            "--verbosity", "Trace",
+            "--thing_name", "CI_Greengrass_Discovery_Thing"
         ]
 
         def stdout_checker(stdout):
