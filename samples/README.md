@@ -1,4 +1,4 @@
-# Sample for the AWS IoT Device SDK v2 for Python
+# Sample Applications for the AWS IoT Device SDK v2 for Python
 This directory contains sample applications for [aws-iot-device-sdk-python-v2](../README.md).
 
 ### Table of Contents
@@ -41,7 +41,7 @@ This directory contains sample applications for [aws-iot-device-sdk-python-v2](.
 
 ### Instructions
 
-First, install `aws-iot-devices-sdk-python-v2`. Installation instructions for the SDK are [Provided Here](../README.md#Installation).
+First, install `aws-iot-device-sdk-python-v2`. Installation instructions for the SDK are [Provided Here](../README.md#Installation).
 
 Each sample's README contains prerequisites, arguments, and detailed instructions. For example, the [MQTT5 X509 Sample README](./mqtt/mqtt5_x509.md) is `mqtt5_x509.md` and the sample can be run with the following command:
 
