@@ -98,6 +98,10 @@ if __name__ == '__main__':
     def on_lifecycle_connection_failure(event: mqtt5.LifecycleConnectFailureData):
         initial_connection_success.set_exception(Exception("Failed to connect"))
 
+    def on_lifecycle_disconnection(event: mqtt5.LifecycleDisconnectData):
+        print("Lifecycle Disconnected with reason code:{}".format(
+            event.disconnect_packet.reason_code if event.disconnect_packet else "None"))
+
     stopped = Future()
     def on_lifecycle_stopped(event: mqtt5.LifecycleStoppedData):
         stopped.set_result(True)
@@ -111,6 +115,8 @@ if __name__ == '__main__':
         clean_session=True,
         keep_alive_secs=1200,
         on_lifecycle_connection_success=on_lifecycle_connection_success,
+        on_lifecycle_connection_failure=on_lifecycle_connection_failure,
+        on_lifecycle_disconnection=on_lifecycle_disconnection,
         on_lifecycle_stopped=on_lifecycle_stopped)
 
     mqtt5_client.start()

@@ -83,7 +83,7 @@ Replace with the following with the data from your AWS account:
 * `<account>`: Your AWS IoT Core account ID. This is the set of numbers in the top right next to your AWS account name when using the AWS IoT Core website.
 * `<thingname>`: The name of your AWS IoT Core thing you want the device connection to be associated with
 
-Note that in a real application, you may want to avoid the use of wildcards in your ClientID or use them selectively. Please follow best practices when working with AWS on production applications using the SDK. Also, for the purposes of this sample, please make sure your policy allows a client ID of `test-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
+Note that in a real application, you may want to avoid the use of wildcards in your ClientID or use them selectively. Please follow best practices when working with AWS on production applications using the SDK. Also, for the purposes of this sample, please make sure your policy allows a client ID of `mqtt5-sample-*` to connect or use `--client_id <client ID here>` to send the client ID your policy supports.
 
 </details>
 
@@ -104,7 +104,7 @@ python3 -m pip install awsiotsdk
 Assuming you are in the SDK root directory, you can now run the shadow sandbox sample:
 
 ``` sh
-python3 samples/shadow.py --cert <path to certificate> --key <path to private key> --endpoint <account-specific broker endpoint> --thing <thing name>
+python3 samples/service_clients/shadow.py --cert <path to certificate> --key <path to private key> --endpoint <account-specific broker endpoint> --thing <thing name>
 ```
 
 The sample also listens to a pair of event streams related to the classic (unnamed) shadow state of your thing, so in addition to responses, you will occasionally see output from these streaming operations as they receive events from the shadow service.
