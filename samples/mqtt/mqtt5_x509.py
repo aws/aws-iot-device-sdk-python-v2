@@ -26,8 +26,6 @@ required.add_argument("--key", required=True, metavar="", dest="input_key",
 # Optional Arguments
 optional.add_argument("--client_id", metavar="",dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
                       help="Client ID")
-optional.add_argument("--ca_file", metavar="",dest="input_ca",
-                      help="Path to optional CA bundle (PEM)")
 optional.add_argument("--topic", metavar="",default="test/topic", dest="input_topic",
                       help="Topic")
 optional.add_argument("--message", metavar="",default="Hello from mqtt5 sample", dest="input_message",
@@ -107,7 +105,6 @@ if __name__ == '__main__':
         endpoint=args.input_endpoint,
         cert_filepath=args.input_cert,
         pri_key_filepath=args.input_key,
-        ca_filepath=args.input_ca,
         on_publish_received=on_publish_received,
         on_lifecycle_stopped=on_lifecycle_stopped,
         on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,

@@ -101,15 +101,12 @@ required arguments:
   --pin           User PIN for logging into PKCS#11 token (default: None)
 
 optional arguments:
-  --port          Port (8883 mTLS, 443 ALPN) (default: 8883)
   --token_label   Label of the PKCS#11 token to use (optional). (default: None)
   --slot_id       Slot ID containing the PKCS#11 token to use (optional). (default: None)
   --key_label     Label of private key on the PKCS#11 token (optional). (default: None)
-  --ca_file       Path to optional CA bundle (PEM) (default: None)
   --topic         Topic (default: test/topic)
   --message       Message payload (default: Hello from mqtt5 sample)
   --count         Messages to publish (0 = infinite) (default: 5)
-
   --client_id     Client ID (default: mqtt5-sample-<uuid>)
   ```
 
@@ -167,7 +164,7 @@ The steps to use [SoftHSM2](https://www.opendnssec.org/softhsm/) as the PKCS#11 
 
     ```sh
     # For Windows: replace 'python3' with 'python' and '/' with '\'
-    python3 mqtt5_pkcs11_connect.py --endpoint <endpoint> --ca_file <path to root CA> --cert <path to certificate> --pkcs11_lib <path to PKCS11 lib> --pin <user-pin> --token_label <token-label> --key_label <key-label>
+    python3 mqtt5_pkcs11_connect.py --endpoint <endpoint> --cert <path to certificate> --pkcs11_lib <path to PKCS11 lib> --pin <user-pin> --token_label <token-label> --key_label <key-label>
     ```
   
   ## Additional Information
