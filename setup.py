@@ -42,5 +42,5 @@ setup(
     install_requires=[
         'awscrt==0.27.4',
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.8',
 )
