@@ -9,8 +9,20 @@ import concurrent.futures
 import json
 import typing
 
+from .remove_me import deprecated
+# from awscrt.common import deprecated
+
+@deprecated(
+    """
+    We strongly recommend using IotIdentityClientV2. There are no current plans to
+    fully deprecate IotIdentityClient but it is highly recommended customers migrate to IotIdentityClientV2.
+    More details can be found in the GitHub Repo FAQ
+    """)
 class IotIdentityClient(awsiot.MqttServiceClient):
     """
+    Deprecated: We strongly recommend using IotIdentityClientV2. There are no current plans to
+    fully deprecate IotIdentityClient but it is highly recommended customers migrate to IotIdentityClientV2.
+    More details can be found in the GitHub Repo FAQ
 
     An AWS IoT service that assists with provisioning a device and installing unique client certificates on it
 
