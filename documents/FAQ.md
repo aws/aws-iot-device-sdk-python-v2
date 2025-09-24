@@ -8,6 +8,7 @@
 * [I am experiencing deadlocks](#i-am-experiencing-deadlocks)
 * [How do debug in VSCode?](#how-do-debug-in-vscode)
 * [What certificates do I need?](#what-certificates-do-i-need)
+* [Where can I find MQTT 311 Samples?](#where-can-i-find-mqtt-311-samples)
 * [I still have more questions about this sdk?](#i-still-have-more-questions-about-this-sdk)
 
 ### Where should I start?
@@ -15,8 +16,12 @@
 If you are just getting started make sure you [install this sdk](https://github.com/aws/aws-iot-device-sdk-python-v2#installation) and then build and run the [basic PubSub](https://github.com/aws/aws-iot-device-sdk-python-v2/tree/main/samples#pubsub)
 
 ### How do I enable logging?
+To enable logging you must import `io` from `awscrt` and initialize it with `init_logging`.
 
+`LogLevel` can be set to `Fatal`, `Error`, `Warn`, `Info`, `Debug`, or `Trace`. `stderr` and `stdout` can be used to print logs while any other string will be assumed to be a file path. 
 ``` python
+from awscrt import io
+# This sets the logger to print any Error level logs to stderr
 io.init_logging(io.LogLevel.Error, 'stderr')
 ```
 You can also enable [CloudWatch logging](https://docs.aws.amazon.com/iot/latest/developerguide/cloud-watch-logs.html) for IoT which will provide you with additional information that is not available on the client side sdk.
@@ -97,13 +102,12 @@ Here is an example launch.json file to run the pubsub sample
             "name": "PubSub",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/samples/pubsub.py",
+            "program": "${workspaceFolder}/samples/mqtt/mqtt5_x509.py",
             "args": [
                 "--endpoint", "<account-number>-ats.iot.<region>.amazonaws.com",
-                "--ca_file", "<path to root-CA>",
                 "--cert", "<path to cert>",
                 "--key", "<path to key>",
-                "--client-id", "test-client"
+                "--client_id", "test-client"
             ]
         }
     ]
@@ -125,6 +129,9 @@ Here is an example launch.json file to run the pubsub sample
     * Key files
         * You should have generated/downloaded private and public keys that will be used to verify that communications are coming from you
         * When using samples you only need the private key and it will look like this: `--key abcde12345-private.pem.key`
+
+### Where can I find MQTT 311 Samples?
+The MQTT 311 Samples can be found in the v1.24.0 samples folder [here](https://github.com/aws/aws-iot-device-sdk-python-v2/tree/v1.24.0/samples)
 
 ### I still have more questions about this sdk?
 

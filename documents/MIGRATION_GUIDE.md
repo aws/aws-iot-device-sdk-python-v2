@@ -783,7 +783,7 @@ delta_subscribed_future.result()
 For more information, see API documentation for the v2 SDK
 [Device Shadow](https://aws.github.io/aws-iot-device-sdk-python-v2/awsiot/iotshadow.html).
 
-For code examples, see the v2 SDK [Device Shadow](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/shadow_mqtt5.py).
+For code examples, see the v2 SDK [Device Shadow](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/service_clients/shadow.py).
 
 
 ### Client for AWS IoT Jobs
@@ -1131,7 +1131,7 @@ For detailed descriptions for the topics used to interact with the service, see 
 For more information about the service clients, see API documentation for the v2 SDK
 [Jobs](https://aws.github.io/aws-iot-device-sdk-python-v2/awsiot/iotjobs.html).
 
-For code examles, see [Jobs](https://github.com/aws/aws-iot-device-sdk-python/blob/master/samples/jobs/jobsSample.py)
+For code examles, see [Jobs](https://github.com/aws/aws-iot-device-sdk-python/blob/master/samples/service_clients/jobs.py)
 samples.
 
 
@@ -1155,7 +1155,7 @@ AWS IoT Core documentation for [Fleet Provisioning](https://docs.aws.amazon.com/
 For more information about the Fleet Provisioning service client, See API documentation for the v2 SDK
 [Fleet Provisioning](https://aws.github.io/aws-iot-device-sdk-python-v2/awsiot/iotidentity.html).
 
-For code examples, see the v2 SDK [Fleet Provisioning](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/fleetprovisioning.md)
+For code examples, see the v2 SDK [Fleet Provisioning](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/service_clients/fleet_provisioning_basic.md)
 samples.
 
 
@@ -1163,8 +1163,8 @@ samples.
 
 It's always helpful to look at a working example to see how new functionality works, to be able to tweak different options,
 to compare with existing code. For that reason, we implemented a
-[Publish/Subscribe example](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/mqtt5_pubsub.md)
-([source code](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/mqtt5_pubsub.py))
+[X509 Publish/Subscribe example](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/mqtt/mqtt5_x509.md)
+([source code](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/mqtt/mqtt5_x509.py))
 in the v2 SDK similar to a sample provided by the v1 SDK (see a corresponding
 [readme section](https://github.com/aws/aws-iot-device-sdk-python/blob/master/README.rst#basicpubsub) and
 [source code](https://github.com/aws/aws-iot-device-sdk-python/blob/master/samples/basicPubSub/basicPubSub.py)).
@@ -1231,10 +1231,7 @@ These are forwarded to the receiver of the message. Use content\_type(str) metho
 
 **Shared Subscriptions**\
 Shared Subscriptions allow multiple clients to share a subscription to a topic and only one client will receive messages
-published to that topic using a random distribution.\
-For more infromation, see a
-[shared subscription sample](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/mqtt5_shared_subscription.md)
-in the v2 SDK.
+published to that topic using a random distribution.
 
 > [!NOTE]
 > AWS IoT Core supports Shared Subscriptions for both MQTT3 and MQTT5. For more information,

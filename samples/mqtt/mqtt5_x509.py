@@ -3,17 +3,10 @@
 
 from awsiot import mqtt5_client_builder
 from awscrt import mqtt5
-import threading
-import time
-# This sample uses the Message Broker for AWS IoT to send and receive messages
-# through an MQTT connection. On startup, the device connects to the server,
-# subscribes to a topic, and begins publishing messages to that topic.
-# The device should receive those same messages back from the message broker,
-# since it is subscribed to that same topic.
+import threading, time
 
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
-import argparse
-import uuid
+import argparse, uuid
 
 parser = argparse.ArgumentParser(
     description="MQTT5 X509 Sample (mTLS)",
@@ -26,21 +19,19 @@ optional = parser.add_argument_group("optional arguments")
 required.add_argument("--endpoint", required=True, metavar="", dest="input_endpoint",
                       help="IoT endpoint hostname")
 required.add_argument("--cert", required=True, metavar="", dest="input_cert",
-                      help="Path to the certificate file to use during mTLS connection establishment")
+                    help="Path to the certificate file to use during mTLS connection establishment")
 required.add_argument("--key", required=True, metavar="", dest="input_key",
-                      help="Path to the private key file to use during mTLS connection establishment")
+                    help="Path to the private key file to use during mTLS connection establishment")
 
 # Optional Arguments
-optional.add_argument("--client_id", metavar="", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
+optional.add_argument("--client_id", metavar="",dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
                       help="Client ID")
-optional.add_argument("--topic", metavar="", default="test/topic", dest="input_topic",
+optional.add_argument("--topic", metavar="",default="test/topic", dest="input_topic",
                       help="Topic")
-optional.add_argument("--message", metavar="", default="Hello from mqtt5 sample", dest="input_message",
+optional.add_argument("--message", metavar="",default="Hello from mqtt5 sample", dest="input_message",
                       help="Message payload")
-optional.add_argument("--count", type=int, metavar="", default=5, dest="input_count",
+optional.add_argument("--count", type=int, metavar="",default=5, dest="input_count",
                       help="Messages to publish (0 = infinite)")
-optional.add_argument("--ca_file", metavar="", dest="input_ca", default=None,
-                      help="Path to root CA file")
 
 # args contains all the parsed commandline arguments used by the sample
 args = parser.parse_args()
@@ -120,11 +111,11 @@ if __name__ == '__main__':
         on_lifecycle_connection_success=on_lifecycle_connection_success,
         on_lifecycle_connection_failure=on_lifecycle_connection_failure,
         on_lifecycle_disconnection=on_lifecycle_disconnection,
-        client_id=args.input_clientId,
-        ca_filepath=args.input_ca)
+        client_id=args.input_clientId)
+    
 
-    # Start the client, instructing the client to desire a connected state. The client will try to
-    # establish a connection with the provided settings. If the client is disconnected while in this
+    # Start the client, instructing the client to desire a connected state. The client will try to 
+    # establish a connection with the provided settings. If the client is disconnected while in this 
     # state it will attempt to reconnect automatically.
     print("==== Starting client ====")
     client.start()
@@ -133,7 +124,8 @@ if __name__ == '__main__':
     if not connection_success_event.wait(TIMEOUT):
         raise TimeoutError("Connection timeout")
 
-    # Subscribe
+
+    # Subscribe 
     print("==== Subscribing to topic '{}' ====".format(message_topic))
     subscribe_future = client.subscribe(subscribe_packet=mqtt5.SubscribePacket(
         subscriptions=[mqtt5.Subscription(
@@ -142,6 +134,7 @@ if __name__ == '__main__':
     ))
     suback = subscribe_future.result(TIMEOUT)
     print("Suback received with reason code:{}\n".format(suback.reason_codes))
+
 
     # Publish
     if message_count == 0:
@@ -172,6 +165,7 @@ if __name__ == '__main__':
         topic_filters=[message_topic]))
     unsuback = unsubscribe_future.result(TIMEOUT)
     print("Unsubscribed with {}\n".format(unsuback.reason_codes))
+
 
     # Stop the client. Instructs the client to disconnect and remain in a disconnected state.
     print("==== Stopping Client ====")

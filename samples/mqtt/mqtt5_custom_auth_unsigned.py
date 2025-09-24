@@ -3,48 +3,42 @@
 
 from awsiot import mqtt5_client_builder
 from awscrt import mqtt5
-import threading
-import time
-# This sample uses the Message Broker for AWS IoT to send and receive messages
-# through an MQTT connection. On startup, the device connects to the server,
-# subscribes to a topic, and begins publishing messages to that topic.
-# The device should receive those same messages back from the message broker,
-# since it is subscribed to that same topic.
+import threading, time
 
 # --------------------------------- ARGUMENT PARSING -----------------------------------------
-import argparse
-import uuid
+import argparse, uuid
 
 parser = argparse.ArgumentParser(
-    description="MQTT5 X509 Sample (mTLS)",
+    description="MQTT5 Unsigned Custom Authorizer Sample",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 required = parser.add_argument_group("required arguments")
 optional = parser.add_argument_group("optional arguments")
 
 # Required Arguments
-required.add_argument("--endpoint", required=True, metavar="", dest="input_endpoint",
+required.add_argument("--endpoint", required=True,  metavar="", dest="input_endpoint",
                       help="IoT endpoint hostname")
-required.add_argument("--cert", required=True, metavar="", dest="input_cert",
-                      help="Path to the certificate file to use during mTLS connection establishment")
-required.add_argument("--key", required=True, metavar="", dest="input_key",
-                      help="Path to the private key file to use during mTLS connection establishment")
+required.add_argument("--authorizer_name", required=True,  metavar="", dest="input_authorizer_name",
+                    help="The name of the custom authorizer to connect to invoke")
+required.add_argument("--auth_username", required=True,  metavar="", dest="input_auth_username",
+                    help="The name to send when connecting through the custom authorizer")
+required.add_argument("--auth_password", required=True,  metavar="", dest="input_auth_password",
+                    help="The password to send when connecting through a custom authorizer")
 
 # Optional Arguments
-optional.add_argument("--client_id", metavar="", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
+optional.add_argument("--client_id",  metavar="", dest="input_clientId", default=f"mqtt5-sample-{uuid.uuid4().hex[:8]}",
                       help="Client ID")
-optional.add_argument("--topic", metavar="", default="test/topic", dest="input_topic",
+optional.add_argument("--topic", default="test/topic",  metavar="", dest="input_topic",
                       help="Topic")
-optional.add_argument("--message", metavar="", default="Hello from mqtt5 sample", dest="input_message",
+optional.add_argument("--message", default="Hello from mqtt5 sample",  metavar="", dest="input_message",
                       help="Message payload")
-optional.add_argument("--count", type=int, metavar="", default=5, dest="input_count",
+optional.add_argument("--count", type=int, default=5,  metavar="", dest="input_count",
                       help="Messages to publish (0 = infinite)")
-optional.add_argument("--ca_file", metavar="", dest="input_ca", default=None,
-                      help="Path to root CA file")
 
 # args contains all the parsed commandline arguments used by the sample
 args = parser.parse_args()
 # --------------------------------- ARGUMENT PARSING END -----------------------------------------
+print("\n==== Starting MQTT5 Custom Auth Unsigned PubSub Sample ====\n")    
 
 TIMEOUT = 100
 message_count = args.input_count
@@ -103,28 +97,25 @@ def on_lifecycle_disconnection(lifecycle_disconnect_data: mqtt5.LifecycleDisconn
 
 
 if __name__ == '__main__':
-    print("\nStarting MQTT5 X509 PubSub Sample\n")
-    message_count = args.input_count
-    message_topic = args.input_topic
-    message_string = args.input_message
 
-    # Create MQTT5 client using mutual TLS via X509 Certificate and Private Key
+    # Create MQTT5 Client with a custom authorizer
     print("==== Creating MQTT5 Client ====\n")
-    client = mqtt5_client_builder.mtls_from_path(
+    client = mqtt5_client_builder.direct_with_custom_authorizer(
         endpoint=args.input_endpoint,
-        cert_filepath=args.input_cert,
-        pri_key_filepath=args.input_key,
+        auth_authorizer_name=args.input_authorizer_name,
+        auth_username=args.input_auth_username,
+        auth_password=args.input_auth_password,
         on_publish_received=on_publish_received,
         on_lifecycle_stopped=on_lifecycle_stopped,
         on_lifecycle_attempting_connect=on_lifecycle_attempting_connect,
         on_lifecycle_connection_success=on_lifecycle_connection_success,
         on_lifecycle_connection_failure=on_lifecycle_connection_failure,
         on_lifecycle_disconnection=on_lifecycle_disconnection,
-        client_id=args.input_clientId,
-        ca_filepath=args.input_ca)
+        client_id=args.input_clientId)
 
-    # Start the client, instructing the client to desire a connected state. The client will try to
-    # establish a connection with the provided settings. If the client is disconnected while in this
+
+    # Start the client, instructing the client to desire a connected state. The client will try to 
+    # establish a connection with the provided settings. If the client is disconnected while in this 
     # state it will attempt to reconnect automatically.
     print("==== Starting client ====")
     client.start()
@@ -133,7 +124,8 @@ if __name__ == '__main__':
     if not connection_success_event.wait(TIMEOUT):
         raise TimeoutError("Connection timeout")
 
-    # Subscribe
+
+    # Subscribe 
     print("==== Subscribing to topic '{}' ====".format(message_topic))
     subscribe_future = client.subscribe(subscribe_packet=mqtt5.SubscribePacket(
         subscriptions=[mqtt5.Subscription(
@@ -142,6 +134,7 @@ if __name__ == '__main__':
     ))
     suback = subscribe_future.result(TIMEOUT)
     print("Suback received with reason code:{}\n".format(suback.reason_codes))
+
 
     # Publish
     if message_count == 0:
@@ -173,6 +166,7 @@ if __name__ == '__main__':
     unsuback = unsubscribe_future.result(TIMEOUT)
     print("Unsubscribed with {}\n".format(unsuback.reason_codes))
 
+
     # Stop the client. Instructs the client to disconnect and remain in a disconnected state.
     print("==== Stopping Client ====")
     client.stop()
@@ -181,3 +175,4 @@ if __name__ == '__main__':
         raise TimeoutError("Stop timeout")
 
     print("==== Client Stopped! ====")
+    

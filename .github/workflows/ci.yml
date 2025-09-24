@@ -7,7 +7,7 @@ on:
       - 'docs'
 
 env:
-  BUILDER_VERSION: v0.9.87
+  BUILDER_VERSION: v0.9.84
   BUILDER_SOURCE: releases
   BUILDER_HOST: https://d19elf31gohf1l.cloudfront.net
   PACKAGE_NAME: aws-iot-device-sdk-python-v2
@@ -20,21 +20,11 @@ env:
   DA_SHADOW_VALUE_DEFAULT: OFF
   CI_UTILS_FOLDER: "./aws-iot-device-sdk-python-v2/utils"
   CI_SAMPLES_CFG_FOLDER: "./aws-iot-device-sdk-python-v2/.github/workflows"
-  CI_SAMPLES_FOLDER: "./aws-iot-device-sdk-python-v2/samples"
-  CI_PUBSUB_ROLE: arn:aws:iam::180635532705:role/CI_PubSub_Role
-  CI_COGNITO_ROLE: arn:aws:iam::180635532705:role/CI_Cognito_Role
-  CI_X509_ROLE: arn:aws:iam::180635532705:role/CI_X509_Role
-  CI_CUSTOM_AUTHORIZER_ROLE: arn:aws:iam::180635532705:role/CI_CustomAuthorizer_Role
-  CI_SHADOW_ROLE: arn:aws:iam::180635532705:role/CI_Shadow_Role
-  CI_JOBS_ROLE: arn:aws:iam::180635532705:role/CI_Jobs_Role
   CI_FLEET_PROVISIONING_ROLE: arn:aws:iam::180635532705:role/service-role/CI_FleetProvisioning_Role
-  CI_GREENGRASS_ROLE: arn:aws:iam::180635532705:role/CI_Greengrass_Role
   CI_GREENGRASS_INSTALLER_ROLE: arn:aws:iam::180635532705:role/CI_GreengrassInstaller_Role
-  CI_DEVICE_ADVISOR: arn:aws:iam::180635532705:role/CI_DeviceAdvisor_Role
   CI_MQTT5_ROLE: arn:aws:iam::180635532705:role/CI_MQTT5_Role
   CI_BUILD_AND_TEST_ROLE: arn:aws:iam::180635532705:role/V2_SDK_Unit_Testing
   CI_JOBS_SERVICE_CLIENT_ROLE: arn:aws:iam::180635532705:role/CI_JobsServiceClient_Role
-  CI_SERVICE_ROLE_CFG_FOLDER: "./aws-iot-device-sdk-python-v2/servicetests/test_cases"
   CI_SHADOW_SERVICE_CLIENT_ROLE: arn:aws:iam::180635532705:role/CI_ShadowServiceClient_Role
 
 jobs:
@@ -72,38 +62,11 @@ jobs:
         python3 -m unittest test.test_identity
         source utils/test_cleanup.sh
         cd ..
-    - name: configure AWS credentials (PubSub)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_PUBSUB_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: run PubSub sample
-      run: |
-        python ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_pubsub_cfg.json
-    - name: run Windows Certificate Connect sample
-      run: |
-        python ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_windows_cert_connect_cfg.json
-    - name: configure AWS credentials (MQTT5 samples)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_MQTT5_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: run MQTT5 PubSub sample
-      run: |
-        python ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_pubsub_cfg.json
-    - name: configure AWS credentials (Device Advisor)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_DEVICE_ADVISOR }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: run DeviceAdvisor
-      run: |
-        cd ./aws-iot-device-sdk-python-v2
-        python ./deviceadvisor/script/DATestRun.py
 
   osx:
     runs-on: ${{ matrix.runner }}
     strategy:
+      fail-fast: false
       matrix:
         runner:
           - macos-13
@@ -112,8 +75,8 @@ jobs:
       id-token: write # This is required for requesting the JWT
     steps:
     - name: Install boto3
-# Starting from macos14, boto3 is no longer available in macos homebrew python https://github.com/Homebrew/homebrew-core/issues/157500
-# use virtual env to work around.
+      # Starting from macos14, boto3 is no longer available in macos homebrew python https://github.com/Homebrew/homebrew-core/issues/157500
+      # use virtual env to work around.
       run: |
         python3 -m venv .venv
         source .venv/bin/activate
@@ -146,42 +109,6 @@ jobs:
         python3 -m unittest test.test_identity
         source utils/test_cleanup.sh
         cd ..
-    - name: configure AWS credentials (PubSub)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_PUBSUB_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: run PubSub sample
-      run: |
-        source .venv/bin/activate
-        python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_pubsub_cfg.json
-    - name: run PKCS12 sample
-      run: |
-        cert=$(aws secretsmanager get-secret-value --region us-east-1 --secret-id "ci/PubSub/cert" --query "SecretString" | cut -f2 -d":" | cut -f2 -d\") && echo -e "$cert" > /tmp/certificate.pem
-        key=$(aws secretsmanager get-secret-value --region us-east-1 --secret-id "ci/PubSub/key" --query "SecretString" | cut -f2 -d":" | cut -f2 -d\") && echo -e "$key" > /tmp/privatekey.pem
-        pkcs12_password=$(aws secretsmanager get-secret-value --region us-east-1 --secret-id "ci/PubSub/key_pkcs12_password" --query "SecretString" | cut -f2 -d":" | cut -f2 -d\")
-        openssl pkcs12 -export -in /tmp/certificate.pem -inkey /tmp/privatekey.pem -out ./pkcs12-key.p12 -name PubSub_Thing_Alias -password pass:$pkcs12_password
-        source .venv/bin/activate
-        python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_pkcs12_connect_cfg.json
-    - name: configure AWS credentials (MQTT5 samples)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_MQTT5_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: run MQTT5 PubSub sample
-      run: |
-        source .venv/bin/activate
-        python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_pubsub_cfg.json
-    - name: configure AWS credentials (Device Advisor)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_DEVICE_ADVISOR }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: run DeviceAdvisor
-      run: |
-        source .venv/bin/activate
-        cd ./aws-iot-device-sdk-python-v2
-        python3 ./deviceadvisor/script/DATestRun.py
 
   linux:
     runs-on: ubuntu-22.04 # latest
@@ -217,39 +144,14 @@ jobs:
         python3 -m unittest test.test_identity
         source utils/test_cleanup.sh
         cd ..
-    - name: configure AWS credentials (PubSub)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_PUBSUB_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: run PubSub sample
-      run: |
-        python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_pubsub_cfg.json
-    - name: configure AWS credentials (MQTT5 samples)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_MQTT5_ROLE }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: run MQTT5 PubSub sample
-      run: |
-        python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_pubsub_cfg.json
-    - name: configure AWS credentials (Device Advisor)
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ env.CI_DEVICE_ADVISOR }}
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
-    - name: run DeviceAdvisor
-      run: |
-        cd ./aws-iot-device-sdk-python-v2
-        python3 ./deviceadvisor/script/DATestRun.py
 
-  # Runs the samples and ensures that everything is working
-  linux-smoke-tests:
+  # Runs the service client tests
+  linux-service-client-tests:
     runs-on: ubuntu-22.04
     permissions:
       id-token: write # This is required for requesting the JWT
     steps:
-      - name: Running samples in CI setup
+      - name: CI setup
         run: |
           python3 -m pip install boto3
           sudo apt-get update -y
@@ -265,7 +167,6 @@ jobs:
           python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
           chmod a+x builder
           ./builder build -p ${{ env.PACKAGE_NAME }}
-
       - name: configure AWS credentials (service tests Fleet Provisioning)
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -291,7 +192,6 @@ jobs:
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
           python3 ./test_cases/test_fleet_provisioning.py --config-file test_cases/mqtt5_fleet_provisioning_with_csr_cfg.json --thing-name-prefix Fleet_Thing_
-
       - name: configure AWS credentials (service tests Shadow)
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -317,7 +217,6 @@ jobs:
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
           python3 ./test_cases/test_shadow_update.py --config-file test_cases/mqtt3_named_shadow_cfg.json
-
       - name: configure AWS credentials (service tests Jobs)
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -333,173 +232,6 @@ jobs:
         run: |
           export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/utils:${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
           python3 ./test_cases/test_jobs_execution.py --config-file test_cases/mqtt5_jobs_cfg.json
-
-      - name: configure AWS credentials (Connect and PubSub)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_PUBSUB_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run Basic Connect sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_basic_connect_cfg.json
-      - name: run Websocket Connect sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_websocket_connect_cfg.json
-      - name: run PubSub sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_pubsub_cfg.json
-      - name: run PKCS11 Connect sample
-        run: |
-          mkdir -p /tmp/tokens
-          export SOFTHSM2_CONF=/tmp/softhsm2.conf
-          echo "directories.tokendir = /tmp/tokens" > /tmp/softhsm2.conf
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_pkcs11_connect_cfg.json
-      - name: configure AWS credentials (Cognito)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_COGNITO_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run Cognito Connect sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_cognito_connect_cfg.json
-      - name: configure AWS credentials (X509)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_X509_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run X509 sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_x509_connect_cfg.json
-      - name: configure AWS credentials (MQTT5 samples)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_MQTT5_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run MQTT5 PubSub sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_pubsub_cfg.json
-      - name: run MQTT5 PKCS11 Connect sample
-        run: |
-          mkdir -p /tmp/mqtt5/tokens
-          export SOFTHSM2_CONF=/tmp/softhsm2.conf
-          echo "directories.tokendir = /tmp/mqtt5/tokens" > /tmp/softhsm2.conf
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_pkcs11_connect_cfg.json
-      - name: run MQTT5 CustomAuthorizerConnect sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_custom_authorizer_cfg.json
-      - name: run MQTT5 CustomAuthorizerConnect sample (websockets)
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_custom_authorizer_websockets_cfg.json
-      - name: run MQTT5 Shared Subscription sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_shared_subscription_cfg.json
-      - name: configure AWS credentials (Custom Authorizer)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_CUSTOM_AUTHORIZER_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run CustomAuthorizerConnect sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_custom_authorizer_connect_cfg.json
-      - name: configure AWS credentials (Shadow)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_SHADOW_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run Shadow sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_shadow_cfg.json
-      - name: run MQTT5 Shadow sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_shadow_cfg.json
-      - name: configure AWS credentials (Jobs)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_JOBS_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run Jobs sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_jobs_cfg.json
-      - name: run MQTT5 Jobs sample
-        run: |
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_jobs_cfg.json
-      - name: configure AWS credentials (Fleet provisioning)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_FLEET_PROVISIONING_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: run Fleet Provisioning sample
-        run: |
-          echo "Generating UUID for IoT thing"
-          Sample_UUID=$(python3  -c "import uuid; print (uuid.uuid4())")
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_fleet_provisioning_cfg.json --input_uuid ${Sample_UUID}
-          python3 ${{ env.CI_UTILS_FOLDER }}/delete_iot_thing_ci.py --thing_name "Fleet_Thing_${Sample_UUID}" --region "us-east-1"
-      - name: run MQTT5 Fleet Provisioning sample
-        run: |
-          echo "Generating UUID for IoT thing"
-          Sample_UUID=$(python3  -c "import uuid; print (uuid.uuid4())")
-          python3 ${{ env.CI_UTILS_FOLDER }}/run_sample_ci.py --file ${{ env.CI_SAMPLES_CFG_FOLDER }}/ci_run_mqtt5_fleet_provisioning_cfg.json --input_uuid ${Sample_UUID}
-          python3 ${{ env.CI_UTILS_FOLDER }}/delete_iot_thing_ci.py --thing_name "Fleet_Thing_${Sample_UUID}" --region "us-east-1"
-
-  linux-greengrass-tests:
-    runs-on: ubuntu-22.04
-    permissions:
-      id-token: write # This is required for requesting the JWT
-    steps:
-      - name: Setup environment
-        run: |
-          python3 -m pip install boto3
-      - name: configure AWS credentials (containers)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_BUILD_AND_TEST_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: Build ${{ env.PACKAGE_NAME }}
-        run: |
-          python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
-          chmod a+x builder
-          ./builder build -p ${{ env.PACKAGE_NAME }}
-      - name: Install Greengrass Development Kit
-        run: |
-          python3 -m pip install awsiotsdk
-          python3 -m pip install -U git+https://github.com/aws-greengrass/aws-greengrass-gdk-cli.git@v1.6.2
-      - name: Configure AWS credentials (Greengrass)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.CI_GREENGRASS_INSTALLER_ROLE }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: Build and run Greengrass basic discovery sample
-        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/basic_discovery
-        run: |
-          export PYTHONPATH=${{ github.workspace }}/aws-iot-device-sdk-python-v2/samples
-          gdk component build
-          gdk test-e2e build
-          gdk test-e2e run
-      - name: Show logs
-        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/basic_discovery
-        # Print logs unconditionally to provide more details on Greengrass run even if the test failed.
-        if: always()
-        run: |
-          echo "=== greengrass.log"
-          cat testResults/gg*/greengrass.log
-          echo "=== software.amazon.awssdk.sdk-gg-test-discovery.log"
-          cat testResults/gg*/software.amazon.awssdk.sdk-gg-test-discovery.log
-      - name: Build and run Greengrass IPC sample
-        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/ipc
-        run: |
-          gdk component build
-          gdk test-e2e build
-          gdk test-e2e run
-      - name: Show logs
-        working-directory: ./aws-iot-device-sdk-python-v2/test/greengrass/ipc
-        # Print logs unconditionally to provide more details on Greengrass run even if the test failed.
-        if: always()
-        run: |
-          echo "=== greengrass.log"
-          cat testResults/gg*/greengrass.log
-          echo "=== software.amazon.awssdk.sdk-gg-ipc.log"
-          cat testResults/gg*/software.amazon.awssdk.sdk-gg-ipc.log
-
 
   # check that docs can still build
   check-docs:
