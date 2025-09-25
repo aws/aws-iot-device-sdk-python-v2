@@ -26,6 +26,10 @@ jobs:
           done < utils/doc-links.txt
 
           if [ $missing -ge 1 ]; then
+              echo "Instructions:"
+              echo "  The above files are required for AWS services or documentations."
+              echo "  Restore missing files or update documentation before merge."
+              echo "  Refer to team wiki "AWS Service and Documentation Links" for details. "
               exit 1
           else
               echo "✅ All documentation-referenced files exist"
