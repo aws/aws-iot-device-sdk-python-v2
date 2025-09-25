@@ -15,7 +15,7 @@ jobs:
       # check if the files exists in the repository. The file list is in utils/doc-links.txt.
         run: |
           missing=0
-          while read -r file; do
+          while read -r file || [ -n "$file" ]; do
           if [ ! -f "$file" ]; then
               if [ $missing -eq 0 ]; then
               echo "❌ Missing files referenced in AWS documentation:"
