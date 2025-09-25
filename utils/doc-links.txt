@@ -1,2 +1,1 @@
 samples/mqtt/mqtt5_x509.py
-samples/basic_discovery.py
