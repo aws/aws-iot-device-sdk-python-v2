@@ -11,7 +11,7 @@ phases:
       - sudo apt-get install python3 python3-pip -y
       - export PATH=$PATH:$HOME/.local/bin
       - python3 -m pip install --user --upgrade pip
-      - python3 -m pip install --user --upgrade twine setuptools wheel awscli PyOpenSSL six
+      - python3 -m pip install --user --upgrade twine awscli build setuptools
       - echo "\nBuild version data:"
       - echo "\nPython Version:"; python3 --version
   pre_build:
@@ -24,7 +24,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - python3 setup.py sdist bdist_wheel
+      - python3 -m build
       - python3 -m twine upload -r testpypi dist/*
   post_build:
     commands:
