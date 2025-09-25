@@ -12,20 +12,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Verify documentation files and links
+      # check if the files exists in the repository. The file list is in utils/doc-links.txt.
         run: |
-          missing_count=0
+          missing=0
           while read -r file; do
-            if [ ! -f "$file" ]; then
-              missing_files="$missing_files $file"
-            fi
+          if [ ! -f "$file" ]; then
+              if [ $missing -eq 0 ]; then
+              echo "❌ Missing files referenced in AWS documentation:"
+              missing=$((missing + 1))
+              fi
+              echo "  - $file"
+          fi
           done < utils/doc-links.txt
-          
-          if [ $missing_count -gt 0 ]; then
-            echo "❌ Missing files referenced in AWS documentation:"
-            echo "Instructions:"
-            echo "  These files are required for AWS services or documentations. Restore missing files or update documentation before merge."
-            echo "  Refer to team wiki "AWS Service and Documentation Links" for details. "
-            exit 1
+
+          if [ $missing -ge 1 ]; then
+              exit 1
           else
-            echo "✅ All documentation-referenced files exist"
+              echo "✅ All documentation-referenced files exist"
           fi
