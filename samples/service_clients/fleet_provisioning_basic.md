@@ -279,3 +279,13 @@ python3 samples/service_clients/fleet_provisioning_basic.py --endpoint <endpoint
 As per normal, replace the `<>` parameters with the proper values. Notice that we provided substitution values for the two parameters in the template body, `DeviceLocation` and `SerialNumber`.
 
 With that, the sample should run and work as expected! You should then find you have a new AWS IoT Core thing!
+
+## ⚠️ Usage disclaimer
+
+These code examples interact with services that may incur charges to your AWS account. For more information, see [AWS Pricing](https://aws.amazon.com/pricing/).
+
+Additionally, example code might theoretically modify or delete existing AWS resources. As a matter of due diligence, do the following:
+
+- Be aware of the resources that these examples create or delete.
+- Be aware of the costs that might be charged to your account as a result.
+- Back up your important data.

@@ -71,3 +71,13 @@ You can also pass a Certificate Authority file (CA) if your certificate and key 
 # For Windows: replace 'python3' with 'python' and '/' with '\'
 python3 pubsub.py --endpoint <endpoint> --cert <file> --key <file> --ca_file <file>
 ```
+
+## ⚠️ Usage disclaimer
+
+These code examples interact with services that may incur charges to your AWS account. For more information, see [AWS Pricing](https://aws.amazon.com/pricing/).
+
+Additionally, example code might theoretically modify or delete existing AWS resources. As a matter of due diligence, do the following:
+
+- Be aware of the resources that these examples create or delete.
+- Be aware of the costs that might be charged to your account as a result.
+- Back up your important data.
