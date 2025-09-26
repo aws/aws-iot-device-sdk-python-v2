@@ -1,0 +1,38 @@
+name: Main Branch Checks
+permissions:
+  contents: read
+
+on:
+  push:
+    branches-ignore:
+      - 'main'
+      - 'docs'
+
+jobs:
+  verify-documentation-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify documentation files and links
+      # check if the files exists in the repository. The file list is in utils/doc-links.txt.
+        run: |
+          missing=0
+          while read -r file || [ -n "$file" ]; do
+          if [ ! -f "$file" ]; then
+              if [ $missing -eq 0 ]; then
+              echo "❌ Missing files referenced in AWS documentation:"
+              missing=$((missing + 1))
+              fi
+              echo "  - $file"
+          fi
+          done < utils/doc-links.txt
+
+          if [ $missing -ge 1 ]; then
+              echo "Instructions:"
+              echo "  The above files are required for AWS services or documentations."
+              echo "  Restore missing files or update documentation before merge."
+              echo "  Refer to team wiki "AWS Service and Documentation Links" for details. "
+              exit 1
+          else
+              echo "✅ All documentation-referenced files exist"
+          fi
