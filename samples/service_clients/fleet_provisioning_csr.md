@@ -288,4 +288,12 @@ Finally, you pass the certificate signing request while invoking the Fleet Provi
 python3 samples/service_clients/fleet_provisioning_csr.py --endpoint <endpoint> --cert <file> --key <file> --csr_file <file> --template_name <template name> --template_parameters '{"SerialNumber":"1","DeviceLocation":"Seattle"}'
 ```
 
+## ⚠️ Usage disclaimer
 
+These code examples interact with services that may incur charges to your AWS account. For more information, see [AWS Pricing](https://aws.amazon.com/pricing/).
+
+Additionally, example code might theoretically modify or delete existing AWS resources. As a matter of due diligence, do the following:
+
+- Be aware of the resources that these examples create or delete.
+- Be aware of the costs that might be charged to your account as a result.
+- Back up your important data.
