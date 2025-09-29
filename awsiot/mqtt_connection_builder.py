@@ -261,7 +261,7 @@ def _builder(
 def mtls_from_path(
         cert_filepath,
         pri_key_filepath,
-        cipher_suite: awscrt.io.TlsCipherPref = awscrt.io.TlsCipherPref.DEFAULT,
+        cipher_suite=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT.
@@ -284,7 +284,7 @@ def mtls_from_path(
 def mtls_from_bytes(
         cert_bytes,
         pri_key_bytes,
-        cipher_suite: awscrt.io.TlsCipherPref = awscrt.io.TlsCipherPref.DEFAULT,
+        cipher_suite=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT.
@@ -312,7 +312,7 @@ def mtls_with_pkcs11(*,
                      private_key_label: str = None,
                      cert_filepath: str = None,
                      cert_bytes=None,
-                     cipher_suite: awscrt.io.TlsCipherPref = awscrt.io.TlsCipherPref.DEFAULT,
+                     cipher_suite=awscrt.io.TlsCipherPref.DEFAULT,
                      **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT,
@@ -366,7 +366,7 @@ def mtls_with_pkcs11(*,
 def mtls_with_pkcs12(*,
                      pkcs12_filepath: str,
                      pkcs12_password: str,
-                     cipher_suite: awscrt.io.TlsCipherPref = awscrt.io.TlsCipherPref.DEFAULT,
+                     cipher_suite=awscrt.io.TlsCipherPref.DEFAULT,
                      **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT,
@@ -393,7 +393,7 @@ def mtls_with_pkcs12(*,
 
 def mtls_with_windows_cert_store_path(*,
                                       cert_store_path: str,
-                                      cipher_suite: awscrt.io.TlsCipherPref = awscrt.io.TlsCipherPref.DEFAULT,
+                                      cipher_suite=awscrt.io.TlsCipherPref.DEFAULT,
                                       **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT,
@@ -421,7 +421,7 @@ def websockets_with_default_aws_signing(
         region,
         credentials_provider,
         websocket_proxy_options=None,
-        cipher_suite: awscrt.io.TlsCipherPref = awscrt.io.TlsCipherPref.DEFAULT,
+        cipher_suite=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an MQTT connection over websockets to AWS IoT.
@@ -469,7 +469,7 @@ def websockets_with_default_aws_signing(
 def websockets_with_custom_handshake(
         websocket_handshake_transform,
         websocket_proxy_options=None,
-        cipher_suite: awscrt.io.TlsCipherPref = awscrt.io.TlsCipherPref.DEFAULT,
+        cipher_suite=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an MQTT connection over websockets,
@@ -529,7 +529,7 @@ def direct_with_custom_authorizer(
         auth_password=None,
         auth_token_key_name=None,
         auth_token_value=None,
-        cipher_suite: awscrt.io.TlsCipherPref = awscrt.io.TlsCipherPref.DEFAULT,
+        cipher_suite=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an MQTT connection using a custom
@@ -575,7 +575,7 @@ def direct_with_custom_authorizer(
         auth_token_key_name=auth_token_key_name,
         auth_token_value=auth_token_value,
         use_websockets=False,
-        cipher_suite: awscrt.io.TlsCipherPref=awscrt.io.TlsCipherPref.DEFAULT,
+        cipher_suite=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs)
 
 
@@ -588,7 +588,7 @@ def websockets_with_custom_authorizer(
         auth_password=None,
         auth_token_key_name=None,
         auth_token_value=None,
-        cipher_suite: awscrt.io.TlsCipherPref = awscrt.io.TlsCipherPref.DEFAULT,
+        cipher_suite=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an MQTT connection using a custom
@@ -640,7 +640,7 @@ def websockets_with_custom_authorizer(
         use_websockets=True,
         websockets_region=region,
         websockets_credentials_provider=credentials_provider,
-        cipher_suite: awscrt.io.TlsCipherPref=awscrt.io.TlsCipherPref.DEFAULT,
+        cipher_suite=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs)
 
 
@@ -653,7 +653,7 @@ def _with_custom_authorizer(auth_username=None,
                             use_websockets=False,
                             websockets_credentials_provider=None,
                             websockets_region=None,
-                            cipher_suite: awscrt.io.TlsCipherPref = awscrt.io.TlsCipherPref.DEFAULT,
+                            cipher_suite=awscrt.io.TlsCipherPref.DEFAULT,
                             **kwargs) -> awscrt.mqtt.Connection:
     """
     Helper function that contains the setup needed for custom authorizers
