@@ -68,7 +68,7 @@ jobs:
         force: true
 
     - name: configure AWS credentials (Release)
-      uses: aws-actions/configure-aws-credentials@v2
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: arn:aws:iam::180635532705:role/CI_V2_RELEASE_S3_ROLE
         aws-region: us-east-1
