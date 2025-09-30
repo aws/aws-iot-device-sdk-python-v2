@@ -103,13 +103,12 @@ class SamplesTest(unittest.TestCase):
         config = Config.get()
         args = [
             sys.executable,
-            "samples/mqtt5_pubsub.py",
+            "samples/mqtt/mqtt5_x509.py",
             "--endpoint", config.endpoint,
             "--cert", config.cert_filepath,
             "--key", config.key_filepath,
             "--client_id", create_client_id(),
-            "--count", "1",
-            "--verbosity", "Trace",
+            "--count", "1"
         ]
 
         def stdout_checker(stdout):
@@ -123,13 +122,12 @@ class SamplesTest(unittest.TestCase):
         config = Config.get()
         args = [
             sys.executable,
-            "samples/basic_discovery.py",
+            "samples/greengrass/basic_discovery.py",
             "--print_discover_resp_only",
             "--region", config.region,
             "--cert", config.cert_filepath,
             "--key", config.key_filepath,
-            "--thing_name", "CI_Greengrass_Discovery_Thing",
-            "--verbosity", "Trace",
+            "--thing_name", "CI_Greengrass_Discovery_Thing"
         ]
 
         def stdout_checker(stdout):

@@ -29,7 +29,7 @@ phases:
       - python3 -m pip install typing
       - python3 codebuild/cd/pip-install-with-retry.py -i https://testpypi.python.org/simple --user awsiotsdk==$CURRENT_TAG_VERSION
       # Run PubSub sample
-      - python3 samples/mqtt5_pubsub.py --endpoint ${ENDPOINT} --cert /tmp/certificate.pem --key /tmp/privatekey.pem --ca_file /tmp/AmazonRootCA1.pem --verbosity Trace
+      - python3 samples/mqtt/mqtt5_x509.py --endpoint ${ENDPOINT} --cert /tmp/certificate.pem --key /tmp/privatekey.pem
 
   post_build:
     commands:
