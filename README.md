@@ -4,7 +4,7 @@
 
 The AWS IoT Device SDK for Python v2 connects your Python applications and devices to the AWS IoT platform. It handles the complexities of secure communication, authentication, and device management so you can focus on your IoT solution. The SDK makes it easy to use AWS IoT services like Device Shadows, Jobs, and Fleet Provisioning.
 
-**Supported Platforms**: Linux, Windows, macOS
+**Supported Platforms**: Linux, Windows 11+, macOS 14+
 
 > **Note**: The SDK is known to work on older platform versions, but we only guarantee compatibility for the platforms listed above.
 
