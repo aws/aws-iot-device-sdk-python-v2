@@ -25,7 +25,7 @@ jobs:
               fi
               echo "  - $file"
           fi
-          done < utils/doc-links.txt
+          done < utils/ci-aws-doc-links.txt
 
           if [ $missing -ge 1 ]; then
               echo "Instructions:"
