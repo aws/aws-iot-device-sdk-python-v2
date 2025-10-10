@@ -3,7 +3,7 @@
 *__Jump To:__*
 * [Where should I start](#where-should-i-start)
 * [How do I enable logging](#how-do-i-enable-logging)
-* [What does the AwsCrtError mean](#what-does-the-awscrterror-mean)
+* [How do I get more information from an error code](#how-do-i-get-more-information-from-an-error-code)
 * [Installation Issues](#installation-issues)
 * [I keep getting AWS_ERROR_MQTT_UNEXPECTED_HANGUP](#i-keep-getting-aws_error_mqtt_unexpected_hangup)
 * [I am experiencing deadlocks](#i-am-experiencing-deadlocks)
@@ -27,7 +27,7 @@ io.init_logging(io.LogLevel.Error, 'stderr')
 ```
 You can also enable [CloudWatch logging](https://docs.aws.amazon.com/iot/latest/developerguide/cloud-watch-logs.html) for IoT which will provide you with additional information that is not available on the client side sdk.
 
-### What does the AwsCrtError mean?
+### How do I get more information from an error code?
 
 When you encounter an `AwsCrtError`, you can get error details using `str()` or `repr()`:
 
