@@ -3,6 +3,7 @@
 *__Jump To:__*
 * [Where should I start](#where-should-i-start)
 * [How do I enable logging](#how-do-i-enable-logging)
+* [What does the AwsCrtError mean](#what-does-the-awscrterror-mean)
 * [Installation Issues](#installation-issues)
 * [I keep getting AWS_ERROR_MQTT_UNEXPECTED_HANGUP](#i-keep-getting-aws_error_mqtt_unexpected_hangup)
 * [I am experiencing deadlocks](#i-am-experiencing-deadlocks)
@@ -25,6 +26,26 @@ from awscrt import io
 io.init_logging(io.LogLevel.Error, 'stderr')
 ```
 You can also enable [CloudWatch logging](https://docs.aws.amazon.com/iot/latest/developerguide/cloud-watch-logs.html) for IoT which will provide you with additional information that is not available on the client side sdk.
+
+### What does the AwsCrtError mean?
+
+When you encounter an `AwsCrtError`, you can get error details using `str()` or `repr()`:
+
+```python
+try:
+    # Your AWS IoT code here
+    pass
+except Exception as e:
+    print(f"Error: {e}")        # Using str()
+    print(f"Error: {repr(e)}")  # Using repr() for more details
+```
+
+**Example output:** 
+```
+# Assume we got error 1059, AWS_IO_DNS_INVALID_NAME
+Error: AWS_IO_DNS_INVALID_NAME: Host name was invalid for dns resolution."
+Error: AwsCrtError(name='AWS_IO_DNS_INVALID_NAME', message='Host name was invalid for dns resolution.', code=1059)
+```
 
 ### Installation Issues
 
