@@ -243,6 +243,7 @@ def _builder(
         use_websockets=False,
         websocket_handshake_transform=None,
         use_custom_authorizer=False,
+        cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs):
 
     username = _get(kwargs, 'username', '')
@@ -345,6 +346,9 @@ def _builder(
     elif ca_filepath or ca_dirpath:
         tls_ctx_options.override_default_trust_store_from_path(ca_dirpath, ca_filepath)
 
+    if cipher_pref is not None:
+        tls_ctx_options.cipher_pref = cipher_pref
+
     if client_options.port is None:
         # prefer 443, even for direct MQTT connections, since it's less likely to be blocked by firewalls
         if use_websockets or awscrt.io.is_alpn_available():
@@ -362,7 +366,7 @@ def _builder(
     return client
 
 
-def mtls_from_path(cert_filepath, pri_key_filepath, cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
+def mtls_from_path(cert_filepath, pri_key_filepath,
                    **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an mTLS MQTT5 Client to AWS IoT.
@@ -378,14 +382,12 @@ def mtls_from_path(cert_filepath, pri_key_filepath, cipher_pref=awscrt.io.TlsCip
     """
     _check_required_kwargs(**kwargs)
     tls_ctx_options = awscrt.io.TlsContextOptions.create_client_with_mtls_from_path(cert_filepath, pri_key_filepath)
-    tls_ctx_options.cipher_pref = cipher_pref
     return _builder(tls_ctx_options, **kwargs)
 
 
 def mtls_from_bytes(
         cert_bytes,
         pri_key_bytes,
-        cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an mTLS MQTT5 Client to AWS IoT.
@@ -401,7 +403,6 @@ def mtls_from_bytes(
     """
     _check_required_kwargs(**kwargs)
     tls_ctx_options = awscrt.io.TlsContextOptions.create_client_with_mtls(cert_bytes, pri_key_bytes)
-    tls_ctx_options.cipher_pref = cipher_pref
     return _builder(tls_ctx_options, **kwargs)
 
 
@@ -413,7 +414,6 @@ def mtls_with_pkcs11(*,
                      private_key_label: str = None,
                      cert_filepath: str = None,
                      cert_bytes=None,
-                     cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
                      **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an mTLS MQTT connection to AWS IoT,
@@ -459,14 +459,12 @@ def mtls_with_pkcs11(*,
         private_key_label=private_key_label,
         cert_file_path=cert_filepath,
         cert_file_contents=cert_bytes)
-    tls_ctx_options.cipher_pref = cipher_pref
     return _builder(tls_ctx_options, **kwargs)
 
 
 def mtls_with_pkcs12(*,
                      pkcs12_filepath: str,
                      pkcs12_password: str,
-                     cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
                      **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT,
@@ -487,13 +485,11 @@ def mtls_with_pkcs12(*,
     tls_ctx_options = awscrt.io.TlsContextOptions.create_client_with_mtls_pkcs12(
         pkcs12_filepath=pkcs12_filepath,
         pkcs12_password=pkcs12_password)
-    tls_ctx_options.cipher_pref = cipher_pref
     return _builder(tls_ctx_options, **kwargs)
 
 
 def mtls_with_windows_cert_store_path(*,
                                       cert_store_path: str,
-                                      cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
                                       **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an mTLS MQTT5 Client to AWS IoT,
@@ -512,7 +508,6 @@ def mtls_with_windows_cert_store_path(*,
     _check_required_kwargs(**kwargs)
 
     tls_ctx_options = awscrt.io.TlsContextOptions.create_client_with_mtls_windows_cert_store_path(cert_store_path)
-    tls_ctx_options.cipher_pref = cipher_pref
     return _builder(tls_ctx_options, **kwargs)
 
 
@@ -520,7 +515,6 @@ def websockets_with_default_aws_signing(
         region,
         credentials_provider,
         websocket_proxy_options=None,
-        cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an MQTT5 Client over websockets to AWS IoT.
@@ -560,15 +554,13 @@ def websockets_with_default_aws_signing(
 
     return websockets_with_custom_handshake(
         _sign_websocket_handshake_request,
-        websocket_proxy_options = websocket_proxy_options,
-        cipher_pref = cipher_pref,
+        websocket_proxy_options,
         **kwargs)
 
 
 def websockets_with_custom_handshake(
         websocket_handshake_transform,
         websocket_proxy_options=None,
-        cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an MQTT5 Client over websockets,
@@ -596,7 +588,6 @@ def websockets_with_custom_handshake(
     """
     _check_required_kwargs(**kwargs)
     tls_ctx_options = awscrt.io.TlsContextOptions()
-    tls_ctx_options.cipher_pref = cipher_pref
     return _builder(tls_ctx_options=tls_ctx_options,
                     use_websockets=True,
                     websocket_handshake_transform=websocket_handshake_transform,
@@ -628,7 +619,6 @@ def direct_with_custom_authorizer(
         auth_password=None,
         auth_token_key_name=None,
         auth_token_value=None,
-        cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an MQTT5 Client using a custom
@@ -695,7 +685,6 @@ def direct_with_custom_authorizer(
 
     tls_ctx_options = awscrt.io.TlsContextOptions()
     tls_ctx_options.alpn_list = ["mqtt"]
-    tls_ctx_options.cipher_pref = cipher_pref
 
     return _builder(tls_ctx_options=tls_ctx_options,
                     use_websockets=False,
@@ -711,7 +700,6 @@ def websockets_with_custom_authorizer(
         websocket_proxy_options=None,
         auth_token_key_name=None,
         auth_token_value=None,
-        cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an MQTT5 Client using a custom
@@ -781,7 +769,6 @@ def websockets_with_custom_authorizer(
     kwargs["password"] = auth_password
 
     tls_ctx_options = awscrt.io.TlsContextOptions()
-    tls_ctx_options.cipher_pref = cipher_pref
 
     def _sign_websocket_handshake_request(transform_args, **kwargs):
         # transform_args need to know when transform is done
@@ -798,7 +785,7 @@ def websockets_with_custom_authorizer(
                     **kwargs)
 
 
-def new_default_builder(cipher_pref=awscrt.io.TlsCipherPref.DEFAULT, **kwargs) -> awscrt.mqtt5.Client:
+def new_default_builder(**kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, without any configuration besides the default TLS context options.
 
@@ -807,7 +794,6 @@ def new_default_builder(cipher_pref=awscrt.io.TlsCipherPref.DEFAULT, **kwargs) -
     """
     _check_required_kwargs(**kwargs)
     tls_ctx_options = awscrt.io.TlsContextOptions()
-    tls_ctx_options.cipher_pref = cipher_pref
     return _builder(tls_ctx_options=tls_ctx_options,
                     use_websockets=False,
                     **kwargs)
