@@ -243,6 +243,7 @@ def _builder(
         use_websockets=False,
         websocket_handshake_transform=None,
         use_custom_authorizer=False,
+        cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs):
 
     username = _get(kwargs, 'username', '')
@@ -345,6 +346,9 @@ def _builder(
     elif ca_filepath or ca_dirpath:
         tls_ctx_options.override_default_trust_store_from_path(ca_dirpath, ca_filepath)
 
+    if cipher_pref is not None:
+        tls_ctx_options.cipher_pref = cipher_pref
+
     if client_options.port is None:
         # prefer 443, even for direct MQTT connections, since it's less likely to be blocked by firewalls
         if use_websockets or awscrt.io.is_alpn_available():
@@ -362,7 +366,8 @@ def _builder(
     return client
 
 
-def mtls_from_path(cert_filepath, pri_key_filepath, **kwargs) -> awscrt.mqtt5.Client:
+def mtls_from_path(cert_filepath, pri_key_filepath,
+                   **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an mTLS MQTT5 Client to AWS IoT.
     TLS arguments are passed as filepaths.
@@ -380,7 +385,10 @@ def mtls_from_path(cert_filepath, pri_key_filepath, **kwargs) -> awscrt.mqtt5.Cl
     return _builder(tls_ctx_options, **kwargs)
 
 
-def mtls_from_bytes(cert_bytes, pri_key_bytes, **kwargs) -> awscrt.mqtt5.Client:
+def mtls_from_bytes(
+        cert_bytes,
+        pri_key_bytes,
+        **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an mTLS MQTT5 Client to AWS IoT.
     TLS arguments are passed as in-memory bytes.
@@ -452,6 +460,7 @@ def mtls_with_pkcs11(*,
         cert_file_path=cert_filepath,
         cert_file_contents=cert_bytes)
     return _builder(tls_ctx_options, **kwargs)
+
 
 def mtls_with_pkcs12(*,
                      pkcs12_filepath: str,
@@ -543,7 +552,10 @@ def websockets_with_default_aws_signing(
         except Exception as e:
             transform_args.set_done(e)
 
-    return websockets_with_custom_handshake(_sign_websocket_handshake_request, websocket_proxy_options, **kwargs)
+    return websockets_with_custom_handshake(
+        _sign_websocket_handshake_request,
+        websocket_proxy_options,
+        **kwargs)
 
 
 def websockets_with_custom_handshake(
