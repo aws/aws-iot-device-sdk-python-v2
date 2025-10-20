@@ -366,8 +366,7 @@ def _builder(
     return client
 
 
-def mtls_from_path(cert_filepath, pri_key_filepath,
-                   **kwargs) -> awscrt.mqtt5.Client:
+def mtls_from_path(cert_filepath, pri_key_filepath, **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an mTLS MQTT5 Client to AWS IoT.
     TLS arguments are passed as filepaths.
@@ -385,10 +384,7 @@ def mtls_from_path(cert_filepath, pri_key_filepath,
     return _builder(tls_ctx_options, **kwargs)
 
 
-def mtls_from_bytes(
-        cert_bytes,
-        pri_key_bytes,
-        **kwargs) -> awscrt.mqtt5.Client:
+def mtls_from_bytes(cert_bytes, pri_key_bytes, **kwargs) -> awscrt.mqtt5.Client:
     """
     This builder creates an :class:`awscrt.mqtt5.Client`, configured for an mTLS MQTT5 Client to AWS IoT.
     TLS arguments are passed as in-memory bytes.

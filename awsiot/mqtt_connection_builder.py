@@ -262,10 +262,7 @@ def _builder(
     )
 
 
-def mtls_from_path(
-        cert_filepath,
-        pri_key_filepath,
-        **kwargs) -> awscrt.mqtt.Connection:
+def mtls_from_path(cert_filepath, pri_key_filepath, **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT.
     TLS arguments are passed as filepaths.
@@ -283,10 +280,7 @@ def mtls_from_path(
     return _builder(tls_ctx_options, **kwargs)
 
 
-def mtls_from_bytes(
-        cert_bytes,
-        pri_key_bytes,
-        **kwargs) -> awscrt.mqtt.Connection:
+def mtls_from_bytes(cert_bytes, pri_key_bytes, **kwargs) -> awscrt.mqtt.Connection:
     """
     This builder creates an :class:`awscrt.mqtt.Connection`, configured for an mTLS MQTT connection to AWS IoT.
     TLS arguments are passed as in-memory bytes.
@@ -452,10 +446,7 @@ def websockets_with_default_aws_signing(
         except Exception as e:
             transform_args.set_done(e)
 
-    return websockets_with_custom_handshake(
-        _sign_websocket_handshake_request,
-        websocket_proxy_options=websocket_proxy_options,
-        **kwargs)
+    return websockets_with_custom_handshake(_sign_websocket_handshake_request, websocket_proxy_options, **kwargs)
 
 
 def websockets_with_custom_handshake(
@@ -566,7 +557,6 @@ def direct_with_custom_authorizer(
         use_websockets=False,
         **kwargs)
 
-
 def websockets_with_custom_authorizer(
         region=None,
         credentials_provider=None,
@@ -605,7 +595,7 @@ def websockets_with_custom_authorizer(
         auth_authorizer_signature (`str`):  The digital signature of the token value in the `auth_token_value`
             parameter. The signature must be based on the private key associated with the custom authorizer.  The
             signature must be base64 encoded.
-            Required if the custom authorizer has signing enabled.
+            Required if the custom authorizer has signing enabled.  
 
         auth_token_key_name (`str`): Key used to extract the custom authorizer token from MQTT username query-string
             properties.
@@ -631,15 +621,15 @@ def websockets_with_custom_authorizer(
 
 
 def _with_custom_authorizer(auth_username=None,
-                            auth_authorizer_name=None,
-                            auth_authorizer_signature=None,
-                            auth_password=None,
-                            auth_token_key_name=None,
-                            auth_token_value=None,
-                            use_websockets=False,
-                            websockets_credentials_provider=None,
-                            websockets_region=None,
-                            **kwargs) -> awscrt.mqtt.Connection:
+        auth_authorizer_name=None,
+        auth_authorizer_signature=None,
+        auth_password=None,
+        auth_token_key_name=None,
+        auth_token_value=None,
+        use_websockets=False,
+        websockets_credentials_provider=None,
+        websockets_region=None,
+        **kwargs) -> awscrt.mqtt.Connection:
     """
     Helper function that contains the setup needed for custom authorizers
     """
@@ -672,7 +662,7 @@ def _with_custom_authorizer(auth_username=None,
     kwargs["password"] = auth_password
 
     tls_ctx_options = awscrt.io.TlsContextOptions()
-    if not use_websockets:
+    if use_websockets == False:
         kwargs["port"] = 443
         tls_ctx_options.alpn_list = ["mqtt"]
 
