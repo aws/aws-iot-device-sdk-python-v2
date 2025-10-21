@@ -168,6 +168,8 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
     **ca_bytes** (`bytes`): Override default trust store with CA certificates from these PEM formatted bytes.
 
+    **cipher_pref** (:class:`awscrt.io.TlsCipherPref`): Cipher preference to use for TLS connection. Default is `TlsCipherPref.DEFAULT`.
+
     **enable_metrics_collection** (`bool`): Whether to send the SDK version number in the CONNECT packet.
         Default is True.
 
