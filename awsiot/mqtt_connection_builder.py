@@ -186,6 +186,8 @@ def _builder(
         cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs):
 
+    assert isinstance(cipher_pref, awscrt.io.TlsCipherPref)
+
     ca_bytes = _get(kwargs, 'ca_bytes')
     ca_filepath = _get(kwargs, 'ca_filepath')
     ca_dirpath = _get(kwargs, 'ca_dirpath')
@@ -205,8 +207,7 @@ def _builder(
     if port == 443 and awscrt.io.is_alpn_available() and use_custom_authorizer is False:
         tls_ctx_options.alpn_list = ['http/1.1'] if use_websockets else ['x-amzn-mqtt-ca']
 
-    if cipher_pref != awscrt.io.TlsCipherPref.DEFAULT:
-        tls_ctx_options.cipher_pref = cipher_pref
+    tls_ctx_options.cipher_pref = cipher_pref
 
     socket_options = awscrt.io.SocketOptions()
     socket_options.connect_timeout_ms = _get(kwargs, 'tcp_connect_timeout_ms', 5000)

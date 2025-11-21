@@ -248,6 +248,8 @@ def _builder(
         cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs):
 
+    assert isinstance(cipher_pref, awscrt.io.TlsCipherPref)
+
     username = _get(kwargs, 'username', '')
     if _get(kwargs, 'enable_metrics_collection', True):
         username += _get_metrics_str(username)
@@ -348,8 +350,7 @@ def _builder(
     elif ca_filepath or ca_dirpath:
         tls_ctx_options.override_default_trust_store_from_path(ca_dirpath, ca_filepath)
 
-    if cipher_pref is not None:
-        tls_ctx_options.cipher_pref = cipher_pref
+    tls_ctx_options.cipher_pref = cipher_pref
 
     if client_options.port is None:
         # prefer 443, even for direct MQTT connections, since it's less likely to be blocked by firewalls
