@@ -1,0 +1,4 @@
+awsiot
+======
+
+.. automodule:: awsiot
