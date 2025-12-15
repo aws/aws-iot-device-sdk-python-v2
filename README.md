@@ -94,18 +94,6 @@ The best way to interact with our team is through GitHub.
 
 If you have a support plan with [AWS Support](https://aws.amazon.com/premiumsupport/), you can also create a new support case.
 
-#### Mac-Only TLS Behavior
-
-> [!NOTE]
-> This SDK does not support TLS 1.3 on macOS. Support for TLS 1.3 on macOS is planned for a future release.
-
-Please note that on Mac, once a private key is used with a certificate, that certificate-key pair is imported into the Mac Keychain.  All subsequent uses of that certificate will use the stored private key and ignore anything passed in programmatically.  Beginning in v1.7.3, when a stored private key from the Keychain is used, the following will be logged at the "info" log level:
-
-```
-static: certificate has an existing certificate-key pair that was previously imported into the Keychain.
- Using key from Keychain instead of the one provided.
-```
-
 ## Resources
 
 Check out our resources for additional guidance too before opening an issue:
@@ -123,4 +111,4 @@ Check out our resources for additional guidance too before opening an issue:
 
 This library is licensed under the [Apache 2.0 License](./documents/LICENSE).
 
-Latest released version: v1.26.0
+Latest released version: v1.27.0
