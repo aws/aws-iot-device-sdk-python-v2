@@ -111,6 +111,8 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
     **ca_bytes** (`bytes`): Override default trust store with CA certificates from these PEM formatted bytes.
 
+    **cipher_pref** (:class:`awscrt.io.TlsCipherPref`): Cipher preference to use for TLS connection. Default is `TlsCipherPref.DEFAULT`.
+
     **enable_metrics_collection** (`bool`): Whether to send the SDK version number in the CONNECT packet.
         Default is True.
 
@@ -181,7 +183,10 @@ def _builder(
         use_websockets=False,
         websocket_handshake_transform=None,
         use_custom_authorizer=False,
+        cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs):
+
+    assert isinstance(cipher_pref, awscrt.io.TlsCipherPref)
 
     ca_bytes = _get(kwargs, 'ca_bytes')
     ca_filepath = _get(kwargs, 'ca_filepath')
@@ -201,6 +206,8 @@ def _builder(
 
     if port == 443 and awscrt.io.is_alpn_available() and use_custom_authorizer is False:
         tls_ctx_options.alpn_list = ['http/1.1'] if use_websockets else ['x-amzn-mqtt-ca']
+
+    tls_ctx_options.cipher_pref = cipher_pref
 
     socket_options = awscrt.io.SocketOptions()
     socket_options.connect_timeout_ms = _get(kwargs, 'tcp_connect_timeout_ms', 5000)
@@ -349,6 +356,7 @@ def mtls_with_pkcs11(*,
         cert_file_contents=cert_bytes)
 
     return _builder(tls_ctx_options, **kwargs)
+
 
 def mtls_with_pkcs12(*,
                      pkcs12_filepath: str,
@@ -552,6 +560,7 @@ def direct_with_custom_authorizer(
         use_websockets=False,
         **kwargs)
 
+
 def websockets_with_custom_authorizer(
         region=None,
         credentials_provider=None,
@@ -590,7 +599,7 @@ def websockets_with_custom_authorizer(
         auth_authorizer_signature (`str`):  The digital signature of the token value in the `auth_token_value`
             parameter. The signature must be based on the private key associated with the custom authorizer.  The
             signature must be base64 encoded.
-            Required if the custom authorizer has signing enabled.  
+            Required if the custom authorizer has signing enabled.
 
         auth_token_key_name (`str`): Key used to extract the custom authorizer token from MQTT username query-string
             properties.
@@ -616,15 +625,15 @@ def websockets_with_custom_authorizer(
 
 
 def _with_custom_authorizer(auth_username=None,
-        auth_authorizer_name=None,
-        auth_authorizer_signature=None,
-        auth_password=None,
-        auth_token_key_name=None,
-        auth_token_value=None,
-        use_websockets=False,
-        websockets_credentials_provider=None,
-        websockets_region=None,
-        **kwargs) -> awscrt.mqtt.Connection:
+                            auth_authorizer_name=None,
+                            auth_authorizer_signature=None,
+                            auth_password=None,
+                            auth_token_key_name=None,
+                            auth_token_value=None,
+                            use_websockets=False,
+                            websockets_credentials_provider=None,
+                            websockets_region=None,
+                            **kwargs) -> awscrt.mqtt.Connection:
     """
     Helper function that contains the setup needed for custom authorizers
     """
@@ -657,7 +666,7 @@ def _with_custom_authorizer(auth_username=None,
     kwargs["password"] = auth_password
 
     tls_ctx_options = awscrt.io.TlsContextOptions()
-    if use_websockets == False:
+    if not use_websockets:
         kwargs["port"] = 443
         tls_ctx_options.alpn_list = ["mqtt"]
 
