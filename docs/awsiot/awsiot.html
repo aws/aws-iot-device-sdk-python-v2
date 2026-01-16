@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>awsiot &#8212; AWS IoT Device SDK v2 for Python  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=93be7416" />
+    
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="awsiot.eventstreamrpc" href="eventstreamrpc.html" />
+    <link rel="prev" title="AWS IoT Device SDK v2 for Python" href="../index.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="eventstreamrpc.html" title="awsiot.eventstreamrpc"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="AWS IoT Device SDK v2 for Python"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">AWS IoT Device SDK v2 for Python  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">awsiot</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-awsiot">
+<span id="awsiot"></span><h1>awsiot<a class="headerlink" href="#module-awsiot" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="awsiot.MqttServiceClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.</span></span><span class="sig-name descname"><span class="pre">MqttServiceClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mqtt_connection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.MqttServiceClient" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for an AWS MQTT Service Client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mqtt_connection</strong> (<a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><em>Connection</em></a><em> | </em><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt5.html#awscrt.mqtt5.Client" title="(in awscrt)"><em>Client</em></a>) – MQTT connection to use</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="awsiot.MqttServiceClient.mqtt_connection">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mqtt_connection</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt.html#awscrt.mqtt.Connection" title="(in awscrt)"><span class="pre">Connection</span></a></em><a class="headerlink" href="#awsiot.MqttServiceClient.mqtt_connection" title="Link to this definition">¶</a></dt>
+<dd><p>MQTT connection used by this client</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="awsiot.MqttServiceClient.unsubscribe">
+<span class="sig-name descname"><span class="pre">unsubscribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.MqttServiceClient.unsubscribe" title="Link to this definition">¶</a></dt>
+<dd><p>Tell the MQTT server to stop sending messages to this topic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>topic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Topic to unsubscribe from</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>Future</cite> whose result will be <cite>None</cite> when the server
+has acknowledged the unsubscribe.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Future</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="awsiot.ModeledClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.</span></span><span class="sig-name descname"><span class="pre">ModeledClass</span></span><a class="headerlink" href="#awsiot.ModeledClass" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base for input/output classes generated from an AWS service model.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="awsiot.V2ServiceException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.</span></span><span class="sig-name descname"><span class="pre">V2ServiceException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_error</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modeled_error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.V2ServiceException" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Wrapper exception thrown by V2 service clients to indicate the failure of an operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Description of the failure.</p></li>
+<li><p><strong>inner_error</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><em>Exception</em></a><em>]</em>) – Cause of the failure.</p></li>
+<li><p><strong>modeled_error</strong> (<em>Optional</em><em>[</em><em>Any</em><em>]</em>) – Modeled error shape that contains additional information about the failure.
+The modeled type is specific to each individual service operation.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="awsiot.V2DeserializationFailure">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.</span></span><span class="sig-name descname"><span class="pre">V2DeserializationFailure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_error</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.V2DeserializationFailure" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>An exception raised when deserialization from an MQTT message payload to a modeled type fails</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – description of the failure</p></li>
+<li><p><strong>inner_error</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><em>Exception</em></a><em>]</em>) – the underlying deserialization exception</p></li>
+<li><p><strong>payload</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><em>bytes</em></a><em>]</em>) – original MQTT message payload that could not be deserialized properly</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="awsiot.ServiceStreamOptions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">awsiot.</span></span><span class="sig-name descname"><span class="pre">ServiceStreamOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_event_listener</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subscription_status_listener</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deserialization_failure_listener</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#awsiot.ServiceStreamOptions" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code>]</p>
+<p>Configuration options for an MQTT-based service streaming operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>incoming_event_listener</strong> (<em>Callable</em><em>[</em><em>[</em><em>T</em><em>]</em><em>, </em><em>None</em><em>]</em>) – function object to invoke when a stream message is successfully deserialized</p></li>
+<li><p><strong>subscription_status_listener</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><a class="reference external" href="https://awslabs.github.io/aws-crt-python/api/mqtt_request_response.html#awscrt.mqtt_request_response.SubscriptionStatusEvent" title="(in awscrt)"><em>awscrt.mqtt_request_response.SubscriptionStatusEvent</em></a><em>]</em><em>, </em><em>None</em><em>]</em><em>]</em>) – function object to invoke when the operation’s subscription status changes</p></li>
+<li><p><strong>deserialization_failure_listener</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#awsiot.V2DeserializationFailure" title="awsiot.V2DeserializationFailure"><em>V2DeserializationFailure</em></a><em>]</em><em>, </em><em>None</em><em>]</em><em>]</em>) – function object to invoke when a publish is received on the streaming subscription that cannot be deserialized into the stream’s output type.  Should never happen.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">awsiot</a><ul>
+<li><a class="reference internal" href="#awsiot.MqttServiceClient"><code class="docutils literal notranslate"><span class="pre">MqttServiceClient</span></code></a><ul>
+<li><a class="reference internal" href="#awsiot.MqttServiceClient.mqtt_connection"><code class="docutils literal notranslate"><span class="pre">mqtt_connection</span></code></a></li>
+<li><a class="reference internal" href="#awsiot.MqttServiceClient.unsubscribe"><code class="docutils literal notranslate"><span class="pre">unsubscribe()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#awsiot.ModeledClass"><code class="docutils literal notranslate"><span class="pre">ModeledClass</span></code></a></li>
+<li><a class="reference internal" href="#awsiot.V2ServiceException"><code class="docutils literal notranslate"><span class="pre">V2ServiceException</span></code></a></li>
+<li><a class="reference internal" href="#awsiot.V2DeserializationFailure"><code class="docutils literal notranslate"><span class="pre">V2DeserializationFailure</span></code></a></li>
+<li><a class="reference internal" href="#awsiot.ServiceStreamOptions"><code class="docutils literal notranslate"><span class="pre">ServiceStreamOptions</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../index.html"
+                          title="previous chapter">AWS IoT Device SDK v2 for Python</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="eventstreamrpc.html"
+                          title="next chapter">awsiot.eventstreamrpc</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/awsiot/awsiot.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="eventstreamrpc.html" title="awsiot.eventstreamrpc"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="AWS IoT Device SDK v2 for Python"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">AWS IoT Device SDK v2 for Python  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">awsiot</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Amazon Web Services, Inc.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>
