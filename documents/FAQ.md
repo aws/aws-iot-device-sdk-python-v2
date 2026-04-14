@@ -11,6 +11,7 @@
 * [What certificates do I need?](#what-certificates-do-i-need)
 * [Where can I find MQTT 311 Samples?](#where-can-i-find-mqtt-311-samples)
 * [Certificate and Private Key Usage Across Different Versions of the SDK on macOS](#certificate-and-private-key-usage-across-different-versions-of-the-sdk-on-macos)
+* [Manual Publish Acknowledgement and QoS 1 Redelivery](#manual-publish-acknowledgement-and-qos-1-redelivery)
 * [I still have more questions about this sdk?](#i-still-have-more-questions-about-this-sdk)
 
 ### Where should I start?
@@ -157,6 +158,18 @@ The MQTT 311 Samples can be found in the v1.24.0 samples folder [here](https://g
 
 ### Certificate and Private Key Usage Across Different Versions of the SDK on macOS
 A certificate and private key pair cannot be shared on a macOS device between aws-iot-device-sdk-python-v2 v1.27.0 and any other versions. In the update to v1.27.0 we migrated macOS from using Apple's deprecated Security Framework to SecItem API. In doing so, certificate and private keys are imported in a non-backwards compatible manner into the Apple Keychain.
+
+### Manual Publish Acknowledgement and QoS 1 Redelivery
+
+When using [manual publish acknowledgement](./MQTT5_Userguide.md#manual-publish-acknowledgement), there are two important behaviors to be aware of regarding QoS 1 message redelivery:
+
+**Broker redelivery of unacknowledged publishes**
+
+The AWS IoT broker will periodically resend unacknowledged QoS 1 PUBLISH packets. These redeliveries should be treated as duplicates even if the DUP flag in the PUBLISH packet is not set. If the manual publish acknowledgement is not acquired again for a redelivered packet, the acknowledgement will be sent automatically.
+
+**Session resumption after disconnect/reconnect**
+
+Upon a disconnect and reconnect of the MQTT5 client, if a session is resumed, any previously acquired acknowledgement handle is void. The broker will resend the unacknowledged PUBLISH packet, and the acknowledgement must be reacquired from that resent packet. If the resent packet is not handled for manual acknowledgement, the acknowledgement will be sent automatically.
 
 ### I still have more questions about this sdk?
 
