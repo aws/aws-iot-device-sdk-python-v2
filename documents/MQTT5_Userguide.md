@@ -90,7 +90,7 @@ For X509 based mutual TLS, you can create a client where the certificate and pri
     client = mqtt5_client_builder.mtls_from_path(
         endpoint = "<account-specific endpoint>",
         cert_filepath=cert_filepath,
-        pri_key_filepath=pri_key_filepath))
+        pri_key_filepath=pri_key_filepath)
 ```
 
 #### **Direct MQTT with Custom Authentication**
@@ -123,7 +123,7 @@ If your custom authorizer uses signing, you must specify the three signed token 
 
 In both cases, the builder will construct a final CONNECT packet username field value for you based on the values configured.  Do not add the token-signing fields to the value of the username that you assign within the custom authentication config structure.  Similarly, do not add any custom authentication related values to the username in the CONNECT configuration optionally attached to the client configuration. The builder will do everything for you.
 
-#### **Direct MQTT with PKCS11 Method**
+#### **Direct MQTT with PKCS11 Method (Unix Only)**
 
 An MQTT5 direct connection can be made using a PKCS11 device rather than using a PEM encoded private key, the private key for mutual TLS is stored on a PKCS#11 compatible smart card or Hardware Security Module (HSM). To create an MQTT5 builder configured for this connection, see the following code:
 
@@ -146,7 +146,7 @@ An MQTT5 direct connection can be made using a PKCS11 device rather than using a
 
 **Note**: Currently, TLS integration with PKCS#11 is only available on Unix devices.
 
-#### **Direct MQTT with PKCS12 Method**
+#### **Direct MQTT with PKCS12 Method (MacOs Only)**
 
 An MQTT5 direct connection can be made using a PKCS12 file rather than using a PEM encoded private key. To create an MQTT5 builder configured for this connection, see the following code:
 
@@ -182,7 +182,7 @@ any additional configuration:
     client = mqtt5_client_builder.websockets_with_default_aws_signing(
         endpoint = "<account-specific endpoint>",
         region = signing_region,
-        credentials_provider=credentials_provider))
+        credentials_provider=credentials_provider)
 ```
 
 #### **MQTT over Websockets with Cognito authentication**
@@ -209,7 +209,7 @@ To create an MQTT5 builder configured for this connection, see the following cod
     client = mqtt5_client_builder.websockets_with_default_aws_signing(
         endpoint = "<account-specific endpoint>",
         region = signing_region,
-        credentials_provider=credentials_provider))
+        credentials_provider=credentials_provider)
 ```
 
 **Note**: A Cognito identity ID is different from a Cognito identity pool ID and trying to connect with a Cognito identity pool ID will not work. If you are unable to connect, make sure you are passing a Cognito identity ID rather than a Cognito identity pool ID.
@@ -241,7 +241,7 @@ by adding the http_proxy_options keyword argument to the builder:
         endpoint = "<account-specific endpoint>",
         cert_filepath = "<certificate file path>",
         pri_key_filepath = "<private key file path>",
-        http_proxy_options = http_proxy_options))
+        http_proxy_options = http_proxy_options)
 ```
 
 SDK Proxy support also includes support for basic authentication and TLS-to-proxy.  SDK proxy support does not include any additional

@@ -66,6 +66,31 @@ Note that in a real application, you may want to avoid the use of wildcards in y
 
 </details>
 
+### Getting AWS IoT Endpoint
+Your AWS IoT endpoint is the address your devices use to connect to AWS IoT Core. You can retrieve it using either the AWS Console or the AWS CLI.
+
+#### Using the AWS Console
+
+1. Navigate to the [AWS IoT Core](https://console.aws.amazon.com/iot) console.
+2. In the left navigation pane, select **Domain configurations**.
+3. Copy the domain name listed — this is your AWS IoT endpoint.
+
+#### Using the AWS CLI
+
+Run the following command:
+
+```sh
+aws iot describe-endpoint --endpoint-type iot:Data-ATS
+```
+
+The output will contain your endpoint:
+
+```json
+{
+  "endpointAddress": "<AWS IoT endpoint>"
+}
+```
+
 ## How to run
 
 To Run this sample from the `samples\mqtt` folder, use the following command:
