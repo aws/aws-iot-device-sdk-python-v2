@@ -113,8 +113,8 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
     **cipher_pref** (:class:`awscrt.io.TlsCipherPref`): Cipher preference to use for TLS connection. Default is `TlsCipherPref.DEFAULT`.
 
-    **enable_metrics_collection** (`bool`): Whether to send the SDK version number in the CONNECT packet.
-        Default is True.
+    **disable_metrics** (`bool`): Set to True to disable SDK metrics in the CONNECT packet.
+        Default is False (metrics enabled).
 
     **http_proxy_options** (:class: 'awscrt.http.HttpProxyOptions'): HTTP proxy options to use
 """
@@ -126,6 +126,8 @@ import awscrt.auth
 import awscrt.io
 import awscrt.mqtt
 import urllib.parse
+
+from awsiot.iot_metrics import CertificateSource, build_sdk_metrics
 
 
 def _check_required_kwargs(**kwargs):
@@ -148,35 +150,6 @@ def _get(kwargs, name, default=None):
     return val
 
 
-_metrics_str = None
-
-
-def _get_metrics_str(current_username=""):
-    global _metrics_str
-
-    username_has_query = False
-    if current_username.find("?") != -1:
-        username_has_query = True
-
-    if _metrics_str is None:
-        try:
-            import importlib.metadata
-            try:
-                version = importlib.metadata.version("awsiotsdk")
-                _metrics_str = "SDK=PythonV2&Version={}".format(version)
-            except importlib.metadata.PackageNotFoundError:
-                _metrics_str = "SDK=PythonV2&Version=dev"
-        except BaseException:
-            _metrics_str = ""
-
-    if not _metrics_str == "":
-        if username_has_query:
-            return "&" + _metrics_str
-        else:
-            return "?" + _metrics_str
-    else:
-        return ""
-
 
 def _builder(
         tls_ctx_options,
@@ -184,6 +157,7 @@ def _builder(
         websocket_handshake_transform=None,
         use_custom_authorizer=False,
         cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
+        certificate_source=None,
         **kwargs):
 
     assert isinstance(cipher_pref, awscrt.io.TlsCipherPref)
@@ -225,11 +199,14 @@ def _builder(
         _get(kwargs, 'tcp_keep_alive_max_probes', _get(kwargs, 'tcp_keepalive_max_probes', 0))
 
     username = _get(kwargs, 'username', '')
-    if _get(kwargs, 'enable_metrics_collection', True):
-        username += _get_metrics_str(username)
 
     if username == "":
         username = None
+
+    # Set SDK metrics for the CRT layer to embed in the CONNECT packet username
+    metrics = None
+    if not _get(kwargs, 'disable_metrics', False):
+        metrics = build_sdk_metrics(certificate_source)
 
     client_bootstrap = _get(kwargs, 'client_bootstrap')
     if client_bootstrap is None:
@@ -262,6 +239,7 @@ def _builder(
         on_connection_success=_get(kwargs, 'on_connection_success'),
         on_connection_failure=_get(kwargs, 'on_connection_failure'),
         on_connection_closed=_get(kwargs, 'on_connection_closed'),
+        metrics=metrics,
     )
 
 
@@ -280,7 +258,7 @@ def mtls_from_path(cert_filepath, pri_key_filepath, **kwargs) -> awscrt.mqtt.Con
     """
     _check_required_kwargs(**kwargs)
     tls_ctx_options = awscrt.io.TlsContextOptions.create_client_with_mtls_from_path(cert_filepath, pri_key_filepath)
-    return _builder(tls_ctx_options, **kwargs)
+    return _builder(tls_ctx_options, certificate_source=CertificateSource.CERTIFICATE_FILES, **kwargs)
 
 
 def mtls_from_bytes(cert_bytes, pri_key_bytes, **kwargs) -> awscrt.mqtt.Connection:
@@ -298,7 +276,7 @@ def mtls_from_bytes(cert_bytes, pri_key_bytes, **kwargs) -> awscrt.mqtt.Connecti
     """
     _check_required_kwargs(**kwargs)
     tls_ctx_options = awscrt.io.TlsContextOptions.create_client_with_mtls(cert_bytes, pri_key_bytes)
-    return _builder(tls_ctx_options, **kwargs)
+    return _builder(tls_ctx_options, certificate_source=CertificateSource.CERTIFICATE_FILES, **kwargs)
 
 
 def mtls_with_pkcs11(*,
@@ -355,7 +333,7 @@ def mtls_with_pkcs11(*,
         cert_file_path=cert_filepath,
         cert_file_contents=cert_bytes)
 
-    return _builder(tls_ctx_options, **kwargs)
+    return _builder(tls_ctx_options, certificate_source=CertificateSource.PKCS11, **kwargs)
 
 
 def mtls_with_pkcs12(*,
@@ -381,7 +359,7 @@ def mtls_with_pkcs12(*,
     tls_ctx_options = awscrt.io.TlsContextOptions.create_client_with_mtls_pkcs12(
         pkcs12_filepath=pkcs12_filepath,
         pkcs12_password=pkcs12_password)
-    return _builder(tls_ctx_options, **kwargs)
+    return _builder(tls_ctx_options, certificate_source=CertificateSource.PKCS12_FILE, **kwargs)
 
 
 def mtls_with_windows_cert_store_path(*,
@@ -405,7 +383,7 @@ def mtls_with_windows_cert_store_path(*,
 
     tls_ctx_options = awscrt.io.TlsContextOptions.create_client_with_mtls_windows_cert_store_path(cert_store_path)
 
-    return _builder(tls_ctx_options, **kwargs)
+    return _builder(tls_ctx_options, certificate_source=CertificateSource.WINDOWS_CERT_STORE, **kwargs)
 
 
 def websockets_with_default_aws_signing(

@@ -2,126 +2,103 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 import unittest
-from unittest.mock import patch
+
+from awsiot.iot_metrics import (
+    CertificateSource,
+    FeatureId,
+    SDK_LIBRARY_NAME,
+    _encode_feature_list,
+    _get_sdk_version,
+    build_sdk_metrics,
+)
 
 
-class TestImportlibMetadata(unittest.TestCase):
-    """Test that importlib.metadata is used instead of pkg_resources"""
+class TestFeatureEncoding(unittest.TestCase):
 
-    def setUp(self):
-        """Reset the metrics string cache before each test"""
-        # Reset the cached metrics string in both modules
-        import awsiot.mqtt5_client_builder
-        import awsiot.mqtt_connection_builder
+    def test_certificate_files(self):
+        self.assertEqual(_encode_feature_list(CertificateSource.CERTIFICATE_FILES), "I/A")
 
-        # Reset the global _metrics_str variable
-        awsiot.mqtt_connection_builder._metrics_str = None
-        awsiot.mqtt5_client_builder._metrics_str = None
+    def test_pkcs11(self):
+        self.assertEqual(_encode_feature_list(CertificateSource.PKCS11), "I/B")
 
-    def test_metrics_string_generation_mqtt_connection_builder(self):
-        """Test that mqtt_connection_builder uses importlib.metadata for version detection"""
-        from awsiot import mqtt_connection_builder
+    def test_windows_cert_store(self):
+        self.assertEqual(_encode_feature_list(CertificateSource.WINDOWS_CERT_STORE), "I/C")
 
-        # Mock importlib.metadata.version to return a known version
-        with patch("importlib.metadata.version") as mock_version:
-            mock_version.return_value = "1.2.3"
+    def test_pkcs12(self):
+        self.assertEqual(_encode_feature_list(CertificateSource.PKCS12_FILE), "I/E")
 
-            # Call the function that uses version detection
-            # We need to access the private function for testing
-            result = mqtt_connection_builder._get_metrics_str("test_username")
+    def test_none_returns_empty(self):
+        self.assertEqual(_encode_feature_list(None), "")
 
-            # Verify that importlib.metadata.version was called
-            mock_version.assert_called_once_with("awsiotsdk")
 
-            # Verify the result contains the expected format
-            self.assertIn("SDK=PythonV2&Version=1.2.3", result)
+class TestGetSdkVersion(unittest.TestCase):
 
-    def test_metrics_string_generation_mqtt5_client_builder(self):
-        """Test that mqtt5_client_builder uses importlib.metadata for version detection"""
-        from awsiot import mqtt5_client_builder
+    def test_returns_string(self):
+        version = _get_sdk_version()
+        self.assertIsInstance(version, str)
+        self.assertTrue(len(version) > 0)
 
-        # Mock importlib.metadata.version to return a known version
-        with patch("importlib.metadata.version") as mock_version:
-            mock_version.return_value = "1.2.3"
 
-            # Call the function that uses version detection
-            # We need to access the private function for testing
-            result = mqtt5_client_builder._get_metrics_str("test_username")
+class TestBuildSdkMetrics(unittest.TestCase):
 
-            # Verify that importlib.metadata.version was called
-            mock_version.assert_called_once_with("awsiotsdk")
+    def test_with_certificate_source(self):
+        metrics = build_sdk_metrics(CertificateSource.CERTIFICATE_FILES)
 
-            # Verify the result contains the expected format
-            self.assertIn("SDK=PythonV2&Version=1.2.3", result)
+        self.assertEqual(metrics.library_name, SDK_LIBRARY_NAME)
+        entries = {e.key: e.value for e in metrics.metadata_entries}
+        self.assertIn("IoTSDKVersion", entries)
+        self.assertEqual(entries["IoTSDKFeature"], "I/A")
+        self.assertIn("IoTSDKMetricsVersion", entries)
 
-    def test_package_not_found_handling_mqtt_connection_builder(self):
-        """Test that PackageNotFoundError is handled correctly in mqtt_connection_builder"""
-        import importlib.metadata
+    def test_without_certificate_source(self):
+        metrics = build_sdk_metrics(None)
 
-        from awsiot import mqtt_connection_builder
+        self.assertEqual(metrics.library_name, SDK_LIBRARY_NAME)
+        entries = {e.key: e.value for e in metrics.metadata_entries}
+        self.assertIn("IoTSDKVersion", entries)
+        self.assertNotIn("IoTSDKFeature", entries)
+        self.assertNotIn("IoTSDKMetricsVersion", entries)
 
-        # Mock importlib.metadata.version to raise PackageNotFoundError
-        with patch("importlib.metadata.version") as mock_version:
-            mock_version.side_effect = importlib.metadata.PackageNotFoundError("Package not found")
+    def test_pkcs11_feature(self):
+        metrics = build_sdk_metrics(CertificateSource.PKCS11)
+        entries = {e.key: e.value for e in metrics.metadata_entries}
+        self.assertEqual(entries["IoTSDKFeature"], "I/B")
 
-            # Call the function that uses version detection
-            result = mqtt_connection_builder._get_metrics_str("test_username")
+    def test_pkcs12_feature(self):
+        metrics = build_sdk_metrics(CertificateSource.PKCS12_FILE)
+        entries = {e.key: e.value for e in metrics.metadata_entries}
+        self.assertEqual(entries["IoTSDKFeature"], "I/E")
 
-            # Verify that the fallback version is used
-            self.assertIn("SDK=PythonV2&Version=dev", result)
+    def test_windows_cert_store_feature(self):
+        metrics = build_sdk_metrics(CertificateSource.WINDOWS_CERT_STORE)
+        entries = {e.key: e.value for e in metrics.metadata_entries}
+        self.assertEqual(entries["IoTSDKFeature"], "I/C")
 
-    def test_package_not_found_handling_mqtt5_client_builder(self):
-        """Test that PackageNotFoundError is handled correctly in mqtt5_client_builder"""
-        import importlib.metadata
+    def test_library_name(self):
+        metrics = build_sdk_metrics(CertificateSource.CERTIFICATE_FILES)
+        self.assertEqual(metrics.library_name, "IoTDeviceSDK/Python")
 
-        from awsiot import mqtt5_client_builder
+    def test_metrics_version_only_set_with_features(self):
+        metrics_with = build_sdk_metrics(CertificateSource.CERTIFICATE_FILES)
+        metrics_without = build_sdk_metrics(None)
 
-        # Mock importlib.metadata.version to raise PackageNotFoundError
-        with patch("importlib.metadata.version") as mock_version:
-            mock_version.side_effect = importlib.metadata.PackageNotFoundError("Package not found")
+        entries_with = {e.key for e in metrics_with.metadata_entries}
+        entries_without = {e.key for e in metrics_without.metadata_entries}
 
-            # Call the function that uses version detection
-            result = mqtt5_client_builder._get_metrics_str("test_username")
+        self.assertIn("IoTSDKMetricsVersion", entries_with)
+        self.assertNotIn("IoTSDKMetricsVersion", entries_without)
 
-            # Verify that the fallback version is used
-            self.assertIn("SDK=PythonV2&Version=dev", result)
 
-    def test_general_exception_handling_mqtt_connection_builder(self):
-        """Test that general exceptions are handled correctly in mqtt_connection_builder"""
-        from awsiot import mqtt_connection_builder
+class TestEnumValues(unittest.TestCase):
 
-        # Mock importlib.metadata.version to raise a general exception
-        with patch("importlib.metadata.version") as mock_version:
-            mock_version.side_effect = Exception("Some other error")
+    def test_feature_id(self):
+        self.assertEqual(FeatureId.CERTIFICATE_SOURCE.value, "I")
 
-            # Call the function that uses version detection
-            result = mqtt_connection_builder._get_metrics_str("test_username")
-
-            # Verify that empty string is returned on general exception
-            self.assertEqual(result, "")
-
-    def test_general_exception_handling_mqtt5_client_builder(self):
-        """Test that general exceptions are handled correctly in mqtt5_client_builder"""
-        from awsiot import mqtt5_client_builder
-
-        # Mock importlib.metadata.version to raise a general exception
-        with patch("importlib.metadata.version") as mock_version:
-            mock_version.side_effect = Exception("Some other error")
-
-            # Call the function that uses version detection
-            result = mqtt5_client_builder._get_metrics_str("test_username")
-
-            # Verify that empty string is returned on general exception
-            self.assertEqual(result, "")
-
-    def test_no_pkg_resources_import(self):
-        """Test that pkg_resources is not imported in the modified files"""
-        import awsiot.mqtt5_client_builder
-        import awsiot.mqtt_connection_builder
-
-        # Check that pkg_resources is not in the module's globals
-        self.assertNotIn("pkg_resources", awsiot.mqtt_connection_builder.__dict__)
-        self.assertNotIn("pkg_resources", awsiot.mqtt5_client_builder.__dict__)
+    def test_certificate_source_values(self):
+        self.assertEqual(CertificateSource.CERTIFICATE_FILES.value, "A")
+        self.assertEqual(CertificateSource.PKCS11.value, "B")
+        self.assertEqual(CertificateSource.WINDOWS_CERT_STORE.value, "C")
+        self.assertEqual(CertificateSource.PKCS12_FILE.value, "E")
 
 
 if __name__ == "__main__":
