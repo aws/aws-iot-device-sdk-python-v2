@@ -6,7 +6,7 @@ IoT SDK Metrics V2 - SDK layer feature tracking.
 
 This module implements the SDK-side of the IoT Metrics.
 It collects SDK-level feature usage information (such as the certificate source
-used for authentication) and packages it into an :class:`~awscrt.aws_iot_metrics.AWSIoTMetrics`
+used for authentication) and packages it into an ``AWSIoTMetrics``
 object. The CRT layer then merges these SDK-level features with its own CRT-level
 features and embeds the combined metrics string in the MQTT CONNECT packet's
 username field.
@@ -16,7 +16,7 @@ Metrics Flow:
     2. :func:`build_sdk_metrics` is called with the appropriate
        :class:`CertificateSource` value (or ``None`` for connections that
        don't use client certificates, e.g. websocket or custom auth).
-    3. The returned :class:`~awscrt.aws_iot_metrics.AWSIoTMetrics` object is
+    3. The returned ``AWSIoTMetrics`` object is
        passed to the CRT connection/client, which handles final encoding into
        the CONNECT username.
 
@@ -106,7 +106,7 @@ def _encode_feature_list(certificate_source: Optional[CertificateSource] = None)
 
 
 def build_sdk_metrics(certificate_source: Optional[CertificateSource] = None) -> AWSIoTMetrics:
-    """Build an :class:`~awscrt.aws_iot_metrics.AWSIoTMetrics` instance for the CRT layer.
+    """Build an ``AWSIoTMetrics`` instance for the CRT layer.
 
     This is the main entry point for SDK metrics. Connection builders call this
     function to produce the metrics object that the CRT will merge with its own

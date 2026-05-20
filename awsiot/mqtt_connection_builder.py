@@ -113,7 +113,7 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
     **cipher_pref** (:class:`awscrt.io.TlsCipherPref`): Cipher preference to use for TLS connection. Default is `TlsCipherPref.DEFAULT`.
 
-    **enable_metrics_collection** (`bool`): Set to True to enable SDK metrics in the CONNECT packet.
+    **enable_metrics_collection** (`bool`): Controls whether SDK metrics are included in the CONNECT packet.
         Default is True (metrics enabled).
 
     **http_proxy_options** (:class: 'awscrt.http.HttpProxyOptions'): HTTP proxy options to use
