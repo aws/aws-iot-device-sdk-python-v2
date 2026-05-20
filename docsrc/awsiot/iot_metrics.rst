@@ -1,4 +1,4 @@
-iot_metrics
+awsiot.iot_metrics
 ==============
 
-.. automodule:: iot_metrics
+.. automodule:: awsiot.iot_metrics

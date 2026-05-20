@@ -51,6 +51,10 @@ class CertificateSource(str, Enum):
     MQTT connection. The single-character value is what gets encoded into the
     metrics string sent in the CONNECT packet.
 
+    Note:
+        Value ``"D"`` (Java KeyStore) is reserved for the Java SDK and is not
+        applicable to the Python SDK. It is intentionally skipped here.
+
     Attributes:
         CERTIFICATE_FILES: Client certificate and private key provided as file paths.
         PKCS11: Private key stored in a PKCS#11-compatible hardware security module.
@@ -60,6 +64,7 @@ class CertificateSource(str, Enum):
     CERTIFICATE_FILES = "A"
     PKCS11 = "B"
     WINDOWS_CERT_STORE = "C"
+    # "D" is Java KeyStore — not applicable to the Python SDK.
     PKCS12_FILE = "E"
 
 
