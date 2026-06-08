@@ -109,6 +109,53 @@ jobs:
         source utils/test_cleanup.sh
         cd ..
 
+  # Runs macOS tests with s2n-tls backend (TLS 1.3) instead of Apple Secure Transport
+  osx-s2n-tls:
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runner:
+          - macos-latest
+    permissions:
+      id-token: write # This is required for requesting the JWT
+    env:
+      AWS_CRT_USE_NON_FIPS_TLS_13: "1"
+    steps:
+    - name: Install boto3
+      run: |
+        python3 -m venv .venv
+        source .venv/bin/activate
+        python3 -m pip install boto3
+    - name: configure AWS credentials (containers)
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ env.CI_BUILD_AND_TEST_ROLE }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+    - name: Build ${{ env.PACKAGE_NAME }}
+      run: |
+        source .venv/bin/activate
+        python3 -c "from urllib.request import urlretrieve; urlretrieve('${{ env.BUILDER_HOST }}/${{ env.BUILDER_SOURCE }}/${{ env.BUILDER_VERSION }}/builder.pyz?run=${{ env.RUN }}', 'builder')"
+        chmod a+x builder
+        ./builder build -p ${{ env.PACKAGE_NAME }}
+    - name: configure AWS credentials (MQTT5)
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ env.CI_MQTT5_ROLE }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+    - name: Service tests
+      shell: bash
+      run: |
+        source .venv/bin/activate
+        cd aws-iot-device-sdk-python-v2
+        python3 -m pip install .
+        source utils/test_setup.sh s3://iot-sdk-ci-bucket-us-east1/IotUsProdMqtt5EnvironmentVariables.txt us-east-1
+        python3 -m unittest test.test_shadow
+        python3 -m unittest test.test_jobs
+        python3 -m unittest test.test_identity
+        source utils/test_cleanup.sh
+        cd ..
+
   linux:
     runs-on: ubuntu-22.04 # latest
     permissions:

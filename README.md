@@ -97,10 +97,17 @@ If you have a support plan with [AWS Support](https://aws.amazon.com/premiumsupp
 
 #### Mac-Only TLS Behavior
 
-> [!NOTE]
-> This SDK does not support TLS 1.3 on macOS. Support for TLS 1.3 on macOS is planned for a future release.
+By default, macOS uses Apple Secure Transport as the TLS implementation, which supports up to TLS 1.2. To enable TLS 1.3 on macOS, set the environment variable `AWS_CRT_USE_NON_FIPS_TLS_13=1` before running your application. This switches the TLS backend to s2n-tls with aws-lc at runtime:
 
-Please note that on Mac, once a private key is used with a certificate, that certificate-key pair is imported into the Mac Keychain.  All subsequent uses of that certificate will use the stored private key and ignore anything passed in programmatically.  Beginning in v1.7.3, when a stored private key from the Keychain is used, the following will be logged at the "info" log level:
+```bash
+export AWS_CRT_USE_NON_FIPS_TLS_13=1
+python3 your_app.py
+```
+
+> [!IMPORTANT]
+> Enabling this option trades FIPS compliance and macOS Keychain/PKCS#12 integration for TLS 1.3 support. This variable has no effect on Linux or Windows.
+
+When using the default Apple Secure Transport backend, once a private key is used with a certificate, that certificate-key pair is imported into the Mac Keychain. All subsequent uses of that certificate will use the stored private key and ignore anything passed in programmatically. When a stored private key from the Keychain is used, the following will be logged at the "info" log level:
 
 ```
 static: certificate has an existing certificate-key pair that was previously imported into the Keychain.
