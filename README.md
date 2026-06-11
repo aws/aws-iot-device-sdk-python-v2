@@ -16,6 +16,7 @@ The AWS IoT Device SDK for Python v2 connects your Python applications and devic
 * [Getting Started](#getting-started)
 * [Samples](samples)
 * [MQTT5 User Guide](./documents/MQTT5_Userguide.md)
+* [Specifics](#specifics)
 * [Getting Help](#getting-help)
 * [Resources](#resources)
 
@@ -86,6 +87,24 @@ Check out the [samples](samples) directory for working code examples that demons
 
 The samples provide ready-to-run code with detailed setup instructions for each authentication method and use case.
 
+## Specifics
+
+#### Mac-Only TLS 1.3
+
+By default, macOS uses Apple Secure Transport as the TLS implementation, which supports up to TLS 1.2. To enable TLS 1.3 on macOS, set the environment variable `AWS_CRT_USE_NON_FIPS_TLS_13=1` before running your application. This switches the TLS backend to s2n-tls with aws-lc at runtime.
+
+> [!IMPORTANT]
+> Enabling `AWS_CRT_USE_NON_FIPS_TLS_13` trades FIPS compliance and macOS Keychain/PKCS#12 integration for TLS 1.3 support. This variable has no effect on Linux or Windows.
+
+#### Mac Keychain
+
+When using the default Apple Secure Transport backend, once a private key is used with a certificate, that certificate-key pair is imported into the Mac Keychain. All subsequent uses of that certificate will use the stored private key and ignore anything passed in programmatically. When a stored private key from the Keychain is used, the following will be logged at the "info" log level:
+
+```
+static: certificate has an existing certificate-key pair that was previously imported into the Keychain.
+ Using key from Keychain instead of the one provided.
+```
+
 ## Getting Help
 
 The best way to interact with our team is through GitHub.
@@ -94,25 +113,6 @@ The best way to interact with our team is through GitHub.
 * Create an [issue](https://github.com/aws/aws-iot-device-sdk-python-v2/issues/new/choose): New feature request or file a bug
 
 If you have a support plan with [AWS Support](https://aws.amazon.com/premiumsupport/), you can also create a new support case.
-
-#### Mac-Only TLS Behavior
-
-By default, macOS uses Apple Secure Transport as the TLS implementation, which supports up to TLS 1.2. To enable TLS 1.3 on macOS, set the environment variable `AWS_CRT_USE_NON_FIPS_TLS_13=1` before running your application. This switches the TLS backend to s2n-tls with aws-lc at runtime:
-
-```bash
-export AWS_CRT_USE_NON_FIPS_TLS_13=1
-python3 your_app.py
-```
-
-> [!IMPORTANT]
-> Enabling this option trades FIPS compliance and macOS Keychain/PKCS#12 integration for TLS 1.3 support. This variable has no effect on Linux or Windows.
-
-When using the default Apple Secure Transport backend, once a private key is used with a certificate, that certificate-key pair is imported into the Mac Keychain. All subsequent uses of that certificate will use the stored private key and ignore anything passed in programmatically. When a stored private key from the Keychain is used, the following will be logged at the "info" log level:
-
-```
-static: certificate has an existing certificate-key pair that was previously imported into the Keychain.
- Using key from Keychain instead of the one provided.
-```
 
 ## Resources
 
