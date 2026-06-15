@@ -28,7 +28,6 @@ API Reference
    awsiot/iotidentity
    awsiot/iotjobs
    awsiot/iotshadow
-   awsiot/iot_metrics
 
 
 
