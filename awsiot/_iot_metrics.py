@@ -8,9 +8,6 @@ Provides SDK-level metadata (version info) to pass to the CRT layer.
 The CRT handles all feature detection (certificate source, TLS settings, etc.)
 and embeds the combined metrics in the MQTT CONNECT packet username field.
 
-The metrics version is defined locally as a sanity check — if the CRT bumps
-its metrics version, the SDK won't automatically report the new version
-without explicit verification that the SDK supports it.
 """
 
 from awscrt.aws_iot_metrics import AWSIoTMetrics, IoTMetricsMetadata
