@@ -204,7 +204,7 @@ def _builder(
 
     # Set SDK metrics for the CRT layer to embed in the CONNECT packet username
     disable_metrics = _get(kwargs, 'disable_metrics', False)
-    metrics =None if disable_metrics else _build_sdk_metrics(),
+    metrics = None if disable_metrics else _build_sdk_metrics()
 
     client_bootstrap = _get(kwargs, 'client_bootstrap')
     if client_bootstrap is None:
