@@ -33,14 +33,15 @@ jobs:
 
     - name: Make new release
       env:
-        Title: ${{ github.event.inputs.release_title }}
+        TITLE: ${{ github.event.inputs.release_title }}
+        RELEASE_TYPE: ${{ github.event.inputs.release_type }}
       run: |
         # Escape special characters
-        Title=$(echo ${Title//[\"]\\\"})
-        Title=$(echo ${Title//[\']\\\'})
-        Title=$(echo ${Title//[\$]})
+        TITLE=$(echo ${TITLE//[\"]\\\"})
+        TITLE=$(echo ${TITLE//[\']\\\'})
+        TITLE=$(echo ${TITLE//[\$]})
 
-        ./utils/publish-release.sh "${{ github.event.inputs.release_type }}" "$Title"
+        ./utils/publish-release.sh "$RELEASE_TYPE" "$TITLE"
 
     - name: Generate documentation
       run: |
