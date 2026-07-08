@@ -113,9 +113,6 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
     **cipher_pref** (:class:`awscrt.io.TlsCipherPref`): Cipher preference to use for TLS connection. Default is `TlsCipherPref.DEFAULT`.
 
-    **disable_metrics** (`bool`): Disable IoT SDK metrics in the CONNECT packet username field.
-        Default is False (metrics enabled).
-
     **http_proxy_options** (:class: 'awscrt.http.HttpProxyOptions'): HTTP proxy options to use
 """
 
@@ -202,9 +199,7 @@ def _builder(
     if username == "":
         username = None
 
-    # Set SDK metrics for the CRT layer to embed in the CONNECT packet username
-    disable_metrics = _get(kwargs, 'disable_metrics', False)
-    metrics = None if disable_metrics else _build_sdk_metrics()
+    metrics = _build_sdk_metrics()
 
     client_bootstrap = _get(kwargs, 'client_bootstrap')
     if client_bootstrap is None:
@@ -237,7 +232,6 @@ def _builder(
         on_connection_success=_get(kwargs, 'on_connection_success'),
         on_connection_failure=_get(kwargs, 'on_connection_failure'),
         on_connection_closed=_get(kwargs, 'on_connection_closed'),
-        disable_metrics=disable_metrics,
         metrics=metrics
     )
 
