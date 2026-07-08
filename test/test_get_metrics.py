@@ -104,10 +104,10 @@ class TestBuildSdkMetrics(unittest.TestCase):
 
 
 class TestMqtt3BuilderMetrics(unittest.TestCase):
-    """Test that mqtt_connection_builder passes disable_metrics correctly."""
+    """Test that mqtt_connection_builder with SDK metrics."""
 
-    def test_metrics_enabled_by_default(self):
-        """When disable_metrics is not set, builder should pass metrics to Connection."""
+    def test_metrics_attached(self):
+        """Builder should always pass SDK metrics to Connection."""
         config = Config.get()
         import awscrt.io
         import awscrt.mqtt
@@ -123,38 +123,17 @@ class TestMqtt3BuilderMetrics(unittest.TestCase):
             )
 
             kwargs = mock_conn.call_args.kwargs
-            self.assertFalse(kwargs["disable_metrics"])
             self.assertIsNotNone(kwargs["metrics"])
             entries = {e.key: e.value for e in kwargs["metrics"].metadata_entries}
             self.assertEqual(entries["IoTSDKVersion"], "2.0.0")
             self.assertEqual(entries["IoTSDKMetricsVersion"], str(_IOT_SDK_METRICS_VERSION))
 
-    def test_metrics_disabled(self):
-        """When disable_metrics=True, builder should pass None metrics."""
-        config = Config.get()
-        import awscrt.io
-        import awscrt.mqtt
-        from awsiot import mqtt_connection_builder
-
-        with patch.object(awscrt.mqtt, "Connection") as mock_conn, \
-             patch.object(awscrt.mqtt, "Client"):
-            mqtt_connection_builder._builder(
-                awscrt.io.TlsContextOptions(),
-                endpoint=config.endpoint,
-                client_id=create_client_id(),
-                disable_metrics=True,
-            )
-
-            kwargs = mock_conn.call_args.kwargs
-            self.assertTrue(kwargs["disable_metrics"])
-            self.assertIsNone(kwargs["metrics"])
-
 
 class TestMqtt5BuilderMetrics(unittest.TestCase):
-    """Test that mqtt5_client_builder passes disable_metrics correctly."""
+    """Test that mqtt5_client_builder  attaches SDK metrics."""
 
-    def test_metrics_enabled_by_default(self):
-        """When disable_metrics is not set, builder should set metrics on client_options."""
+    def test_metrics_attached(self):
+        """Builder should  set SDK metrics on client_options."""
         config = Config.get()
         import awscrt.io
         import awscrt.mqtt5
@@ -168,29 +147,10 @@ class TestMqtt5BuilderMetrics(unittest.TestCase):
             )
 
             client_options = mock_client.call_args.kwargs["client_options"]
-            self.assertFalse(client_options.disable_metrics)
             self.assertIsNotNone(client_options.metrics)
             entries = {e.key: e.value for e in client_options.metrics.metadata_entries}
             self.assertEqual(entries["IoTSDKVersion"], "2.0.0")
             self.assertEqual(entries["IoTSDKMetricsVersion"], str(_IOT_SDK_METRICS_VERSION))
-
-    def test_metrics_disabled(self):
-        """When disable_metrics=True, builder should set None metrics on client_options."""
-        config = Config.get()
-        import awscrt.io
-        import awscrt.mqtt5
-        from awsiot import mqtt5_client_builder
-
-        with patch.object(awscrt.mqtt5, "Client") as mock_client:
-            mqtt5_client_builder._builder(
-                awscrt.io.TlsContextOptions(),
-                endpoint=config.endpoint,
-                disable_metrics=True,
-            )
-
-            client_options = mock_client.call_args.kwargs["client_options"]
-            self.assertTrue(client_options.disable_metrics)
-            self.assertIsNone(client_options.metrics)
 
 
 if __name__ == "__main__":
