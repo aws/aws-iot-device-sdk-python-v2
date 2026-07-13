@@ -11,8 +11,20 @@ import json
 import typing
 import uuid
 
+from .remove_me import deprecated
+# from awscrt.common import deprecated
+
+@deprecated(
+    """
+    We strongly recommend using IotShadowClientV2. There are no current plans to
+    fully deprecate IotShadowClient but it is highly recommended customers migrate to IotShadowClientV2.
+    More details can be found in the GitHub Repo FAQ
+    """)
 class IotShadowClient(awsiot.MqttServiceClient):
     """
+    Deprecated: We strongly recommend using IotShadowClientV2. There are no current plans to
+    fully deprecate IotShadowClient but it is highly recommended customers migrate to IotShadowClientV2.
+    More details can be found in the GitHub Repo FAQ
 
     The AWS IoT Device Shadow service adds shadows to AWS IoT thing objects. Shadows are a simple data store for device properties and state.  Shadows can make a device’s state available to apps and other services whether the device is connected to AWS IoT or not.
 
