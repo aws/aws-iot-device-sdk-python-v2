@@ -11,8 +11,8 @@
     * [How to create an MQTT5 Client based on desired connection method](#how-to-create-an-mqtt5-client-based-on-desired-connection-method)
         * [Direct MQTT with X509-based mutual TLS](#direct-mqtt-with-x509-based-mutual-tls)
         * [Direct MQTT with Custom Authentication](#direct-mqtt-with-custom-authentication)
-        * [Direct MQTT with PKCS11 Method](#direct-mqtt-with-pkcs11-method)
-        * [Direct MQTT with PKCS12 Method](#direct-mqtt-with-pkcs12-method)
+        * [Direct MQTT with PKCS11 Method (Unix Only)](#direct-mqtt-with-pkcs11-method-unix-only)
+        * [Direct MQTT with PKCS12 Method (macOS Only)](#direct-mqtt-with-pkcs12-method-macos-only)
         * [MQTT over Websockets with Sigv4 authentication](#mqtt-over-websockets-with-sigv4-authentication)
         * [MQTT over Websockets with Cognito authentication](#mqtt-over-websockets-with-cognito-authentication)
         * [Direct MQTT with Windows Certificate Store Method](#direct-mqtt-with-windows-certificate-store-method)
@@ -23,6 +23,8 @@
         * [Subscribe](#subscribe)
         * [Unsubscribe](#unsubscribe)
         * [Publish](#publish)
+    * [Advanced Operations and Settings](#advanced-operations-and-settings)
+        * [Manual Publish Acknowledgement](#manual-publish-acknowledgement)
     * [MQTT5 Best Practices](#mqtt5-best-practices)
 
 ## **Introduction**
@@ -88,7 +90,7 @@ For X509 based mutual TLS, you can create a client where the certificate and pri
     client = mqtt5_client_builder.mtls_from_path(
         endpoint = "<account-specific endpoint>",
         cert_filepath=cert_filepath,
-        pri_key_filepath=pri_key_filepath))
+        pri_key_filepath=pri_key_filepath)
 ```
 
 #### **Direct MQTT with Custom Authentication**
@@ -121,7 +123,7 @@ If your custom authorizer uses signing, you must specify the three signed token 
 
 In both cases, the builder will construct a final CONNECT packet username field value for you based on the values configured.  Do not add the token-signing fields to the value of the username that you assign within the custom authentication config structure.  Similarly, do not add any custom authentication related values to the username in the CONNECT configuration optionally attached to the client configuration. The builder will do everything for you.
 
-#### **Direct MQTT with PKCS11 Method**
+#### **Direct MQTT with PKCS11 Method (Unix Only)**
 
 An MQTT5 direct connection can be made using a PKCS11 device rather than using a PEM encoded private key, the private key for mutual TLS is stored on a PKCS#11 compatible smart card or Hardware Security Module (HSM). To create an MQTT5 builder configured for this connection, see the following code:
 
@@ -144,7 +146,7 @@ An MQTT5 direct connection can be made using a PKCS11 device rather than using a
 
 **Note**: Currently, TLS integration with PKCS#11 is only available on Unix devices.
 
-#### **Direct MQTT with PKCS12 Method**
+#### **Direct MQTT with PKCS12 Method (macOS Only)**
 
 An MQTT5 direct connection can be made using a PKCS12 file rather than using a PEM encoded private key. To create an MQTT5 builder configured for this connection, see the following code:
 
@@ -180,7 +182,7 @@ any additional configuration:
     client = mqtt5_client_builder.websockets_with_default_aws_signing(
         endpoint = "<account-specific endpoint>",
         region = signing_region,
-        credentials_provider=credentials_provider))
+        credentials_provider=credentials_provider)
 ```
 
 #### **MQTT over Websockets with Cognito authentication**
@@ -207,7 +209,7 @@ To create an MQTT5 builder configured for this connection, see the following cod
     client = mqtt5_client_builder.websockets_with_default_aws_signing(
         endpoint = "<account-specific endpoint>",
         region = signing_region,
-        credentials_provider=credentials_provider))
+        credentials_provider=credentials_provider)
 ```
 
 **Note**: A Cognito identity ID is different from a Cognito identity pool ID and trying to connect with a Cognito identity pool ID will not work. If you are unable to connect, make sure you are passing a Cognito identity ID rather than a Cognito identity pool ID.
@@ -239,7 +241,7 @@ by adding the http_proxy_options keyword argument to the builder:
         endpoint = "<account-specific endpoint>",
         cert_filepath = "<certificate file path>",
         pri_key_filepath = "<private key file path>",
-        http_proxy_options = http_proxy_options))
+        http_proxy_options = http_proxy_options)
 ```
 
 SDK Proxy support also includes support for basic authentication and TLS-to-proxy.  SDK proxy support does not include any additional
@@ -339,6 +341,67 @@ The `stop()` API supports a DISCONNECT packet as an optional parameter.  If supp
         reason_code = mqtt5.DisconnectReasonCode.NORMAL_DISCONNECTION,
         session_expiry_interval_sec = 3600))
 ```
+
+## Advanced Operations and Settings
+
+### Manual Publish Acknowledgement
+
+By default, the MQTT5 client automatically sends a PUBACK for every QoS 1 PUBLISH it receives, immediately after the `on_publish_callback_fn` callback returns. Manual publish acknowledgement gives you control over when that PUBACK is sent, allowing you to defer acknowledgement until after your application has fully processed the message — for example, after persisting it to a database or forwarding it to another service.
+
+To take manual control of the PUBACK, call `publish_data.acquire_publish_acknowledgement_control()` **within** the `on_publish_callback_fn` callback. This returns a `PublishAcknowledgementControlHandle` that you can store and use later to send the PUBACK by calling `client.invoke_publish_acknowledgement()`.
+
+**Important constraints:**
+* `acquire_publish_acknowledgement_control()` must be called within the `on_publish_callback_fn` callback. Calling it after the callback returns or from a different thread will raise a `RuntimeError`.
+* `acquire_publish_acknowledgement_control()` may only be called once per received PUBLISH. Subsequent calls will raise a `RuntimeError`.
+* This is only relevant for QoS 1 messages. For QoS 0 messages, `acquire_publish_acknowledgement_control` will be `None`.
+* If `acquire_publish_acknowledgement_control()` is not called, the client will automatically send the PUBACK when the callback returns.
+
+The following example shows how to acquire the acknowledgement handle within the callback and invoke it later:
+
+```python
+import awscrt.mqtt5 as mqtt5
+
+# A variable to hold the acknowledgement handle for later use
+pending_ack = None
+
+def on_publish_received(publish_data: mqtt5.PublishReceivedData):
+    global pending_ack
+
+    print(f"Message received on topic: {publish_data.publish_packet.topic}")
+
+    if publish_data.publish_packet.qos == mqtt5.QoS.AT_LEAST_ONCE:
+        # Acquire manual control of the PUBACK for this QoS 1 message.
+        # This must be called within the callback. After the callback returns,
+        # acquire_publish_acknowledgement_control() will raise a RuntimeError.
+        if publish_data.acquire_publish_acknowledgement_control is not None:
+            pending_ack = publish_data.acquire_publish_acknowledgement_control()
+
+            # The PUBACK will NOT be sent automatically because we acquired the handle.
+            # Process the message here (e.g., persist to storage, forward to another service).
+
+# Pass the callback when creating the client
+client_options = mqtt5.ClientOptions(
+    host_name = "<endpoint to connect to>",
+    port = <port to use>,
+    on_publish_callback_fn = on_publish_received)
+
+client = mqtt5.Client(client_options)
+
+# ... connect and subscribe ...
+
+# After processing is complete, send the PUBACK by invoking the acknowledgement.
+if pending_ack is not None:
+    client.invoke_publish_acknowledgement(pending_ack)
+    pending_ack = None
+```
+
+**AWS IoT broker redelivery behavior**
+
+The AWS IoT broker will periodically resend unacknowledged QoS 1 PUBLISH packets. These redeliveries should be treated as duplicates even if the DUP flag in the PUBLISH packet is not set. If `acquire_publish_acknowledgement_control()` is not called again for a redelivered packet, the acknowledgement will be sent automatically.
+
+**Session resumption after disconnect/reconnect**
+
+Upon a disconnect and reconnect of the MQTT5 client, if a session is resumed, any previously acquired `PublishAcknowledgementControlHandle` is void. The broker will resend the unacknowledged PUBLISH packet, and `acquire_publish_acknowledgement_control()` must be called again within the callback for that resent packet. If the resent packet is not handled for manual acknowledgement, the acknowledgement will be sent automatically.
 
 ## **MQTT5 Best Practices**
 

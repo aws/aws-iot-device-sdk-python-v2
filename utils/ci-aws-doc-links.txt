@@ -1,0 +1,2 @@
+samples/mqtt/mqtt5_x509.py
+samples/greengrass/basic_discovery.py

@@ -168,6 +168,8 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
     **ca_bytes** (`bytes`): Override default trust store with CA certificates from these PEM formatted bytes.
 
+    **cipher_pref** (:class:`awscrt.io.TlsCipherPref`): Cipher preference to use for TLS connection. Default is `TlsCipherPref.DEFAULT`.
+
     **enable_metrics_collection** (`bool`): Whether to send the SDK version number in the CONNECT packet.
         Default is True.
 
@@ -243,7 +245,10 @@ def _builder(
         use_websockets=False,
         websocket_handshake_transform=None,
         use_custom_authorizer=False,
+        cipher_pref=awscrt.io.TlsCipherPref.DEFAULT,
         **kwargs):
+
+    assert isinstance(cipher_pref, awscrt.io.TlsCipherPref)
 
     username = _get(kwargs, 'username', '')
     if _get(kwargs, 'enable_metrics_collection', True):
@@ -344,6 +349,8 @@ def _builder(
         tls_ctx_options.override_default_trust_store(ca_bytes)
     elif ca_filepath or ca_dirpath:
         tls_ctx_options.override_default_trust_store_from_path(ca_dirpath, ca_filepath)
+
+    tls_ctx_options.cipher_pref = cipher_pref
 
     if client_options.port is None:
         # prefer 443, even for direct MQTT connections, since it's less likely to be blocked by firewalls
@@ -453,6 +460,7 @@ def mtls_with_pkcs11(*,
         cert_file_contents=cert_bytes)
     return _builder(tls_ctx_options, **kwargs)
 
+
 def mtls_with_pkcs12(*,
                      pkcs12_filepath: str,
                      pkcs12_password: str,
@@ -543,7 +551,10 @@ def websockets_with_default_aws_signing(
         except Exception as e:
             transform_args.set_done(e)
 
-    return websockets_with_custom_handshake(_sign_websocket_handshake_request, websocket_proxy_options, **kwargs)
+    return websockets_with_custom_handshake(
+        _sign_websocket_handshake_request,
+        websocket_proxy_options,
+        **kwargs)
 
 
 def websockets_with_custom_handshake(

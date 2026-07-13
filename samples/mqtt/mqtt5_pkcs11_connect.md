@@ -15,7 +15,10 @@ You can read more about MQTT5 for the Python IoT Device SDK V2 in the [MQTT5 use
 
 ## Requirements
 
-**WARNING: Unix (Linux) only**. Currently, TLS integration with PKCS#11 is only available on Unix devices.
+> [!IMPORTANT]
+> TLS integration with PKCS#11 has the following limitations:
+> - Only supported on Unix-like platforms
+> - TLS 1.3 is not supported
 
 This sample assumes you have the required AWS IoT resources available. Information about AWS IoT can be found [HERE](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html) and instructions on creating AWS IoT resources (AWS IoT Policy, Device Certificate, Private Key) can be found [HERE](https://docs.aws.amazon.com/iot/latest/developerguide/create-iot-resources.html).
 
