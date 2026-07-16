@@ -73,6 +73,10 @@ class TestGetSdkVersion(unittest.TestCase):
 
 class TestBuildSdkMetrics(unittest.TestCase):
 
+    def test_library_name(self):
+        metrics = _build_sdk_metrics()
+        self.assertEqual(metrics.library_name, "IoTDeviceSDK/Python")
+
     def test_contains_sdk_version(self):
         with patch("awsiot._iot_metrics._get_sdk_version", return_value="1.2.3"):
             metrics = _build_sdk_metrics()
