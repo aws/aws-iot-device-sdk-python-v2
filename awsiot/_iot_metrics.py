@@ -12,8 +12,6 @@ and embeds the combined metrics in the MQTT CONNECT packet username field.
 
 from awscrt.aws_iot_metrics import AWSIoTMetrics, IoTMetricsMetadata
 
-_SDK_LIBRARY_NAME = "IoTDeviceSDK/Python"
-
 # The current version of the IoT SDK metrics format.
 # This must match the version expected by CRT layer.
 _IOT_SDK_METRICS_VERSION = 1
@@ -61,7 +59,6 @@ def _build_sdk_metrics():
         MQTT5 client or MQTT3 connection configuration.
     """
     return AWSIoTMetrics(
-        library_name=_SDK_LIBRARY_NAME,
         metadata_entries=[
             IoTMetricsMetadata(key="IoTSDKVersion", value=_get_sdk_version()),
             IoTMetricsMetadata(key="IoTSDKMetricsVersion", value=str(_IOT_SDK_METRICS_VERSION)),

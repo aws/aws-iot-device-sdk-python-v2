@@ -11,7 +11,6 @@ import boto3
 import botocore.exceptions
 
 from awsiot._iot_metrics import (
-    _SDK_LIBRARY_NAME,
     _IOT_SDK_METRICS_VERSION,
     _get_sdk_version,
     _build_sdk_metrics,
@@ -76,7 +75,7 @@ class TestBuildSdkMetrics(unittest.TestCase):
 
     def test_library_name(self):
         metrics = _build_sdk_metrics()
-        self.assertEqual(metrics.library_name, _SDK_LIBRARY_NAME)
+        self.assertEqual(metrics.library_name, "IoTDeviceSDK/Python")
 
     def test_contains_sdk_version(self):
         with patch("awsiot._iot_metrics._get_sdk_version", return_value="1.2.3"):
