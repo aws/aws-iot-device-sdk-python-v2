@@ -113,9 +113,6 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
     **cipher_pref** (:class:`awscrt.io.TlsCipherPref`): Cipher preference to use for TLS connection. Default is `TlsCipherPref.DEFAULT`.
 
-    **enable_metrics_collection** (`bool`): Whether to send the SDK version number in the CONNECT packet.
-        Default is True.
-
     **http_proxy_options** (:class: 'awscrt.http.HttpProxyOptions'): HTTP proxy options to use
 """
 
@@ -126,6 +123,8 @@ import awscrt.auth
 import awscrt.io
 import awscrt.mqtt
 import urllib.parse
+
+from awsiot._iot_metrics import _build_sdk_metrics
 
 
 def _check_required_kwargs(**kwargs):
@@ -147,35 +146,6 @@ def _get(kwargs, name, default=None):
         val = default
     return val
 
-
-_metrics_str = None
-
-
-def _get_metrics_str(current_username=""):
-    global _metrics_str
-
-    username_has_query = False
-    if current_username.find("?") != -1:
-        username_has_query = True
-
-    if _metrics_str is None:
-        try:
-            import importlib.metadata
-            try:
-                version = importlib.metadata.version("awsiotsdk")
-                _metrics_str = "SDK=PythonV2&Version={}".format(version)
-            except importlib.metadata.PackageNotFoundError:
-                _metrics_str = "SDK=PythonV2&Version=dev"
-        except BaseException:
-            _metrics_str = ""
-
-    if not _metrics_str == "":
-        if username_has_query:
-            return "&" + _metrics_str
-        else:
-            return "?" + _metrics_str
-    else:
-        return ""
 
 
 def _builder(
@@ -225,11 +195,11 @@ def _builder(
         _get(kwargs, 'tcp_keep_alive_max_probes', _get(kwargs, 'tcp_keepalive_max_probes', 0))
 
     username = _get(kwargs, 'username', '')
-    if _get(kwargs, 'enable_metrics_collection', True):
-        username += _get_metrics_str(username)
 
     if username == "":
         username = None
+
+    metrics = _build_sdk_metrics()
 
     client_bootstrap = _get(kwargs, 'client_bootstrap')
     if client_bootstrap is None:
@@ -262,6 +232,7 @@ def _builder(
         on_connection_success=_get(kwargs, 'on_connection_success'),
         on_connection_failure=_get(kwargs, 'on_connection_failure'),
         on_connection_closed=_get(kwargs, 'on_connection_closed'),
+        metrics=metrics
     )
 
 
