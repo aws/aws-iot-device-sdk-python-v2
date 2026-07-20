@@ -113,6 +113,8 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
     **cipher_pref** (:class:`awscrt.io.TlsCipherPref`): Cipher preference to use for TLS connection. Default is `TlsCipherPref.DEFAULT`.
 
+    **enable_metrics_collection** (`bool`): Whether to send the SDK version number in the CONNECT packet.
+
     **http_proxy_options** (:class: 'awscrt.http.HttpProxyOptions'): HTTP proxy options to use
 """
 
@@ -199,7 +201,7 @@ def _builder(
     if username == "":
         username = None
 
-    metrics = _build_sdk_metrics()
+    metrics = _build_sdk_metrics() if _get(kwargs, 'enable_metrics_collection', True) else None
 
     client_bootstrap = _get(kwargs, 'client_bootstrap')
     if client_bootstrap is None:
@@ -232,6 +234,7 @@ def _builder(
         on_connection_success=_get(kwargs, 'on_connection_success'),
         on_connection_failure=_get(kwargs, 'on_connection_failure'),
         on_connection_closed=_get(kwargs, 'on_connection_closed'),
+        disable_metrics=metrics is None,
         metrics=metrics
     )
 

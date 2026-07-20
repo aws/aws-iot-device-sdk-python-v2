@@ -170,6 +170,7 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
 
     **cipher_pref** (:class:`awscrt.io.TlsCipherPref`): Cipher preference to use for TLS connection. Default is `TlsCipherPref.DEFAULT`.
 
+    **enable_metrics_collection** (`bool`): Whether to send the SDK version number in the CONNECT packet.
 
 
 """
@@ -334,7 +335,10 @@ def _builder(
     tls_ctx = awscrt.io.ClientTlsContext(tls_ctx_options)
     client_options.tls_ctx = tls_ctx
 
-    client_options.metrics = _build_sdk_metrics()
+    if _get(kwargs, 'enable_metrics_collection', True):
+        client_options.metrics = _build_sdk_metrics()
+    else:
+        client_options.disable_metrics = True
     client = awscrt.mqtt5.Client(client_options=client_options)
 
     return client
