@@ -271,6 +271,15 @@ class DeploymentStatus:
     CANCELED = 'CANCELED'
 
 
+class ConnectionStatus:
+    """
+    ConnectionStatus enum
+    """
+
+    CONNECTED = 'CONNECTED'
+    DISCONNECTED = 'DISCONNECTED'
+
+
 class LifecycleState:
     """
     LifecycleState enum
@@ -655,6 +664,59 @@ class ConfigurationValidityStatus:
 
     ACCEPTED = 'ACCEPTED'
     REJECTED = 'REJECTED'
+
+
+class ConnectionStatusEvent(rpc.Shape):
+    """
+    ConnectionStatusEvent
+
+    All attributes are None by default, and may be set by keyword in the constructor.
+
+    Keyword Args:
+        status: ConnectionStatus enum value. The connection status.
+
+    Attributes:
+        status: ConnectionStatus enum value. The connection status.
+    """
+
+    def __init__(self, *,
+                 status: typing.Optional[str] = None):
+        super().__init__()
+        self.status = status  # type: typing.Optional[str]
+
+    def set_status(self, status: str):
+        self.status = status
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.status is not None:
+            payload['status'] = self.status
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'status' in payload:
+            new.status = payload['status']
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#ConnectionStatusEvent'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
 
 
 class ComponentDetails(rpc.Shape):
@@ -1658,6 +1720,61 @@ class ConfigurationValidityReport(rpc.Shape):
     @classmethod
     def _model_name(cls):
         return 'aws.greengrass#ConfigurationValidityReport'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class IoTCoreConnectionStatusEvent(rpc.Shape):
+    """
+    IoTCoreConnectionStatusEvent is a "tagged union" class.
+
+    When sending, only one of the attributes may be set.
+    When receiving, only one of the attributes will be set.
+    All other attributes will be None.
+
+    Keyword Args:
+        connection_status_event: The connection status event.
+
+    Attributes:
+        connection_status_event: The connection status event.
+    """
+
+    def __init__(self, *,
+                 connection_status_event: typing.Optional[ConnectionStatusEvent] = None):
+        super().__init__()
+        self.connection_status_event = connection_status_event  # type: typing.Optional[ConnectionStatusEvent]
+
+    def set_connection_status_event(self, connection_status_event: ConnectionStatusEvent):
+        self.connection_status_event = connection_status_event
+        return self
+
+
+    def _to_payload(self):
+        payload = {}
+        if self.connection_status_event is not None:
+            payload['connectionStatusEvent'] = self.connection_status_event._to_payload()
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        if 'connectionStatusEvent' in payload:
+            new.connection_status_event = ConnectionStatusEvent._from_payload(payload['connectionStatusEvent'])
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#IoTCoreConnectionStatusEvent'
 
     def __repr__(self):
         attrs = []
@@ -4673,6 +4790,76 @@ class GetThingShadowRequest(rpc.Shape):
         return False
 
 
+class SubscribeToIoTCoreConnectionStatusResponse(rpc.Shape):
+    """
+    SubscribeToIoTCoreConnectionStatusResponse
+    """
+
+    def __init__(self):
+        super().__init__()
+
+
+    def _to_payload(self):
+        payload = {}
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToIoTCoreConnectionStatusResponse'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
+class SubscribeToIoTCoreConnectionStatusRequest(rpc.Shape):
+    """
+    SubscribeToIoTCoreConnectionStatusRequest
+    """
+
+    def __init__(self):
+        super().__init__()
+
+
+    def _to_payload(self):
+        payload = {}
+        return payload
+
+    @classmethod
+    def _from_payload(cls, payload):
+        new = cls()
+        return new
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToIoTCoreConnectionStatusRequest'
+
+    def __repr__(self):
+        attrs = []
+        for attr, val in self.__dict__.items():
+            if val is not None:
+                attrs.append('%s=%r' % (attr, val))
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False
+
+
 class CreateDebugPasswordResponse(rpc.Shape):
     """
     CreateDebugPasswordResponse
@@ -6786,6 +6973,7 @@ SHAPE_INDEX = rpc.ShapeIndex([
     LocalDeployment,
     PostComponentUpdateEvent,
     PreComponentUpdateEvent,
+    ConnectionStatusEvent,
     ComponentDetails,
     CertificateUpdate,
     BinaryMessage,
@@ -6839,6 +7027,8 @@ SHAPE_INDEX = rpc.ShapeIndex([
     SendConfigurationValidityReportRequest,
     GetThingShadowResponse,
     GetThingShadowRequest,
+    SubscribeToIoTCoreConnectionStatusResponse,
+    SubscribeToIoTCoreConnectionStatusRequest,
     CreateDebugPasswordResponse,
     CreateDebugPasswordRequest,
     ListComponentsResponse,
@@ -7583,6 +7773,32 @@ class _SubscribeToIoTCoreOperation(rpc.ClientOperation):
     @classmethod
     def _response_stream_type(cls):
         return IoTCoreMessage
+
+
+class _SubscribeToIoTCoreConnectionStatusOperation(rpc.ClientOperation):
+    """
+    Subscribe to the connection status of the IoT Core MQTT connection.
+    """
+
+    @classmethod
+    def _model_name(cls):
+        return 'aws.greengrass#SubscribeToIoTCoreConnectionStatus'
+
+    @classmethod
+    def _request_type(cls):
+        return SubscribeToIoTCoreConnectionStatusRequest
+
+    @classmethod
+    def _request_stream_type(cls):
+        return None
+
+    @classmethod
+    def _response_type(cls):
+        return SubscribeToIoTCoreConnectionStatusResponse
+
+    @classmethod
+    def _response_stream_type(cls):
+        return IoTCoreConnectionStatusEvent
 
 
 class _SubscribeToTopicOperation(rpc.ClientOperation):
