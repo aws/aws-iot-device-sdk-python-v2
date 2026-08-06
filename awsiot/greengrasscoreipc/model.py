@@ -886,9 +886,13 @@ class CertificateUpdate(rpc.Shape):
 
     def __repr__(self):
         attrs = []
+        sensitive_attrs = {'private_key', 'public_key', 'certificate', 'ca_certificates'}
         for attr, val in self.__dict__.items():
             if val is not None:
-                attrs.append('%s=%r' % (attr, val))
+                if attr in sensitive_attrs:
+                    attrs.append('%s=*** REDACTED ***' % attr)
+                else:
+                    attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
@@ -1117,9 +1121,13 @@ class MQTTCredential(rpc.Shape):
 
     def __repr__(self):
         attrs = []
+        sensitive_attrs = {'password'}
         for attr, val in self.__dict__.items():
             if val is not None:
-                attrs.append('%s=%r' % (attr, val))
+                if attr in sensitive_attrs:
+                    attrs.append('%s=*** REDACTED ***' % attr)
+                else:
+                    attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
@@ -1646,9 +1654,13 @@ class SecretValue(rpc.Shape):
 
     def __repr__(self):
         attrs = []
+        sensitive_attrs = {'secret_string', 'secret_binary'}
         for attr, val in self.__dict__.items():
             if val is not None:
-                attrs.append('%s=%r' % (attr, val))
+                if attr in sensitive_attrs:
+                    attrs.append('%s=*** REDACTED ***' % attr)
+                else:
+                    attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
@@ -1888,9 +1900,13 @@ class CertificateUpdateEvent(rpc.Shape):
 
     def __repr__(self):
         attrs = []
+        sensitive_attrs = {'certificate_update'}
         for attr, val in self.__dict__.items():
             if val is not None:
-                attrs.append('%s=%r' % (attr, val))
+                if attr in sensitive_attrs:
+                    attrs.append('%s=*** REDACTED ***' % attr)
+                else:
+                    attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
@@ -3732,9 +3748,13 @@ class GetSecretValueResponse(rpc.Shape):
 
     def __repr__(self):
         attrs = []
+        sensitive_attrs = {'secret_value'}
         for attr, val in self.__dict__.items():
             if val is not None:
-                attrs.append('%s=%r' % (attr, val))
+                if attr in sensitive_attrs:
+                    attrs.append('%s=*** REDACTED ***' % attr)
+                else:
+                    attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
@@ -4950,9 +4970,13 @@ class CreateDebugPasswordResponse(rpc.Shape):
 
     def __repr__(self):
         attrs = []
+        sensitive_attrs = {'password'}
         for attr, val in self.__dict__.items():
             if val is not None:
-                attrs.append('%s=%r' % (attr, val))
+                if attr in sensitive_attrs:
+                    attrs.append('%s=*** REDACTED ***' % attr)
+                else:
+                    attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
@@ -5662,9 +5686,13 @@ class GetClientDeviceAuthTokenResponse(rpc.Shape):
 
     def __repr__(self):
         attrs = []
+        sensitive_attrs = {'client_device_auth_token'}
         for attr, val in self.__dict__.items():
             if val is not None:
-                attrs.append('%s=%r' % (attr, val))
+                if attr in sensitive_attrs:
+                    attrs.append('%s=*** REDACTED ***' % attr)
+                else:
+                    attrs.append('%s=%r' % (attr, val))
         return '%s(%s)' % (self.__class__.__name__, ', '.join(attrs))
 
     def __eq__(self, other):
