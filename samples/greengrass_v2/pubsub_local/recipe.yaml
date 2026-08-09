@@ -1,0 +1,31 @@
+# recipe reference: https://docs.aws.amazon.com/greengrass/v2/developerguide/component-recipe-reference.html
+---
+RecipeFormatVersion: "2020-01-25"
+ComponentName: com.example.greengrass_ipc.python.pubsub_local
+ComponentVersion: "1.0.0"
+ComponentDescription: Greengrass IPC SDK component example
+ComponentPublisher: Amazon
+ComponentConfiguration:
+  DefaultConfiguration:
+    accessControl:
+      # see https://docs.aws.amazon.com/greengrass/v2/developerguide/ipc-publish-subscribe.html
+      "aws.greengrass.ipc.pubsub":
+        "com.example.greengrass_ipc.python.pubsub_local:pubsub:1":
+          policyDescription: Allow access to publish/subscribe to all topics locally.
+          operations:
+            - "aws.greengrass#PublishToTopic"
+            - "aws.greengrass#SubscribeToTopic"
+          resources:
+            - "*" # CHANGE ME: scope down based on principle of least privilege
+Manifests:
+  - Platform:
+      os: linux
+    Lifecycle:
+      Install:
+        RequiresPrivilege: true
+        Script: |
+          apt-get update
+          apt-get install --yes python3 python3-pip
+          python3 -m pip install "awsiotsdk>=1.15.0"
+      Run: |
+        python3 -u {artifacts:path}/code.py
