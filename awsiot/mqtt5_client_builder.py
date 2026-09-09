@@ -171,7 +171,6 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
     **cipher_pref** (:class:`awscrt.io.TlsCipherPref`): Cipher preference to use for TLS connection. Default is `TlsCipherPref.DEFAULT`.
 
     **enable_metrics_collection** (`bool`): Whether to send the SDK version number in the CONNECT packet.
-        Default is True.
 
 
 """
@@ -183,6 +182,8 @@ import awscrt.auth
 import awscrt.io
 import awscrt.mqtt5
 import urllib.parse
+
+from awsiot._iot_metrics import _build_sdk_metrics
 
 
 DEFAULT_WEBSOCKET_MQTT_PORT = 443
@@ -210,35 +211,6 @@ def _get(kwargs, name, default=None):
     return val
 
 
-_metrics_str = None
-
-
-def _get_metrics_str(current_username=""):
-    global _metrics_str
-
-    username_has_query = False
-    if current_username.find("?") != -1:
-        username_has_query = True
-
-    if _metrics_str is None:
-        try:
-            import importlib.metadata
-            try:
-                version = importlib.metadata.version("awsiotsdk")
-                _metrics_str = "SDK=PythonV2&Version={}".format(version)
-            except importlib.metadata.PackageNotFoundError:
-                _metrics_str = "SDK=PythonV2&Version=dev"
-        except BaseException:
-            _metrics_str = ""
-
-    if not _metrics_str == "":
-        if username_has_query:
-            return "&" + _metrics_str
-        else:
-            return "?" + _metrics_str
-    else:
-        return ""
-
 
 def _builder(
         tls_ctx_options,
@@ -251,8 +223,6 @@ def _builder(
     assert isinstance(cipher_pref, awscrt.io.TlsCipherPref)
 
     username = _get(kwargs, 'username', '')
-    if _get(kwargs, 'enable_metrics_collection', True):
-        username += _get_metrics_str(username)
 
     client_options = _get(kwargs, 'client_options')
     if client_options is None:
@@ -364,6 +334,11 @@ def _builder(
 
     tls_ctx = awscrt.io.ClientTlsContext(tls_ctx_options)
     client_options.tls_ctx = tls_ctx
+
+    if _get(kwargs, 'enable_metrics_collection', True):
+        client_options.metrics = _build_sdk_metrics()
+    else:
+        client_options.disable_metrics = True
     client = awscrt.mqtt5.Client(client_options=client_options)
 
     return client

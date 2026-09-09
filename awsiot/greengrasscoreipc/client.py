@@ -1042,6 +1042,69 @@ class SubscribeToIoTCoreOperation(model._SubscribeToIoTCoreOperation):
         return super().close()
 
 
+class SubscribeToIoTCoreConnectionStatusStreamHandler(rpc.StreamResponseHandler):
+    """
+    Event handler for SubscribeToIoTCoreConnectionStatusOperation
+
+    Inherit from this class and override methods to handle
+    stream events during a SubscribeToIoTCoreConnectionStatusOperation.
+    """
+
+    def on_stream_event(self, event: model.IoTCoreConnectionStatusEvent) -> None:
+        """
+        Invoked when a IoTCoreConnectionStatusEvent is received.
+        """
+        pass
+
+    def on_stream_error(self, error: Exception) -> bool:
+        """
+        Invoked when an error occurs on the operation stream.
+
+        Return True if operation should close as a result of this error,
+        """
+        return True
+
+    def on_stream_closed(self) -> None:
+        """
+        Invoked when the stream for this operation is closed.
+        """
+        pass
+
+
+class SubscribeToIoTCoreConnectionStatusOperation(model._SubscribeToIoTCoreConnectionStatusOperation):
+    """
+    SubscribeToIoTCoreConnectionStatusOperation
+
+    Create with GreengrassCoreIPCClient.new_subscribe_to_iot_core_connection_status()
+    """
+
+    def activate(self, request: model.SubscribeToIoTCoreConnectionStatusRequest):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Activate this operation by sending the initial SubscribeToIoTCoreConnectionStatusRequest message.
+
+        Returns a Future which completes with a result of None if the
+        request is successfully written to the wire, or an exception if
+        the request fails to send.
+        """
+        return self._activate(request)
+
+    def get_response(self):  # type: (...) -> concurrent.futures.Future[model.SubscribeToIoTCoreConnectionStatusResponse]
+        """
+        Returns a Future which completes with a result of SubscribeToIoTCoreConnectionStatusResponse,
+        when the initial response is received, or an exception.
+        """
+        return self._get_response()
+
+    def close(self):  # type: (...) -> concurrent.futures.Future[None]
+        """
+        Close the operation, whether or not it has completed.
+
+        Returns a Future which completes with a result of None
+        when the operation has closed.
+        """
+        return super().close()
+
+
 class SubscribeToTopicStreamHandler(rpc.StreamResponseHandler):
     """
     Event handler for SubscribeToTopicOperation
@@ -1638,6 +1701,20 @@ class GreengrassCoreIPCClient(rpc.Client):
                 stream events happen on this operation.
         """
         return self._new_operation(SubscribeToIoTCoreOperation, stream_handler)
+
+    def new_subscribe_to_iot_core_connection_status(self, stream_handler: SubscribeToIoTCoreConnectionStatusStreamHandler) -> SubscribeToIoTCoreConnectionStatusOperation:
+        """
+        Create a new SubscribeToIoTCoreConnectionStatusOperation.
+
+        This operation will not send or receive any data until activate()
+        is called. Call activate() when you're ready for callbacks and
+        events to fire.
+
+        Args:
+            stream_handler: Methods on this object will be called as
+                stream events happen on this operation.
+        """
+        return self._new_operation(SubscribeToIoTCoreConnectionStatusOperation, stream_handler)
 
     def new_subscribe_to_topic(self, stream_handler: SubscribeToTopicStreamHandler) -> SubscribeToTopicOperation:
         """

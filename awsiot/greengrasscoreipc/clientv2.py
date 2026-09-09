@@ -997,6 +997,62 @@ class GreengrassCoreIPCClientV2:
         write_future = operation.activate(request)
         return self.__combine_futures(write_future, operation.get_response()), operation
 
+    def subscribe_to_iot_core_connection_status(self, *,
+        stream_handler: typing.Optional[client.SubscribeToIoTCoreConnectionStatusStreamHandler] = None,
+        on_stream_event: typing.Optional[typing.Callable[[model.IoTCoreConnectionStatusEvent], None]] = None,
+        on_stream_error: typing.Optional[typing.Callable[[Exception], bool]] = None,
+        on_stream_closed: typing.Optional[typing.Callable[[], None]] = None
+) -> typing.Tuple[model.SubscribeToIoTCoreConnectionStatusResponse, client.SubscribeToIoTCoreConnectionStatusOperation]:
+        """
+        Perform the SubscribeToIoTCoreConnectionStatus operation synchronously.
+        The initial response or error will be returned synchronously, further events will arrive via the streaming
+        callbacks
+
+        Args:
+            stream_handler: Methods on this object will be called as stream events happen on this operation. If an
+                executor is provided, the on_stream_event and on_stream_closed methods will run in the executor.
+            on_stream_event: Callback for stream events. Mutually exclusive with stream_handler. If an executor is
+                provided, this method will run in the executor.
+            on_stream_error: Callback for stream errors. Return true to close the stream, return false to keep the
+                stream open. Mutually exclusive with stream_handler. Even if an executor is provided, this method
+                will not run in the executor.
+            on_stream_closed: Callback for when the stream closes. Mutually exclusive with stream_handler. If an
+                executor is provided, this method will run in the executor.
+        """
+        (fut, op) = self.subscribe_to_iot_core_connection_status_async(
+            stream_handler=stream_handler, on_stream_event=on_stream_event, on_stream_error=on_stream_error,
+            on_stream_closed=on_stream_closed)
+        return fut.result(), op
+
+    def subscribe_to_iot_core_connection_status_async(self, *,
+        stream_handler: client.SubscribeToIoTCoreConnectionStatusStreamHandler = None,
+        on_stream_event: typing.Optional[typing.Callable[[model.IoTCoreConnectionStatusEvent], None]] = None,
+        on_stream_error: typing.Optional[typing.Callable[[Exception], bool]] = None,
+        on_stream_closed: typing.Optional[typing.Callable[[], None]] = None
+        ):  # type: (...) -> typing.Tuple[concurrent.futures.Future[model.SubscribeToIoTCoreConnectionStatusResponse], client.SubscribeToIoTCoreConnectionStatusOperation]
+        """
+        Perform the SubscribeToIoTCoreConnectionStatus operation asynchronously.
+        The initial response or error will be returned as the result of the asynchronous future, further events will
+        arrive via the streaming callbacks
+
+        Args:
+            stream_handler: Methods on this object will be called as stream events happen on this operation. If an
+                executor is provided, the on_stream_event and on_stream_closed methods will run in the executor.
+            on_stream_event: Callback for stream events. Mutually exclusive with stream_handler. If an executor is
+                provided, this method will run in the executor.
+            on_stream_error: Callback for stream errors. Return true to close the stream, return false to keep the
+                stream open. Mutually exclusive with stream_handler. Even if an executor is provided, this method
+                will not run in the executor.
+            on_stream_closed: Callback for when the stream closes. Mutually exclusive with stream_handler. If an
+                executor is provided, this method will run in the executor.
+        """
+        stream_handler = self.__handle_stream_handler("SubscribeToIoTCoreConnectionStatus", stream_handler,
+            on_stream_event, on_stream_error, on_stream_closed)
+        request = model.SubscribeToIoTCoreConnectionStatusRequest()
+        operation = self.client.new_subscribe_to_iot_core_connection_status(stream_handler)
+        write_future = operation.activate(request)
+        return self.__combine_futures(write_future, operation.get_response()), operation
+
     def subscribe_to_topic(self, *,
         topic: typing.Optional[str] = None,
         receive_mode: typing.Optional[str] = None,
