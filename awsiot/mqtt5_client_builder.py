@@ -90,7 +90,7 @@ Optional Keyword Arguments (omit, or set `None` to get default value):
     **topic_aliasing_options** (:class:`awscrt.mqtt5.TopicAliasingOptions`): Configuration options for how the client
         should use the topic aliasing features of MQTT5
 
-    **retry_jitter_mode** (:class:`awscrt.mqtt5.ExponentialBackoffJitterMode`): How the reconnect delay is modified
+    **retry_jitter_mode** (:class:`awscrt.io.ExponentialBackoffJitterMode`): How the reconnect delay is modified
         in order to smooth out the distribution of reconnection attempt timepoints for a large set of reconnecting
         clients.
 
