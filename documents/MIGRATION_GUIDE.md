@@ -625,15 +625,14 @@ logger.debug("error log")
 The v1 SDK is built with [AWS IoT device shadow support](http://docs.aws.amazon.com/iot/latest/developerguide/iot-thing-shadows.html),
 which provides access to thing shadows (sometimes referred to as device shadows).
 
-The v2 SDK also supports device shadow service, but with a completely different APIs.
-First, you subscribe to special topics to get data and feedback from a service.
-The service client provides API for that. For example, `subscribe_to_get_shadow_accepted` subscribes to a topic
-to which AWS IoT Core will publish a shadow document. The server will notify you if it cannot send you a
-requested documen via the `subscribe_to_get_shadow_rejected`.\
-After subscribing to all the required topics, the service client can start interacting with the server,
-for example update the status or request for data. These actions are also performed via client API calls.
-For example, `publish_get_shadow` sends a request to AWS IoT Core to get a shadow document.
-The requested Shadow document will be received in a callback specified in the `subscribe_to_get_shadow_accepted` call.
+The v2 SDK also supports the device shadow service, but with a completely different API.
+The v2 service client (`IotShadowClientV2`) exposes a request-response API: each operation (for example,
+`get_shadow` or `update_shadow`) is a single method call that returns a `concurrent.futures.Future`. On operation
+success, the future resolves with the modeled response; on operation failure, the future's result raises a modeled
+error. The client handles the underlying MQTT topic subscriptions for you, so you no longer subscribe to
+accepted/rejected topics manually. For change notifications that are not tied to a specific request (for example,
+`ShadowUpdated` and `ShadowDeltaUpdated` events), the client provides streaming operations that you open once and
+receive events from continuously.
 
 AWS IoT Core [documentation for Device Shadow](https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html)
 service provides detailed descriptions for the topics used to interact with the service.
@@ -660,7 +659,13 @@ deviceShadowHandler = shadow_client.createShadowHandlerWithName(
 
 ```python
 mqtt5_client.start()
-shadow_client = iotshadow.IotShadowClient(mqtt5_client)
+
+rr_options = mqtt_request_response.ClientOptions(
+        max_request_response_subscriptions=2,
+        max_streaming_subscriptions=2,
+        operation_timeout_in_seconds=30,
+)
+shadow_client = iotshadow.IotShadowClientV2(mqtt5_client, rr_options)
 
 ```
 
@@ -677,21 +682,14 @@ deviceShadowHandler.shadowDelete(customShadowCallback_Delete, 5)
 #### Example of deleting a Classic Shadow in the v2 SDK
 
 ```python
-def delete_accepted(DeleteShadowResponse response):
-    return
-shadow_client.subscribe_to_delete_shadow_accepted(request, qos, callback)
+# The v2 client uses a request-response API: a single call sends the request
+# and returns a Future that resolves with the modeled response.
+request = iotshadow.DeleteShadowRequest(thing_name="<thing name>")
 
-def delete_rejected(DeleteShadowResponse response):
-    return
-shadow_client.subscribe_to_delete_shadow_rejected(request, qos, callback)
+shadow_future = shadow_client.delete_shadow(request)
 
-iotshadow.DeleteShadowRequest req
-req.client_token = "<client token>"
-req.thing_name = "<thing name>"
-
-shadow_future = shadow_client.publish_delete_shadow(
-        request=req,
-        qos=mqtt5.QoS.AT_LEAST_ONCE)
+# Wait for the result (raises a modeled error on failure).
+response = shadow_future.result()
 
 ```
 
@@ -714,34 +712,18 @@ deviceShadowHandler.shadowUpdate(
 
 ```python
 # Update shadow
-def on_update_shadow_accepted(response):
-    return
- update_accepted_subscribed_future, _ =
-        shadow_client.subscribe_to_update_shadow_accepted(
-                request=iotshadow.UpdateShadowSubscriptionRequest(
-                        thing_name=shadow_thing_name),
-                qos=mqtt5.QoS.AT_LEAST_ONCE,
-                callback=on_update_shadow_accepted)
-
-def on_update_shadow_rejected(error):
-    return
-update_rejected_subscribed_future, _ =
-        shadow_client.subscribe_to_update_shadow_rejected(
-                request=iotshadow.UpdateShadowSubscriptionRequest(
-                        thing_name=shadow_thing_name),
-                qos=mqtt5.QoS.AT_LEAST_ONCE,
-                callback=on_update_shadow_rejected)
-
+# A single call sends the update and returns a Future that resolves with the
+# modeled response (or raises a modeled error on failure).
 request = iotshadow.UpdateShadowRequest(
-        thing_name="thing name",
+        thing_name="<thing name>",
         state=iotshadow.ShadowState(
-                reported={color: 1},
-                desired={color: 2},),
+                reported={"color": 1},
+                desired={"color": 2}),
         client_token="<token>")
 
-future = shadow_client.publish_update_shadow(
-        request,
-        mqtt5.QoS.AT_LEAST_ONCE)
+future = shadow_client.update_shadow(request)
+
+response = future.result()
 
 ```
 
@@ -767,16 +749,15 @@ deviceShadowHandler.shadowRegisterDeltaCallback(
 
 ```python
 # Delta Events
-def on_shadow_delta_updated(delta):
+# Notifications that are not tied to a specific request are delivered through
+# streaming operations. Open the stream once and receive events continuously.
+def on_shadow_delta_updated(event):
     return
 
-delta_subscribed_future, _ = shadow_client.subscribe_to_shadow_delta_updated_events(
-        request=iotshadow.ShadowDeltaUpdatedSubscriptionRequest(
-                thing_name=shadow_thing_name),
-        qos=mqtt5.QoS.AT_LEAST_ONCE,
-        callback=on_shadow_delta_updated)
-
-delta_subscribed_future.result()
+delta_updated_stream = shadow_client.create_shadow_delta_updated_stream(
+        iotshadow.ShadowDeltaUpdatedSubscriptionRequest(thing_name="<thing name>"),
+        awsiot.ServiceStreamOptions(on_shadow_delta_updated))
+delta_updated_stream.open()
 
 ```
 
@@ -794,11 +775,11 @@ remote operations that can be sent to and run on one or more devices connected t
 
 
 The v2 SDK Jobs service APIs are completely different than the v1 SDK APIs.
-The Jobs service client provides API similar to API provided by [Client for Device Shadow Service](#client-for-device-shadow-service).
-First, you subscribe to special topics to get data and feedback from a service.
-The service client provides API for that. After subscribing to all the required topics,
-the service client can start interacting with the server, for example update the status or request for data.
-These actions are also performed via client API calls.
+The Jobs service client (`IotJobsClientV2`) provides a request-response API similar to the API provided by
+[Client for Device Shadow Service](#client-for-device-shadow-service). Each operation is a single method call that
+returns a `concurrent.futures.Future`. It resolves with the modeled response, and the client manages the underlying MQTT
+topic subscriptions for you. Notifications that are not tied to a specific request are delivered through streaming
+operations that you open once and receive events from continuously.
 
 
 #### Example creating a jobs client in the v1 SDK
@@ -819,7 +800,12 @@ jobsClient.connect()
 ```python
 mqtt5_client.start()
 
-jobs_client = iotjobs.IotJobsClient(mqtt5_client)
+rr_options = mqtt_request_response.ClientOptions(
+        max_request_response_subscriptions=2,
+        max_streaming_subscriptions=2,
+        operation_timeout_in_seconds=30,
+)
+jobs_client = iotjobs.IotJobsClientV2(mqtt5_client, rr_options)
 
 ```
 
@@ -900,32 +886,27 @@ packet_id = jobs_client.createJobSubscriptionAsync(
 
 #### Example subscribing to jobs topics in the v2 SDK
 
-More subscriptions will be listed with their corresponding API
+More streaming operations are listed with their corresponding API
 
 ```python
 
-# Subscribe to necessary topics
-changed_subscription_request = iotjobs.NextJobExecutionChangedSubscriptionRequest(
-        thing_name="<thing name>")
-
+# Change notifications are delivered through streaming operations. Open each
+# stream once and receive events continuously.
 def on_next_job_execution_changed(event):
     return
 
-subscribed_future, _ = jobs_client.subscribe_to_next_job_execution_changed_events(
-        request=changed_subscription_request,
-        qos=mqtt5.QoS.AT_LEAST_ONCE,
-        callback=on_next_job_execution_changed)
-
-changed_subscription_request = iotjobs.JobExecutionChangedSubscriptionRequest(
-        thing_name="<thing name>")
+next_changed_stream = jobs_client.create_next_job_execution_changed_stream(
+        iotjobs.NextJobExecutionChangedSubscriptionRequest(thing_name="<thing name>"),
+        awsiot.ServiceStreamOptions(on_next_job_execution_changed))
+next_changed_stream.open()
 
 def on_job_execution_changed(event):
     return
 
-subscribed_future, _  = jobs_client.subscribe_to_job_executions_changed_events(
-        request=changed_subscription_request,
-        qos=mqtt5.QoS.AT_LEAST_ONCE,
-        callback=on_job_execution_changed)
+changed_stream = jobs_client.create_job_execution_changed_stream(
+        iotjobs.JobExecutionsChangedSubscriptionRequest(thing_name="<thing name>"),
+        awsiot.ServiceStreamOptions(on_job_execution_changed))
+changed_stream.open()
 
 ```
 
@@ -945,34 +926,13 @@ jobs_client.sendJobsStartNext(
 #### Example of execution of the next pending job in the v2 SDK
 
 ```python
-start_subscription_request = iotjobs.StartNextPendingJobExecutionSubscriptionRequest(thing_name="thing name")
+# A single call sends the request and returns a Future resolving with the
+# modeled response (or raising a modeled error on failure).
+execution_request = iotjobs.StartNextPendingJobExecutionRequest(thing_name="<thing name>")
 
-def on_start_next_pending_job_execution_accepted(response):
-    return
+publish_future = jobs_client.start_next_pending_job_execution(execution_request)
 
-subscribed_accepted_future, _ =
-        jobs_client.subscribe_to_start_next_pending_job_execution_accepted(
-                request=start_subscription_request,
-                qos=mqtt5.QoS.AT_LEAST_ONCE,
-                callback=on_start_next_pending_job_execution_accepted)
-
-def on_start_next_pending_job_execution_rejected(rejected):
-    return
-
-subscribed_rejected_future, _ =
-        jobs_client.subscribe_to_start_next_pending_job_execution_rejected(
-                request=start_subscription_request,
-                qos=mqtt5.QoS.AT_LEAST_ONCE,
-                callback=on_start_next_pending_job_execution_rejected)
-
-execution_request = iotjobs.StartNextPendingJobExecutionRequest(
-        thing_name="thing_name")
-
-publish_future = jobs_client.publish_start_next_pending_job_execution(
-        request=execution_request,
-        mqtt.QoS.AT_LEAST_ONCE)
-
-publish_future.add_done_callback(on_publish_start_next_pending_job_execution)
+response = publish_future.result()
 
 ```
 
@@ -990,38 +950,18 @@ jobs_client.sendJobsDescribe(jobId = '$next', executionNumber=1, includeJobDocum
 #### Example of getting detailed information about a job in the v2 SDK
 
 ```python
-def accepted_callback(response) # DescribeJobExecutionResponse
-    # job details received
-    return
-
-def rejected_callback(RejectedError response) # RejectedError
-    # error getting job details
-    return
-
-iotjobs.DescribeJobExecutionSubscriptionRequest request;
-request.job_id = "job id"
-request.thing_name = "thing name"
-
-jobs_client.subscribe_to_describe_job_execution_accepted(
-        request=request,
-        qos=mqtt5.QoS.AT_LEAST_ONCE,
-        callback=acceted_callback)
-
-jobs_client.subscribe_to_describe_job_execution_rejected(
-        request=request,
-        qos=mqtt5.QoS.AT_LEAST_ONCE,
-        callback=rejected_callback)
-
+# A single call sends the request and returns a Future resolving with the
+# DescribeJobExecutionResponse (or raising a modeled error on failure).
 describe_request = iotjobs.DescribeJobExecutionRequest(
         client_token="client token",
         execution_number=23,
-        include_job_document=false,
+        include_job_document=False,
         job_id="job id",
         thing_name="thing name")
 
-jobs_client.publish_describe_job_execution(
-        request=describe_request,
-        qos=mqtt5.QoS.AT_LEAST_ONCE)
+describe_future = jobs_client.describe_job_execution(describe_request)
+
+response = describe_future.result()
 
 ```
 
@@ -1045,43 +985,23 @@ jobs_client.sendJobsUpdate(
 #### Example updating status of a job in the v2 SDK
 
 ```python
-update_subscription_request = iotjobs.UpdateJobExecutionSubscriptionRequest(
-        thing_name=jobs_thing_name,
-        job_id='+')
-
-def on_update_job_execution_accepted(response):
-    return
-
-subscribed_accepted_future, _ =
-        jobs_client.subscribe_to_update_job_execution_accepted(
-                request=update_subscription_request,
-                qos=mqtt5.QoS.AT_LEAST_ONCE,
-                callback=on_update_job_execution_accepted)
-
-def on_update_job_execution_rejected(rejected):
-    return
-
-subscribed_rejected_future, _ =
-        jobs_client.subscribe_to_update_job_execution_rejected(
-                request=update_subscription_request
-                qos=mqtt5.QoS.AT_LEAST_ONCE,
-                callback=on_update_job_execution_rejected)
-
+# A single call sends the update and returns a Future resolving with the
+# modeled response (or raising a modeled error on failure).
 update_job_execution_request = iotjobs.UpdateJobExecutionRequest(
         client_token="client_token",
-        excution_number=32,
+        execution_number=32,
         expected_version=23,
-        include_job_document=true,
-        include_job_execution_state=true,
+        include_job_document=True,
+        include_job_execution_state=True,
         job_id="job id",
-        status=IN_PROGRESS,
-        status_details={"key":"val"},
+        status=iotjobs.JobStatus.IN_PROGRESS,
+        status_details={"key": "val"},
         step_timeout_in_minutes=23,
         thing_name="thing name")
 
-jobs_client.publish_update_job_execution(
-        request=update_job_execution_request,
-        qos=mqtt5.QoS.AT_LEAST_ONCE)
+update_future = jobs_client.update_job_execution(update_job_execution_request)
+
+response = update_future.result()
 
 ```
 
@@ -1099,29 +1019,13 @@ jobs_client.sendJobsQuery(jobExecutionTopicType.JOB_GET_PENDING_TOPIC)
 #### Example of getting job info in the v2 SDK
 
 ```python
-def on_get_pending_job_executions_accepted(response):
-    return
+# A single call sends the request and returns a Future resolving with the
+# GetPendingJobExecutionsResponse (or raising a modeled error on failure).
+get_jobs_request = iotjobs.GetPendingJobExecutionsRequest(thing_name="<thing name>")
 
-jobs_request_future_accepted, _ =
-        jobs_client.subscribe_to_get_pending_job_executions_accepted
-                request=get_jobs_request,
-                qos=mqtt5.QoS.AT_LEAST_ONCE,
-                callback=on_get_pending_job_executions_accepted)
+get_jobs_request_future = jobs_client.get_pending_job_executions(get_jobs_request)
 
-def on_get_pending_job_executions_rejected(error):
-    return
-
-jobs_request_future_rejected, _ =
-        jobs_client.subscribe_to_get_pending_job_executions_rejected(
-                request=get_jobs_request,
-                qos=mqtt5.QoS.AT_LEAST_ONCE,
-                callback=on_get_pending_job_executions_rejected)
-
-get_jobs_request = iotjobs.GetPendingJobExecutionsRequest(thing_name="<thing name">)
-
-get_jobs_request_future = jobs_client.publish_get_pending_job_executions(
-        request=get_jobs_request,
-        qos=mqtt5.QoS.AT_LEAST_ONCE)
+response = get_jobs_request_future.result()
 
 ```
 
@@ -1131,7 +1035,7 @@ For detailed descriptions for the topics used to interact with the service, see 
 For more information about the service clients, see API documentation for the v2 SDK
 [Jobs](https://aws.github.io/aws-iot-device-sdk-python-v2/awsiot/iotjobs.html).
 
-For code examles, see [Jobs](https://github.com/aws/aws-iot-device-sdk-python/blob/master/samples/service_clients/jobs.py)
+For code examples, see the v2 SDK [Jobs](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/service_clients/jobs.py)
 samples.
 
 
@@ -1142,12 +1046,10 @@ samples.
 By using AWS IoT fleet provisioning, AWS IoT can generate and securely deliver device certificates and private keys
 to your devices when they connect to AWS IoT for the first time.
 
-The Fleet Provisioning service client provides APIs similar to the APIs provided by
-[Client for Device Shadow Service](#client-for-device-shadow-service).
-First, you subscribe to special topics to get data and feedback from a service.
-The service client provides APIs for that. After subscribing to all the required topics,
-the service client can start interacting with the server, for example update the status or request for data.
-These actions are also performed via client API calls.
+The Fleet Provisioning service client (`IotIdentityClientV2`) provides a request-response API similar to the API
+provided by [Client for Device Shadow Service](#client-for-device-shadow-service). Each operation is a single method
+call that returns a `concurrent.futures.Future` resolving with the modeled response, and the client manages the
+underlying MQTT topic subscriptions for you.
 
 For detailed descriptions for the topics used to interact with the Fleet Provisioning service, see
 AWS IoT Core documentation for [Fleet Provisioning](https://docs.aws.amazon.com/iot/latest/developerguide/fleet-provision-api.html)
@@ -1155,7 +1057,7 @@ AWS IoT Core documentation for [Fleet Provisioning](https://docs.aws.amazon.com/
 For more information about the Fleet Provisioning service client, See API documentation for the v2 SDK
 [Fleet Provisioning](https://aws.github.io/aws-iot-device-sdk-python-v2/awsiot/iotidentity.html).
 
-For code examples, see the v2 SDK [Fleet Provisioning](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/service_clients/fleet_provisioning_basic.md)
+For code examples, see the v2 SDK [Fleet Provisioning](https://github.com/aws/aws-iot-device-sdk-python-v2/blob/main/samples/service_clients/fleet_provisioning_basic.py)
 samples.
 
 
