@@ -174,8 +174,30 @@ class MessageAmendment:
             The result is appropriate for passing to the :class:`Connection`'s
             `connect_message_amender` init arg.
         """
+        return MessageAmendment.create_authtoken_amender(lambda: authtoken)
+
+    @staticmethod
+    def create_authtoken_amender(authtoken_provider: Callable[[], str]) -> Callable[[], 'MessageAmendment']:
+        """
+        Create function that amends payload: `b'{"authToken": "..."}'`,
+        asking `authtoken_provider` for the token every time it is called.
+
+        The amender is called whenever a network connection is being
+        established, including every reconnect. Use this when the token can
+        change over the life of the application, so that a reconnect uses the
+        current token instead of the one that was valid at the first connect.
+
+        Args:
+            authtoken_provider: Callable returning the value of "authToken"
+                in the payload. If it raises, the connection attempt fails
+                with that exception.
+
+        Returns:
+            The result is appropriate for passing to the :class:`Connection`'s
+            `connect_message_amender` init arg.
+        """
         def _amend():
-            payload_str = '{"authToken": "%s"}' % authtoken
+            payload_str = json.dumps({"authToken": authtoken_provider()})
             return MessageAmendment(payload=payload_str.encode())
 
         return _amend
@@ -399,6 +421,8 @@ class Connection:
         self._connect_message_amender = connect_message_amender
 
         self._synced = Connection._Synced()
+        # lifecycle handler of the latest connect(), reused by reconnect()
+        self._lifecycle_handler = None  # type: Optional[LifecycleHandler]
 
     def connect(self, lifecycle_handler: LifecycleHandler) -> Future:
         """
@@ -441,6 +465,7 @@ class Connection:
                     bootstrap=self._bootstrap,
                     socket_options=self._socket_options,
                     tls_connection_options=self._tls_connection_options)
+                self._lifecycle_handler = lifecycle_handler
             except Exception as e:
                 synced.current_handler = None
                 synced.connect_future = None
@@ -448,6 +473,36 @@ class Connection:
                 synced.state = _ClientState.DISCONNECTED
                 raise e
         return future
+
+    def reconnect(self) -> Future:
+        """
+        Asynchronously open the network connection again, after it has
+        finished closing/disconnecting (e.g. because the server closed it).
+
+        This is :meth:`connect()` with the lifecycle handler passed to the
+        latest :meth:`connect()` call. The `connect_message_amender` is called
+        again, so an amender created with
+        :meth:`MessageAmendment.create_authtoken_amender()` sends the current
+        token.
+
+        Operations and streams of the previous connection are not restored:
+        the application must create them again once connected.
+
+        Returns:
+            A Future which completes when the connection succeeds or fails.
+            If successful, the Future will contain None.
+            Otherwise it will contain an exception explaining the reason
+            for failure.
+
+        Raises:
+            RuntimeError: If :meth:`connect()` was never called, or if the
+                connection is not closed yet.
+        """
+        with self._synced:
+            lifecycle_handler = self._lifecycle_handler
+        if lifecycle_handler is None:
+            raise RuntimeError("connect() must be called before reconnect()")
+        return self.connect(lifecycle_handler)
 
     def close(self, reason: Optional[Exception] = None) -> Future:
         """
@@ -840,6 +895,23 @@ class Client:
             of None if the shutdown was clean and user-initiated.
         """
         return self._connection.close(reason=reason)
+
+    def reconnect(self) -> Future:
+        """
+        Asynchronously open the connection again, after it has finished
+        closing/disconnecting (e.g. because the server restarted).
+
+        Without a reconnect, every new operation fails with
+        :class:`ConnectionClosedError` once the connection is closed.
+        See :meth:`Connection.reconnect()`.
+
+        Returns:
+            A Future which completes when the connection succeeds or fails.
+            If successful, the Future will contain None.
+            Otherwise it will contain an exception explaining the reason
+            for failure.
+        """
+        return self._connection.reconnect()
 
     def _new_operation(self, operation_type: type, stream_handler: StreamResponseHandler = None):
         return operation_type(stream_handler, self._shape_index, self._connection)
