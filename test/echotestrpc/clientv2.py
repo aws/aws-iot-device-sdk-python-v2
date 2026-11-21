@@ -109,7 +109,7 @@ class EchoTestRPCClientV2:
                     try:
                         real_self.executor.submit(on_stream_closed)
                     except RuntimeError:
-                        if real_self.ignore_executor_exceptions:
+                        if not real_self.ignore_executor_exceptions:
                             raise
                 else:
                     on_stream_closed()

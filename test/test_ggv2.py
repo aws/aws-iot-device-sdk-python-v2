@@ -97,3 +97,45 @@ class GGV2Test(TestCase):
             self.assertRaises(ValueError, lambda: sub_handler.on_stream_event(
                 SubscriptionResponseMessage(binary_message=BinaryMessage(message="xyz"))))
         self.assertIn("ValueError: Broken!", f.getvalue())
+
+    @patch('awsiot.greengrasscoreipc.client.GreengrassCoreIPCClient')
+    @patch('awsiot.greengrasscoreipc.client.SubscribeToTopicOperation')
+    def test_stream_closed_after_close(self, mock_client, mock_subscribe_op):
+        from awsiot.greengrasscoreipc.clientv2 import GreengrassCoreIPCClientV2 as Client
+        c = Client(client=mock_client)
+        self._mock_operation(mock_subscribe_op, SubscribeToTopicResponse(topic_name="abc"))
+        mock_client.new_subscribe_to_topic.return_value = mock_subscribe_op
+
+        # Before close(), on_stream_closed runs on the executor
+        closed_fut = concurrent.futures.Future()
+        c.subscribe_to_topic(topic="abc", on_stream_event=lambda r: None,
+                             on_stream_closed=lambda: closed_fut.set_result(threading.get_ident()))
+        sub_handler = mock_client.new_subscribe_to_topic.call_args[0][0]
+        sub_handler.on_stream_closed()
+        self.assertNotEqual(threading.get_ident(), closed_fut.result(TIMEOUT))
+
+        # After close(), the streams of the connection are closed while the executor is shut down:
+        # like on_stream_event, on_stream_closed must not raise "cannot schedule new futures after shutdown"
+        c.subscribe_to_topic(topic="abc", on_stream_event=lambda r: None, on_stream_closed=lambda: None)
+        sub_handler = mock_client.new_subscribe_to_topic.call_args[0][0]
+        c.close(executor_wait=False)
+        sub_handler.on_stream_closed()
+        sub_handler.on_stream_event(SubscriptionResponseMessage(binary_message=BinaryMessage(message="xyz")))
+
+    @patch('awsiot.greengrasscoreipc.client.GreengrassCoreIPCClient')
+    @patch('awsiot.greengrasscoreipc.client.SubscribeToTopicOperation')
+    def test_stream_closed_with_executor_shut_down_without_close(self, mock_client, mock_subscribe_op):
+        # An executor shut down by the user, without close(), is an error the user must still see
+        from awsiot.greengrasscoreipc.clientv2 import GreengrassCoreIPCClientV2 as Client
+        executor = concurrent.futures.ThreadPoolExecutor()
+        c = Client(client=mock_client, executor=executor)
+        self._mock_operation(mock_subscribe_op, SubscribeToTopicResponse(topic_name="abc"))
+        mock_client.new_subscribe_to_topic.return_value = mock_subscribe_op
+        c.subscribe_to_topic(topic="abc", on_stream_event=lambda r: None, on_stream_closed=lambda: None)
+        sub_handler = mock_client.new_subscribe_to_topic.call_args[0][0]
+
+        executor.shutdown()
+
+        self.assertRaises(RuntimeError, sub_handler.on_stream_closed)
+        self.assertRaises(RuntimeError, lambda: sub_handler.on_stream_event(
+            SubscriptionResponseMessage(binary_message=BinaryMessage(message="xyz"))))
